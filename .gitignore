@@ -1,0 +1,32 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+service-account*.json
+
+# Private state, user uploads and generated evidence
+private/
+secrets/
+data/
+uploads/
+traces/
+output/
+*.sqlite
+*.sqlite3
+*.db
+*.log
+
+# Build and runtime files
+__pycache__/
+*.py[cod]
+.venv/
+node_modules/
+dist/
+build/
+.next/
+.vercel/
+.DS_Store
+Thumbs.db
