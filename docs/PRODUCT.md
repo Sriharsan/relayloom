@@ -47,6 +47,28 @@ customer logos to make a screen look active.
 
 ## Expansion
 
+## One connected operating loop
+
+The intended system connects shared human intent to specialist planning,
+parallel execution, security checks, scoped action, outcome verification and
+governed improvement. These components share task identity, intent revision,
+permissions, evidence and budget; they are not disconnected demonstrations.
+Independent work runs in parallel. Dependent work waits for verified inputs.
+
+Live participants guide the same workroom. Security AI evaluates supported
+threats and proposed actions while enforced policy controls access and effects.
+Continuous operations preserve state and recover within approved limits. Local
+intelligence and infrastructure follow explicit data-routing and resource rules.
+
+Improvement closes the loop: observed failure -> proposed change -> isolated
+evaluation -> held-out/regression checks -> authorized promotion or rejection ->
+monitored outcome. Recursive capability improvement is the long-term ambition;
+it requires repeated measured gains and cannot bypass immutable authority or
+rewrite its own acceptance criteria to declare success.
+
+This is the integrated product direction. The current public repository remains
+a planning scaffold; none of these paragraphs establishes implementation.
+
 Continuous incident/recovery loops, additional supported integrations, local
 intelligence and governed improvement extend the same contract. Before/after-
 production support requires concrete destination and rollback integration.
