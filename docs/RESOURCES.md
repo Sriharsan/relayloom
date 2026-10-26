@@ -16,6 +16,16 @@ endorsements or a claim that every descendant page/video was reviewed.
 
 ## Unresolved checks
 
+27 October update: signed-in participant guide and waiver now agree on judging
+weights: Impact 30%, Meta tooling 25%, Technical execution 20%, Demo 25%.
+Final submission fields and the three-page credit terms were reviewed. Credit
+terms distinguish free participation from payment-method requirements for Model
+API use; applied hackathon credits do not expire, with normal charges after
+exhaustion. Promotional Billing warns content may be used for product improvement.
+Use synthetic/public inputs and do not infer private-data guarantees from the
+selected model alone. Earlier outstanding items below are historical where
+superseded by this update; videos and eligible-start clarification remain open.
+
 - Exact eligible-start timing: event/kickoff and guide dates differ.
 - Authoritative judging weights: participant guide and waiver differ.
 - Final submission fields and accessibility of final artifacts.
