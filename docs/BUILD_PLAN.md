@@ -1,18 +1,23 @@
 # Build plan and acceptance gates
 
-27 October 2026. Initial scaffold only; boxes remain unchecked until evidenced.
+Updated 28 October 2026. Checked items refer to the local synthetic rehearsal;
+they do not establish live Meta functionality or hosted production readiness.
 
 ## Implementation order
 
 - [ ] Confirm eligible build-start interpretation and account/model access.
-- [ ] Add reproducible local setup and synthetic fixtures.
-- [ ] Implement shared intent revisions and explicit task dependency state.
+- [x] Add reproducible local setup and synthetic fixtures.
+- [x] Implement shared intent revisions and explicit task dependency state.
 - [ ] Run two substantive Meta-backed specialists in parallel.
-- [ ] Propagate a second participant's constraint change without losing history.
-- [ ] Preserve valid work and reject stale effects at the destination boundary.
+- [x] Propagate a second participant's constraint change without losing history (controller tests; browser acceptance separate).
+- [x] Preserve valid work and reject stale local artifact publication; external destination integration remains future work.
 - [ ] Add permission, usage reservation, retry and reconciliation controls.
 - [ ] Connect a polished workroom and outcome view to actual state.
 - [ ] Verify clean checkout, error paths and a three-minute demonstration.
+
+Implemented permission and local publication checks do not establish a provider
+budget cap, request reconciliation or independent external-business verification.
+The current suite and explicit remaining gates are in IMPLEMENTATION.md.
 
 ## Required evidence
 

@@ -21,7 +21,7 @@ Meta models propose plans and scoped work. The controller validates structure,
 permissions, dependency status, cost and destination outcome. Reviews may disagree;
 votes are evidence, not proof of correctness or authority.
 
-## Proposed components
+## Components
 
 | Component | Responsibility |
 | --- | --- |
@@ -32,7 +32,12 @@ votes are evidence, not proof of correctness or authority.
 | Scoped executor | Approved tool calls, destination reconciliation and outcome receipts |
 | Evidence view | Current state, disagreement, final checks and actual cost |
 
-These are architecture intentions, not claims of implemented modules.
+The local revision controller, dependency scheduler, scoped room roles and
+evidence UI now have an executable rehearsal foundation. Specialist outputs are
+deterministic synthetic records by default. The optional Meta adapter and durable
+attempt ledger are implemented and offline-tested; real inference remains
+unrun. External scoped execution and measured provider dollar controls remain
+planned; see IMPLEMENTATION.md and META.md.
 
 ## Design contract
 
@@ -66,8 +71,9 @@ monitored outcome. Recursive capability improvement is the long-term ambition;
 it requires repeated measured gains and cannot bypass immutable authority or
 rewrite its own acceptance criteria to declare success.
 
-This is the integrated product direction. The current public repository remains
-a planning scaffold; none of these paragraphs establishes implementation.
+This is the integrated product direction. Its broader capabilities are not
+established merely by the local rehearsal. IMPLEMENTATION.md separates actual
+source/test evidence from the remaining live-inference and production gates.
 
 Continuous incident/recovery loops, additional supported integrations, local
 intelligence and governed improvement extend the same contract. Before/after-

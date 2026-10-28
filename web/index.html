@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5f1">
+  <title>Relayloom · Shared workroom</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="Relayloom home"><span class="brand-mark" aria-hidden="true">r</span>relayloom<span class="brand-dot">.</span></a>
+      <div class="side-section">WORKSPACE</div>
+      <div class="nav-item active"><span aria-hidden="true">▦</span> Workroom <span class="nav-key">01</span></div>
+      <div class="side-note"><span class="small-dot"></span> One goal. Connected work.</div>
+      <div class="sidebar-bottom"><span class="avatar" id="member-avatar">R</span><div><strong id="member-name">Your workspace</strong><span id="member-role">Passwordless access</span></div><button id="logout" class="icon-button" aria-label="Sign out" title="Sign out" hidden>↗</button></div>
+    </aside>
+    <div class="main-shell">
+      <header class="topbar"><div class="breadcrumb">Workspace <span>/</span> <strong id="crumb">Welcome</strong></div><div class="connection" id="connection"><span></span><span id="connection-label">Not connected</span></div></header>
+      <main>
+        <div id="notice" class="notice" role="status" hidden></div>
+        <section id="welcome" class="welcome" hidden>
+          <div class="eyebrow"><span class="small-dot"></span> A SHARED WORKROOM FOR CHANGING GOALS</div>
+          <h1>Change direction.<br>Keep the useful work.</h1>
+          <p class="welcome-copy">Give your team a goal. Let specialists work together, revise what changes, and check the result before taking action.</p>
+          <div class="welcome-actions"><button class="button primary" data-open="create-dialog">Create a workroom <span>↗</span></button><button class="button" data-open="join-dialog">Join with an invite</button></div>
+          <div class="welcome-flow"><div><span>01</span><strong>Set the direction</strong><p>A shared brief and explicit constraints.</p></div><div><span>02</span><strong>Work in parallel</strong><p>See who is working and what is waiting.</p></div><div><span>03</span><strong>Verify the outcome</strong><p>Current evidence. Scoped permission.</p></div></div>
+          <div class="rehearsal-note">LOCAL REHEARSAL <span>Built for synthetic work. No live model calls are made in rehearsal mode.</span></div>
+        </section>
+        <section id="workroom" hidden>
+          <div class="page-heading"><div><div class="eyebrow">SHARED WORKROOM <span class="revision" id="revision">REV 1</span></div><h1 id="room-name">Workroom</h1><p>Move together, even when the direction changes.</p></div><button id="invite-button" class="button" data-open="invite-dialog">＋ Invite a teammate</button></div>
+          <div class="mode-banner"><span class="mode-icon" aria-hidden="true">◈</span><div><strong id="mode-title">Local rehearsal</strong><span id="mode-description">Synthetic specialist outputs · no live model inference</span></div><span class="authority" id="authority">VIEWER</span></div>
+          <section class="intent-card"><div class="section-top"><div class="section-label"><span class="small-dot"></span> CURRENT INTENT</div><button id="edit-intent" class="text-button" data-open="intent-dialog">Edit intent ↗</button></div><h2 id="intent-brief"></h2><div class="constraints"><span><span class="constraint-label">Audience</span><strong id="intent-audience"></strong></span><span><span class="constraint-label">Refund window</span><strong id="intent-refund"></strong></span></div></section>
+          <div class="workspace-grid"><section class="team-section"><div class="panel-heading"><div><h2>The team</h2><span>Independent work, connected outcomes</span></div><button id="run-button" class="button primary">▶ Run specialists</button></div><div id="tasks" class="tasks"></div><div class="team-footnote">Product + Engineering run in parallel. Support waits for both.</div><div class="usage" id="usage"></div></section>
+          <section class="evidence-panel"><div class="tabbar" role="tablist" aria-label="Workroom evidence"><button class="tab active" id="result-tab" role="tab" aria-selected="true" aria-controls="result-panel">Results</button><button class="tab" id="activity-tab" role="tab" aria-selected="false" aria-controls="activity-panel">Activity <span id="event-count">0</span></button></div><div id="result-panel" role="tabpanel" aria-labelledby="result-tab"><div id="task-detail" class="task-detail"></div><div class="outcome"><div class="section-top"><h3>Outcome</h3><span id="artifact-status" class="subtle">Awaiting work</span></div><div id="artifact-content"></div><label class="permission-toggle" id="permission-row"><input type="checkbox" id="publish-permission"><span><strong>Allow artifact publication</strong><small>Owner permission for the current revision.</small></span></label><button id="publish-button" class="button full">Publish verified artifact ↗</button><p class="outcome-note">Creates a local workroom artifact after current checks pass.</p></div></div><div id="activity-panel" role="tabpanel" aria-labelledby="activity-tab" hidden><div class="activity-heading"><h3>Workroom activity</h3><p>Recorded changes and execution events.</p></div><ol id="events" class="events"></ol></div></section></div>
+          <footer class="page-footer"><span><span class="small-dot"></span> Intent → specialists → verified artifact</span><span>Authority stays with people.</span></footer>
+        </section>
+      </main>
+    </div>
+  </div>
+  <dialog id="create-dialog"><form id="create-form"><div class="dialog-heading"><div><div class="eyebrow">START TOGETHER</div><h2>Create a workroom</h2></div><button type="button" class="close-button" data-close aria-label="Close">×</button></div><p class="dialog-copy">You’ll be the owner. Invite teammates once your room is ready.</p><label>Your name<input name="display_name" required maxlength="80" autocomplete="name" placeholder="How teammates know you"></label><label>Workroom name<input name="name" required maxlength="100" placeholder="e.g. Launch readiness"></label><label>Shared goal<textarea name="brief" required maxlength="4000" rows="4" placeholder="What should the team produce?"></textarea></label><div class="form-error" role="alert"></div><button class="button primary full" type="submit">Create workroom ↗</button></form></dialog>
+  <dialog id="join-dialog"><form id="join-form"><div class="dialog-heading"><div><div class="eyebrow">PICK UP THE THREAD</div><h2>Join a workroom</h2></div><button type="button" class="close-button" data-close aria-label="Close">×</button></div><p class="dialog-copy">Use the one-time invite from your workroom owner. No password needed.</p><label>Your name<input name="display_name" required maxlength="80" autocomplete="name" placeholder="Your display name"></label><label>Invite code<input name="invite" required autocomplete="off" spellcheck="false" placeholder="Paste your invite code"></label><div class="form-error" role="alert"></div><button class="button primary full" type="submit">Join workroom ↗</button></form></dialog>
+  <dialog id="intent-dialog"><form id="intent-form"><div class="dialog-heading"><div><div class="eyebrow">UPDATE THE DIRECTION</div><h2>Edit shared intent</h2></div><button type="button" class="close-button" data-close aria-label="Close">×</button></div><p class="dialog-copy">A new revision checks which work can be kept and which work needs to change.</p><label>Shared goal<textarea name="brief" required maxlength="4000" rows="4"></textarea></label><label>Audience<input name="audience" required maxlength="200"></label><label>Refund window · days<input name="refund_days" type="number" min="0" max="365" required></label><div class="form-error" role="alert"></div><button class="button primary full" type="submit">Save new revision ↗</button></form></dialog>
+  <dialog id="invite-dialog"><form id="invite-form"><div class="dialog-heading"><div><div class="eyebrow">BRING SOMEONE IN</div><h2>Invite a teammate</h2></div><button type="button" class="close-button" data-close aria-label="Close">×</button></div><p class="dialog-copy">Invites are one-use and expire. Share the code directly with your teammate.</p><label>Workroom role<select name="role"><option value="editor">Editor · change intent and run work</option><option value="viewer">Viewer · read results and activity</option></select></label><div class="form-error" role="alert"></div><button class="button primary full" type="submit">Generate invite</button><div id="invite-result" hidden><label>One-time invite<input id="invite-code" readonly></label><button type="button" id="copy-invite" class="button full">Copy invite code</button><p class="subtle" id="invite-expiry"></p></div></form></dialog>
+</body>
+</html>

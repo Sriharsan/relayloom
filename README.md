@@ -11,22 +11,51 @@ and manually checking conflicting outputs. Relayloom is being built to retain
 valid work, redo only affected tasks and prevent outdated results from taking
 action. We will measure the effect on completed work, supervision and cost.
 
-**Status: initial public planning scaffold for the Meta Global AI Developer
-Hackathon, Startup track. No executable application or measured savings yet.**
+**Status: runnable local rehearsal for the Meta Global AI Developer Hackathon,
+Startup track. The controller and shared workroom work with synthetic specialist
+outputs. Live Meta inference and measured customer savings are not claimed.**
 
-## The experience we are building
+## Try the workroom
+
+Install Python 3.11 or later, clone this repository, and run from its root:
+
+```sh
+python -m relayloom --port 8800
+```
+
+Open **http://127.0.0.1:8800**. No package installation, API key, Docker,
+payment method or network inference is needed. The tested interpreter is
+Python 3.13.3. This checkout command serves the included `web/` files.
+
+1. Create a workroom with a synthetic goal. You become its owner.
+2. Create an editor or viewer invite. Use a separate browser profile to join;
+   an invite is single-use and expires after 30 minutes.
+3. Run the specialists. Product and Engineering start together; Support waits
+   for both outputs. The workroom shows real server state and events.
+4. Change only the refund window. Completed Product evidence can be retained;
+   Engineering and Support need fresh work. Publication permission resets.
+5. Complete the current work, allow publication, and publish its checked local
+   artifact. Repeating publication creates no second artifact for that revision.
+
+To see stale-output rejection, change the intent while Engineering is still
+running. Its late output is discarded and current-revision work replaces it.
+All records stay in the ignored `data/relayloom.sqlite3` file by default.
+Use synthetic information only. This is a loopback rehearsal, not an internet
+hosting service. Do not expose its port through a public proxy or tunnel.
+
+## The operating contract
 
 1. People share a goal, constraints and explicit permissions in one workroom.
-2. Meta-powered specialists work on independent tasks in parallel; dependent
-   tasks wait without repeatedly calling a model.
+2. Independent specialists work in parallel; dependent tasks wait without
+   repeated worker calls. Current rehearsal outputs are deterministic.
 3. A participant changes a requirement. The plan records a new revision and
    identifies which outputs remain valid.
 4. Affected work is revised. Outdated results cannot authorize a change.
 5. The team sees the outcome, evidence, remaining exceptions and actual usage.
 
-The first demonstration will use synthetic product, engineering and support
-work. That is a testable starting point for continuous work across supported
-business systems, rather than a claim of universal integrations.
+The current demonstration uses synthetic product, engineering and support work.
+It publishes a local artifact only; it does not change an external business
+system. This is a testable foundation for supported continuous operations.
 
 ## Meta models
 
@@ -35,8 +64,28 @@ dependency updates and performing scoped specialist work. Stronger-model
 escalation will be bounded and evaluated. Deterministic controls will enforce
 permissions, budgets, revision validity and final checks.
 
-API access and live integration have not yet been verified. Recorded or simulated
-results will be labelled, and will not be presented as live Meta inference.
+An optional Meta adapter now supports the documented Chat Completions protocol,
+structured specialist output and a durable request-attempt ledger. It is disabled
+by default and offline-tested only. Nothing silently activates inference.
+Rehearsal reports zero model calls. See [the explicit Meta boundary](docs/META.md)
+for its fixed public fixture, limits and unrun live acceptance gate.
+
+## Verify the controller
+
+```sh
+python -m unittest discover -s tests -v
+node --test tests/ui.test.cjs
+```
+
+The tests exercise permission boundaries, two participants, session revocation,
+one-time invites, concurrent specialists, dependency waiting, intent conflicts,
+selective reuse, stale output, malformed evidence, checked publication, restart
+recovery, and real HTTP request boundaries. See [the implementation checkpoint](docs/IMPLEMENTATION.md).
+
+The offline suite currently passes 27 Python and 9 UI state tests. The founder's
+local browser rehearsal also exercised separate owner/editor sessions, shared
+revision changes, selective reuse, current work and owner-only publication.
+These are synthetic rehearsal results, not live Meta or customer outcomes.
 
 ## Read the project
 
@@ -46,9 +95,7 @@ results will be labelled, and will not be presented as live Meta inference.
 - [Three-minute demo plan](docs/DEMO.md)
 - [Official resources](docs/RESOURCES.md)
 - [Security and privacy boundaries](SECURITY.md)
-
-No installation command is provided yet because this commit contains planning
-documents only. A runnable clean-checkout guide will accompany implementation.
+- [Optional Meta adapter and usage boundary](docs/META.md)
 
 ## Broader direction
 
@@ -56,7 +103,7 @@ Shared live work, multi-agent coordination, continuous operations, local
 execution, security, privacy, recovery and cost control belong together. Longer
 term, improvement proposals should be tested against protected acceptance checks
 before promotion. General recursive self-improvement remains research, not a
-capability claimed by this scaffold.
+capability claimed by this local build.
 
 ## Contribution and reuse
 
