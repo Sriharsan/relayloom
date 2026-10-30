@@ -14,6 +14,8 @@ ENDPOINT = "https://api.meta.ai/v1/chat/completions"
 MODELS = {"muse-spark-1.3", "muse-spark-1.2", "muse-spark-1.1"}
 SYNTHETIC_BRIEF = "Draft a fictional refund policy for the Relayloom demo store."
 AUDIENCES = {"Customers", "Members", "Trial customers"}
+REQUIRED_ENVIRONMENT = ("MODEL_API_KEY", "RELAYLOOM_META_ENDPOINT", "RELAYLOOM_META_MODEL",
+                        "RELAYLOOM_META_LEDGER", "RELAYLOOM_SYNTHETIC_ONLY")
 
 
 def synthetic_intent(intent):
@@ -119,7 +121,7 @@ class MetaWorker:
         if model not in MODELS:
             raise ValueError("Select a reviewed Muse Spark Standard model; Contributor mode is not enabled.")
         if not isinstance(api_key, str) or not api_key.strip() or any(c in api_key for c in "\r\n"):
-            raise ValueError("A valid MODEL_API_KEY is required.")
+            raise ValueError("A valid MODEL_API_KEY environment variable is required.")
         if type(max_output_tokens) is not int or not 100 <= max_output_tokens <= 1200:
             raise ValueError("Meta output-token bound must be between 100 and 1200.")
         if type(timeout) not in (int, float) or not 1 <= timeout <= 30:
@@ -130,15 +132,27 @@ class MetaWorker:
         self.ledger = AttemptLedger(ledger_path, self.configuration, max_attempts)
         self.slots = threading.BoundedSemaphore(2)
 
+    def __repr__(self):
+        # Never expose the credential through logs, tracebacks or debuggers.
+        return f"MetaWorker(model={self.model!r}, endpoint={self.endpoint!r}, api_key=<redacted>)"
+
     @classmethod
-    def from_environment(cls):
-        if os.environ.get("RELAYLOOM_SYNTHETIC_ONLY") != "I_CONFIRM_SYNTHETIC_DATA":
-            raise ValueError("Explicit synthetic-data acknowledgement is required for Meta mode.")
-        return cls(endpoint=os.environ.get("RELAYLOOM_META_ENDPOINT", ""),
-                   model=os.environ.get("RELAYLOOM_META_MODEL", ""),
-                   api_key=os.environ.get("MODEL_API_KEY", ""),
-                   ledger_path=os.environ.get("RELAYLOOM_META_LEDGER", ""),
-                   max_attempts=int(os.environ.get("RELAYLOOM_META_MAX_ATTEMPTS", "6")))
+    def from_environment(cls, environ=None):
+        env = os.environ if environ is None else environ
+        missing = [name for name in REQUIRED_ENVIRONMENT if not str(env.get(name, "")).strip()]
+        if missing:
+            # Name only the variables. Never echo any configured value.
+            raise ValueError("Meta mode is not configured. Set these environment variables: "
+                             + ", ".join(missing) + ". See .env.example. Rehearsal mode needs none of them.")
+        if env.get("RELAYLOOM_SYNTHETIC_ONLY") != "I_CONFIRM_SYNTHETIC_DATA":
+            raise ValueError("Explicit synthetic-data acknowledgement is required for Meta mode (RELAYLOOM_SYNTHETIC_ONLY).")
+        try:
+            max_attempts = int(env.get("RELAYLOOM_META_MAX_ATTEMPTS", "6"))
+        except ValueError:
+            raise ValueError("RELAYLOOM_META_MAX_ATTEMPTS must be an integer from 1 to 20.") from None
+        return cls(endpoint=env["RELAYLOOM_META_ENDPOINT"], model=env["RELAYLOOM_META_MODEL"],
+                   api_key=env["MODEL_API_KEY"], ledger_path=env["RELAYLOOM_META_LEDGER"],
+                   max_attempts=max_attempts)
 
     def validate_intent(self, intent):
         synthetic_intent(intent)
