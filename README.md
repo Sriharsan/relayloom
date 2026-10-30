@@ -2,9 +2,16 @@
 
 ### Change direction. Keep the useful work.
 
-Relayloom is a shared workroom for people and autonomous AI teams. Its goal is
-to let specialists work in parallel, keep everyone aligned when instructions
-change, and verify that the final result matches the current goal.
+Relayloom is a shared workroom where people and AI specialists work on one goal
+in parallel. When someone changes a requirement, it keeps the work that is still
+valid, redoes only what the change touched and checks the final result against
+the current goal.
+
+```sh
+python -m relayloom --port 8800
+```
+
+Then open http://127.0.0.1:8800. Python 3.11 or later, nothing to install.
 
 Today, changing one requirement can mean repeating context, restarting agents
 and manually checking conflicting outputs. Relayloom is being built to retain
