@@ -21,5 +21,6 @@ try {
   Write-Host "Relayloom rehearsal is running at $url. Press Ctrl+C to stop."
   Wait-Process -Id $server.Id
 } finally {
-  if (-not $server.HasExited) { Stop-Process -Id $server.Id -Force }
+  # Stop the launcher and its Python child together.
+  if (-not $server.HasExited) { & taskkill.exe /PID $server.Id /T /F | Out-Null }
 }
