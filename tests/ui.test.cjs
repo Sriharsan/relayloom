@@ -240,3 +240,63 @@ test('earlier artifact and non-boolean checks never become a current passing pro
   assert.deepEqual(checks.children.map(child => child.children[1].textContent), ['Needs attention', 'Needs attention', 'Needs attention', 'Passed']);
   assert.match(app.get('artifact-status').textContent, /Earlier/);
 });
+
+function revisionTwo(extra = {}) {
+  const current = state({
+    tasks: [
+      { role: 'product', label: 'Product', state: 'REUSED', origin_revision: 1, summary: 'Kept product draft' },
+      { role: 'engineering', label: 'Engineering', state: 'COMPLETE', origin_revision: 2, summary: 'New engineering draft' },
+      { role: 'support', label: 'Support', state: 'WAITING', origin_revision: null, summary: null }],
+    events: [
+      { seq: 1, type: 'started', message: 'Engineering started on revision 1.', created_at: 1700000000 },
+      { seq: 2, type: 'intent_changed', message: 'Ada advanced intent to revision 2; publish permission reset.', created_at: 1700000001 },
+      { seq: 3, type: 'stale_discarded', message: 'Late Engineering result from revision 1 was discarded.', created_at: 1700000002 }],
+    autonomy: { policy_digest: 'x', runs_this_revision: 1, operations: {
+      specialist_run: { level: 'execute_within_limits', limits: { max_runs_per_revision: 9 } },
+      publish_artifact: { level: 'execute_with_approval', limits: { artifacts_per_revision: 1, scope: 'local-artifact-only' } } } },
+    approvals: [], outcome: null, ...extra });
+  current.room.revision = 2;
+  return current;
+}
+
+test('the loom shows kept, redone and refused work from real state', async () => {
+  const app = harness(); app.routes.set('state', () => reply(revisionTwo())); await app.settled();
+  const loom = app.get('loom');
+  assert.equal(loom.attributes['data-cols'], '2');
+  const rows = loom.children;
+  assert.equal(rows.length, 5);
+  assert.match(rows[1].textContent, /changed by Ada/);
+  const product = rows[2].children.slice(1).map(cell => cell.attributes['data-state']);
+  assert.deepEqual(product, ['kept', 'kept']);
+  assert.equal(rows[2].children[2].attributes['data-thread'], 'carried');
+  assert.deepEqual(rows[3].children.slice(1).map(cell => cell.attributes['data-state']), ['discarded', 'redone']);
+  assert.equal(rows[4].children[2].attributes['data-state'], 'todo');
+  assert.match(app.get('loom-summary').textContent, /1outputs? kept.*2tasks redone.*1late result refused.*0model calls/);
+});
+
+test('no approval record means no publication decision and no verified outcome', async () => {
+  const current = revisionTwo(); current.room.permission.publish = false;
+  const app = harness(); app.routes.set('state', () => reply(current)); await app.settled();
+  const text = app.get('approval-record').textContent;
+  assert.match(text, /No approval recorded\. Publication cannot run\./);
+  assert.ok(!text.includes('Verified outcome'));
+  assert.match(app.get('autonomy').textContent, /With approval/);
+  assert.match(app.get('autonomy').textContent, /1 of 9 runs used/);
+});
+
+test('verified outcome appears only for a VERIFIED check of the current revision; UNKNOWN stays unknown', async () => {
+  const artifact = { revision: 2, checks: { current_revision: true, draft_only_scope: true, inputs_and_dependencies: true, owner_permission: true },
+    payload: { intent: { audience: 'Customers', refund_days: 14 }, scope: 'local-artifact-only' } };
+  const approvals = [{ revision: 2, operation: 'publish_artifact', approver: 'Ada', approved_at: 1700000000, limits: {}, active: true }];
+  const verified = revisionTwo({ artifact, approvals, outcome: { revision: 2, status: 'VERIFIED', detail: 'Matches.' } });
+  let app = harness(); app.routes.set('state', () => reply(verified)); await app.settled();
+  assert.match(app.get('approval-record').textContent, /Approved by Ada/);
+  assert.match(app.get('approval-record').textContent, /Verified outcome/);
+  const unknown = revisionTwo({ artifact, approvals, outcome: { revision: 2, status: 'UNKNOWN', detail: 'Not yet checked.' } });
+  app = harness(); app.routes.set('state', () => reply(unknown)); await app.settled();
+  assert.match(app.get('approval-record').textContent, /Outcome UNKNOWN/);
+  assert.ok(!app.get('approval-record').textContent.includes('Verified outcome'));
+  const earlier = revisionTwo({ artifact: { ...artifact, revision: 1 }, approvals, outcome: { revision: 1, status: 'VERIFIED', detail: 'Old.' } });
+  app = harness(); app.routes.set('state', () => reply(earlier)); await app.settled();
+  assert.ok(!app.get('approval-record').textContent.includes('Verified outcome'));
+});

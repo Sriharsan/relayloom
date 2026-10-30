@@ -6,7 +6,7 @@
   let intentRevision = null, refreshTimer = null;
   let sessionEpoch = 0;
   const labels = { product: 'Product', engineering: 'Engineering', support: 'Support' };
-  const icons = { product: '◇', engineering: '⌘', support: '↗' };
+  const icons = { product: 'P', engineering: 'E', support: 'S' };
   const subtitles = { product: 'Direction & audience', engineering: 'Implementation & constraints', support: 'Connected customer response' };
   const node = (tag, className, text) => {
     const element = document.createElement(tag);
@@ -65,12 +65,12 @@
     sessionEpoch += 1;
     disconnect();
     snapshot = null; csrf = ''; busy = false; intentRevision = null; selectedRole = 'product';
-    for (const id of ['tasks', 'task-detail', 'artifact-content', 'events', 'usage']) $(`#${id}`).replaceChildren();
+    for (const id of ['tasks', 'task-detail', 'artifact-content', 'events', 'usage', 'loom', 'loom-summary', 'autonomy', 'approval-record']) $(`#${id}`).replaceChildren();
     for (const id of ['room-name', 'authority', 'intent-brief', 'intent-audience', 'intent-refund', 'invite-expiry']) $(`#${id}`).textContent = '';
     $('#revision').textContent = 'REV —'; $('#event-count').textContent = '0';
     $('#artifact-status').textContent = 'Awaiting publication';
     $('#mode-title').textContent = 'Local rehearsal';
-    $('#mode-description').textContent = 'Synthetic specialist outputs · no live model inference';
+    $('#mode-description').textContent = 'Invented records · deterministic outputs · no model calls';
     $('#invite-code').value = ''; $('#invite-result').hidden = true;
     $('#copy-invite').textContent = 'Copy invite code';
     for (const id of ['edit-intent', 'invite-button', 'run-button', 'publish-button', 'publish-permission']) {
@@ -143,7 +143,7 @@
     $('#authority').textContent = state.member.role.toUpperCase(); $('#revision').textContent = `REV ${state.room.revision}`;
     const rehearsal = state.room.mode !== 'meta';
     $('#mode-title').textContent = rehearsal ? 'Local rehearsal' : 'Meta adapter configured';
-    $('#mode-description').textContent = rehearsal ? 'Synthetic specialist outputs · no live model inference' : 'Synthetic scope · request attempts and reported usage below';
+    $('#mode-description').textContent = rehearsal ? 'Invented records · deterministic outputs · no model calls' : 'Meta requests on the fixed public fixture · attempts and reported usage below';
     $('#intent-brief').textContent = state.room.intent.brief;
     $('#intent-audience').textContent = state.room.intent.audience || 'Not specified';
     $('#intent-refund').textContent = `${state.room.intent.refund_days ?? '—'} days`;
@@ -154,8 +154,8 @@
     for (const id of ['result-tab', 'activity-tab']) $(`#${id}`).disabled = false;
     $('#run-button').hidden = !canEdit();
     $('#run-button').disabled = busy || state.tasks.some(task => task.state === 'RUNNING');
-    $('#run-button').textContent = state.tasks.some(task => task.state === 'RUNNING') ? 'Working…' : '▶ Run specialists';
-    renderTasks(); renderDetail(); renderArtifact(); renderEvents();
+    $('#run-button').textContent = state.tasks.some(task => task.state === 'RUNNING') ? 'Working…' : 'Run specialists';
+    renderTasks(); renderDetail(); renderArtifact(); renderEvents(); renderLoom(); renderAutonomy();
     $('#usage').replaceChildren();
     for (const [key, label] of [['model_calls', rehearsal ? 'model calls' : 'request attempts'], ['outputs_reused', 'outputs reused'], ['artifacts_published', 'artifacts published']]) {
       const item = node('span'); item.append(node('strong', '', String(state.metrics?.[key] ?? 0)), document.createTextNode(label)); $('#usage').append(item);
@@ -174,7 +174,8 @@
       top.append(node('span', 'task-icon', icons[task.role] || '◇'), title, statusBadge(task.state));
       card.append(top, node('p', 'task-reason', task.reason || stateReason(task.state)));
       const bottom = node('div', 'task-bottom');
-      bottom.append(node('span', '', task.origin_revision != null ? `Source · revision ${task.origin_revision}` : 'No output yet'), node('span', '', 'View evidence ↗'));
+      const source = task.origin_revision == null ? 'No output yet' : task.state === 'REUSED' ? `Kept from revision ${task.origin_revision}` : `Written on revision ${task.origin_revision}`;
+      bottom.append(node('span', '', source), node('span', '', 'Evidence'));
       card.append(bottom);
       card.addEventListener('click', () => { if (!isCurrent(epoch) || !snapshot) return; selectedRole = task.role; renderTasks(); renderDetail(); setTab('result'); });
       container.append(card);
@@ -236,8 +237,137 @@
     $('#publish-button').hidden = !isOwner();
     const ready = snapshot.tasks.length > 0 && snapshot.tasks.every(task => ['COMPLETE', 'REUSED'].includes(task.state));
     $('#publish-button').disabled = busy || !snapshot.room.permission?.publish || !ready || !!current;
-    $('#publish-button').textContent = current ? '✓ Artifact published' : 'Publish verified artifact ↗';
-    if (!isOwner() && !artifact) content.append(node('p', 'subtle', 'The workroom owner can grant permission and publish the artifact.'));
+    $('#publish-button').textContent = current ? 'Artifact published' : 'Publish checked artifact';
+    if (!isOwner() && !artifact) content.append(node('p', 'subtle', 'The workroom owner can approve and publish the artifact.'));
+    renderApproval(current, ready);
+  }
+  const clock = seconds => {
+    const date = new Date(Number(seconds) * 1000);
+    return Number.isNaN(date.getTime()) ? 'unknown time' : date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  };
+  function renderApproval(current, ready) {
+    const box = $('#approval-record'); box.replaceChildren();
+    if (!snapshot) return;
+    const revision = snapshot.room.revision;
+    const active = (snapshot.approvals || []).find(item => item.active && item.revision === revision && item.operation === 'publish_artifact');
+    const limits = snapshot.autonomy?.operations?.publish_artifact?.limits || {};
+    const limit = `${limits.artifacts_per_revision ?? 1} artifact, ${String(limits.scope || 'local-artifact-only').replaceAll('-', ' ')}`;
+    const step = (label, state, text) => {
+      const item = node('li', `approval-step ${state}`);
+      item.append(node('span', 'approval-label', label), node('span', 'approval-text', text));
+      return item;
+    };
+    const steps = node('ol', 'approval-steps');
+    steps.append(step('Request', ready ? 'done' : 'pending', ready ? `Publish revision ${revision}. Limit: ${limit}.` : `Publishing revision ${revision} can be requested once current work completes.`));
+    steps.append(step('Decision', active ? 'done' : 'pending', active ? `Approved by ${active.approver} at ${clock(active.approved_at)} for revision ${active.revision}.` : 'No approval recorded. Publication cannot run.'));
+    const outcome = snapshot.outcome;
+    let proof;
+    if (!current || !outcome || outcome.revision !== revision) proof = step('Outcome', 'pending', 'Checked after publication against the approval record.');
+    else if (outcome.status === 'VERIFIED') proof = step('Verified outcome', 'done', outcome.detail || 'Matches its approval record.');
+    else if (outcome.status === 'FAILED') proof = step('Outcome check failed', 'failed', outcome.detail || 'The artifact does not match its approval.');
+    else proof = step('Outcome UNKNOWN', 'unknown', `${outcome.detail || 'Not yet reconciled.'} It stays unknown until a read-only check passes.`);
+    steps.append(proof);
+    box.append(node('h4', '', 'Approval and proof'), steps);
+  }
+  const levelNames = { assist: 'Assist', draft: 'Draft', execute_within_limits: 'Within limits', execute_with_approval: 'With approval' };
+  const operationNames = { explain_changes: 'Explain what changed', specialist_draft: 'Write specialist drafts', specialist_run: 'Run ready specialists', meta_request: 'Meta API request', publish_artifact: 'Publish the artifact' };
+  function renderAutonomy() {
+    const box = $('#autonomy'); box.replaceChildren();
+    const operations = snapshot?.autonomy?.operations;
+    if (!operations) { box.append(node('li', 'subtle', 'The autonomy policy could not be read from the server.')); return; }
+    for (const [name, value] of Object.entries(operations)) {
+      if (name === 'meta_request' && snapshot.room.mode !== 'meta') continue;
+      const item = node('li', `autonomy-item ${value.level}`);
+      let limit = 'Explains only. Takes no action.';
+      if (name === 'specialist_run') limit = `${snapshot.autonomy.runs_this_revision ?? 0} of ${value.limits?.max_runs_per_revision} runs used this revision. No automatic retry.`;
+      else if (name === 'publish_artifact') limit = 'Owner approval per revision. One local artifact.';
+      else if (name === 'specialist_draft') limit = 'Draft only. No external effect.';
+      else if (name === 'meta_request') limit = `At most ${value.limits?.max_attempts_ceiling} attempts. No automatic retry.`;
+      item.append(node('span', 'autonomy-level', levelNames[value.level] || value.level), node('strong', '', operationNames[name] || name), node('small', '', limit));
+      box.append(item);
+    }
+  }
+  const outcomePatterns = [
+    [/^(Product|Engineering|Support) started on revision (\d+)\.$/, 'started'],
+    [/^(Product|Engineering|Support) completed on revision (\d+)\.$/, 'done'],
+    [/^(Product|Engineering|Support) failed validation on revision (\d+)\.$/, 'failed'],
+    [/^Late (Product|Engineering|Support) result from revision (\d+) was discarded\.$/, 'discarded']
+  ];
+  function history() {
+    const outcomes = new Map(), changes = new Map();
+    for (const event of snapshot.events || []) {
+      const message = String(event.message || '');
+      for (const [pattern, kind] of outcomePatterns) {
+        const match = pattern.exec(message);
+        if (!match) continue;
+        const key = `${match[1].toLowerCase()}:${match[2]}`;
+        if (kind !== 'started' || !outcomes.has(key)) outcomes.set(key, kind);
+      }
+      const change = /^(.+) advanced intent to revision (\d+);/.exec(message);
+      if (event.type === 'intent_changed' && change) changes.set(Number(change[2]), change[1]);
+    }
+    return { outcomes, changes };
+  }
+  function loomCell(state, text, current, thread, who) {
+    const cell = node('div', `loom-cell${current ? ' current' : ''}`);
+    cell.setAttribute('data-state', state);
+    cell.setAttribute('data-thread', thread);
+    const label = node('small', '', text);
+    if (who) label.append(node('span', 'who', ` by ${who}`));
+    cell.append(node('i', `knot ${state}`), label);
+    return cell;
+  }
+  function renderLoom() {
+    const loom = $('#loom'), summary = $('#loom-summary');
+    loom.replaceChildren(); summary.replaceChildren();
+    if (!snapshot) return;
+    const revision = snapshot.room.revision, first = Math.max(1, revision - 3);
+    const columns = [];
+    for (let r = first; r <= revision; r++) columns.push(r);
+    loom.setAttribute('data-cols', String(columns.length));
+    const { outcomes, changes } = history();
+    const header = node('div', 'loom-row header');
+    header.append(node('div', 'loom-label'));
+    for (const r of columns) header.append(node('div', `loom-cell${r === revision ? ' current' : ''}`, r === revision ? `Rev ${r} now` : `Rev ${r}`));
+    loom.append(header);
+    const people = node('div', 'loom-row intent'), label = node('div', 'loom-label');
+    label.append(node('strong', '', 'People'), node('span', '', 'Shared intent'));
+    people.append(label);
+    for (const r of columns) people.append(loomCell(r === 1 ? 'intent' : 'intent changed', r === 1 ? 'set' : 'changed', r === revision, 'line', r > 1 ? changes.get(r) : null));
+    loom.append(people);
+    let kept = 0, redo = 0;
+    for (const task of snapshot.tasks) {
+      const row = node('div', 'loom-row'), title = node('div', 'loom-label');
+      title.append(node('strong', '', task.label || labels[task.role] || task.role), node('span', '', subtitles[task.role] || 'Specialist'));
+      row.append(title);
+      const carriedFrom = task.state === 'REUSED' ? task.origin_revision : null;
+      for (const r of columns) {
+        const carried = carriedFrom != null && r >= carriedFrom;
+        if (r === revision) {
+          const map = { REUSED: ['kept', `kept from rev ${task.origin_revision}`], RUNNING: ['running', 'working'], FAILED: ['failed', 'failed'], SUPERSEDED: ['discarded', 'superseded'] };
+          let [state, text] = map[task.state] || ['waiting', String(task.state).toLowerCase()];
+          if (task.state === 'COMPLETE') [state, text] = revision > 1 ? ['redone', 'redone'] : ['done', 'done'];
+          if (task.state === 'WAITING') [state, text] = revision > 1 ? ['todo', 'to redo'] : ['waiting', task.role === 'support' ? 'waits for inputs' : 'ready'];
+          row.append(loomCell(state, text, true, carried ? 'carried' : 'line'));
+        } else {
+          const outcome = outcomes.get(`${task.role}:${r}`);
+          const state = outcome === 'started' ? 'discarded' : outcome || (carried ? 'kept' : 'empty');
+          const text = { done: 'done', failed: 'failed', discarded: outcome === 'started' ? 'superseded' : 'late, refused', kept: 'kept', empty: 'not run' }[state];
+          row.append(loomCell(state, text, false, carried ? 'carried' : outcome ? 'line' : 'none'));
+        }
+      }
+      if (task.state === 'REUSED') kept += 1; else if (revision > 1) redo += 1;
+      loom.append(row);
+    }
+    const refused = (snapshot.events || []).filter(event => event.type === 'stale_discarded').length;
+    const chip = (value, text, lead) => {
+      const item = node('span', lead ? 'lead' : '');
+      item.append(node('strong', '', String(value)), document.createTextNode(text));
+      return item;
+    };
+    if (revision === 1) summary.append(chip(1, 'revision: all work is new', true));
+    else summary.append(chip(kept, kept === 1 ? 'output kept' : 'outputs kept', true), chip(redo, redo === 1 ? 'task redone' : 'tasks redone'));
+    summary.append(chip(refused, refused === 1 ? 'late result refused' : 'late results refused'), chip(snapshot.metrics?.model_calls ?? 0, snapshot.room.mode === 'meta' ? 'request attempts' : 'model calls'));
   }
   function renderEvents() {
     if (!snapshot) return;
