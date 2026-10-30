@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "about": "Autonomy policy. Read once from this file when the server starts. Workroom requests, intent text and specialist or model output cannot change it.",
+  "levels": {
+    "assist": "Explains or suggests. Takes no action.",
+    "draft": "Writes draft evidence inside the workroom only. No external effect.",
+    "execute_within_limits": "Runs on its own inside fixed limits. Stops and escalates to people at a limit or on an uncertain result.",
+    "execute_with_approval": "Runs only after a recorded approval: who, which exact action, when and the limit approved."
+  },
+  "operations": {
+    "explain_changes": {
+      "level": "assist",
+      "description": "Show which work is kept, redone or refused after an intent change."
+    },
+    "specialist_draft": {
+      "level": "draft",
+      "description": "Product, Engineering and Support write draft evidence for the current revision.",
+      "limits": {"scope": "draft-only"}
+    },
+    "specialist_run": {
+      "level": "execute_within_limits",
+      "description": "Start ready specialists for the current revision. Failed work is retried only by an explicit person request.",
+      "limits": {"max_runs_per_revision": 9, "automatic_retries": 0}
+    },
+    "meta_request": {
+      "level": "execute_within_limits",
+      "description": "Send one scoped request to the Meta API (disabled unless explicitly configured).",
+      "limits": {"max_attempts_ceiling": 20, "automatic_retries": 0}
+    },
+    "publish_artifact": {
+      "level": "execute_with_approval",
+      "description": "Publish the checked local artifact for one revision.",
+      "approver_role": "owner",
+      "limits": {"artifacts_per_revision": 1, "scope": "local-artifact-only"}
+    }
+  }
+}

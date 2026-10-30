@@ -14,6 +14,9 @@ import time
 ROLES = ("product", "engineering", "support")
 LABELS = {"product": "Product", "engineering": "Engineering", "support": "Support"}
 CONFIG = "rehearsal-v1:scope=draft-only:no-tools"
+POLICY_PATH = Path(__file__).with_name("policy.json")
+REQUIRED_LEVELS = {"explain_changes": "assist", "specialist_draft": "draft", "specialist_run": "execute_within_limits",
+                   "meta_request": "execute_within_limits", "publish_artifact": "execute_with_approval"}
 
 
 class Rejected(Exception):
@@ -53,6 +56,28 @@ def scoped_inputs(role, intent, dependencies=None):
     return {"intent": intent, "dependencies": dependencies}
 
 
+def load_policy(path=POLICY_PATH):
+    """Load the autonomy policy from a file. Nothing a request carries can change it."""
+    try:
+        policy = json.loads(Path(path).read_text(encoding="utf-8"))
+        operations = policy["operations"]
+        for name, level in REQUIRED_LEVELS.items():
+            if operations[name]["level"] != level:
+                raise ValueError(f"{name} must be declared as {level}.")
+        runs = operations["specialist_run"]["limits"]["max_runs_per_revision"]
+        ceiling = operations["meta_request"]["limits"]["max_attempts_ceiling"]
+        publish = operations["publish_artifact"]
+        if type(runs) is not int or not 3 <= runs <= 30 or type(ceiling) is not int or not 1 <= ceiling <= 20:
+            raise ValueError("Run and attempt limits are outside their reviewed bounds.")
+        if publish["approver_role"] != "owner" or publish["limits"] != {"artifacts_per_revision": 1, "scope": "local-artifact-only"}:
+            raise ValueError("Publication must need owner approval for one local artifact per revision.")
+        if any(operations[name]["limits"]["automatic_retries"] != 0 for name in ("specialist_run", "meta_request")):
+            raise ValueError("Automatic retries are not allowed.")
+    except (OSError, KeyError, TypeError, ValueError) as error:
+        raise ValueError(f"Autonomy policy file is invalid: {error}") from None
+    return json.loads(packed(policy))
+
+
 def task_input(role, intent, dependencies=None, config=CONFIG):
     # The complete configuration and draft-only authority are part of the key.
     return digest({"role": role, "inputs": scoped_inputs(role, intent, dependencies), "config": config})
@@ -88,7 +113,9 @@ def validate_output(role, result, intent, dependencies):
 
 
 class Controller:
-    def __init__(self, path, worker=rehearsal_worker):
+    def __init__(self, path, worker=rehearsal_worker, policy_path=POLICY_PATH):
+        self.policy = load_policy(policy_path)
+        self.policy_digest = digest(self.policy)
         self.path = Path(path).resolve()
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.worker = worker
@@ -118,6 +145,13 @@ class Controller:
                 CREATE TABLE IF NOT EXISTS artifacts(room TEXT NOT NULL,revision INTEGER NOT NULL,payload TEXT NOT NULL,
                   checks TEXT NOT NULL,PRIMARY KEY(room,revision));
                 CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY,value TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS approvals(id TEXT PRIMARY KEY,room TEXT NOT NULL,revision INTEGER NOT NULL,
+                  operation TEXT NOT NULL,approver TEXT NOT NULL,approver_name TEXT NOT NULL,created REAL NOT NULL,
+                  limits TEXT NOT NULL,intent_hash TEXT NOT NULL,active INTEGER NOT NULL);
+                CREATE TABLE IF NOT EXISTS outcomes(room TEXT NOT NULL,revision INTEGER NOT NULL,operation TEXT NOT NULL,
+                  status TEXT NOT NULL,detail TEXT NOT NULL,checked REAL NOT NULL,PRIMARY KEY(room,revision,operation));
+                CREATE TABLE IF NOT EXISTS runs(room TEXT NOT NULL,revision INTEGER NOT NULL,count INTEGER NOT NULL,
+                  PRIMARY KEY(room,revision));
             """)
             policy = packed({"mode": self.mode, "configuration": self.configuration})
             saved = db.execute("SELECT value FROM settings WHERE key='worker'").fetchone()
@@ -238,10 +272,18 @@ class Controller:
                 "tasks": [{"role": role, "label": LABELS[role], "state": task_map[role]["state"], "reason": task_map[role]["reason"], "origin_revision": task_map[role]["origin"], "summary": json.loads(task_map[role]["output"])["summary"] if task_map[role]["output"] else None} for role in ROLES],
                 "events": [{"seq": row["seq"], "type": row["type"], "message": row["message"], "created_at": row["created"]} for row in reversed(db.execute("SELECT * FROM events WHERE room=? ORDER BY seq DESC LIMIT 100", (room["id"],)).fetchall())],
                 "artifact": {"revision": artifact["revision"], "checks": json.loads(artifact["checks"]), "payload": json.loads(artifact["payload"])} if artifact else None,
+                "outcome": self.outcome_view(db, room["id"], artifact["revision"]) if artifact else None,
+                "approvals": [{"revision": row["revision"], "operation": row["operation"], "approver": row["approver_name"], "approved_at": row["created"],
+                               "limits": json.loads(row["limits"]), "active": bool(row["active"]) and row["revision"] == room["revision"]}
+                              for row in db.execute("SELECT * FROM approvals WHERE room=? ORDER BY created DESC LIMIT 10", (room["id"],))],
+                "autonomy": {"policy_digest": self.policy_digest,
+                             "operations": {name: {"level": value["level"], "limits": value.get("limits", {})} for name, value in self.policy["operations"].items()},
+                             "runs_this_revision": self.runs_used(db, room["id"], room["revision"])},
                 "metrics": {**(self.worker.metrics(room["id"]) if hasattr(self.worker, "metrics") else {"model_calls": 0}), "outputs_reused": db.execute("SELECT count(*) FROM tasks WHERE room=? AND state='REUSED'", (room["id"],)).fetchone()[0], "artifacts_published": db.execute("SELECT count(*) FROM artifacts WHERE room=?", (room["id"],)).fetchone()[0]}}
 
     def mutate(self, token, csrf, action, body):
-        launch = None
+        launch = reconcile = None
+        replayed = False
         with self.db() as db:
             member = self.authenticate(db, token, csrf if csrf is not None else "")
             room_id = member["room"]
@@ -277,16 +319,29 @@ class Controller:
                 if type(body.get("publish")) is not bool:
                     raise Rejected("Publication permission must be true or false.")
                 db.execute("UPDATE rooms SET publish=? WHERE id=?", (int(body["publish"]), room_id))
+                db.execute("UPDATE approvals SET active=0 WHERE room=? AND operation='publish_artifact' AND active=1", (room_id,))
+                if body["publish"]:
+                    # The recorded approval: who, which exact action, when, and the limit approved.
+                    db.execute("INSERT INTO approvals VALUES(?,?,?,?,?,?,?,?,?,1)", (
+                        secrets.token_hex(8), room_id, revision, "publish_artifact", member["id"], member["name"], time.time(),
+                        packed(self.policy["operations"]["publish_artifact"]["limits"]), digest(json.loads(room["intent"]))))
                 self.event(db, room_id, "permission", f"{member['name']} allowed publication for this revision." if body["publish"] else f"{member['name']} revoked publication permission.")
             elif action == "run":
+                limit = self.policy["operations"]["specialist_run"]["limits"]["max_runs_per_revision"]
+                if self.runs_used(db, room_id, revision) >= limit:
+                    raise Rejected(f"This revision reached its limit of {limit} specialist runs. Change the intent or review the failures.", 429)
                 db.execute("UPDATE tasks SET state='WAITING',reason='Explicitly retried after failure.' WHERE room=? AND revision=? AND state='FAILED'", (room_id, revision))
                 launch = room_id
             elif action == "publish":
-                if not room["publish"]:
-                    raise Rejected("The owner must allow publication for this revision.", 403)
+                approval = db.execute("SELECT * FROM approvals WHERE room=? AND revision=? AND operation='publish_artifact' AND active=1", (room_id, revision)).fetchone()
+                if not room["publish"] or approval is None or approval["intent_hash"] != digest(json.loads(room["intent"])):
+                    raise Rejected("The owner must allow publication for this revision. No approval record, no publication.", 403)
                 previous = db.execute("SELECT * FROM artifacts WHERE room=? AND revision=?", (room_id, revision)).fetchone()
+                reconcile = (room_id, revision)
                 if previous:
-                    return {"ok": True, "replayed": True}
+                    # Never publish twice. An unconfirmed outcome is reconciled by reading, not by acting again.
+                    replayed = True
+            if action == "publish" and not replayed:
                 tasks = {row["role"]: row for row in db.execute("SELECT * FROM tasks WHERE room=? AND revision=?", (room_id, revision))}
                 if any(tasks[role]["state"] not in ("COMPLETE", "REUSED") for role in ROLES):
                     raise Rejected("All current specialists must complete before publication.", 409)
@@ -297,15 +352,70 @@ class Controller:
                     if tasks[role]["input_hash"] != task_input(role, intent, dependencies, self.configuration):
                         raise Rejected("Output provenance does not match current intent.", 409)
                     validate_output(role, outputs[role], intent, dependencies)
-                payload = {"intent": intent, "specialists": outputs, "scope": "local-artifact-only", "mode": self.mode}
+                payload = {"intent": intent, "specialists": outputs, "scope": "local-artifact-only", "mode": self.mode,
+                           "approval": {"id": approval["id"], "operation": "publish_artifact", "approver": approval["approver_name"],
+                                        "approved_at": approval["created"], "revision": revision, "limits": json.loads(approval["limits"])}}
                 checks = {"current_revision": True, "inputs_and_dependencies": True, "owner_permission": True, "draft_only_scope": True}
                 db.execute("INSERT INTO artifacts VALUES(?,?,?,?)", (room_id, revision, packed(payload), packed(checks)))
-                self.event(db, room_id, "published", f"{member['name']} published a verified local artifact for revision {revision}.")
-            else:
+                self.event(db, room_id, "published", f"{member['name']} published a checked local artifact for revision {revision}.")
+            elif action not in ("intent", "permission", "run", "publish"):
                 raise Rejected("Unknown action.", 404)
         if launch:
             self.start(launch)
+        if reconcile:
+            outcome = self.verify_publication(*reconcile)
+            return {"ok": True, "replayed": True, "outcome": outcome} if replayed else {"ok": True, "outcome": outcome}
         return {"ok": True}
+
+    @staticmethod
+    def runs_used(db, room, revision):
+        row = db.execute("SELECT count FROM runs WHERE room=? AND revision=?", (room, revision)).fetchone()
+        return row[0] if row else 0
+
+    @staticmethod
+    def outcome_view(db, room, revision):
+        row = db.execute("SELECT * FROM outcomes WHERE room=? AND revision=? AND operation='publish_artifact'", (room, revision)).fetchone()
+        if row is None:
+            return {"revision": revision, "status": "UNKNOWN", "detail": "Not yet checked against its approval record.", "checked_at": None}
+        return {"revision": revision, "status": row["status"], "detail": row["detail"], "checked_at": row["checked"]}
+
+    def verify_publication(self, room, revision):
+        """Read the stored artifact back and compare it with its approval record.
+
+        VERIFIED only when every comparison passes. If the check itself cannot
+        complete, the outcome stays UNKNOWN. Nothing is published again here.
+        """
+        try:
+            with self.db() as db:
+                artifact = db.execute("SELECT * FROM artifacts WHERE room=? AND revision=?", (room, revision)).fetchone()
+                payload = json.loads(artifact["payload"])
+                record = payload.get("approval") or {}
+                approval = db.execute("SELECT * FROM approvals WHERE id=? AND room=?", (record.get("id"), room)).fetchone()
+                tasks = {row["role"]: row for row in db.execute("SELECT * FROM tasks WHERE room=? AND revision=?", (room, revision))}
+                problems = []
+                if approval is None:
+                    problems.append("no approval record")
+                else:
+                    if approval["revision"] != revision or approval["operation"] != "publish_artifact":
+                        problems.append("approval is for a different action")
+                    if approval["intent_hash"] != digest(payload["intent"]):
+                        problems.append("approved intent differs from published intent")
+                    if json.loads(approval["limits"]).get("scope") != payload.get("scope"):
+                        problems.append("scope exceeds the approved limit")
+                if db.execute("SELECT count(*) FROM artifacts WHERE room=? AND revision=?", (room, revision)).fetchone()[0] != 1:
+                    problems.append("artifact count exceeds the approved limit")
+                if any(role not in tasks or not tasks[role]["output"] or json.loads(tasks[role]["output"]) != payload["specialists"].get(role) for role in ROLES):
+                    problems.append("published outputs differ from the recorded specialist work")
+                status = "FAILED" if problems else "VERIFIED"
+                detail = "; ".join(problems) if problems else "Stored artifact matches its approval record, approved limit, intent and specialist outputs."
+                previous = db.execute("SELECT status FROM outcomes WHERE room=? AND revision=? AND operation='publish_artifact'", (room, revision)).fetchone()
+                db.execute("INSERT OR REPLACE INTO outcomes VALUES(?,?,?,?,?,?)", (room, revision, "publish_artifact", status, detail, time.time()))
+                if previous is None or previous[0] != status:
+                    self.event(db, room, "outcome_checked", f"Publication outcome for revision {revision}: {status}.")
+                return {"status": status, "detail": detail}
+        except Exception:
+            # Uncertain stays UNKNOWN until a later read-only reconciliation succeeds.
+            return {"status": "UNKNOWN", "detail": "The outcome check could not complete. Nothing was published again."}
 
     def start(self, room):
         with self.lock:
@@ -335,6 +445,13 @@ class Controller:
                             if not all(tasks[key]["state"] in ("COMPLETE", "REUSED") for key in ROLES[:2]):
                                 continue
                             dependencies = {key: json.loads(tasks[key]["output"]) for key in ROLES[:2]}
+                        limit = self.policy["operations"]["specialist_run"]["limits"]["max_runs_per_revision"]
+                        if self.runs_used(db, room, revision) >= limit:
+                            db.execute("UPDATE tasks SET state='FAILED',reason=? WHERE room=? AND revision=? AND role=?",
+                                       (f"Run limit of {limit} reached for this revision. Escalated to people; nothing was retried.", room, revision, role))
+                            self.event(db, room, "escalated", f"{LABELS[role]} was not started: revision {revision} reached its run limit of {limit}.")
+                            continue
+                        db.execute("INSERT INTO runs VALUES(?,?,1) ON CONFLICT(room,revision) DO UPDATE SET count=count+1", (room, revision))
                         key = task_input(role, intent, dependencies, self.configuration)
                         db.execute("UPDATE tasks SET state='RUNNING',input_hash=?,reason='Working with current inputs.' WHERE room=? AND revision=? AND role=?", (key, room, revision, role))
                         self.event(db, room, "started", f"{LABELS[role]} started on revision {revision}.")

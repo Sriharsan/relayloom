@@ -8,7 +8,7 @@ import threading
 import time
 from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 
-from .controller import Rejected, digest, packed, scoped_inputs, validate_output
+from .controller import Rejected, digest, load_policy, packed, scoped_inputs, validate_output
 
 ENDPOINT = "https://api.meta.ai/v1/chat/completions"
 MODELS = {"muse-spark-1.3", "muse-spark-1.2", "muse-spark-1.1"}
@@ -48,8 +48,10 @@ class AttemptLedger:
         path = Path(path)
         if not path.is_absolute():
             raise ValueError("Meta ledger must be an explicit absolute path.")
-        if type(max_attempts) is not int or not 1 <= max_attempts <= 20:
-            raise ValueError("Meta attempt cap must be between 1 and 20.")
+        # The ceiling comes from the autonomy policy file, never from a request or prompt.
+        ceiling = load_policy()["operations"]["meta_request"]["limits"]["max_attempts_ceiling"]
+        if type(max_attempts) is not int or not 1 <= max_attempts <= ceiling:
+            raise ValueError(f"Meta attempt cap must be between 1 and the policy ceiling of {ceiling}.")
         self.path, self.max_attempts = path, max_attempts
         path.parent.mkdir(parents=True, exist_ok=True)
         with self.db() as db:
