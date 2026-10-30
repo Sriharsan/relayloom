@@ -1,120 +1,116 @@
 # Relayloom
 
-### Change direction. Keep the useful work.
-
 Relayloom is a shared workroom where people and AI specialists work on one goal
-in parallel. When someone changes a requirement, it keeps the work that is still
-valid, redoes only what the change touched and checks the final result against
-the current goal.
+in parallel. When someone changes the goal, it keeps the work that is still
+valid, redoes only what the change touched, and publishes only after a recorded
+approval and a check of the outcome.
 
 ```sh
 python -m relayloom --port 8800
 ```
 
 Then open http://127.0.0.1:8800. Python 3.11 or later, nothing to install.
+On Windows `.\demo.ps1` does the same and opens the browser; elsewhere `./demo.sh`.
 
-Today, changing one requirement can mean repeating context, restarting agents
-and manually checking conflicting outputs. Relayloom is being built to retain
-valid work, redo only affected tasks and prevent outdated results from taking
-action. We will measure the effect on completed work, supervision and cost.
+**Status.** Runnable local rehearsal: invented records and deterministic
+specialist outputs written by code, zero model calls. A Meta adapter is built
+and offline tested; **live Meta inference has not been run yet.** MIT license.
 
-**Status: runnable local rehearsal for the Meta Global AI Developer Hackathon,
-Startup track. The controller and shared workroom work with synthetic specialist
-outputs. Live Meta inference and measured customer savings are not claimed.**
+**Hackathon.** Built for the Meta Global AI Developer Hackathon, Startup track.
+Every commit is after the 26 October kickoff; the eligible build start is
+unconfirmed. See [docs/HACKATHON_UPDATES.md](docs/HACKATHON_UPDATES.md).
 
-## Try the workroom
+![The Relayloom workroom at revision 4: Product kept from revision 1, Engineering and Support redone, one late Engineering result refused](docs/screenshot-1440.png)
 
-Install Python 3.11 or later, clone this repository, and run from its root:
+*Rehearsal screenshot, invented records. The loom shows each specialist across
+revisions: kept, redone, or late and refused.*
+
+## Try it
+
+1. **Create a workroom.** You become its owner.
+2. **Run specialists.** Product and Engineering start together; Support waits
+   for both. The workroom shows real server state as it changes.
+3. **Change intent.** Set the refund window to another number. Product's work is
+   kept; Engineering and Support are redone.
+4. **Change it again while Engineering is working.** The late result from the old
+   revision is refused, not used.
+5. **Approve and publish.** Tick "Approve publication of this revision", then
+   publish. The workroom shows the request, the recorded decision and the
+   outcome check. "Verified outcome" appears only when that check passes.
+
+Optional: invite an editor or viewer and join from a second browser profile.
+Invites are single use and expire after 30 minutes.
+
+Check the whole flow without a browser:
 
 ```sh
-python -m relayloom --port 8800
+python scripts/check_demo.py        # or scripts/check_demo.ps1, scripts/check_demo.sh
 ```
 
-Open **http://127.0.0.1:8800**. No package installation, API key, Docker,
-payment method or network inference is needed. The tested interpreter is
-Python 3.13.3. This checkout command serves the included `web/` files.
+It prints PASS or FAIL for: create a workroom, parallel specialists, intent
+change with reuse, stale output rejected, publication needing a recorded
+approval, verified outcome, and intent text unable to change a limit.
 
-1. Create a workroom with a synthetic goal. You become its owner.
-2. Create an editor or viewer invite. Use a separate browser profile to join;
-   an invite is single-use and expires after 30 minutes.
-3. Run the specialists. Product and Engineering start together; Support waits
-   for both outputs. The workroom shows real server state and events.
-4. Change only the refund window. Completed Product evidence can be retained;
-   Engineering and Support need fresh work. Publication permission resets.
-5. Complete the current work, allow publication, and publish its checked local
-   artifact. Repeating publication creates no second artifact for that revision.
+## Autonomy where safe, approval where it matters, proof after every action
 
-To see stale-output rejection, change the intent while Engineering is still
-running. Its late output is discarded and current-revision work replaces it.
-All records stay in the ignored `data/relayloom.sqlite3` file by default.
-Use synthetic information only. This is a loopback rehearsal, not an internet
-hosting service. Do not expose its port through a public proxy or tunnel.
+Each operation has a level in [`relayloom/policy.json`](relayloom/policy.json),
+read once at startup. Requests, intent text and model output cannot change it.
 
-## The operating contract
+| Operation | Level |
+| --- | --- |
+| Explain what changed | Assist |
+| Specialist drafts | Draft |
+| Run ready specialists | Execute within limits: 9 runs per revision, no automatic retry |
+| Meta API request | Execute within limits: durable attempt ledger, no automatic retry |
+| Publish the artifact | Execute with approval: owner, one revision, one local artifact |
 
-1. People share a goal, constraints and explicit permissions in one workroom.
-2. Independent specialists work in parallel; dependent tasks wait without
-   repeated worker calls. Current rehearsal outputs are deterministic.
-3. A participant changes a requirement. The plan records a new revision and
-   identifies which outputs remain valid.
-4. Affected work is revised. Outdated results cannot authorize a change.
-5. The team sees the outcome, evidence, remaining exceptions and actual usage.
-
-The current demonstration uses synthetic product, engineering and support work.
-It publishes a local artifact only; it does not change an external business
-system. This is a testable foundation for supported continuous operations.
+Publication needs a recorded approval (who, which action, when, which limit).
+After publishing, the stored artifact is read back and compared with that
+record: VERIFIED, FAILED, or UNKNOWN until a read-only check succeeds. Details
+and the tests behind each point: [docs/AUTONOMY.md](docs/AUTONOMY.md).
 
 ## Meta models
 
-The proposed default is Muse Spark 1.3 Standard for interpreting goals, proposing
-dependency updates and performing scoped specialist work. Stronger-model
-escalation will be bounded and evaluated. Deterministic controls will enforce
-permissions, budgets, revision validity and final checks.
+The optional adapter in `relayloom/meta.py` speaks the documented Chat
+Completions protocol with structured output, sends only a fixed public fixture,
+and records every attempt in a durable ledger before dispatch. It never starts
+by default and never prints the key. Without the required environment
+variables it refuses to start and names them.
 
-An optional Meta adapter now supports the documented Chat Completions protocol,
-structured specialist output and a durable request-attempt ledger. It is disabled
-by default and offline-tested only. Nothing silently activates inference.
-Rehearsal reports zero model calls. See [the explicit Meta boundary](docs/META.md)
-for its fixed public fixture, limits and unrun live acceptance gate.
+`scripts/check_meta.ps1 --i-have-credit` (or `.sh`) makes one billable request
+and prints PASS or FAIL per case. Without that flag it refuses and sends
+nothing. It has not been run. See [docs/META.md](docs/META.md).
 
-## Verify the controller
+## Tests
 
 ```sh
-python -m unittest discover -s tests -v
-node --test tests/ui.test.cjs
+python -m unittest discover -s tests -v    # 42 tests
+node --test tests/ui.test.cjs              # 12 tests
 ```
 
-The tests exercise permission boundaries, two participants, session revocation,
-one-time invites, concurrent specialists, dependency waiting, intent conflicts,
-selective reuse, stale output, malformed evidence, checked publication, restart
-recovery, and real HTTP request boundaries. See [the implementation checkpoint](docs/IMPLEMENTATION.md).
+They cover roles, sessions, CSRF, one-time invites, parallel work, dependency
+waiting, selective reuse, stale output, malformed evidence, approval records,
+run limits, outcome checks, restart recovery, HTTP boundaries and the Meta
+refusal paths (fake transports only). These are rehearsal results, not live
+Meta or customer outcomes.
 
-The offline suite currently passes 27 Python and 9 UI state tests. The founder's
-local browser rehearsal also exercised separate owner/editor sessions, shared
-revision changes, selective reuse, current work and owner-only publication.
-These are synthetic rehearsal results, not live Meta or customer outcomes.
+## Read more
 
-## Read the project
-
+- [Autonomy and approval](docs/AUTONOMY.md)
+- [Hackathon updates by commit](docs/HACKATHON_UPDATES.md)
+- [Video script](docs/VIDEO_SCRIPT.md)
+- [Submission notes](SUBMISSION_META.md)
 - [Product and architecture](docs/PRODUCT.md)
-- [Build plan and acceptance gates](docs/BUILD_PLAN.md)
-- [Hackathon contribution record](docs/HACKATHON_PROVENANCE.md)
-- [Three-minute demo plan](docs/DEMO.md)
-- [Official resources](docs/RESOURCES.md)
-- [Security and privacy boundaries](SECURITY.md)
-- [Optional Meta adapter and usage boundary](docs/META.md)
+- [Implementation checkpoint](docs/IMPLEMENTATION.md)
+- [Meta adapter boundary](docs/META.md)
+- [Contribution record](docs/HACKATHON_PROVENANCE.md)
+- [Security and privacy](SECURITY.md)
 
-## Broader direction
+Use invented information only. This is a loopback rehearsal, not a hosting
+service; do not expose its port through a proxy or tunnel. Records stay in the
+ignored `data/relayloom.sqlite3` file.
 
-Shared live work, multi-agent coordination, continuous operations, local
-execution, security, privacy, recovery and cost control belong together. Longer
-term, improvement proposals should be tested against protected acceptance checks
-before promotion. General recursive self-improvement remains research, not a
-capability claimed by this local build.
+## License and authorship
 
-## Contribution and reuse
-
-Original project work is authored by Sriharsan B S. Third-party material, if
-introduced, must retain its own license and attribution. Public availability is
-not a claim that every dependency or concept originated here. See the dated
-contribution record for the boundary between prior work and event-built work.
+MIT. Original work by Sriharsan B S. No customers, pilots, revenue or funding
+are claimed.
