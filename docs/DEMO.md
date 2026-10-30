@@ -1,6 +1,8 @@
 # Three-minute demo plan
 
-This is a storyboard, not a recording or a claim that the product is complete.
+This is the original storyboard, not a recording or a claim that the product is complete.
+The current shot list for the rehearsal recording is [VIDEO_SCRIPT.md](VIDEO_SCRIPT.md).
+The Meta rows below need a live run that has not happened.
 
 | Time | Audience sees | Proof |
 | --- | --- | --- |
