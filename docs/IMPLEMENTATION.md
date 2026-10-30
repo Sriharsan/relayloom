@@ -3,6 +3,10 @@
 28 October 2026, Asia/Kolkata. Source is new public event work. Parent release
 review records the final commit; no private implementation or history was copied.
 
+30 October note: this page is the 28 October checkpoint and its counts are from
+that date. Current counts (42 Python, 12 UI tests) and the 30 October additions
+are in README.md, docs/AUTONOMY.md and docs/HACKATHON_UPDATES.md.
+
 ## Working foundation
 
 - Standard-library HTTP delivery and SQLite transactions; no runtime dependency

@@ -32,6 +32,10 @@ Implementation status must be established by commits and tests, not this plan.
 | Shared live interface and outcome proof | New public implementation, 27–28 October | web/*, relayloom/server.py | Browser consumes real state/SSE; synthetic outputs, no Meta inference claimed; final visual acceptance separate |
 | Local rehearsal and public license | New public implementation, 28 October | relayloom/*, tests/*, LICENSE, docs/IMPLEMENTATION.md | 27 tests passed including offline Meta; MIT license for original source |
 | Session-safe readable workroom | New public implementation, 28 October | web/*, tests/ui.test.cjs, .github/workflows/checks.yml | 9 UI state tests; local owner/editor browser rehearsal and checked publication; no live inference |
+| Meta refusal paths and credit-gated live check | New public implementation, 30 October | relayloom/meta.py, scripts/check_meta.*, tests/test_meta_checks.py | 7 offline tests with fake transports; live check not run |
+| Rehearsal demo check and launchers | New public implementation, 30 October | scripts/check_demo.*, demo.ps1, demo.sh | 7 PASS lines over real local HTTP; rehearsal only |
+| Autonomy policy, approval records, run limits, outcome checks | New public implementation, 30 October | relayloom/policy.json, relayloom/controller.py, tests/test_autonomy.py, docs/AUTONOMY.md | 8 tests; local publication only |
+| Control room workroom design with the revision loom | New public implementation, 30 October | web/*, tests/ui.test.cjs, docs/screenshot-*.png | 12 UI state tests; screenshots at 1440 and 390 px from a rehearsal |
 
 Add a row for each implemented change with its commit, date, exact paths,
 verification and corresponding demo moment. Preserve failed and unrun checks.

@@ -66,6 +66,18 @@ Keep the Meta ledger at a different absolute path from the workroom database.
 Do not delete or replace ledgers to bypass held requests; review unknown entries
 and provider records before deciding whether a new authorized experiment is safe.
 
+## Live acceptance check (not run)
+
+`scripts/check_meta.ps1 --i-have-credit` (or `sh scripts/check_meta.sh --i-have-credit`)
+runs `scripts/check_meta.py`. Without the flag it prints REFUSED and sends
+nothing. With the flag it checks, printing PASS or FAIL per case: refusal
+without `MODEL_API_KEY` (variable names only, no values), a complete
+environment, a redacted worker representation, exactly one live Product
+request on the public fixture, refusal of a replayed request identity, and
+one ledger attempt with known reported usage. Offline tests in
+`tests/test_meta_checks.py` cover these paths with fake transports. The
+attempt cap is bounded by `max_attempts_ceiling` in `relayloom/policy.json`.
+
 ## Primary references checked
 
 - [Meta overview and Standard model identifiers](https://dev.meta.ai/docs/overview)
