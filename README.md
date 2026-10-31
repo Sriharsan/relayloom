@@ -16,9 +16,10 @@ On Windows `.\demo.ps1` does the same and opens the browser; elsewhere `./demo.s
 specialist outputs written by code, zero model calls. A Meta adapter is built
 and offline tested; **live Meta inference has not been run yet.** MIT license.
 
-**Hackathon.** Built for the Meta Global AI Developer Hackathon, Startup track.
-Every commit is after the 26 October kickoff; the eligible build start is
-unconfirmed. See [docs/HACKATHON_UPDATES.md](docs/HACKATHON_UPDATES.md).
+**Hackathon.** Meta Global AI Developer Hackathon, Startup track. All code was
+written in the 27 October to 4 November building period (first code commit 28
+October); three scope documents from 26 October predate it. See
+[docs/HACKATHON_UPDATES.md](docs/HACKATHON_UPDATES.md).
 
 ![The Relayloom workroom at revision 4: Product kept from revision 1, Engineering and Support redone, one late Engineering result refused](docs/screenshot-1440.png)
 
