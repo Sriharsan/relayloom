@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "about": "Accounts payable autonomy policy. Read once when the process starts. Bills, photos, model output and requests cannot change it. Its SHA-256 goes into every receipt.",
+  "levels": {
+    "run_alone": "Agents act without asking anyone, inside the limits below.",
+    "run_with_approval": "Waits in the owner's approval inbox. Runs only after a recorded decision: who, what, when, policy hash.",
+    "never": "Refused in code, whatever a bill, a model or a person asks."
+  },
+  "operations": {
+    "read_bill": {"level": "run_alone"},
+    "count_goods": {"level": "run_alone"},
+    "match": {"level": "run_alone"},
+    "enter_matching_bill": {"level": "run_alone"},
+    "check_readback": {"level": "run_alone"},
+    "reconcile_after_reconnect": {"level": "run_alone"},
+    "enter_mismatched_bill": {"level": "run_with_approval"},
+    "enter_bill_over_limit": {"level": "run_with_approval"},
+    "send_dispute": {"level": "run_with_approval"},
+    "new_supplier_or_bank_change": {"level": "run_with_approval"},
+    "change_bank_from_invoice_text": {"level": "never"},
+    "enter_bill_with_failed_readback": {"level": "never"},
+    "change_books_while_offline": {"level": "never"}
+  },
+  "limits": {
+    "owner_amount_limit_inr": 100000,
+    "quantity_tolerance_units": 0,
+    "rate_tolerance_percent": 0.5,
+    "total_tolerance_inr": 1.0,
+    "max_count_per_photo": 60,
+    "parallel_cases": 4,
+    "automatic_retries": 0
+  },
+  "egress": {
+    "default": "deny",
+    "allowed_hosts": {
+      "api.groq.com": "Optional Muse Spark Open preview. Off unless GROQ_API_KEY is set.",
+      "api.meta.ai": "Paid Meta Model API. Disabled in this build."
+    }
+  }
+}
