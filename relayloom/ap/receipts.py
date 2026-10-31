@@ -13,8 +13,19 @@ FIELDS = ("case", "seq", "prev", "time", "agent", "step", "policy_hash", "input_
           "model", "route", "response_id", "decision", "approver", "ledger_readback", "detail")
 
 
+def _plain(value):
+    """Whole floats become ints so Python and a browser's JSON.stringify produce the same bytes."""
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+    if isinstance(value, dict):
+        return {key: _plain(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_plain(item) for item in value]
+    return value
+
+
 def canonical(value) -> bytes:
-    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    return json.dumps(_plain(value), sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
 
 def sha256(value) -> str:
