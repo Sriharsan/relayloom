@@ -3,11 +3,55 @@
 Startup track. Submissions due 4 November 2026, 9:00 PM US Eastern
 (5 November, 7:30 AM IST). Author: Sriharsan B S, the only contributor.
 
-## Deliverables and judging criteria: pending official guide read
+## Deliverables, rules and judging
 
-The participant guide has not been read for this file. Deliverables, required
-fields, video length rules and judging criteria will be filled in from the
-official guide. Nothing below should be read as matching those rules yet.
+Source: the official participant guide,
+https://cerebralvalley.ai/e/meta-ai-developer-hackathon/details (sign in
+needed), read 30 October 2026.
+
+**Deliverables.** One project per team, submitted by one Representative on the
+CV platform by Wednesday 4 November, 9:00 PM ET. A public repository and a
+working link to a demo video of three minutes that highlights what was built
+during the hackathon. The code and the live product are also judged.
+
+**Rules that apply here.**
+
+- The repository must be public. Solo teams are allowed.
+- The demo must only highlight features built during the hackathon, and judges
+  must be able to tell what was created then. Not identifying original
+  contributions means disqualification.
+- Startups may build on existing products but must clearly identify what was
+  newly developed. Building period: 27 October to 4 November (ET).
+- Use no code, data or assets without rights.
+- The project must incorporate Meta's models: the Meta Model API (Muse Spark
+  series and others), or Meta open weights (Muse Spark Open, Muse Glimmer), or
+  Muse Code.
+- Listed anti projects include basic RAG, simple chatbots and image analyzers.
+  Relayloom is a coordination and approval workroom, not one of these.
+
+**Judging.**
+
+- Stage one, pass or fail: fits a theme and "reasonably used Meta Model API
+  and/or Meta's open-weight models to build the project in the Hackathon".
+- Stage two, scored 0 to 10: Impact 30%, Use of Meta AI Tooling 25%, Technical
+  Depth and Execution 20%, Demo 25%.
+- Stage three: the top 5 per track are ranked live from the videos.
+- Relevant bonus: Best Agentic Use-Case (autonomy, effectiveness, usefulness),
+  which matches the autonomy with approval work in
+  [docs/AUTONOMY.md](docs/AUTONOMY.md). Best Build on Meta Open Weight Models
+  is also open (Muse Spark Open or Muse Glimmer, own hardware or partner
+  inference).
+
+**Where Relayloom stands against stage one.** No Meta model has run yet. The
+paid API path is built and offline tested but not run. Stage one needs a real
+run, either through the Meta Model API once billing and credit are confirmed,
+or through an open weight model. Until one of these actually runs, this
+project does not claim Meta model use.
+
+**Timing.** Commits `ec6dc51`, `4c13989` and `c6ea062` (26 October, 2:35 to
+2:46 PM ET) are scope documents made after kickoff and before the building
+period. The first code is `3668d31`, 28 October, 9:08 AM ET, inside the
+building period. Details: [docs/HACKATHON_UPDATES.md](docs/HACKATHON_UPDATES.md).
 
 ## What Relayloom is
 
@@ -47,8 +91,9 @@ output, latency or cost is reported anywhere in this repository.
 
 ## Built during the event
 
-See [docs/HACKATHON_UPDATES.md](docs/HACKATHON_UPDATES.md). Every commit is
-after the 26 October kickoff; the eligible build start is not confirmed.
+See [docs/HACKATHON_UPDATES.md](docs/HACKATHON_UPDATES.md). All code is from
+the building period (first code commit 28 October). Three documentation
+commits from 26 October predate it and are labelled as such.
 
 ## Links
 
@@ -61,5 +106,6 @@ after the 26 October kickoff; the eligible build start is not confirmed.
   `scripts/check_meta.ps1 --i-have-credit` with `MODEL_API_KEY`,
   `RELAYLOOM_META_ENDPOINT`, `RELAYLOOM_META_MODEL`, `RELAYLOOM_META_LEDGER`
   and `RELAYLOOM_SYNTHETIC_ONLY` set in the local environment.
-- Reading the official participant guide to fill the pending section above.
+- A real Meta model run (API or open weights) to pass stage one.
+- Submitting on the CV platform by 4 November, 9:00 PM ET.
 - Recording the video.
