@@ -12,6 +12,14 @@ Caption labels used below:
 - **LOCAL AI**: not available. Relayloom has no local model path today. Do not use this label.
 - **LIVE META**: not recorded. Use only for a clip that actually called the Meta API.
 
+## Building period only
+
+The guide requires the demo to highlight only work built during the hackathon.
+Everything shown below comes from commits on or after 28 October (first code
+commit `3668d31`), inside the 27 October to 4 November building period. The
+three 26 October commits are scope documents only; do not show them as built
+work. Say this once in the video: "All code shown was written from 28 October."
+
 ## Before recording
 
 1. Open a terminal in the repository root.
@@ -33,7 +41,7 @@ Caption labels used below:
 | 1:55 to 2:10 | Point at **Approval and proof**: Decision says no approval recorded. The Publish button is disabled. | "Explicit approval where it matters. No approval record, no publication." |
 | 2:10 to 2:30 | Tick **Approve publication of this revision**. Click **Publish checked artifact**. | "Approval recorded: who, which action, when, which limit." |
 | 2:30 to 2:45 | Point at the checks and **Verified outcome**. | "Proof after the action: the stored artifact was read back and matched its approval. This outcome passed these checks." |
-| 2:45 to 2:50 | Show the terminal with `check_demo` PASS lines and the repository URL. | "Open source, MIT. Rehearsal tested. Live Meta inference not yet run." |
+| 2:45 to 2:50 | Show the terminal with `check_demo` PASS lines and the repository URL. | "All code shown written from 28 October. Open source, MIT. Live Meta inference not yet run." |
 
 ## Do not
 
