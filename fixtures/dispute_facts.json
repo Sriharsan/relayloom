@@ -1,0 +1,32 @@
+{
+ "PON-0457": {
+  "supplier": "Pon Seed Traders",
+  "bill_no": "PON-0457",
+  "po_number": "PO-1002",
+  "item": "Groundnut seed bag 50 kg",
+  "ordered": 40,
+  "billed": 40,
+  "counted_on_delivery": 34,
+  "po_rate": 2150.0,
+  "billed_rate": 2150.0,
+  "problems": [
+   "SEED-BAG-50: counted 34, billed 40"
+  ],
+  "ask": "send a corrected bill for what arrived at the PO rate"
+ },
+ "NIL-1189": {
+  "supplier": "Nila Packaging",
+  "bill_no": "NIL-1189",
+  "po_number": "PO-1003",
+  "item": "Carton for 12 bottles",
+  "ordered": 30,
+  "billed": 30,
+  "counted_on_delivery": 30,
+  "po_rate": 16.0,
+  "billed_rate": 18.5,
+  "problems": [
+   "CARTON-12: rate 18.50, PO rate 16.00"
+  ],
+  "ask": "send a corrected bill for what arrived at the PO rate"
+ }
+}

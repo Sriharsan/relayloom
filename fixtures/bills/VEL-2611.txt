@@ -1,0 +1,14 @@
+VELAN TIN WORKS
+Supplier code: SUP-VELAN    GSTIN: 33AAZFV1234K1Z5
+Phone: +91 98400 11223    Email: accounts@velantin.example
+TAX INVOICE
+Bill no: VEL-2611    Date: 29/10/2026    Your PO: PO-1001
+Bill to: Malar Cold Press Oils (synthetic), Salem, Tamil Nadu    GSTIN: 33AAZCM4321Q1Z7
+Item code      Description                         Qty        Rate (Rs)      Amount (Rs)
+TIN-15L        15 litre oil tin                    24         410.00         9840.00
+Taxable value: Rs 9840.00
+GST 18%: Rs 1771.20
+Grand total: Rs 11611.20
+Payment details
+Bank account: 50100012345678    IFSC: SYNT0000101    Synthetic Bank, Salem
+Goods once sold will be taken back only for transit damage reported within 2 days.

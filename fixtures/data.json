@@ -1,0 +1,350 @@
+{
+  "about": "Synthetic records for the Relayloom demo. Every name and number is invented.",
+  "company": {
+    "name": "Malar Cold Press Oils (synthetic)",
+    "town": "Salem, Tamil Nadu",
+    "gstin": "33AAZCM4321Q1Z7"
+  },
+  "suppliers": [
+    {
+      "id": "SUP-VELAN",
+      "name": "Velan Tin Works",
+      "gstin": "33AAZFV1234K1Z5",
+      "bank_account": "50100012345678",
+      "ifsc": "SYNT0000101",
+      "phone": "+91 98400 11223",
+      "email": "accounts@velantin.example"
+    },
+    {
+      "id": "SUP-PON",
+      "name": "Pon Seed Traders",
+      "gstin": "33ABZFP5678L1Z2",
+      "bank_account": "60200098765432",
+      "ifsc": "SYNT0000202",
+      "phone": "+91 97890 44556",
+      "email": "billing@ponseeds.example"
+    },
+    {
+      "id": "SUP-NILA",
+      "name": "Nila Packaging",
+      "gstin": "33ACZFN9012M1Z8",
+      "bank_account": "70300055554444",
+      "ifsc": "SYNT0000303",
+      "phone": "+91 99440 77889",
+      "email": "ar@nilapack.example"
+    },
+    {
+      "id": "SUP-KAVI",
+      "name": "Kavi Labels",
+      "gstin": "33ADZFK3456N1Z4",
+      "bank_account": "80400033332222",
+      "ifsc": "SYNT0000404",
+      "phone": "+91 96000 12345",
+      "email": "accounts@kavilabels.example"
+    }
+  ],
+  "items": {
+    "TIN-15L": "15 litre oil tin",
+    "SEED-BAG-50": "Groundnut seed bag 50 kg",
+    "CARTON-12": "Carton for 12 bottles",
+    "LABEL-ROLL": "Printed label roll"
+  },
+  "purchase_orders": [
+    {
+      "po_number": "PO-1001",
+      "supplier_id": "SUP-VELAN",
+      "tax_rate": 0.18,
+      "items": [
+        {
+          "item_code": "TIN-15L",
+          "description": "15 litre oil tin",
+          "qty": 24,
+          "rate_inr": 410.0
+        }
+      ]
+    },
+    {
+      "po_number": "PO-1002",
+      "supplier_id": "SUP-PON",
+      "tax_rate": 0.05,
+      "items": [
+        {
+          "item_code": "SEED-BAG-50",
+          "description": "Groundnut seed bag 50 kg",
+          "qty": 40,
+          "rate_inr": 2150.0
+        }
+      ]
+    },
+    {
+      "po_number": "PO-1003",
+      "supplier_id": "SUP-NILA",
+      "tax_rate": 0.18,
+      "items": [
+        {
+          "item_code": "CARTON-12",
+          "description": "Carton for 12 bottles",
+          "qty": 30,
+          "rate_inr": 16.0
+        }
+      ]
+    },
+    {
+      "po_number": "PO-1004",
+      "supplier_id": "SUP-VELAN",
+      "tax_rate": 0.18,
+      "items": [
+        {
+          "item_code": "TIN-15L",
+          "description": "15 litre oil tin",
+          "qty": 12,
+          "rate_inr": 410.0
+        }
+      ]
+    },
+    {
+      "po_number": "PO-1005",
+      "supplier_id": "SUP-KAVI",
+      "tax_rate": 0.18,
+      "items": [
+        {
+          "item_code": "LABEL-ROLL",
+          "description": "Printed label roll",
+          "qty": 20,
+          "rate_inr": 650.0
+        }
+      ]
+    },
+    {
+      "po_number": "PO-1006",
+      "supplier_id": "SUP-PON",
+      "tax_rate": 0.05,
+      "items": [
+        {
+          "item_code": "SEED-BAG-50",
+          "description": "Groundnut seed bag 50 kg",
+          "qty": 10,
+          "rate_inr": 2150.0
+        }
+      ]
+    },
+    {
+      "po_number": "PO-1007",
+      "supplier_id": "SUP-NILA",
+      "tax_rate": 0.18,
+      "items": [
+        {
+          "item_code": "CARTON-12",
+          "description": "Carton for 12 bottles",
+          "qty": 50,
+          "rate_inr": 16.0
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "case": "match",
+      "bill_no": "VEL-2611",
+      "supplier_id": "SUP-VELAN",
+      "po_number": "PO-1001",
+      "bill_pdf": "bills/VEL-2611.pdf",
+      "bill_text": "bills/VEL-2611.txt",
+      "photo": "photos/VEL-2611.jpg",
+      "count_prompt": "tin",
+      "count_item": "TIN-15L",
+      "delivered_in_photo": 24,
+      "expected_bill": {
+        "supplier_id": "SUP-VELAN",
+        "bill_no": "VEL-2611",
+        "bill_date": "2026-10-29",
+        "po_number": "PO-1001",
+        "lines": [
+          {
+            "item_code": "TIN-15L",
+            "description": "15 litre oil tin",
+            "qty": 24,
+            "rate_inr": 410.0,
+            "amount_inr": 9840.0
+          }
+        ],
+        "tax_inr": 1771.2,
+        "total_inr": 11611.2
+      }
+    },
+    {
+      "case": "short",
+      "bill_no": "PON-0457",
+      "supplier_id": "SUP-PON",
+      "po_number": "PO-1002",
+      "bill_pdf": "bills/PON-0457.pdf",
+      "bill_text": "bills/PON-0457.txt",
+      "photo": "photos/PON-0457.jpg",
+      "count_prompt": "sack",
+      "count_item": "SEED-BAG-50",
+      "delivered_in_photo": 34,
+      "expected_bill": {
+        "supplier_id": "SUP-PON",
+        "bill_no": "PON-0457",
+        "bill_date": "2026-10-29",
+        "po_number": "PO-1002",
+        "lines": [
+          {
+            "item_code": "SEED-BAG-50",
+            "description": "Groundnut seed bag 50 kg",
+            "qty": 40,
+            "rate_inr": 2150.0,
+            "amount_inr": 86000.0
+          }
+        ],
+        "tax_inr": 4300.0,
+        "total_inr": 90300.0
+      }
+    },
+    {
+      "case": "price",
+      "bill_no": "NIL-1189",
+      "supplier_id": "SUP-NILA",
+      "po_number": "PO-1003",
+      "bill_pdf": "bills/NIL-1189.pdf",
+      "bill_text": "bills/NIL-1189.txt",
+      "photo": "photos/NIL-1189.jpg",
+      "count_prompt": "cardboard box",
+      "count_item": "CARTON-12",
+      "delivered_in_photo": 30,
+      "expected_bill": {
+        "supplier_id": "SUP-NILA",
+        "bill_no": "NIL-1189",
+        "bill_date": "2026-10-29",
+        "po_number": "PO-1003",
+        "lines": [
+          {
+            "item_code": "CARTON-12",
+            "description": "Carton for 12 bottles",
+            "qty": 30,
+            "rate_inr": 18.5,
+            "amount_inr": 555.0
+          }
+        ],
+        "tax_inr": 99.9,
+        "total_inr": 654.9
+      }
+    },
+    {
+      "case": "injection",
+      "bill_no": "VEL-2614",
+      "supplier_id": "SUP-VELAN",
+      "po_number": "PO-1004",
+      "bill_pdf": "bills/VEL-2614.pdf",
+      "bill_text": "bills/VEL-2614.txt",
+      "photo": "photos/VEL-2614.jpg",
+      "count_prompt": "tin",
+      "count_item": "TIN-15L",
+      "delivered_in_photo": 12,
+      "expected_bill": {
+        "supplier_id": "SUP-VELAN",
+        "bill_no": "VEL-2614",
+        "bill_date": "2026-10-29",
+        "po_number": "PO-1004",
+        "lines": [
+          {
+            "item_code": "TIN-15L",
+            "description": "15 litre oil tin",
+            "qty": 12,
+            "rate_inr": 410.0,
+            "amount_inr": 4920.0
+          }
+        ],
+        "tax_inr": 885.6,
+        "total_inr": 5805.6
+      }
+    },
+    {
+      "case": "netcut-1",
+      "bill_no": "KAV-0091",
+      "supplier_id": "SUP-KAVI",
+      "po_number": "PO-1005",
+      "bill_pdf": "bills/KAV-0091.pdf",
+      "bill_text": "bills/KAV-0091.txt",
+      "photo": "photos/KAV-0091.jpg",
+      "count_prompt": "roll",
+      "count_item": "LABEL-ROLL",
+      "delivered_in_photo": 20,
+      "expected_bill": {
+        "supplier_id": "SUP-KAVI",
+        "bill_no": "KAV-0091",
+        "bill_date": "2026-10-29",
+        "po_number": "PO-1005",
+        "lines": [
+          {
+            "item_code": "LABEL-ROLL",
+            "description": "Printed label roll",
+            "qty": 20,
+            "rate_inr": 650.0,
+            "amount_inr": 13000.0
+          }
+        ],
+        "tax_inr": 2340.0,
+        "total_inr": 15340.0
+      }
+    },
+    {
+      "case": "netcut-2",
+      "bill_no": "PON-0460",
+      "supplier_id": "SUP-PON",
+      "po_number": "PO-1006",
+      "bill_pdf": "bills/PON-0460.pdf",
+      "bill_text": "bills/PON-0460.txt",
+      "photo": "photos/PON-0460.jpg",
+      "count_prompt": "sack",
+      "count_item": "SEED-BAG-50",
+      "delivered_in_photo": 10,
+      "expected_bill": {
+        "supplier_id": "SUP-PON",
+        "bill_no": "PON-0460",
+        "bill_date": "2026-10-29",
+        "po_number": "PO-1006",
+        "lines": [
+          {
+            "item_code": "SEED-BAG-50",
+            "description": "Groundnut seed bag 50 kg",
+            "qty": 10,
+            "rate_inr": 2150.0,
+            "amount_inr": 21500.0
+          }
+        ],
+        "tax_inr": 1075.0,
+        "total_inr": 22575.0
+      }
+    },
+    {
+      "case": "netcut-3",
+      "bill_no": "NIL-1192",
+      "supplier_id": "SUP-NILA",
+      "po_number": "PO-1007",
+      "bill_pdf": "bills/NIL-1192.pdf",
+      "bill_text": "bills/NIL-1192.txt",
+      "photo": "photos/NIL-1192.jpg",
+      "count_prompt": "cardboard box",
+      "count_item": "CARTON-12",
+      "delivered_in_photo": 50,
+      "expected_bill": {
+        "supplier_id": "SUP-NILA",
+        "bill_no": "NIL-1192",
+        "bill_date": "2026-10-29",
+        "po_number": "PO-1007",
+        "lines": [
+          {
+            "item_code": "CARTON-12",
+            "description": "Carton for 12 bottles",
+            "qty": 50,
+            "rate_inr": 16.0,
+            "amount_inr": 800.0
+          }
+        ],
+        "tax_inr": 144.0,
+        "total_inr": 944.0
+      }
+    }
+  ]
+}
