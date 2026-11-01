@@ -1,0 +1,14 @@
+BRIARWOOD POLYMERS
+Supplier code: SUP-BRIAR    GSTIN: 33ABZFB5678L1Z2
+Phone: +91 97890 44556    Email: billing@briarwood.example
+TAX INVOICE
+Bill no: BRI-B030    Date: 28/10/2026    Your PO: PO-3026
+Bill to: Northgate Components (synthetic), Unit 14, Northgate Industrial Estate    GSTIN: 33AAZCN4321Q1Z7
+Item code      Description                         Qty        Rate (Rs)      Amount (Rs)
+SACK-RESIN-25  Resin pellet sack 25 kg             12         2150.00        25800.00
+Taxable value: Rs 25800.00
+GST 5%: Rs 1290.00
+Grand total: Rs 27090.00
+Payment details
+Bank account: 60200098765432    IFSC: SYNT0000202    Synthetic Bank
+Goods are taken back only for transit damage reported within 2 days.

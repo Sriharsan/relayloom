@@ -34,12 +34,32 @@ class LocalLedger:
         if not self.online:
             raise LedgerOffline("local ledger link is cut")
 
-    def seed(self, suppliers: list[dict], pos: list[dict]):
+    def seed(self, suppliers: list[dict], pos: list[dict], history: list[dict] = ()):
         with self.lock, self.db:
             for supplier in suppliers:
                 self.db.execute("INSERT OR REPLACE INTO supplier VALUES (?, ?)", (supplier["id"], json.dumps(supplier)))
             for po in pos:
                 self.db.execute("INSERT OR REPLACE INTO po VALUES (?, ?)", (po["po_number"], json.dumps(po)))
+            for old in history:
+                entry = {"supplier_id": old["supplier_id"], "bill_no": old["bill_no"], "bill_date": old["bill_date"],
+                         "po_number": old["po_number"], "tax_inr": old["tax_inr"], "total_inr": old["total_inr"],
+                         "lines": [{"item_code": old["item_code"], "qty": old["qty"], "rate_inr": old["rate_inr"],
+                                    "amount_inr": round(old["qty"] * old["rate_inr"], 2)}]}
+                self.db.execute("INSERT OR REPLACE INTO invoice VALUES (?, ?, ?, ?)",
+                                (old["id"], old["supplier_id"], old["bill_no"], json.dumps(entry)))
+
+    def invoices(self, supplier_id: str | None = None, po_number: str | None = None) -> list[dict]:
+        """Invoices already in the books, newest first, in one shape for both ledgers."""
+        self._check()
+        with self.lock:
+            rows = self.db.execute("SELECT id, body FROM invoice").fetchall()
+        found = []
+        for invoice_id, body in rows:
+            entry = json.loads(body)
+            if (supplier_id and entry["supplier_id"] != supplier_id) or (po_number and entry["po_number"] != po_number):
+                continue
+            found.append({"id": invoice_id, **entry})
+        return sorted(found, key=lambda e: e["bill_date"], reverse=True)
 
     def get_supplier(self, supplier_id: str) -> dict | None:
         self._check()
@@ -86,7 +106,7 @@ class ERPNextLedger:
 
     name = "ERPNext"
 
-    def __init__(self, url: str, key: str, secret: str, company: str, timeout: float = 20):
+    def __init__(self, url: str, key: str, secret: str, company: str, timeout: float = 240):
         parts = urllib.parse.urlsplit(url)
         if parts.scheme != "http" or parts.hostname not in ("localhost", "127.0.0.1", "erpnext", "frontend"):
             raise ValueError("ERPNext must be the local instance inside the boundary")
@@ -159,6 +179,16 @@ class ERPNextLedger:
                 "tax_rate": round(doc.get("total_taxes_and_charges", 0) / net, 4),
                 "items": [{"item_code": row["item_code"], "description": row["item_name"], "qty": row["qty"],
                            "rate_inr": row["rate"]} for row in doc["items"]]}
+
+    def invoices(self, supplier_id: str | None = None, po_number: str | None = None) -> list[dict]:
+        filters = [["docstatus", "<", 2]] + ([["supplier", "=", supplier_id]] if supplier_id else [])
+        rows = self.list("Purchase Invoice", filters, ["name"])
+        found = []
+        for row in rows:
+            entry = self.read_invoice(row["name"])
+            if entry and (not po_number or entry["po_number"] == po_number):
+                found.append({"id": row["name"], **entry})
+        return sorted(found, key=lambda e: e["bill_date"], reverse=True)
 
     def find_invoice(self, supplier_id: str, bill_no: str) -> str | None:
         rows = self.list("Purchase Invoice", [["supplier", "=", supplier_id], ["bill_no", "=", bill_no],

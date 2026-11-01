@@ -1,12 +1,16 @@
-"""Three way match in code: purchase order, bill and counted goods, with policy tolerances."""
+"""Three way match in code: purchase order, bill and goods received, as a running total per purchase order.
+
+Goods received are the sum over every receiving event of the order. Earlier bills on the same order count
+against what has been received, so partial deliveries and partial bills add up per order, not per bill.
+"""
 from __future__ import annotations
 
 
-def match(po: dict, bill: dict, counts: dict[str, int], limits: dict) -> dict:
-    """Compare every PO line with the bill line and the counted quantity.
+def match(po: dict, bill: dict, received: dict[str, int] | None, billed_before: dict[str, float], limits: dict) -> dict:
+    """Compare every PO line with the bill line, the goods received and what was already billed.
 
-    counts maps item_code to the number the Counter saw; an item without a photo count is
-    compared on PO and bill only and marked uncounted.
+    received maps item_code to the total counted over all receiving events of this order. None means the
+    paperwork only check: the goods are not looked at (used by the benchmark baseline).
     """
     qty_tol = limits["quantity_tolerance_units"]
     rate_tol = limits["rate_tolerance_percent"] / 100
@@ -19,21 +23,22 @@ def match(po: dict, bill: dict, counts: dict[str, int], limits: dict) -> dict:
     for item in po["items"]:
         code = item["item_code"]
         line = billed.pop(code, None)
-        counted = counts.get(code)
-        row = {"item_code": code, "description": item["description"], "po_qty": item["qty"],
-               "po_rate": item["rate_inr"], "bill_qty": line["qty"] if line else None,
-               "bill_rate": line["rate_inr"] if line else None, "counted": counted, "issues": []}
+        before = billed_before.get(code, 0)
+        got = None if received is None else received.get(code, 0)
+        row = {"item_code": code, "description": item["description"], "po_qty": item["qty"], "po_rate": item["rate_inr"],
+               "bill_qty": line["qty"] if line else None, "bill_rate": line["rate_inr"] if line else None,
+               "received": got, "billed_before": before, "issues": []}
         if line is None:
             row["issues"].append("not on bill")
         else:
-            if line["qty"] > item["qty"] + qty_tol:
-                row["issues"].append(f"billed {line['qty']:g}, ordered {item['qty']:g}")
+            if line["qty"] + before > item["qty"] + qty_tol:
+                row["issues"].append(f"billed {line['qty']:g} with {before:g} already billed, ordered {item['qty']:g}")
             if abs(line["rate_inr"] - item["rate_inr"]) > item["rate_inr"] * rate_tol:
                 row["issues"].append(f"rate {line['rate_inr']:.2f}, PO rate {item['rate_inr']:.2f}")
             if abs(line["qty"] * line["rate_inr"] - line["amount_inr"]) > limits["total_tolerance_inr"]:
                 row["issues"].append("line amount is not qty times rate")
-            if counted is not None and abs(counted - line["qty"]) > qty_tol:
-                row["issues"].append(f"counted {counted}, billed {line['qty']:g}")
+            if got is not None and line["qty"] + before > got + qty_tol:
+                row["issues"].append(f"billed {line['qty']:g} with {before:g} already billed, received {got:g}")
         rows.append(row)
         problems.extend(f"{code}: {issue}" for issue in row["issues"])
     for code in billed:
@@ -46,4 +51,4 @@ def match(po: dict, bill: dict, counts: dict[str, int], limits: dict) -> dict:
         problems.append(f"tax {bill['tax_inr']:.2f}, expected {expected_tax:.2f} at the PO tax rate")
     over_limit = bill["total_inr"] > limits["owner_amount_limit_inr"]
     return {"matched": not problems, "rows": rows, "problems": problems, "subtotal_inr": subtotal,
-            "over_limit": over_limit}
+            "over_limit": over_limit, "goods_checked": received is not None}

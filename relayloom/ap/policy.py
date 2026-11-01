@@ -9,6 +9,7 @@ POLICY_PATH = Path(__file__).resolve().parent / "policy.json"
 LEVELS = ("run_alone", "run_with_approval", "never")
 REQUIRED = {
     "read_bill": "run_alone", "count_goods": "run_alone", "match": "run_alone",
+    "investigate_mismatch": "run_alone", "hold_bill": "run_alone", "enter_bill_for_received_quantity": "run_with_approval",
     "enter_matching_bill": "run_alone", "check_readback": "run_alone",
     "reconcile_after_reconnect": "run_alone",
     "enter_mismatched_bill": "run_with_approval", "enter_bill_over_limit": "run_with_approval",

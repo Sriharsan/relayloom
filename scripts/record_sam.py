@@ -1,58 +1,60 @@
-"""Count the goods in each synthetic delivery photo with SAM 3.1 on this machine and save the real result.
+"""Count the goods in every synthetic delivery photo with SAM 3.1 on this machine and keep each real result.
 
-Usage: python scripts/record_sam.py [BILL_NO ...] [--sam3]
-Needs HF_TOKEN in .env with access granted to facebook/sam3.1 (or facebook/sam3 with --sam3), and
-RELAYLOOM_SAM_PYTHON pointing to a Python with Ultralytics 8.4 or newer. Weights are downloaded once
-to RELAYLOOM_MODELS (default D:/relayloom-models). Outputs are replayed only as "recorded".
+Usage: python scripts/record_sam.py [--world demo|benchmark|both] [--alt] [--only PHOTO_ID ...]
+Needs HF_TOKEN in .env with access to facebook/sam3.1, and RELAYLOOM_SAM_PYTHON pointing to a Python with
+Ultralytics 8.4 or newer. Weights are downloaded once to RELAYLOOM_MODELS (default D:/relayloom-models).
+Results are cached in fixtures/recorded/sam and replayed later only as "recorded". Photos that repeat another
+photo of the same delivery are counted once, like the app does. --alt also makes the Investigator's recount with
+a second wording of the prompt.
 """
-import hashlib
 import json
 import os
 from pathlib import Path
-import platform
 import sys
-import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from relayloom.ap.app import load_env  # noqa: E402
 from relayloom.ap.models import SamCounter  # noqa: E402
+from relayloom.ap.receiving import Receiving  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "fixtures" / "recorded" / "sam"
+FIXTURES = ROOT / "fixtures"
 
 
-def weights(sam3: bool) -> str:
+def weights() -> str:
     from huggingface_hub import hf_hub_download
-    repo, name = ("facebook/sam3", "sam3.pt") if sam3 else ("facebook/sam3.1", "sam3.1_multiplex.pt")
-    folder = Path(os.environ.get("RELAYLOOM_MODELS", "D:/relayloom-models")) / repo.replace("/", "_")
-    return hf_hub_download(repo, name, local_dir=folder, token=os.environ["HF_TOKEN"])
+    folder = Path(os.environ.get("RELAYLOOM_MODELS", "D:/relayloom-models")) / "facebook_sam3.1"
+    return hf_hub_download("facebook/sam3.1", "sam3.1_multiplex.pt", local_dir=folder, token=os.environ["HF_TOKEN"])
 
 
 def main():
     load_env()
-    sam3 = "--sam3" in sys.argv
-    args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    path = weights(sam3)
-    model = "SAM 3" if sam3 else "SAM 3.1"
-    route = os.environ.get("SAM_ROUTE", f"{model} ({Path(path).name}), Ultralytics, CPU, this laptop")
+    args = sys.argv[1:]
+    world_name = args[args.index("--world") + 1] if "--world" in args else "both"
+    only = set(args[args.index("--only") + 1:]) if "--only" in args else set()
+    alt = "--alt" in args
     counter = SamCounter(os.environ.get("RELAYLOOM_SAM_PYTHON", "D:/relayloom-models/venv-sam/Scripts/python.exe"),
-                         path, OUT, route)
-    data = json.loads((ROOT / "fixtures" / "data.json").read_text(encoding="utf-8"))
-    OUT.mkdir(parents=True, exist_ok=True)
-    for case in data["cases"]:
-        if args and case["bill_no"] not in args:
+                         weights(), "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop", live=True)
+    for name, file in (("demo", "data.json"), ("benchmark", "benchmark.json")):
+        if world_name not in (name, "both"):
             continue
-        photo = ROOT / "fixtures" / case["photo"]
-        result = counter.count(photo, case["count_prompt"], case["bill_no"])
-        result["model"] = model
-        result["weights_sha256_16"] = hashlib.sha256(Path(path).read_bytes()).hexdigest()[:16]
-        record = {"recorded_at": time.strftime("%Y-%m-%d %H:%M %z"), "machine": platform.processor() or platform.machine(),
-                  "photo_sha256": hashlib.sha256(photo.read_bytes()).hexdigest(),
-                  "delivered_in_photo": case["delivered_in_photo"], "result": result}
-        (OUT / f"{case['bill_no']}.json").write_text(json.dumps(record, indent=1), encoding="utf-8")
-        verdict = "correct" if result["count"] == case["delivered_in_photo"] else f"expected {case['delivered_in_photo']}"
-        print(f"{case['bill_no']}: {result['count']} {case['count_prompt']} ({verdict}), "
-              f"inference {result['infer_seconds']} s, load {result['load_seconds']} s, wall {result['wall_seconds']} s", flush=True)
+        world = json.loads((FIXTURES / file).read_text(encoding="utf-8"))
+        receiving = Receiving(world, counter, FIXTURES)
+        for event in world["receiving_events"]:
+            if only and not any(p["id"] in only for p in event["photos"]):
+                continue
+            result = receiving.count_event(event["id"])
+            for row in result["photos"]:
+                if not row["counted"]:
+                    print(f"{row['photo']}: duplicate of {row['duplicate_of']} (similarity {row['similarity']}), not counted", flush=True)
+                    continue
+                truth = next(p["true_count"] for p in event["photos"] if p["id"] == row["photo"])
+                print(f"{row['photo']}: {row['count']} {row['prompt']} ({'correct' if row['count'] == truth else f'expected {truth}'}), "
+                      f"{row['seconds']} s", flush=True)
+            if alt:
+                again = receiving.recount_event(event["id"])
+                for row in again["photos"]:
+                    print(f"{row['photo']} recount '{row['prompt']}': {row['second']} (first {row['first']})", flush=True)
 
 
 if __name__ == "__main__":

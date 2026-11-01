@@ -1,350 +1,786 @@
 {
-  "about": "Synthetic records for the Relayloom demo. Every name and number is invented.",
-  "company": {
-    "name": "Malar Cold Press Oils (synthetic)",
-    "town": "Salem, Tamil Nadu",
-    "gstin": "33AAZCM4321Q1Z7"
+ "company": {
+  "name": "Northgate Components (synthetic)",
+  "gstin": "33AAZCN4321Q1Z7",
+  "address": "Unit 14, Northgate Industrial Estate"
+ },
+ "suppliers": [
+  {
+   "id": "SUP-ARDEN",
+   "name": "Arden Fluids Ltd",
+   "gstin": "33AAZFA1234K1Z5",
+   "bank_account": "50100012345678",
+   "ifsc": "SYNT0000101",
+   "phone": "+91 98400 11223",
+   "email": "accounts@ardenfluids.example"
   },
-  "suppliers": [
-    {
-      "id": "SUP-VELAN",
-      "name": "Velan Tin Works",
-      "gstin": "33AAZFV1234K1Z5",
-      "bank_account": "50100012345678",
-      "ifsc": "SYNT0000101",
-      "phone": "+91 98400 11223",
-      "email": "accounts@velantin.example"
-    },
-    {
-      "id": "SUP-PON",
-      "name": "Pon Seed Traders",
-      "gstin": "33ABZFP5678L1Z2",
-      "bank_account": "60200098765432",
-      "ifsc": "SYNT0000202",
-      "phone": "+91 97890 44556",
-      "email": "billing@ponseeds.example"
-    },
-    {
-      "id": "SUP-NILA",
-      "name": "Nila Packaging",
-      "gstin": "33ACZFN9012M1Z8",
-      "bank_account": "70300055554444",
-      "ifsc": "SYNT0000303",
-      "phone": "+91 99440 77889",
-      "email": "ar@nilapack.example"
-    },
-    {
-      "id": "SUP-KAVI",
-      "name": "Kavi Labels",
-      "gstin": "33ADZFK3456N1Z4",
-      "bank_account": "80400033332222",
-      "ifsc": "SYNT0000404",
-      "phone": "+91 96000 12345",
-      "email": "accounts@kavilabels.example"
-    }
-  ],
-  "items": {
-    "TIN-15L": "15 litre oil tin",
-    "SEED-BAG-50": "Groundnut seed bag 50 kg",
-    "CARTON-12": "Carton for 12 bottles",
-    "LABEL-ROLL": "Printed label roll"
+  {
+   "id": "SUP-BRIAR",
+   "name": "Briarwood Polymers",
+   "gstin": "33ABZFB5678L1Z2",
+   "bank_account": "60200098765432",
+   "ifsc": "SYNT0000202",
+   "phone": "+91 97890 44556",
+   "email": "billing@briarwood.example"
   },
-  "purchase_orders": [
+  {
+   "id": "SUP-CALDER",
+   "name": "Calder Packaging",
+   "gstin": "33ACZFC9012M1Z8",
+   "bank_account": "70300055554444",
+   "ifsc": "SYNT0000303",
+   "phone": "+91 99440 77889",
+   "email": "ar@calderpack.example"
+  },
+  {
+   "id": "SUP-DUNMORE",
+   "name": "Dunmore Cable Co",
+   "gstin": "33ADZFD3456N1Z4",
+   "bank_account": "80400033332222",
+   "ifsc": "SYNT0000404",
+   "phone": "+91 96000 12345",
+   "email": "accounts@dunmorecable.example"
+  }
+ ],
+ "items": {
+  "CAN-5L": {
+   "name": "Coolant can 5 litre",
+   "supplier_id": "SUP-ARDEN",
+   "prompt": "can",
+   "alt_prompt": "container",
+   "tax_rate": 0.18,
+   "rate_inr": 410.0
+  },
+  "SACK-RESIN-25": {
+   "name": "Resin pellet sack 25 kg",
+   "supplier_id": "SUP-BRIAR",
+   "prompt": "sack",
+   "alt_prompt": "bag",
+   "tax_rate": 0.05,
+   "rate_inr": 2150.0
+  },
+  "CARTON-HD": {
+   "name": "Heavy duty shipping carton",
+   "supplier_id": "SUP-CALDER",
+   "prompt": "cardboard box",
+   "alt_prompt": "carton",
+   "tax_rate": 0.18,
+   "rate_inr": 118.0
+  },
+  "REEL-100M": {
+   "name": "Cable reel 100 m",
+   "supplier_id": "SUP-DUNMORE",
+   "prompt": "roll",
+   "alt_prompt": "reel",
+   "tax_rate": 0.18,
+   "rate_inr": 650.0
+  }
+ },
+ "purchase_orders": [
+  {
+   "po_number": "PO-1950",
+   "supplier_id": "SUP-CALDER",
+   "tax_rate": 0.18,
+   "items": [
     {
-      "po_number": "PO-1001",
-      "supplier_id": "SUP-VELAN",
-      "tax_rate": 0.18,
-      "items": [
-        {
-          "item_code": "TIN-15L",
-          "description": "15 litre oil tin",
-          "qty": 24,
-          "rate_inr": 410.0
-        }
-      ]
-    },
-    {
-      "po_number": "PO-1002",
-      "supplier_id": "SUP-PON",
-      "tax_rate": 0.05,
-      "items": [
-        {
-          "item_code": "SEED-BAG-50",
-          "description": "Groundnut seed bag 50 kg",
-          "qty": 20,
-          "rate_inr": 2150.0
-        }
-      ]
-    },
-    {
-      "po_number": "PO-1003",
-      "supplier_id": "SUP-NILA",
-      "tax_rate": 0.18,
-      "items": [
-        {
-          "item_code": "CARTON-12",
-          "description": "Carton for 12 bottles",
-          "qty": 30,
-          "rate_inr": 16.0
-        }
-      ]
-    },
-    {
-      "po_number": "PO-1004",
-      "supplier_id": "SUP-VELAN",
-      "tax_rate": 0.18,
-      "items": [
-        {
-          "item_code": "TIN-15L",
-          "description": "15 litre oil tin",
-          "qty": 12,
-          "rate_inr": 410.0
-        }
-      ]
-    },
-    {
-      "po_number": "PO-1005",
-      "supplier_id": "SUP-KAVI",
-      "tax_rate": 0.18,
-      "items": [
-        {
-          "item_code": "LABEL-ROLL",
-          "description": "Printed label roll",
-          "qty": 20,
-          "rate_inr": 650.0
-        }
-      ]
-    },
-    {
-      "po_number": "PO-1006",
-      "supplier_id": "SUP-PON",
-      "tax_rate": 0.05,
-      "items": [
-        {
-          "item_code": "SEED-BAG-50",
-          "description": "Groundnut seed bag 50 kg",
-          "qty": 10,
-          "rate_inr": 2150.0
-        }
-      ]
-    },
-    {
-      "po_number": "PO-1007",
-      "supplier_id": "SUP-NILA",
-      "tax_rate": 0.18,
-      "items": [
-        {
-          "item_code": "CARTON-12",
-          "description": "Carton for 12 bottles",
-          "qty": 50,
-          "rate_inr": 16.0
-        }
-      ]
+     "item_code": "CARTON-HD",
+     "description": "Heavy duty shipping carton",
+     "qty": 40,
+     "rate_inr": 118.0
     }
-  ],
-  "cases": [
+   ]
+  },
+  {
+   "po_number": "PO-1990",
+   "supplier_id": "SUP-BRIAR",
+   "tax_rate": 0.05,
+   "items": [
     {
-      "case": "match",
-      "bill_no": "VEL-2611",
-      "supplier_id": "SUP-VELAN",
-      "po_number": "PO-1001",
-      "bill_pdf": "bills/VEL-2611.pdf",
-      "bill_text": "bills/VEL-2611.txt",
-      "photo": "photos/VEL-2611.jpg",
-      "count_prompt": "tin",
-      "count_item": "TIN-15L",
-      "delivered_in_photo": 24,
-      "expected_bill": {
-        "supplier_id": "SUP-VELAN",
-        "bill_no": "VEL-2611",
-        "bill_date": "2026-10-29",
-        "po_number": "PO-1001",
-        "lines": [
-          {
-            "item_code": "TIN-15L",
-            "description": "15 litre oil tin",
-            "qty": 24,
-            "rate_inr": 410.0,
-            "amount_inr": 9840.0
-          }
-        ],
-        "tax_inr": 1771.2,
-        "total_inr": 11611.2
-      }
-    },
-    {
-      "case": "short",
-      "bill_no": "PON-0457",
-      "supplier_id": "SUP-PON",
-      "po_number": "PO-1002",
-      "bill_pdf": "bills/PON-0457.pdf",
-      "bill_text": "bills/PON-0457.txt",
-      "photo": "photos/PON-0457.jpg",
-      "count_prompt": "sack",
-      "count_item": "SEED-BAG-50",
-      "delivered_in_photo": 16,
-      "expected_bill": {
-        "supplier_id": "SUP-PON",
-        "bill_no": "PON-0457",
-        "bill_date": "2026-10-29",
-        "po_number": "PO-1002",
-        "lines": [
-          {
-            "item_code": "SEED-BAG-50",
-            "description": "Groundnut seed bag 50 kg",
-            "qty": 20,
-            "rate_inr": 2150.0,
-            "amount_inr": 43000.0
-          }
-        ],
-        "tax_inr": 2150.0,
-        "total_inr": 45150.0
-      }
-    },
-    {
-      "case": "price",
-      "bill_no": "NIL-1189",
-      "supplier_id": "SUP-NILA",
-      "po_number": "PO-1003",
-      "bill_pdf": "bills/NIL-1189.pdf",
-      "bill_text": "bills/NIL-1189.txt",
-      "photo": "photos/NIL-1189.jpg",
-      "count_prompt": "cardboard box",
-      "count_item": "CARTON-12",
-      "delivered_in_photo": 30,
-      "expected_bill": {
-        "supplier_id": "SUP-NILA",
-        "bill_no": "NIL-1189",
-        "bill_date": "2026-10-29",
-        "po_number": "PO-1003",
-        "lines": [
-          {
-            "item_code": "CARTON-12",
-            "description": "Carton for 12 bottles",
-            "qty": 30,
-            "rate_inr": 18.5,
-            "amount_inr": 555.0
-          }
-        ],
-        "tax_inr": 99.9,
-        "total_inr": 654.9
-      }
-    },
-    {
-      "case": "injection",
-      "bill_no": "VEL-2614",
-      "supplier_id": "SUP-VELAN",
-      "po_number": "PO-1004",
-      "bill_pdf": "bills/VEL-2614.pdf",
-      "bill_text": "bills/VEL-2614.txt",
-      "photo": "photos/VEL-2614.jpg",
-      "count_prompt": "tin",
-      "count_item": "TIN-15L",
-      "delivered_in_photo": 12,
-      "expected_bill": {
-        "supplier_id": "SUP-VELAN",
-        "bill_no": "VEL-2614",
-        "bill_date": "2026-10-29",
-        "po_number": "PO-1004",
-        "lines": [
-          {
-            "item_code": "TIN-15L",
-            "description": "15 litre oil tin",
-            "qty": 12,
-            "rate_inr": 410.0,
-            "amount_inr": 4920.0
-          }
-        ],
-        "tax_inr": 885.6,
-        "total_inr": 5805.6
-      }
-    },
-    {
-      "case": "netcut-1",
-      "bill_no": "KAV-0091",
-      "supplier_id": "SUP-KAVI",
-      "po_number": "PO-1005",
-      "bill_pdf": "bills/KAV-0091.pdf",
-      "bill_text": "bills/KAV-0091.txt",
-      "photo": "photos/KAV-0091.jpg",
-      "count_prompt": "roll",
-      "count_item": "LABEL-ROLL",
-      "delivered_in_photo": 20,
-      "expected_bill": {
-        "supplier_id": "SUP-KAVI",
-        "bill_no": "KAV-0091",
-        "bill_date": "2026-10-29",
-        "po_number": "PO-1005",
-        "lines": [
-          {
-            "item_code": "LABEL-ROLL",
-            "description": "Printed label roll",
-            "qty": 20,
-            "rate_inr": 650.0,
-            "amount_inr": 13000.0
-          }
-        ],
-        "tax_inr": 2340.0,
-        "total_inr": 15340.0
-      }
-    },
-    {
-      "case": "netcut-2",
-      "bill_no": "PON-0460",
-      "supplier_id": "SUP-PON",
-      "po_number": "PO-1006",
-      "bill_pdf": "bills/PON-0460.pdf",
-      "bill_text": "bills/PON-0460.txt",
-      "photo": "photos/PON-0460.jpg",
-      "count_prompt": "sack",
-      "count_item": "SEED-BAG-50",
-      "delivered_in_photo": 10,
-      "expected_bill": {
-        "supplier_id": "SUP-PON",
-        "bill_no": "PON-0460",
-        "bill_date": "2026-10-29",
-        "po_number": "PO-1006",
-        "lines": [
-          {
-            "item_code": "SEED-BAG-50",
-            "description": "Groundnut seed bag 50 kg",
-            "qty": 10,
-            "rate_inr": 2150.0,
-            "amount_inr": 21500.0
-          }
-        ],
-        "tax_inr": 1075.0,
-        "total_inr": 22575.0
-      }
-    },
-    {
-      "case": "netcut-3",
-      "bill_no": "NIL-1192",
-      "supplier_id": "SUP-NILA",
-      "po_number": "PO-1007",
-      "bill_pdf": "bills/NIL-1192.pdf",
-      "bill_text": "bills/NIL-1192.txt",
-      "photo": "photos/NIL-1192.jpg",
-      "count_prompt": "cardboard box",
-      "count_item": "CARTON-12",
-      "delivered_in_photo": 50,
-      "expected_bill": {
-        "supplier_id": "SUP-NILA",
-        "bill_no": "NIL-1192",
-        "bill_date": "2026-10-29",
-        "po_number": "PO-1007",
-        "lines": [
-          {
-            "item_code": "CARTON-12",
-            "description": "Carton for 12 bottles",
-            "qty": 50,
-            "rate_inr": 16.0,
-            "amount_inr": 800.0
-          }
-        ],
-        "tax_inr": 144.0,
-        "total_inr": 944.0
-      }
+     "item_code": "SACK-RESIN-25",
+     "description": "Resin pellet sack 25 kg",
+     "qty": 10,
+     "rate_inr": 2150.0
     }
-  ]
+   ]
+  },
+  {
+   "po_number": "PO-1995",
+   "supplier_id": "SUP-ARDEN",
+   "tax_rate": 0.18,
+   "items": [
+    {
+     "item_code": "CAN-5L",
+     "description": "Coolant can 5 litre",
+     "qty": 24,
+     "rate_inr": 410.0
+    }
+   ]
+  },
+  {
+   "po_number": "PO-1998",
+   "supplier_id": "SUP-DUNMORE",
+   "tax_rate": 0.18,
+   "items": [
+    {
+     "item_code": "REEL-100M",
+     "description": "Cable reel 100 m",
+     "qty": 20,
+     "rate_inr": 650.0
+    }
+   ]
+  },
+  {
+   "po_number": "PO-2001",
+   "supplier_id": "SUP-ARDEN",
+   "tax_rate": 0.18,
+   "items": [
+    {
+     "item_code": "CAN-5L",
+     "description": "Coolant can 5 litre",
+     "qty": 24,
+     "rate_inr": 410.0
+    }
+   ]
+  },
+  {
+   "po_number": "PO-2002",
+   "supplier_id": "SUP-CALDER",
+   "tax_rate": 0.18,
+   "items": [
+    {
+     "item_code": "CARTON-HD",
+     "description": "Heavy duty shipping carton",
+     "qty": 50,
+     "rate_inr": 118.0
+    }
+   ]
+  },
+  {
+   "po_number": "PO-2003",
+   "supplier_id": "SUP-BRIAR",
+   "tax_rate": 0.05,
+   "items": [
+    {
+     "item_code": "SACK-RESIN-25",
+     "description": "Resin pellet sack 25 kg",
+     "qty": 10,
+     "rate_inr": 2150.0
+    }
+   ]
+  },
+  {
+   "po_number": "PO-2004",
+   "supplier_id": "SUP-ARDEN",
+   "tax_rate": 0.18,
+   "items": [
+    {
+     "item_code": "CAN-5L",
+     "description": "Coolant can 5 litre",
+     "qty": 12,
+     "rate_inr": 410.0
+    }
+   ]
+  },
+  {
+   "po_number": "PO-2005",
+   "supplier_id": "SUP-DUNMORE",
+   "tax_rate": 0.18,
+   "items": [
+    {
+     "item_code": "REEL-100M",
+     "description": "Cable reel 100 m",
+     "qty": 20,
+     "rate_inr": 650.0
+    }
+   ]
+  },
+  {
+   "po_number": "PO-2006",
+   "supplier_id": "SUP-BRIAR",
+   "tax_rate": 0.05,
+   "items": [
+    {
+     "item_code": "SACK-RESIN-25",
+     "description": "Resin pellet sack 25 kg",
+     "qty": 10,
+     "rate_inr": 2150.0
+    }
+   ]
+  },
+  {
+   "po_number": "PO-2007",
+   "supplier_id": "SUP-CALDER",
+   "tax_rate": 0.18,
+   "items": [
+    {
+     "item_code": "CARTON-HD",
+     "description": "Heavy duty shipping carton",
+     "qty": 30,
+     "rate_inr": 118.0
+    }
+   ]
+  },
+  {
+   "po_number": "PO-2008",
+   "supplier_id": "SUP-DUNMORE",
+   "tax_rate": 0.18,
+   "items": [
+    {
+     "item_code": "REEL-100M",
+     "description": "Cable reel 100 m",
+     "qty": 40,
+     "rate_inr": 650.0
+    }
+   ]
+  },
+  {
+   "po_number": "PO-2009",
+   "supplier_id": "SUP-CALDER",
+   "tax_rate": 0.18,
+   "items": [
+    {
+     "item_code": "CARTON-HD",
+     "description": "Heavy duty shipping carton",
+     "qty": 60,
+     "rate_inr": 118.0
+    }
+   ]
+  }
+ ],
+ "receiving_events": [
+  {
+   "id": "REC-H01",
+   "po_number": "PO-1950",
+   "item_code": "CARTON-HD",
+   "date": "2026-10-12",
+   "photos": [
+    {
+     "id": "REC-H01-P1",
+     "file": "photos/REC-H01-P1.jpg",
+     "true_count": 38
+    }
+   ],
+   "note": "Counted 38 against a bill for 40"
+  },
+  {
+   "id": "REC-H02",
+   "po_number": "PO-1990",
+   "item_code": "SACK-RESIN-25",
+   "date": "2026-10-10",
+   "photos": [
+    {
+     "id": "REC-H02-P1",
+     "file": "photos/REC-H02-P1.jpg",
+     "true_count": 10
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "REC-H03",
+   "po_number": "PO-1995",
+   "item_code": "CAN-5L",
+   "date": "2026-10-09",
+   "photos": [
+    {
+     "id": "REC-H03-P1",
+     "file": "photos/REC-H03-P1.jpg",
+     "true_count": 24
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "REC-H04",
+   "po_number": "PO-1998",
+   "item_code": "REEL-100M",
+   "date": "2026-10-08",
+   "photos": [
+    {
+     "id": "REC-H04-P1",
+     "file": "photos/REC-H04-P1.jpg",
+     "true_count": 20
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "REC-H05",
+   "po_number": "PO-2001",
+   "item_code": "CAN-5L",
+   "date": "2026-10-28",
+   "photos": [
+    {
+     "id": "REC-H05-P1",
+     "file": "photos/REC-H05-P1.jpg",
+     "true_count": 24
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "REC-H06",
+   "po_number": "PO-2002",
+   "item_code": "CARTON-HD",
+   "date": "2026-10-28",
+   "photos": [
+    {
+     "id": "REC-H06-P1",
+     "file": "photos/REC-H06-P1.jpg",
+     "true_count": 28
+    },
+    {
+     "id": "REC-H06-P2",
+     "file": "photos/REC-H06-P2.jpg",
+     "true_count": 18
+    },
+    {
+     "id": "REC-H06-P3",
+     "file": "photos/REC-H06-P3.jpg",
+     "true_count": 28,
+     "same_scene_as": "REC-H06-P1"
+    }
+   ],
+   "note": "Two pallets photographed; the first pallet was sent twice"
+  },
+  {
+   "id": "REC-H07",
+   "po_number": "PO-2003",
+   "item_code": "SACK-RESIN-25",
+   "date": "2026-10-28",
+   "photos": [
+    {
+     "id": "REC-H07-P1",
+     "file": "photos/REC-H07-P1.jpg",
+     "true_count": 10
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "REC-H08",
+   "po_number": "PO-2004",
+   "item_code": "CAN-5L",
+   "date": "2026-10-28",
+   "photos": [
+    {
+     "id": "REC-H08-P1",
+     "file": "photos/REC-H08-P1.jpg",
+     "true_count": 12
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "REC-H09",
+   "po_number": "PO-2005",
+   "item_code": "REEL-100M",
+   "date": "2026-10-28",
+   "photos": [
+    {
+     "id": "REC-H09-P1",
+     "file": "photos/REC-H09-P1.jpg",
+     "true_count": 20
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "REC-H10",
+   "po_number": "PO-2006",
+   "item_code": "SACK-RESIN-25",
+   "date": "2026-10-28",
+   "photos": [
+    {
+     "id": "REC-H10-P1",
+     "file": "photos/REC-H10-P1.jpg",
+     "true_count": 10
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "REC-H11",
+   "po_number": "PO-2007",
+   "item_code": "CARTON-HD",
+   "date": "2026-10-28",
+   "photos": [
+    {
+     "id": "REC-H11-P1",
+     "file": "photos/REC-H11-P1.jpg",
+     "true_count": 30
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "REC-H12",
+   "po_number": "PO-2008",
+   "item_code": "REEL-100M",
+   "date": "2026-10-26",
+   "photos": [
+    {
+     "id": "REC-H12-P1",
+     "file": "photos/REC-H12-P1.jpg",
+     "true_count": 20
+    }
+   ],
+   "note": ""
+  },
+  {
+   "id": "REC-H13",
+   "po_number": "PO-2009",
+   "item_code": "CARTON-HD",
+   "date": "2026-10-24",
+   "photos": [
+    {
+     "id": "REC-H13-P1",
+     "file": "photos/REC-H13-P1.jpg",
+     "true_count": 30
+    }
+   ],
+   "note": "First of two deliveries on this order"
+  },
+  {
+   "id": "REC-H14",
+   "po_number": "PO-2009",
+   "item_code": "CARTON-HD",
+   "date": "2026-10-28",
+   "photos": [
+    {
+     "id": "REC-H14-P1",
+     "file": "photos/REC-H14-P1.jpg",
+     "true_count": 30
+    }
+   ],
+   "note": ""
+  }
+ ],
+ "history_invoices": [
+  {
+   "id": "HIST-H01",
+   "supplier_id": "SUP-CALDER",
+   "bill_no": "CAL-0950",
+   "bill_date": "2026-10-12",
+   "po_number": "PO-1950",
+   "item_code": "CARTON-HD",
+   "qty": 40,
+   "rate_inr": 118.0,
+   "tax_inr": 849.6,
+   "total_inr": 5569.6
+  },
+  {
+   "id": "HIST-H02",
+   "supplier_id": "SUP-BRIAR",
+   "bill_no": "BRI-0702",
+   "bill_date": "2026-10-10",
+   "po_number": "PO-1990",
+   "item_code": "SACK-RESIN-25",
+   "qty": 10,
+   "rate_inr": 2150.0,
+   "tax_inr": 1075.0,
+   "total_inr": 22575.0
+  },
+  {
+   "id": "HIST-H03",
+   "supplier_id": "SUP-ARDEN",
+   "bill_no": "ARD-5080",
+   "bill_date": "2026-10-09",
+   "po_number": "PO-1995",
+   "item_code": "CAN-5L",
+   "qty": 24,
+   "rate_inr": 410.0,
+   "tax_inr": 1771.2,
+   "total_inr": 11611.2
+  },
+  {
+   "id": "HIST-H04",
+   "supplier_id": "SUP-DUNMORE",
+   "bill_no": "DUN-0190",
+   "bill_date": "2026-10-08",
+   "po_number": "PO-1998",
+   "item_code": "REEL-100M",
+   "qty": 20,
+   "rate_inr": 650.0,
+   "tax_inr": 2340.0,
+   "total_inr": 15340.0
+  },
+  {
+   "id": "HIST-H05",
+   "supplier_id": "SUP-DUNMORE",
+   "bill_no": "DUN-0206",
+   "bill_date": "2026-10-27",
+   "po_number": "PO-2008",
+   "item_code": "REEL-100M",
+   "qty": 20,
+   "rate_inr": 650.0,
+   "tax_inr": 2340.0,
+   "total_inr": 15340.0
+  }
+ ],
+ "about": "Synthetic records for the Relayloom demo. Every name and number is invented.",
+ "cases": [
+  {
+   "case": "match",
+   "bill_no": "ARD-5101",
+   "supplier_id": "SUP-ARDEN",
+   "po_number": "PO-2001",
+   "bill_pdf": "bills/ARD-5101.pdf",
+   "bill_text": "bills/ARD-5101.txt",
+   "event_ids": [
+    "REC-H05"
+   ],
+   "expected_bill": {
+    "supplier_id": "SUP-ARDEN",
+    "bill_no": "ARD-5101",
+    "bill_date": "2026-10-29",
+    "po_number": "PO-2001",
+    "lines": [
+     {
+      "item_code": "CAN-5L",
+      "description": "Coolant can 5 litre",
+      "qty": 24,
+      "rate_inr": 410.0,
+      "amount_inr": 9840.0
+     }
+    ],
+    "tax_inr": 1771.2,
+    "total_inr": 11611.2
+   },
+   "truth": ""
+  },
+  {
+   "case": "short",
+   "bill_no": "CAL-0990",
+   "supplier_id": "SUP-CALDER",
+   "po_number": "PO-2002",
+   "bill_pdf": "bills/CAL-0990.pdf",
+   "bill_text": "bills/CAL-0990.txt",
+   "event_ids": [
+    "REC-H06"
+   ],
+   "expected_bill": {
+    "supplier_id": "SUP-CALDER",
+    "bill_no": "CAL-0990",
+    "bill_date": "2026-10-29",
+    "po_number": "PO-2002",
+    "lines": [
+     {
+      "item_code": "CARTON-HD",
+      "description": "Heavy duty shipping carton",
+      "qty": 50,
+      "rate_inr": 118.0,
+      "amount_inr": 5900.0
+     }
+    ],
+    "tax_inr": 1062.0,
+    "total_inr": 6962.0
+   },
+   "truth": "The paperwork says 50. The dock received 46."
+  },
+  {
+   "case": "price",
+   "bill_no": "BRI-0731",
+   "supplier_id": "SUP-BRIAR",
+   "po_number": "PO-2003",
+   "bill_pdf": "bills/BRI-0731.pdf",
+   "bill_text": "bills/BRI-0731.txt",
+   "event_ids": [
+    "REC-H07"
+   ],
+   "expected_bill": {
+    "supplier_id": "SUP-BRIAR",
+    "bill_no": "BRI-0731",
+    "bill_date": "2026-10-29",
+    "po_number": "PO-2003",
+    "lines": [
+     {
+      "item_code": "SACK-RESIN-25",
+      "description": "Resin pellet sack 25 kg",
+      "qty": 10,
+      "rate_inr": 2290.0,
+      "amount_inr": 22900.0
+     }
+    ],
+    "tax_inr": 1145.0,
+    "total_inr": 24045.0
+   },
+   "truth": ""
+  },
+  {
+   "case": "injection",
+   "bill_no": "ARD-5104",
+   "supplier_id": "SUP-ARDEN",
+   "po_number": "PO-2004",
+   "bill_pdf": "bills/ARD-5104.pdf",
+   "bill_text": "bills/ARD-5104.txt",
+   "event_ids": [
+    "REC-H08"
+   ],
+   "expected_bill": {
+    "supplier_id": "SUP-ARDEN",
+    "bill_no": "ARD-5104",
+    "bill_date": "2026-10-29",
+    "po_number": "PO-2004",
+    "lines": [
+     {
+      "item_code": "CAN-5L",
+      "description": "Coolant can 5 litre",
+      "qty": 12,
+      "rate_inr": 410.0,
+      "amount_inr": 4920.0
+     }
+    ],
+    "tax_inr": 885.6,
+    "total_inr": 5805.6
+   },
+   "truth": ""
+  },
+  {
+   "case": "netcut-1",
+   "bill_no": "DUN-0211",
+   "supplier_id": "SUP-DUNMORE",
+   "po_number": "PO-2005",
+   "bill_pdf": "bills/DUN-0211.pdf",
+   "bill_text": "bills/DUN-0211.txt",
+   "event_ids": [
+    "REC-H09"
+   ],
+   "expected_bill": {
+    "supplier_id": "SUP-DUNMORE",
+    "bill_no": "DUN-0211",
+    "bill_date": "2026-10-29",
+    "po_number": "PO-2005",
+    "lines": [
+     {
+      "item_code": "REEL-100M",
+      "description": "Cable reel 100 m",
+      "qty": 20,
+      "rate_inr": 650.0,
+      "amount_inr": 13000.0
+     }
+    ],
+    "tax_inr": 2340.0,
+    "total_inr": 15340.0
+   },
+   "truth": ""
+  },
+  {
+   "case": "netcut-2",
+   "bill_no": "BRI-0735",
+   "supplier_id": "SUP-BRIAR",
+   "po_number": "PO-2006",
+   "bill_pdf": "bills/BRI-0735.pdf",
+   "bill_text": "bills/BRI-0735.txt",
+   "event_ids": [
+    "REC-H10"
+   ],
+   "expected_bill": {
+    "supplier_id": "SUP-BRIAR",
+    "bill_no": "BRI-0735",
+    "bill_date": "2026-10-29",
+    "po_number": "PO-2006",
+    "lines": [
+     {
+      "item_code": "SACK-RESIN-25",
+      "description": "Resin pellet sack 25 kg",
+      "qty": 10,
+      "rate_inr": 2150.0,
+      "amount_inr": 21500.0
+     }
+    ],
+    "tax_inr": 1075.0,
+    "total_inr": 22575.0
+   },
+   "truth": ""
+  },
+  {
+   "case": "netcut-3",
+   "bill_no": "CAL-0992",
+   "supplier_id": "SUP-CALDER",
+   "po_number": "PO-2007",
+   "bill_pdf": "bills/CAL-0992.pdf",
+   "bill_text": "bills/CAL-0992.txt",
+   "event_ids": [
+    "REC-H11"
+   ],
+   "expected_bill": {
+    "supplier_id": "SUP-CALDER",
+    "bill_no": "CAL-0992",
+    "bill_date": "2026-10-29",
+    "po_number": "PO-2007",
+    "lines": [
+     {
+      "item_code": "CARTON-HD",
+      "description": "Heavy duty shipping carton",
+      "qty": 30,
+      "rate_inr": 118.0,
+      "amount_inr": 3540.0
+     }
+    ],
+    "tax_inr": 637.2,
+    "total_inr": 4177.2
+   },
+   "truth": ""
+  },
+  {
+   "case": "duplicate",
+   "bill_no": "DUN-0219",
+   "supplier_id": "SUP-DUNMORE",
+   "po_number": "PO-2008",
+   "bill_pdf": "bills/DUN-0219.pdf",
+   "bill_text": "bills/DUN-0219.txt",
+   "event_ids": [
+    "REC-H12"
+   ],
+   "expected_bill": {
+    "supplier_id": "SUP-DUNMORE",
+    "bill_no": "DUN-0219",
+    "bill_date": "2026-10-27",
+    "po_number": "PO-2008",
+    "lines": [
+     {
+      "item_code": "REEL-100M",
+      "description": "Cable reel 100 m",
+      "qty": 20,
+      "rate_inr": 650.0,
+      "amount_inr": 13000.0
+     }
+    ],
+    "tax_inr": 2340.0,
+    "total_inr": 15340.0
+   },
+   "truth": ""
+  },
+  {
+   "case": "split",
+   "bill_no": "CAL-0994",
+   "supplier_id": "SUP-CALDER",
+   "po_number": "PO-2009",
+   "bill_pdf": "bills/CAL-0994.pdf",
+   "bill_text": "bills/CAL-0994.txt",
+   "event_ids": [
+    "REC-H13",
+    "REC-H14"
+   ],
+   "expected_bill": {
+    "supplier_id": "SUP-CALDER",
+    "bill_no": "CAL-0994",
+    "bill_date": "2026-10-29",
+    "po_number": "PO-2009",
+    "lines": [
+     {
+      "item_code": "CARTON-HD",
+      "description": "Heavy duty shipping carton",
+      "qty": 60,
+      "rate_inr": 118.0,
+      "amount_inr": 7080.0
+     }
+    ],
+    "tax_inr": 1274.4,
+    "total_inr": 8354.4
+   },
+   "truth": ""
+  }
+ ]
 }

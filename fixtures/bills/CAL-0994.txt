@@ -1,0 +1,14 @@
+CALDER PACKAGING
+Supplier code: SUP-CALDER    GSTIN: 33ACZFC9012M1Z8
+Phone: +91 99440 77889    Email: ar@calderpack.example
+TAX INVOICE
+Bill no: CAL-0994    Date: 29/10/2026    Your PO: PO-2009
+Bill to: Northgate Components (synthetic), Unit 14, Northgate Industrial Estate    GSTIN: 33AAZCN4321Q1Z7
+Item code      Description                         Qty        Rate (Rs)      Amount (Rs)
+CARTON-HD      Heavy duty shipping carton          60         118.00         7080.00
+Taxable value: Rs 7080.00
+GST 18%: Rs 1274.40
+Grand total: Rs 8354.40
+Payment details
+Bank account: 70300055554444    IFSC: SYNT0000303    Synthetic Bank
+Goods are taken back only for transit damage reported within 2 days.

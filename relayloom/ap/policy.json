@@ -7,19 +7,54 @@
     "never": "Refused in code, whatever a bill, a model or a person asks."
   },
   "operations": {
-    "read_bill": {"level": "run_alone"},
-    "count_goods": {"level": "run_alone"},
-    "match": {"level": "run_alone"},
-    "enter_matching_bill": {"level": "run_alone"},
-    "check_readback": {"level": "run_alone"},
-    "reconcile_after_reconnect": {"level": "run_alone"},
-    "enter_mismatched_bill": {"level": "run_with_approval"},
-    "enter_bill_over_limit": {"level": "run_with_approval"},
-    "send_dispute": {"level": "run_with_approval"},
-    "new_supplier_or_bank_change": {"level": "run_with_approval"},
-    "change_bank_from_invoice_text": {"level": "never"},
-    "enter_bill_with_failed_readback": {"level": "never"},
-    "change_books_while_offline": {"level": "never"}
+    "read_bill": {
+      "level": "run_alone"
+    },
+    "count_goods": {
+      "level": "run_alone"
+    },
+    "match": {
+      "level": "run_alone"
+    },
+    "investigate_mismatch": {
+      "level": "run_alone"
+    },
+    "hold_bill": {
+      "level": "run_alone"
+    },
+    "enter_matching_bill": {
+      "level": "run_alone"
+    },
+    "check_readback": {
+      "level": "run_alone"
+    },
+    "reconcile_after_reconnect": {
+      "level": "run_alone"
+    },
+    "enter_mismatched_bill": {
+      "level": "run_with_approval"
+    },
+    "enter_bill_over_limit": {
+      "level": "run_with_approval"
+    },
+    "send_dispute": {
+      "level": "run_with_approval"
+    },
+    "new_supplier_or_bank_change": {
+      "level": "run_with_approval"
+    },
+    "change_bank_from_invoice_text": {
+      "level": "never"
+    },
+    "enter_bill_with_failed_readback": {
+      "level": "never"
+    },
+    "change_books_while_offline": {
+      "level": "never"
+    },
+    "enter_bill_for_received_quantity": {
+      "level": "run_with_approval"
+    }
   },
   "limits": {
     "owner_amount_limit_inr": 100000,

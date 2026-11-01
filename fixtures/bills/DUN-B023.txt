@@ -1,0 +1,14 @@
+DUNMORE CABLE CO
+Supplier code: SUP-DUNMORE    GSTIN: 33ADZFD3456N1Z4
+Phone: +91 96000 12345    Email: accounts@dunmorecable.example
+TAX INVOICE
+Bill no: DUN-B023    Date: 26/10/2026    Your PO: PO-3020
+Bill to: Northgate Components (synthetic), Unit 14, Northgate Industrial Estate    GSTIN: 33AAZCN4321Q1Z7
+Item code      Description                         Qty        Rate (Rs)      Amount (Rs)
+REEL-100M      Cable reel 100 m                    15         650.00         9750.00
+Taxable value: Rs 9750.00
+GST 18%: Rs 1755.00
+Grand total: Rs 11505.00
+Payment details
+Bank account: 80400033332222    IFSC: SYNT0000404    Synthetic Bank
+Goods are taken back only for transit damage reported within 2 days.

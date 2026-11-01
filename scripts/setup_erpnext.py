@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ENV = ROOT / ".env"
 DATA = json.loads((ROOT / "fixtures" / "data.json").read_text(encoding="utf-8"))
 URL = "http://localhost:8080"
-ABBR = "MCPO"
+ABBR = "NGC"
 COMPANY = DATA["company"]["name"]
 
 
@@ -141,9 +141,9 @@ def seed(api, admin):
                     "company": COMPANY, "account_type": "Tax", "is_group": 0})
     if not admin.exists("Bank", "Synthetic Bank"):
         admin.insert({"doctype": "Bank", "bank_name": "Synthetic Bank"})
-    for code, name in DATA["items"].items():
+    for code, spec in DATA["items"].items():
         if not api.exists("Item", code):
-            api.insert({"doctype": "Item", "item_code": code, "item_name": name, "item_group": "Raw Material",
+            api.insert({"doctype": "Item", "item_code": code, "item_name": spec["name"], "item_group": "Raw Material",
                         "stock_uom": "Nos", "is_stock_item": 0, "is_purchase_item": 1})
     for supplier in DATA["suppliers"]:
         if not api.exists("Supplier", supplier["id"]):
@@ -172,6 +172,25 @@ def seed(api, admin):
                                "schedule_date": "2026-10-29"} for i in po["items"]],
                     "taxes": [{"charge_type": "On Net Total", "account_head": tax_account, "description": "GST",
                                "rate": round(po["tax_rate"] * 100, 2), "category": "Total", "add_deduct_tax": "Add"}]})
+    seed_history(tax_account)
+
+
+def seed_history(tax_account):
+    """Earlier invoices for the Investigator to cite (last price paid, duplicates, billed so far on an order)."""
+    sys.path.insert(0, str(ROOT))
+    from relayloom.ap.ledger import ERPNextLedger
+    values = env()
+    ledger = ERPNextLedger(URL, values["ERPNEXT_API_KEY"], values["ERPNEXT_API_SECRET"], COMPANY)
+    for old in DATA["history_invoices"]:
+        if ledger.find_invoice(old["supplier_id"], old["bill_no"]):
+            continue
+        po = next(p for p in DATA["purchase_orders"] if p["po_number"] == old["po_number"])
+        ledger.create_invoice({"case": "earlier invoice", "supplier_id": old["supplier_id"], "bill_no": old["bill_no"],
+                               "bill_date": old["bill_date"], "po_number": old["po_number"],
+                               "lines": [{"item_code": old["item_code"], "qty": old["qty"], "rate_inr": old["rate_inr"],
+                                          "amount_inr": round(old["qty"] * old["rate_inr"], 2)}],
+                               "tax_rate": po["tax_rate"], "tax_account": tax_account})
+        print("earlier invoice", old["bill_no"], flush=True)
 
 
 if __name__ == "__main__":

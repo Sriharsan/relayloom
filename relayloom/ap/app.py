@@ -17,7 +17,7 @@ import time
 from urllib.parse import parse_qs, urlsplit
 
 from .ledger import ERPNextLedger, LocalLedger
-from .models import GlimmerClient, RecordedGlimmer, RecordedSam, SamCounter
+from .models import GlimmerClient, RecordedGlimmer, SamCounter
 from .pipeline import Network, Workbench
 from .policy import Refused, load_policy
 from .portal import BrowserDisputer, Portal
@@ -47,15 +47,13 @@ def build(args) -> tuple[Workbench, dict]:
     signer = Signer(Path(args.data) / "receipt-signing.key")
     chain = ReceiptChain(run_dir / "receipts.jsonl", signer, policy.hash)
     if args.reader == "live":
-        reader = GlimmerClient(os.environ.get("GLIMMER_URL", "http://127.0.0.1:8081/v1"),
+        reader = GlimmerClient(os.environ.get("GLIMMER_URL", "http://127.0.0.1:8082/v1"),
                                os.environ.get("GLIMMER_ROUTE", "Muse Glimmer 30B Q4_K_M, llama.cpp CPU, this machine"))
     else:
         reader = RecordedGlimmer()
-    if args.counter == "live":
-        counter = SamCounter(os.environ["RELAYLOOM_SAM_PYTHON"], os.environ["RELAYLOOM_SAM_WEIGHTS"], run_dir / "media",
-                             os.environ.get("SAM_ROUTE", "SAM 3.1, Ultralytics, CPU, this machine"))
-    else:
-        counter = RecordedSam()
+    counter = SamCounter(os.environ.get("RELAYLOOM_SAM_PYTHON", ""), os.environ.get("RELAYLOOM_SAM_WEIGHTS", ""),
+                         os.environ.get("SAM_ROUTE", "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop"),
+                         live=args.counter == "live")
     if args.ledger == "erpnext":
         def erp():
             return ERPNextLedger(os.environ.get("ERPNEXT_URL", "http://localhost:8080"), os.environ["ERPNEXT_API_KEY"],
@@ -64,7 +62,7 @@ def build(args) -> tuple[Workbench, dict]:
         data["tax_account"] = os.environ.get("ERPNEXT_TAX_ACCOUNT", "")
     else:
         ledger = LocalLedger(run_dir / "local-ledger.sqlite3")
-        ledger.seed(data["suppliers"], data["purchase_orders"])
+        ledger.seed(data["suppliers"], data["purchase_orders"], data["history_invoices"])
         checker = LocalLedger(run_dir / "local-ledger.sqlite3")
     portal_server = Portal(args.portal_port).start()
     disputer = BrowserDisputer(f"http://127.0.0.1:{args.portal_port}", run_dir / "media")

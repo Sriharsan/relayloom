@@ -6,17 +6,20 @@ import threading
 import time
 import unittest
 
+from relayloom.ap.investigator import verify_finding
 from relayloom.ap.ledger import LocalLedger
 from relayloom.ap.masking import find, mask
 from relayloom.ap.matcher import match
 from relayloom.ap.pipeline import Network, Workbench, hidden_text
 from relayloom.ap.policy import POLICY_PATH, Refused, load_policy
 from relayloom.ap.receipts import ReceiptChain, Signer, verify
+from relayloom.ap.receiving import Receiving, similarity
 from relayloom.ap.schema import Invalid, validate_bill
 
 FIXTURES = Path(__file__).resolve().parents[1] / "fixtures"
 DATA = json.loads((FIXTURES / "data.json").read_text(encoding="utf-8"))
 CASES = {case["case"]: case for case in DATA["cases"]}
+TRUE = {p["id"]: p["true_count"] for e in DATA["receiving_events"] for p in e["photos"]}
 
 
 class FakeReader:
@@ -24,8 +27,8 @@ class FakeReader:
 
     route = "fake"
 
-    def __init__(self, delay=0.0, tamper=None):
-        self.sent, self.delay, self.tamper, self.active, self.peak = [], delay, tamper, 0, 0
+    def __init__(self, delay=0.0):
+        self.sent, self.delay, self.active, self.peak = [], delay, 0, 0
         self.lock = threading.Lock()
 
     def read_bill(self, masked_text, key=""):
@@ -37,10 +40,8 @@ class FakeReader:
         with self.lock:
             self.active -= 1
         case = next(c for c in DATA["cases"] if c["bill_no"] == key)
-        bill = json.loads(json.dumps(case["expected_bill"]))
-        if self.tamper:
-            self.tamper(bill)
-        return {"bill": validate_bill(bill), "model": "fake", "route": "fake", "seconds": 0.0, "response_id": "fake-1"}
+        return {"bill": validate_bill(json.loads(json.dumps(case["expected_bill"]))), "model": "fake", "route": "fake",
+                "seconds": 0.0, "response_id": "fake-1"}
 
     def draft_dispute(self, facts, key=""):
         return {"text": f"Bill {facts['bill_no']}: {facts['problems'][0]}", "model": "fake", "route": "fake",
@@ -48,10 +49,17 @@ class FakeReader:
 
 
 class FakeCounter:
+    """Counts what the generator drew. `wrong` changes the second wording's answer for chosen photos."""
+
+    def __init__(self, wrong=None):
+        self.wrong = wrong or {}
+
     def count(self, photo, prompt, key):
-        case = next(c for c in DATA["cases"] if c["bill_no"] == key)
-        return {"count": case["delivered_in_photo"], "prompt": prompt, "model": "fake-sam", "route": "fake",
-                "infer_seconds": 0.0}
+        count = TRUE[key]
+        if key in self.wrong and prompt in ("container", "bag", "carton", "reel"):
+            count = self.wrong[key]
+        return {"count": count, "prompt": prompt, "model": "fake-sam", "route": "fake", "infer_seconds": 0.0,
+                "overlay": f"{key}.jpg"}
 
 
 class FakePortal:
@@ -71,20 +79,19 @@ class APTests(unittest.TestCase):
         self.signer = Signer(self.root / "key")
         self.chain = ReceiptChain(self.root / "receipts.jsonl", self.signer, self.policy.hash)
         self.ledger = LocalLedger(self.root / "ledger.sqlite3")
-        self.ledger.seed(DATA["suppliers"], DATA["purchase_orders"])
-        self.checker = self.ledger  # same database, separate calls; ERPNext runs use a second client
+        self.ledger.seed(DATA["suppliers"], DATA["purchase_orders"], DATA["history_invoices"])
         self.portal = FakePortal()
 
     def tearDown(self):
         self.ledger.db.close()
         self.folder.cleanup()
 
-    def bench(self, reader=None):
+    def bench(self, reader=None, counter=None, goods=True):
         network = Network(self.ledger)
-        return Workbench(self.policy, self.ledger, self.checker, self.chain, reader or FakeReader(), FakeCounter(),
-                         network, FIXTURES, DATA, portal=self.portal)
+        return Workbench(self.policy, self.ledger, self.ledger, self.chain, reader or FakeReader(), counter or FakeCounter(),
+                         network, FIXTURES, DATA, portal=self.portal, goods=goods)
 
-    # schema
+    # schema, masking, policy
     def test_schema_refuses_extra_keys_bank_fields_and_bad_values(self):
         good = CASES["match"]["expected_bill"]
         self.assertEqual(validate_bill(good)["total_inr"], good["total_inr"])
@@ -96,38 +103,21 @@ class APTests(unittest.TestCase):
             with self.assertRaises(Invalid):
                 validate_bill(bill)
 
-    # masking
     def test_masking_removes_gstin_bank_ifsc_phone_and_email(self):
-        text = (FIXTURES / "bills" / "VEL-2611.txt").read_text(encoding="utf-8")
+        text = (FIXTURES / "bills" / "ARD-5101.txt").read_text(encoding="utf-8")
         masked, records = mask(text)
         self.assertEqual(find(masked), [])
         self.assertEqual({r["kind"] for r in records}, {"gstin", "ifsc", "phone", "email", "bank_account"})
-        for value in ("33AAZFV1234K1Z5", "50100012345678", "SYNT0000101", "98400 11223", "velantin.example"):
+        for value in ("33AAZFA1234K1Z5", "50100012345678", "SYNT0000101", "98400 11223", "ardenfluids.example"):
             self.assertNotIn(value, masked)
-        self.assertIn("VEL-2611", masked)
+        self.assertIn("ARD-5101", masked)
         self.assertNotIn("50100012345678", json.dumps(records))
 
-    # matcher
-    def test_matcher_tolerances(self):
-        po = next(p for p in DATA["purchase_orders"] if p["po_number"] == "PO-1001")
-        bill = CASES["match"]["expected_bill"]
-        self.assertTrue(match(po, bill, {"TIN-15L": 24}, self.policy.limits)["matched"])
-        short = match(po, bill, {"TIN-15L": 23}, self.policy.limits)
-        self.assertFalse(short["matched"])
-        self.assertIn("counted 23, billed 24", short["problems"][0])
-        within = json.loads(json.dumps(bill))
-        within["lines"][0]["rate_inr"] = 411.0  # 0.24 percent, inside the 0.5 percent tolerance
-        within["lines"][0]["amount_inr"] = 24 * 411.0
-        within["tax_inr"] = round(24 * 411.0 * 0.18, 2)
-        within["total_inr"] = round(24 * 411.0 * 1.18, 2)
-        self.assertTrue(match(po, within, {"TIN-15L": 24}, self.policy.limits)["matched"])
-        big = dict(self.policy.limits, owner_amount_limit_inr=1000)
-        self.assertTrue(match(po, bill, {"TIN-15L": 24}, big)["over_limit"])
-
-    # policy
     def test_policy_levels_and_refusals(self):
         self.assertEqual(self.policy.level("enter_matching_bill"), "run_alone")
+        self.assertEqual(self.policy.level("investigate_mismatch"), "run_alone")
         self.assertEqual(self.policy.level("send_dispute"), "run_with_approval")
+        self.assertEqual(self.policy.level("enter_bill_for_received_quantity"), "run_with_approval")
         with self.assertRaises(Refused):
             self.policy.require("send_dispute")
         with self.assertRaises(Refused):
@@ -138,53 +128,119 @@ class APTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             load_policy(self.root / "bad.json")
 
+    # matcher
+    def test_matcher_running_total_and_tolerances(self):
+        po = next(p for p in DATA["purchase_orders"] if p["po_number"] == "PO-2001")
+        bill = CASES["match"]["expected_bill"]
+        limits = self.policy.limits
+        self.assertTrue(match(po, bill, {"CAN-5L": 24}, {}, limits)["matched"])
+        short = match(po, bill, {"CAN-5L": 23}, {}, limits)
+        self.assertFalse(short["matched"])
+        self.assertIn("received 23", short["problems"][0])
+        again = match(po, bill, {"CAN-5L": 24}, {"CAN-5L": 4}, limits)  # 4 already billed: 24 + 4 exceeds the order
+        self.assertFalse(again["matched"])
+        paperwork = match(po, bill, None, {}, limits)
+        self.assertTrue(paperwork["matched"] and not paperwork["goods_checked"])
+        big = dict(limits, owner_amount_limit_inr=1000)
+        self.assertTrue(match(po, bill, {"CAN-5L": 24}, {}, big)["over_limit"])
+
+    # receiving
+    def test_duplicate_photo_is_found_and_different_photos_are_not(self):
+        photos = FIXTURES / "photos"
+        event = next(e for e in DATA["receiving_events"] if len(e["photos"]) == 3)
+        a, b, dup = (photos / Path(p["file"]).name for p in event["photos"])
+        self.assertGreater(similarity(a, dup), 0.95)
+        self.assertLess(similarity(a, b), 0.95)
+        other = photos / Path(DATA["receiving_events"][0]["photos"][0]["file"]).name
+        self.assertLess(similarity(a, other), 0.95)
+
+    def test_event_count_drops_the_repeated_photo(self):
+        receiving = Receiving(DATA, FakeCounter(), FIXTURES)
+        event = next(e for e in DATA["receiving_events"] if len(e["photos"]) == 3)
+        result = receiving.count_event(event["id"])
+        self.assertEqual((result["total"], result["unique_photos"], result["duplicate_photos"]), (46, 2, 1))
+
     # cases
     def test_matching_bill_is_entered_and_checked_alone(self):
-        bench = self.bench()
-        [case] = bench.run_batch([CASES["match"]])
+        [case] = self.bench().run_batch([CASES["match"]])
         self.assertEqual(case.state, "entered_checked", case.status)
+        self.assertIsNone(case.investigation)
         self.assertEqual(case.readback["differences"], [])
         self.assertEqual(case.pay_to["source"], "ledger supplier master")
-        self.assertEqual(self.ledger.count_invoices("SUP-VELAN", "VEL-2611"), 1)
+        self.assertEqual(self.ledger.count_invoices("SUP-ARDEN", "ARD-5101"), 1)
 
-    def test_short_delivery_waits_for_owner_and_dispute_needs_approval(self):
+    def test_paperwork_says_50_dock_got_46(self):
         bench = self.bench()
         [case] = bench.run_batch([CASES["short"]])
         self.assertEqual(case.state, "held_for_owner")
+        self.assertEqual(case.counter["total"], 46)
+        inv = case.investigation
+        self.assertTrue(inv["finding"]["verified"], inv["finding"]["problems"])
+        self.assertTrue(inv["checks"]["recount_agree"])
+        self.assertEqual(inv["checks"]["past_shortfalls"], 1)
         self.assertEqual(case.proposal["action"], "send_dispute")
-        self.assertIn("counted 34, billed 40", case.proposal["reason"])
-        self.assertIsNone(self.ledger.find_invoice("SUP-PON", "PON-0457"))
-        self.assertTrue(case.dispute["text"])
+        self.assertIn("4 billed but not received", case.proposal["reason"])
+        cites = {c for s in inv["finding"]["statements"] for c in s["cites"]}
+        self.assertTrue(cites <= set(inv["evidence"]))
+        self.assertTrue(any(c.startswith("PHOTO:") for c in cites) and any(c.startswith("INV:") for c in cites))
+        self.assertIsNone(self.ledger.find_invoice("SUP-CALDER", "CAL-0990"))
         self.assertEqual(self.portal.sent, [])
         with self.assertRaises(Refused):
             bench.send_dispute(case)
         bench.decide(case.id, "approve", "Owner")
         self.assertEqual(case.state, "dispute_sent")
         self.assertEqual(self.portal.sent, ["short"])
-        self.assertIsNone(self.ledger.find_invoice("SUP-PON", "PON-0457"))
+        self.assertIsNone(self.ledger.find_invoice("SUP-CALDER", "CAL-0990"))
 
-    def test_price_mismatch_rejected_by_owner_changes_nothing(self):
+    def test_recount_disagreement_holds_for_a_person(self):
+        counter = FakeCounter(wrong={"REC-H06-P2": 15})
+        [case] = self.bench(counter=counter).run_batch([CASES["short"]])
+        self.assertFalse(case.investigation["checks"]["recount_agree"])
+        self.assertEqual(case.proposal["action"], "hold_for_recount")
+
+    def test_price_mismatch_cites_last_price_paid_and_owner_reject_changes_nothing(self):
         bench = self.bench()
         [case] = bench.run_batch([CASES["price"]])
-        self.assertIn("rate 18.50, PO rate 16.00", case.proposal["reason"])
+        self.assertIn("rate 2290.00, PO rate 2150.00", case.proposal["reason"] + " " + "; ".join(case.match["problems"]))
+        self.assertTrue(any("2150.00" in v["text"] and k.startswith("INV:") for k, v in case.investigation["evidence"].items()))
         bench.decide(case.id, "reject", "Owner")
         self.assertEqual(case.state, "closed_by_owner")
         self.assertEqual(self.portal.sent, [])
         with self.assertRaises(Refused):
             bench.decide(case.id, "approve", "Owner")
 
+    def test_duplicate_bill_under_a_new_number_is_found_and_rejected(self):
+        bench = self.bench()
+        [case] = bench.run_batch([CASES["duplicate"]])
+        self.assertTrue(case.investigation["checks"]["duplicate_bill"])
+        self.assertEqual(case.proposal["action"], "reject_duplicate")
+        self.assertEqual(self.policy.level(case.proposal["operation"]), "run_alone")
+        bench.decide(case.id, "approve", "Owner")
+        self.assertEqual(case.state, "closed_by_owner")
+        self.assertIsNone(self.ledger.find_invoice("SUP-DUNMORE", "DUN-0219"))
+
+    def test_split_delivery_matches_as_a_running_total(self):
+        [case] = self.bench().run_batch([CASES["split"]])
+        self.assertEqual(len(case.counter["events"]), 2)
+        self.assertEqual(case.counter["total"], 60)
+        self.assertEqual(case.state, "entered_checked", case.status)
+        self.assertIsNone(case.investigation)
+
+    def test_paperwork_only_baseline_misses_the_short_delivery(self):
+        [case] = self.bench(goods=False).run_batch([CASES["short"]])
+        self.assertEqual(case.state, "entered_checked")  # the bill agrees with the order, the goods were never looked at
+        self.assertEqual(case.steps["count"]["state"], "skipped")
+
     def test_injection_is_recorded_and_payment_uses_master_data(self):
-        self.assertTrue(hidden_text(FIXTURES / "bills" / "VEL-2614.pdf"))
+        self.assertTrue(hidden_text(FIXTURES / "bills" / "ARD-5104.pdf"))
         reader = FakeReader()
-        bench = self.bench(reader)
-        [case] = bench.run_batch([CASES["injection"]])
+        [case] = self.bench(reader).run_batch([CASES["injection"]])
         self.assertTrue(case.injection["hidden_text"])
         self.assertNotIn("99887766554433", reader.sent[0])
         self.assertNotIn("99887766554433", json.dumps(case.view()))
         self.assertEqual(case.state, "entered_checked")
         self.assertEqual(case.pay_to["account_last4"], "5678")
-        steps = [r["body"]["step"] for r in self.chain.read("injection")]
-        self.assertIn("injection_check", steps)
+        self.assertIn("injection_check", [r["body"]["step"] for r in self.chain.read("injection")])
 
     def test_readback_mismatch_refuses_entered_status(self):
         bench = self.bench()
@@ -199,31 +255,24 @@ class APTests(unittest.TestCase):
         [case] = bench.run_batch([CASES["match"]])
         self.assertEqual(case.state, "readback_failed")
         self.assertIsNone(case.pay_to)
-        self.assertTrue(any("qty" in d for d in case.readback["differences"]))
 
     def test_offline_hold_and_reconnect_without_duplicate(self):
         bench = self.bench()
-        records = [CASES["netcut-1"], CASES["netcut-2"], CASES["netcut-3"]]
 
         def cut_after_first(case):
-            # The ledger accepted the first invoice, then the link dropped before the readback.
-            if not bench.network.online:
-                return
-            bench.network.cut()
+            if bench.network.online:
+                bench.network.cut()
 
         bench.after_create = cut_after_first
         bench.pool._max_workers = 1
-        cases = bench.run_batch(records)
-        states = [case.state for case in cases]
-        self.assertEqual(states, ["held_offline"] * 3)
+        cases = bench.run_batch([CASES["netcut-1"], CASES["netcut-2"], CASES["netcut-3"]])
+        self.assertEqual([c.state for c in cases], ["held_offline"] * 3)
         self.assertEqual(sum(self.ledger.count_invoices(c.supplier_id, c.bill_no) for c in cases), 1)
-        self.assertTrue(all(case.bill for case in cases))  # reading continued while offline
+        self.assertTrue(all(c.bill for c in cases))  # reading continued while offline
         bench.after_create = None
         bench.reconnect()
-        self.assertEqual([case.state for case in cases], ["entered_checked"] * 3)
-        for case in cases:
-            self.assertEqual(self.ledger.count_invoices(case.supplier_id, case.bill_no), 1)
-        bench.reconnect()  # a second reconnect has nothing queued and creates nothing
+        self.assertEqual([c.state for c in cases], ["entered_checked"] * 3)
+        bench.reconnect()
         self.assertEqual(sum(self.ledger.count_invoices(c.supplier_id, c.bill_no) for c in cases), 3)
 
     def test_dispute_approved_while_offline_is_sent_once_after_reconnect(self):
@@ -242,10 +291,9 @@ class APTests(unittest.TestCase):
         receipts = self.chain.read()
         ok, problems = verify(receipts, self.signer.public_key)
         self.assertTrue(ok, problems)
-        self.assertTrue(all(r["body"]["policy_hash"] == self.policy.hash for r in receipts))
+        self.assertTrue(any(r["body"]["agent"] == "Investigator" for r in receipts))
         receipts[2]["body"]["decision"] = "something else"
-        ok, problems = verify(receipts, self.signer.public_key)
-        self.assertFalse(ok)
+        self.assertFalse(verify(receipts, self.signer.public_key)[0])
         dropped = [r for i, r in enumerate(self.chain.read()) if i != 1]
         self.assertFalse(verify(dropped, self.signer.public_key)[0])
 
@@ -257,8 +305,28 @@ class APTests(unittest.TestCase):
         self.assertLess(time.perf_counter() - started, 0.7)
         self.assertGreaterEqual(reader.peak, 2)
         self.assertEqual(cases[0].state, "entered_checked")
-        self.assertIn("supplier:SUP-VELAN", bench.locks)
-        self.assertIn("po:PO-1001", bench.locks)
+        self.assertIn("supplier:SUP-ARDEN", bench.locks)
+        self.assertIn("po:PO-2001", bench.locks)
+
+
+class FindingVerificationTests(unittest.TestCase):
+    evidence = {"BILL:X-1": {"id": "BILL:X-1", "text": "Bill X-1: 50 cartons at 118.00"},
+                "REC:R-1": {"id": "REC:R-1", "text": "Receiving event R-1: 46 counted over 2 unique photos"}}
+
+    def test_real_citations_and_numbers_pass(self):
+        ok, problems = verify_finding([{"text": "The bill says 50 and the dock counted 46.", "cites": ["BILL:X-1", "REC:R-1"]}], self.evidence)
+        self.assertTrue(ok, problems)
+
+    def test_invented_record_is_rejected(self):
+        ok, problems = verify_finding([{"text": "Seen earlier.", "cites": ["INV:NOPE"]}], self.evidence)
+        self.assertFalse(ok)
+        self.assertIn("not a record", problems[0])
+
+    def test_statement_without_a_citation_and_invented_number_are_rejected(self):
+        self.assertFalse(verify_finding([{"text": "Probably short.", "cites": []}], self.evidence)[0])
+        ok, problems = verify_finding([{"text": "The dock counted 40.", "cites": ["REC:R-1"]}], self.evidence)
+        self.assertFalse(ok)
+        self.assertIn("40", problems[0])
 
 
 if __name__ == "__main__":

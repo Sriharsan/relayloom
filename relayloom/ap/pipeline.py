@@ -14,12 +14,14 @@ import threading
 import time
 
 from .ledger import LedgerOffline
+from .investigator import Investigator
 from .masking import find, mask
 from .matcher import match
+from .receiving import Receiving
 from .policy import Policy, Refused
 from .receipts import ReceiptChain, sha256
 
-STEPS = ("read", "count", "match", "enter", "check")
+STEPS = ("read", "count", "match", "investigate", "enter", "check")
 INJECTION_HINTS = re.compile(r"(ignore|update|change|new)\b.{0,40}\b(bank|account|ifsc)|for the ai|assistant processing", re.I)
 
 
@@ -55,7 +57,6 @@ class Case:
         self.po_number = record["po_number"]
         self.bill_pdf = fixtures / record["bill_pdf"]
         self.bill_text_path = fixtures / record["bill_text"]
-        self.photo = fixtures / record["photo"]
         self.state = "queued"
         self.status = "Queued"
         self.steps = {step: {"state": "waiting", "seconds": None, "note": ""} for step in STEPS}
@@ -65,6 +66,8 @@ class Case:
         self.bill: dict | None = None
         self.reader: dict = {}
         self.counter: dict = {}
+        self.event_ids: list[str] = record.get("event_ids", [])
+        self.investigation: dict | None = None
         self.match: dict | None = None
         self.proposal: dict | None = None
         self.decision: dict | None = None
@@ -79,18 +82,22 @@ class Case:
         return {"id": self.id, "bill_no": self.bill_no, "supplier_id": self.supplier_id, "po_number": self.po_number,
                 "state": self.state, "status": self.status, "steps": self.steps, "masked_text": self.masked_text,
                 "masks": self.masks, "injection": self.injection, "bill": self.bill, "reader": self.reader,
-                "counter": self.counter, "match": self.match, "proposal": self.proposal, "decision": self.decision,
+                "counter": self.counter, "investigation": self.investigation, "event_ids": self.event_ids,
+                "match": self.match, "proposal": self.proposal, "decision": self.decision,
                 "invoice_id": self.invoice_id, "readback": self.readback, "pay_to": self.pay_to,
                 "dispute": self.dispute, "queued_action": self.queued_action, "ledger": self.ledger_name,
-                "photo": self.photo.name}
+                }
 
 
 class Workbench:
     def __init__(self, policy: Policy, ledger, checker_ledger, chain: ReceiptChain, reader, counter,
-                 network: Network, fixtures: Path, data: dict, portal=None, owner: str = "Owner"):
+                 network: Network, fixtures: Path, data: dict, portal=None, owner: str = "Owner", goods: bool = True):
         self.policy, self.ledger, self.checker_ledger = policy, ledger, checker_ledger
         self.chain, self.reader, self.counter, self.network = chain, reader, counter, network
         self.fixtures, self.data, self.portal, self.owner = fixtures, data, portal, owner
+        self.goods = goods  # False is the paperwork only baseline used by the benchmark
+        self.receiving = Receiving(data, counter, fixtures)
+        self.investigator = Investigator(self.receiving, ledger, writer=reader if getattr(reader, "writes_findings", False) else None)
         self.cases: dict[str, Case] = {}
         self.lock = threading.RLock()
         self.locks: dict[str, threading.Lock] = {}
@@ -103,7 +110,7 @@ class Workbench:
         with self.lock:
             self.cases[case.id] = case
         self.receipt(case, "Intake", "intake", "accepted", input_hash=sha256(case.bill_pdf.read_bytes()),
-                     detail={"bill": case.bill_pdf.name, "photo": case.photo.name})
+                     detail={"bill": case.bill_pdf.name, "receiving_events": case.event_ids})
         return case
 
     def run_batch(self, records: list[dict]) -> list[Case]:
@@ -172,18 +179,29 @@ class Workbench:
 
     def _count(self, case: Case):
         self.policy.require("count_goods")
+        if not self.goods:
+            self.mark(case, "count", "skipped", None, "paperwork only")
+            return
         self.mark(case, "count", "running")
         case.status = "Counting the delivery"
-        result = self.counter.count(case.photo, case.record["count_prompt"], case.bill_no)
-        if result["count"] > self.policy.limits["max_count_per_photo"]:
-            raise Refused("more items in the photo than the counter is trusted for")
-        seconds = result.get("infer_seconds", result.get("wall_seconds"))
-        case.counter = {**result, "item_code": case.record["count_item"], "seconds": seconds}
-        self.mark(case, "count", "done", seconds, result["route"])
-        self.receipt(case, "Counter", "count", f"counted {result['count']}",
-                     input_hash=sha256(case.photo.read_bytes()), model=result["model"], route=result["route"],
-                     detail={"prompt": result["prompt"], "count": result["count"], "device": result.get("device"),
-                             "seconds": seconds})
+        received = self.receiving.received_for_po(case.po_number)
+        for event in received["events"]:
+            for photo in event["photos"]:
+                if photo["counted"] and photo["count"] > self.policy.limits["max_count_per_photo"]:
+                    raise Refused("more items in a photo than the counter is trusted for")
+        photos = [p for e in received["events"] for p in e["photos"]]
+        routes = sorted({p["route"] for p in photos if p["counted"]})
+        case.counter = {"events": received["events"], "total": received["total"], "count": received["total"],
+                        "seconds": received["seconds"], "route": "; ".join(routes), "model": "SAM 3.1",
+                        "item_code": case.bill["lines"][0]["item_code"]}
+        self.mark(case, "count", "done", received["seconds"], f"{received['total']} counted")
+        for event in received["events"]:
+            self.receipt(case, "Counter", "count", f"counted {event['total']} in {event['event_id']}",
+                         input_hash=sha256([p["photo"] for p in event["photos"]]), model="SAM 3.1",
+                         route="; ".join(sorted({p["route"] for p in event["photos"] if p["counted"]})),
+                         detail={"event": event["event_id"], "date": event["date"], "total": event["total"],
+                                 "photos": [{k: p.get(k) for k in ("photo", "count", "counted", "duplicate_of", "prompt", "seconds")}
+                                            for p in event["photos"]]})
 
     def _match(self, case: Case):
         self.policy.require("match")
@@ -191,34 +209,66 @@ class Workbench:
         started = time.perf_counter()
         try:
             po = self.ledger.get_po(case.bill["po_number"])
+            earlier = [e for e in self.ledger.invoices(po_number=case.bill["po_number"]) if e["bill_no"] != case.bill["bill_no"]]
         except LedgerOffline:
             po = next((p for p in self.data["purchase_orders"] if p["po_number"] == case.po_number), None)
+            earlier = [{"lines": [{"item_code": h["item_code"], "qty": h["qty"]}]} for h in self.data["history_invoices"]
+                       if h["po_number"] == case.po_number and h["bill_no"] != case.bill["bill_no"]]
         if po is None:
             raise Refused(f"no purchase order {case.bill['po_number']}")
-        result = match(po, case.bill, {case.counter["item_code"]: case.counter["count"]}, self.policy.limits)
+        billed_before: dict[str, float] = {}
+        for entry in earlier:
+            for line in entry["lines"]:
+                billed_before[line["item_code"]] = billed_before.get(line["item_code"], 0) + line["qty"]
+        received = {case.counter["item_code"]: case.counter["total"]} if self.goods else None
+        result = match(po, case.bill, received, billed_before, self.policy.limits)
         case.match = result
         seconds = round(time.perf_counter() - started, 3)
         self.mark(case, "match", "done" if result["matched"] else "held", seconds,
                   "matched" if result["matched"] else "; ".join(result["problems"]))
         self.receipt(case, "Matcher", "match", "matched" if result["matched"] else "mismatch",
-                     input_hash=sha256({"po": po, "bill": case.bill, "count": case.counter["count"]}),
-                     detail={"problems": result["problems"], "over_limit": result["over_limit"]})
+                     input_hash=sha256({"po": po, "bill": case.bill, "received": received, "billed_before": billed_before}),
+                     detail={"problems": result["problems"], "over_limit": result["over_limit"], "received": received,
+                             "billed_before": billed_before})
         if result["matched"] and not result["over_limit"]:
             case.state = "matched"
+            self.mark(case, "investigate", "skipped", None, "nothing to investigate")
             return
         if result["matched"]:
-            operation, action = "enter_bill_over_limit", "enter_bill"
-            reason = f"total above the owner limit of Rs {self.policy.limits['owner_amount_limit_inr']:,}"
+            case.proposal = {"action": "enter_bill", "operation": "enter_bill_over_limit",
+                             "reason": f"total above the owner limit of Rs {self.policy.limits['owner_amount_limit_inr']:,}"}
+            self.mark(case, "investigate", "skipped", None, "nothing to investigate")
+        elif self.goods:
+            self._investigate(case, po)
         else:
-            operation, action = "enter_mismatched_bill", "send_dispute"
-            reason = "; ".join(result["problems"])
-        case.proposal = {"action": action, "operation": operation, "reason": reason,
-                         "policy_level": self.policy.level(operation)}
+            case.proposal = {"action": "send_dispute", "operation": "send_dispute", "reason": "; ".join(result["problems"])}
+            self.mark(case, "investigate", "skipped", None, "paperwork only")
+        case.proposal["policy_level"] = self.policy.level(case.proposal["operation"])
         case.state, case.status = "held_for_owner", "Waiting for the owner"
         self.mark(case, "enter", "held", None, "needs the owner")
-        self.receipt(case, "Matcher", "propose", f"held for owner: {action}", detail=case.proposal)
-        if action == "send_dispute":
+        self.receipt(case, "Matcher", "propose", f"held for owner: {case.proposal['action']}", detail=case.proposal)
+        if case.proposal["action"] == "send_dispute" and self.goods:
             self.draft_dispute(case)
+
+    def _investigate(self, case: Case, po: dict):
+        self.policy.require("investigate_mismatch")
+        self.mark(case, "investigate", "running")
+        case.status = "Investigating"
+        started = time.perf_counter()
+        report = self.investigator.investigate(case.id, case.bill, po, case.match, case.event_ids)
+        finding = report["finding"]
+        case.investigation = {k: report[k] for k in ("evidence", "finding", "proposal", "checks")}
+        case.investigation["recounts"] = report["recounts"]
+        case.proposal = dict(report["proposal"])
+        seconds = round(time.perf_counter() - started, 1)
+        self.mark(case, "investigate", "done", seconds, case.proposal["reason"])
+        self.receipt(case, "Investigator", "investigate", f"proposes {case.proposal['action']}",
+                     input_hash=sha256(report["evidence"]), model=finding.get("model", ""),
+                     route=finding.get("route", ""), response_id=finding.get("response_id", ""),
+                     detail={"checks": report["checks"], "finding_verified": finding["verified"],
+                             "written_by": finding["written_by"], "statements": finding["statements"],
+                             "evidence_ids": sorted(report["evidence"]), "proposal": case.proposal,
+                             "seconds": seconds})
 
     # Clerk and Checker --------------------------------------------------
     def entry(self, case: Case) -> dict:
@@ -338,14 +388,23 @@ class Workbench:
             self.mark(case, "enter", "skipped", None, "owner rejected")
             return case
         case.state = "approved"
-        if case.proposal["action"] == "enter_bill":
+        action = case.proposal["action"]
+        if action == "enter_bill":
             self.enter(case, approved=True)
-        else:
+        elif action == "send_dispute":
             self.send_dispute(case)
+        else:  # reject_duplicate and hold_for_recount change nothing in the books and send nothing
+            self.policy.require("hold_bill")
+            case.state = "closed_by_owner"
+            case.status = ("Duplicate bill rejected: nothing entered" if action == "reject_duplicate"
+                           else "Held for a person to recount: nothing entered")
+            self.mark(case, "enter", "skipped", None, case.status)
+            self.receipt(case, "Owner", "close", case.status, approver=by, detail={"action": action})
         return case
 
     def draft_dispute(self, case: Case):
-        facts = dispute_facts(self.data_supplier(case.supplier_id)["name"], case.bill_no, case.po_number, case.match)
+        facts = dispute_facts(self.data_supplier(case.supplier_id)["name"], case.bill_no, case.po_number, case.match,
+                              case.investigation)
         result = self.reader.draft_dispute(facts, key=case.bill_no)
         case.dispute = {"text": result["text"], "model": result["model"], "route": result["route"],
                         "seconds": result["seconds"], "response_id": result["response_id"], "sent": False,
@@ -369,13 +428,18 @@ class Workbench:
                      ledger_readback=result["reference"], detail={k: v for k, v in result.items() if k != "screenshot"})
 
 
-def dispute_facts(supplier_name: str, bill_no: str, po_number: str, match_result: dict) -> dict:
+def dispute_facts(supplier_name: str, bill_no: str, po_number: str, match_result: dict, investigation: dict | None = None) -> dict:
     """The only facts the Disputer may use. No bank details, no free text from the bill."""
     row = match_result["rows"][0]
-    return {"supplier": supplier_name, "bill_no": bill_no, "po_number": po_number, "item": row["description"],
-            "ordered": row["po_qty"], "billed": row["bill_qty"], "counted_on_delivery": row["counted"],
-            "po_rate": row["po_rate"], "billed_rate": row["bill_rate"], "problems": match_result["problems"],
-            "ask": "send a corrected bill for what arrived at the PO rate"}
+    facts = {"supplier": supplier_name, "bill_no": bill_no, "po_number": po_number, "item": row["description"],
+             "ordered": row["po_qty"], "billed": row["bill_qty"], "received_in_total": row["received"],
+             "billed_before_on_this_order": row["billed_before"], "po_rate": row["po_rate"],
+             "billed_rate": row["bill_rate"], "problems": match_result["problems"],
+             "ask": "send a credit note or a corrected bill for what was received, at the order rate"}
+    if investigation:
+        facts["recount_agrees"] = investigation["checks"]["recount_agree"]
+        facts["past_shortfalls_for_this_supplier"] = investigation["checks"]["past_shortfalls"]
+    return facts
 
 
 def compare(expected: dict, stored: dict | None) -> list[str]:
