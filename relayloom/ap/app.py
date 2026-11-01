@@ -99,6 +99,7 @@ class App(ThreadingHTTPServer):
         gateway = [json.loads(l) for l in gateway_log.read_text(encoding="utf-8").splitlines()[-50:]] if gateway_log.exists() else []
         masks = [{"case": c["id"], "kinds": [m["kind"] for m in c["masks"]]} for c in cases if c["masks"]]
         return {"run": self.run, "online": bench.network.online, "cases": cases, "counts": counts,
+                "total_cases": len(bench.data["cases"]),
                 "policy": {"hash": bench.policy.hash, "operations": {k: v["level"] for k, v in bench.policy.data["operations"].items()},
                            "limits": bench.policy.limits, "egress": bench.policy.data["egress"]},
                 "boundary": {"gateway_log": gateway, "masks": masks, "model_calls_outside": 0 if not gateway else
@@ -145,6 +146,9 @@ class Handler(BaseHTTPRequestHandler):
             ok, problems = verify(app.bench.chain.read(), app.run["public_key"])
             return self.json(200, {"receipts": receipts, "verified": ok, "problems": problems,
                                    "public_key": app.run["public_key"]})
+        if url.path == "/api/benchmark":
+            path = ROOT / "docs" / "benchmark-results.json"
+            return self.file(path) if path.exists() else self.json(404, {"error": "no benchmark results yet"})
         if url.path.startswith("/media/"):
             name = Path(url.path[7:]).name
             for folder in (app.bench.run_dir / "media", FIXTURES / "photos", FIXTURES / "recorded" / "sam"):

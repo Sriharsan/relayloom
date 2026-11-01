@@ -2,18 +2,23 @@
 // Relayloom accounts payable UI. Shows server state only; nothing on screen is invented.
 
 const $ = (id) => document.getElementById(id);
+const STEPS = ["read", "count", "match", "investigate", "enter", "check"];
 const STEP_LABEL = { waiting: "Waiting", running: "Working", done: "Done", held: "Held", failed: "Failed", skipped: "Skipped" };
 const STATE_PILL = {
   queued: ["Queued", "p-muted"], matched: ["Matched", "p-muted"], entered_checked: ["Entered and checked", "p-ok"],
   held_for_owner: ["Needs you", "p-needs"], held_offline: ["Held, offline", "p-off"], approved: ["Approved", "p-muted"],
-  dispute_sent: ["Dispute sent", "p-ok"], closed_by_owner: ["Rejected by owner", "p-muted"],
+  dispute_sent: ["Dispute sent", "p-ok"], closed_by_owner: ["Closed by owner", "p-muted"],
   readback_failed: ["Readback failed", "p-bad"], failed: ["Stopped", "p-bad"],
 };
+const ACTION_LABEL = { send_dispute: "send a dispute to the supplier", enter_bill: "enter the bill", reject_duplicate: "reject the duplicate bill",
+  hold_for_recount: "hold for a person to recount", enter_bill_for_received_quantity: "enter the bill for the received quantity" };
 let state = null;
 let selected = 0;
 let current = "today";
 let caseId = null;
 let receiptsFor = null;
+let openCite = null;
+let benchmark = undefined;
 
 function esc(value) {
   return String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -21,6 +26,8 @@ function esc(value) {
 const rupees = (n) => n == null ? "" : "Rs " + Number(n).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const secs = (s) => s == null ? "" : s < 1 ? `${Math.round(s * 1000)} ms` : s < 120 ? `${Number(s).toFixed(1)} s` : `${(s / 60).toFixed(1)} min`;
 const pill = (stateName) => { const [label, cls] = STATE_PILL[stateName] || [stateName, "p-muted"]; return `<span class="pill ${cls}">${esc(label)}</span>`; };
+const allPhotos = (c) => (c.counter.events || []).flatMap((e) => e.photos);
+const firstPhoto = (c) => { const p = allPhotos(c).find((x) => x.counted); return p ? (p.overlay || p.photo + ".jpg") : ""; };
 
 async function post(path, body) {
   const response = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json", "X-Relayloom": "1" }, body: JSON.stringify(body || {}) });
@@ -30,8 +37,7 @@ async function post(path, body) {
 
 async function refresh() {
   try {
-    const response = await fetch("/api/state");
-    state = await response.json();
+    state = await (await fetch("/api/state")).json();
     render();
   } catch (error) {
     $("runbar").textContent = "The local app is not answering. Is python -m relayloom.ap running?";
@@ -47,7 +53,7 @@ function render() {
   const waiting = cases.filter((c) => c.state === "held_for_owner").length;
   $("approvalCount").hidden = !waiting;
   $("approvalCount").textContent = waiting;
-  $("start").disabled = cases.length >= 7;
+  $("start").disabled = cases.length >= state.total_cases;
   $("tiles").innerHTML = [
     ["Entered and checked", counts.entered_checked, "ok"], ["Held for the owner", counts.held_for_owner, "needs"],
     ["Held, offline", counts.held_offline, "off"], ["Disputes sent", counts.disputes_sent, ""],
@@ -57,6 +63,7 @@ function render() {
   if (current === "case") renderCase();
   if (current === "approvals") renderQueue();
   if (current === "boundary") renderBoundary();
+  if (current === "benchmark") renderBenchmark();
 }
 
 function stepCell(step) {
@@ -68,7 +75,7 @@ function renderRows(cases) {
   $("rows").innerHTML = cases.map((c) => `<tr data-case="${esc(c.id)}">
     <td><a href="#case/${esc(c.id)}">${esc(c.bill_no)}</a><br><small class="meta">${esc(c.id)}</small></td>
     <td>${esc(c.supplier_id)}</td>
-    ${["read", "count", "match", "enter", "check"].map((s) => `<td data-label="${s}">${stepCell(c.steps[s])}</td>`).join("")}
+    ${STEPS.map((s) => `<td data-label="${s}">${stepCell(c.steps[s])}</td>`).join("")}
     <td class="status">${pill(c.state)}<br><small class="meta">${esc(c.status)}</small></td></tr>`).join("");
 }
 
@@ -88,10 +95,39 @@ function maskedText(text) {
 function matchTable(m) {
   if (!m) return "<p class='meta'>Not matched yet.</p>";
   const rows = m.rows.map((r) => `<tr><td>${esc(r.description)}</td><td class="num">${r.po_qty}</td><td class="num">${r.bill_qty ?? ""}</td>
-    <td class="num">${r.counted ?? "not counted"}</td><td class="num">${rupees(r.po_rate)}</td><td class="num">${rupees(r.bill_rate)}</td>
+    <td class="num">${r.billed_before}</td><td class="num">${r.received ?? "not counted"}</td><td class="num">${rupees(r.po_rate)}</td><td class="num">${rupees(r.bill_rate)}</td>
     <td>${r.issues.length ? `<span class="issue">${esc(r.issues.join("; "))}</span>` : "matches"}</td></tr>`).join("");
-  return `<div class="table-wrap"><table><thead><tr><th>Item</th><th>PO qty</th><th>Billed</th><th>Counted</th><th>PO rate</th><th>Bill rate</th><th>Result</th></tr></thead><tbody>${rows}</tbody></table></div>
-    ${m.problems.length ? `<p class="issue">${esc(m.problems.join(". "))}</p>` : "<p class='meta'>Purchase order, bill and delivery agree within the policy tolerances.</p>"}`;
+  return `<div class="table-wrap"><table><thead><tr><th>Item</th><th>Ordered</th><th>Billed</th><th>Billed before</th><th>Received</th><th>Order rate</th><th>Bill rate</th><th>Result</th></tr></thead><tbody>${rows}</tbody></table></div>
+    ${m.problems.length ? `<p class="issue">${esc(m.problems.join(". "))}</p>` : "<p class='meta'>Order, bill and goods received agree within the policy tolerances.</p>"}`;
+}
+
+function gallery(c) {
+  const events = c.counter.events || [];
+  if (!events.length) return "<p class='meta'>Not counted yet.</p>";
+  return events.map((e) => `<div class="event"><h3>${esc(e.event_id)} · ${esc(e.date)} · <b class="num">${e.total}</b> counted in ${e.unique_photos} unique photo${e.unique_photos === 1 ? "" : "s"}${e.duplicate_photos ? `, ${e.duplicate_photos} repeated photo ignored` : ""}</h3>
+    <div class="shots">${e.photos.map((p) => `<figure class="${p.counted ? "" : "dup"}"><img src="/media/${esc(p.counted ? (p.overlay || p.photo + ".jpg") : p.photo + ".jpg")}" alt="${esc(p.photo)}${p.counted ? `, ${p.count} counted and numbered` : ", repeated photo, not counted"}" loading="lazy">
+      <figcaption>${esc(p.photo)}: ${p.counted ? `<b class="num">${p.count}</b> counted` : `repeats ${esc(p.duplicate_of)}, not counted`}</figcaption></figure>`).join("")}</div></div>`).join("");
+}
+
+function citeChip(id) { return `<button type="button" class="cite" data-cite="${esc(id)}" aria-pressed="${openCite === id}">${esc(id)}</button>`; }
+
+function investigation(c) {
+  const inv = c.investigation;
+  if (!inv) return `<div class="card"><h2>Investigation</h2><p class="meta">${c.match && c.match.matched ? "Nothing to investigate: the goods and the paperwork agree." : "Not started."}</p></div>`;
+  const f = inv.finding;
+  const by = f.written_by === "model" ? `Written by ${esc(f.model.split("/").pop())}, ${esc(f.route)}, ${secs(f.seconds)}.` : "Written by code from the evidence. Every citation was checked by code.";
+  let detail = "";
+  if (openCite && inv.evidence[openCite]) {
+    const item = inv.evidence[openCite];
+    const img = item.kind === "photo" ? `<img src="/media/${esc(item.overlay || item.photo + ".jpg")}" alt="${esc(item.photo)}" class="evimg">` : "";
+    detail = `<div class="evidence" role="region" aria-live="polite"><b>${esc(item.id)}</b><p>${esc(item.text)}</p>${img}</div>`;
+  }
+  const level = c.proposal ? c.proposal.policy_level.replaceAll("_", " ") : "";
+  return `<div class="card inv"><h2>Investigation</h2>
+    <p class="meta">${by} ${f.verified ? "All citations are real records." : "Citations failed the check."}</p>
+    <ol class="finding">${f.statements.map((s) => `<li>${esc(s.text)} <span class="cites">${s.cites.map(citeChip).join(" ")}</span></li>`).join("")}</ol>${detail}
+    ${c.proposal ? `<div class="proposal"><div><span class="meta">The agent proposes</span><br><b>${esc(ACTION_LABEL[c.proposal.action] || c.proposal.action)}</b><br><span class="issue">${esc(c.proposal.reason)}</span></div>
+      <div><span class="meta">The policy says</span><br><span class="pill ${c.proposal.policy_level === "run_alone" ? "p-ok" : "p-needs"}">${esc(level)}</span>${c.decision ? `<br><span class="meta">Owner: ${esc(c.decision.decision)} at ${esc(c.decision.at)}</span>` : ""}</div></div>` : ""}</div>`;
 }
 
 async function loadReceipts(id) {
@@ -109,13 +145,11 @@ function renderCase() {
   const c = state.cases.find((x) => x.id === caseId);
   if (!c) { $("caseBody").innerHTML = "<p class='meta'>This case has not started yet.</p>"; return; }
   $("caseTitle").textContent = `${c.bill_no} · ${c.supplier_id}`;
-  const photo = c.counter.overlay ? c.counter.overlay : c.photo;
+  const key = c.id + JSON.stringify([c.state, c.status, openCite, c.counter.total, !!c.investigation, !!c.dispute && c.dispute.sent, c.masked_text.length]);
+  if ($("caseBody").dataset.key === key) return;  // nothing changed: keep scroll and the open citation as they are
+  $("caseBody").dataset.key = key;
   const reader = c.reader.model ? `${esc(c.reader.model)} · ${esc(c.reader.route)} · ${secs(c.reader.seconds)}` : "not read yet";
-  const counter = c.counter.model ? `${esc(c.counter.model)} · ${esc(c.counter.route)} · ${secs(c.counter.seconds)} · prompt "${esc(c.counter.prompt)}"` : "not counted yet";
-  const decision = c.proposal ? `<dl class="kv"><dt>Agent proposes</dt><dd>${esc(c.proposal.action.replace("_", " "))}</dd><dt>Why</dt><dd>${esc(c.proposal.reason)}</dd>
-      <dt>Policy</dt><dd>${esc(c.proposal.operation.replaceAll("_", " "))}: ${esc(c.proposal.policy_level.replaceAll("_", " "))}</dd>
-      ${c.decision ? `<dt>Owner</dt><dd>${esc(c.decision.decision)} by ${esc(c.decision.by)} at ${esc(c.decision.at)}</dd>` : ""}</dl>`
-    : `<p class="meta">${c.state === "entered_checked" ? "Matched within limits: the policy lets the agents enter it alone." : "No proposal needed yet."}</p>`;
+  const counter = c.counter.model ? `${esc(c.counter.model)} · ${esc(c.counter.route)} · ${secs(c.counter.seconds)}` : "not counted yet";
   const readback = c.readback ? `<dl class="kv"><dt>Ledger</dt><dd>${esc(c.readback.ledger)} · ${esc(c.invoice_id)}</dd>
       <dt>Fields</dt><dd>${c.readback.differences.length ? `<span class="issue">${esc(c.readback.differences.join("; "))}</span>` : "every field matches the bill"}</dd>
       ${c.pay_to ? `<dt>Pay to</dt><dd>account ending ${esc(c.pay_to.account_last4)}, ${esc(c.pay_to.ifsc)}, from the ${esc(c.pay_to.source)}</dd>` : ""}</dl>`
@@ -125,13 +159,12 @@ function renderCase() {
   const dispute = c.dispute ? `<div class="card"><h2>Dispute to the supplier</h2><p class="draft">${esc(c.dispute.text)}</p>
       <p class="meta">Text by ${esc(c.dispute.model)} (${esc(c.dispute.route)}, ${secs(c.dispute.seconds)}). ${c.dispute.sent ? `Sent through the supplier portal, form filled by ${esc(c.dispute.form_filled_by)}, reference ${esc(c.dispute.portal_ref)}.` : "Not sent. Sending needs the owner's approval."}</p>
       ${c.dispute.screenshot ? `<img src="/media/${esc(c.dispute.screenshot)}" alt="The supplier portal form filled with the dispute" style="max-width:100%;border-radius:8px">` : ""}</div>` : "";
-  $("caseBody").innerHTML = `${injection}<div class="grid2">
-    <div class="card"><h2>The bill, as the model saw it</h2><pre class="billtext">${maskedText(c.masked_text || "Not read yet.")}</pre>
+  $("caseBody").innerHTML = `${injection}${investigation(c)}
+    <div class="grid2"><div class="card"><h2>The bill, as the model saw it</h2><pre class="billtext">${maskedText(c.masked_text || "Not read yet.")}</pre>
       <p class="meta">Reader: ${reader}. ${c.masks.length} private numbers masked.</p></div>
-    <div class="card photo"><h2>The delivery</h2><img src="/media/${esc(photo)}" alt="Delivery photo${c.counter.count != null ? ` with ${c.counter.count} items outlined and numbered` : ""}">
-      <p class="meta">${c.counter.count != null ? `<b>${c.counter.count}</b> counted. ` : ""}Counter: ${counter}.</p></div></div>
-    <div class="card"><h2>Three way match</h2>${matchTable(c.match)}</div>
-    <div class="grid2"><div class="card"><h2>Proposal and policy</h2>${decision}</div><div class="card"><h2>Ledger readback</h2>${readback}</div></div>
+    <div class="card photo"><h2>The dock</h2>${gallery(c)}<p class="meta">Counter: ${counter}.</p></div></div>
+    <div class="card"><h2>Three way match, as a running total on the order</h2>${matchTable(c.match)}</div>
+    <div class="card"><h2>Ledger readback</h2>${readback}</div>
     ${dispute}<div class="card"><h2>Receipts</h2><div id="receiptBox"><p class="meta">Loading receipts.</p></div></div>`;
   loadReceipts(c.id);
 }
@@ -141,10 +174,11 @@ function renderQueue() {
   if (!items.length) { $("queue").innerHTML = "<p class='meta'>Nothing needs you right now.</p>"; return; }
   selected = Math.min(selected, items.length - 1);
   $("queue").innerHTML = items.map((c, i) => `<article class="qitem ${i === selected ? "sel" : ""}" data-case="${esc(c.id)}" aria-label="${esc(c.bill_no)}">
-    <img src="/media/${esc(c.counter.overlay || c.photo)}" alt="Delivery photo, ${c.counter.count} counted">
+    <img src="/media/${esc(firstPhoto(c))}" alt="Delivery photo, counted">
     <div><h2>${esc(c.bill_no)} · ${esc(c.supplier_id)} · ${rupees(c.bill && c.bill.total_inr)}</h2>
       <p class="issue">${esc(c.proposal.reason)}</p>
-      <p>Agent proposes: <b>${esc(c.proposal.action.replace("_", " "))}</b>. Nothing has been entered.</p>
+      ${c.investigation ? `<p class="meta">${c.investigation.finding.statements.length} statements, each citing a record or photo. <a href="#case/${esc(c.id)}">Open the investigation</a></p>` : ""}
+      <p>Agent proposes: <b>${esc(ACTION_LABEL[c.proposal.action] || c.proposal.action)}</b>. Nothing has been entered.</p>
       ${c.dispute ? `<p class="draft">${esc(c.dispute.text)}</p><p class="meta">Draft by ${esc(c.dispute.model)}, ${esc(c.dispute.route)}</p>` : ""}
       <div class="qactions"><button type="button" class="approve" data-act="approve" data-case="${esc(c.id)}">Approve (a)</button>
       <button type="button" class="reject" data-act="reject" data-case="${esc(c.id)}">Reject (r)</button>
@@ -164,6 +198,29 @@ function renderBoundary() {
     <div class="card"><h2>Gateway log</h2>${log}</div>`;
 }
 
+async function renderBenchmark() {
+  if (benchmark === undefined) {
+    benchmark = null;
+    try { const r = await fetch("/api/benchmark"); benchmark = r.ok ? await r.json() : null; } catch (error) { benchmark = null; }
+  }
+  const box = $("benchmarkBody");
+  if (!benchmark) { box.innerHTML = "<p class='meta'>No benchmark results yet. Run <code>python -m relayloom.ap.benchmark</code>.</p>"; return; }
+  const a = benchmark.pipeline_a, b = benchmark.pipeline_b;
+  const row = (label, x, y) => `<tr><th scope="row">${label}</th><td class="num">${x}</td><td class="num">${y}</td></tr>`;
+  box.innerHTML = `<p class="caveat"><b>Synthetic set built by us.</b> ${a.deliveries} invented deliveries with known answers, run through two pipelines on ${esc(benchmark.date)}. ${esc(benchmark.counter_mode)}.</p>
+    <div class="table-wrap"><table><thead><tr><th></th><th>A: paperwork only</th><th>B: paperwork plus goods</th></tr></thead><tbody>
+      ${row("Bad bills in the set", a.should_hold, b.should_hold)}${row("Errors caught", a.errors_caught, b.errors_caught)}${row("Errors missed", a.errors_missed, b.errors_missed)}
+      ${row("Wrong payments avoided", rupees(a.wrong_payments_avoided_inr), rupees(b.wrong_payments_avoided_inr))}${row("Wrong payments made", rupees(a.wrong_payments_made_inr), rupees(b.wrong_payments_made_inr))}
+      ${row("False holds", a.false_holds, b.false_holds)}${row("Good bills entered", `${a.correctly_entered} of ${a.should_enter}`, `${b.correctly_entered} of ${b.should_enter}`)}
+      ${row("Mean time per delivery, this run", secs(a.mean_seconds_per_case), secs(b.mean_seconds_per_case))}
+    </tbody></table></div>
+    <p class="meta">SAM 3.1 counted ${benchmark.sam.exactly_right} of ${benchmark.sam.photos} unique photos exactly right. Recorded inference time behind B: ${secs(benchmark.sam_seconds_total)} over the set, about ${secs(benchmark.sam_seconds_per_delivery)} per delivery.</p>
+    <h2>By category</h2><div class="table-wrap"><table><thead><tr><th>Category</th><th>Deliveries</th><th>Should enter</th><th>A entered</th><th>B entered</th></tr></thead><tbody>
+      ${Object.entries(benchmark.by_category).map(([k, v]) => `<tr><td>${esc(k.replaceAll("_", " "))}</td><td class="num">${v.deliveries}</td><td>${v.should_enter ? "yes" : "no"}</td><td class="num">${v.a_entered}</td><td class="num">${v.b_entered}</td></tr>`).join("")}</tbody></table></div>
+    <h2>Every delivery</h2><div class="table-wrap"><table><thead><tr><th>Id</th><th>Category</th><th>Total</th><th>Should enter</th><th>A</th><th>B</th><th>B counted</th></tr></thead><tbody>
+      ${benchmark.rows_a.map((ra, i) => { const rb = benchmark.rows_b[i]; return `<tr><td>${esc(ra.id)}</td><td>${esc(ra.category.replaceAll("_", " "))}</td><td class="num">${rupees(ra.total_inr)}</td><td>${ra.should_enter ? "yes" : "no"}</td><td>${ra.entered ? "entered" : "held"}</td><td>${rb.entered ? "entered" : "held"}</td><td class="num">${rb.counted ?? ""}</td></tr>`; }).join("")}</tbody></table></div>`;
+}
+
 async function decide(id, decision) {
   try { await post("/api/decide", { case: id, decision }); } catch (error) { alert(error.message); }
   setTimeout(refresh, 300);
@@ -172,14 +229,18 @@ async function decide(id, decision) {
 function route() {
   const hash = location.hash.slice(1) || "today";
   const [screen, id] = hash.split("/");
-  current = ["today", "case", "approvals", "boundary"].includes(screen) ? screen : "today";
+  current = ["today", "case", "approvals", "boundary", "benchmark"].includes(screen) ? screen : "today";
   caseId = id || null;
+  openCite = null;
+  if ($("caseBody")) $("caseBody").dataset.key = "";
   document.querySelectorAll(".screen").forEach((s) => { s.hidden = s.id !== current; });
   document.querySelectorAll("nav a").forEach((a) => { if (a.dataset.tab === current) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
   if (state) render();
 }
 
 document.addEventListener("click", (event) => {
+  const cite = event.target.closest("[data-cite]");
+  if (cite) { openCite = openCite === cite.dataset.cite ? null : cite.dataset.cite; renderCase(); return; }
   const act = event.target.closest("[data-act]");
   if (act) return decide(act.dataset.case, act.dataset.act);
   const row = event.target.closest("tr[data-case]");

@@ -4,29 +4,31 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Relayloom</title>
-<meta name="description" content="Relayloom pays a small factory's suppliers only for what actually arrived.">
+<meta name="description" content="Relayloom: autonomous accounts payable that checks the goods, not just the paperwork.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="top">
   <div class="brand"><span class="mark" aria-hidden="true"></span>Relayloom</div>
-  <nav aria-label="Sections"><a href="#how">How it works</a><a href="#cases">Five cases</a><a href="#boundary">Boundary</a><a href="#verify">Verify receipts</a></nav>
+  <nav aria-label="Sections"><a href="#how">How it works</a><a href="#investigation">Investigation</a><a href="#benchmark">Benchmark</a><a href="#cases">Cases</a><a href="#boundary">Boundary</a><a href="#verify">Receipts</a></nav>
   <button type="button" class="ghost" id="theme" aria-label="Switch colour theme">Light</button>
 </header>
 <main>
   <section class="hero">
-    <h1>Relayloom pays a small factory's suppliers only for what actually arrived.</h1>
-    <p class="lead">Meta models read the bill and count the delivered goods. If they match, agents enter the bill into the books and a separate check reads it back. If not, nothing is entered, the owner decides, and an agent drafts the dispute to the supplier. Private numbers are masked before anything leaves the building, and no invoice text can change who gets paid.</p>
+    <p class="kicker">The paperwork says 50. The dock got 46.</p>
+    <h1>Relayloom: autonomous accounts payable that checks the goods, not just the paperwork.</h1>
+    <p class="lead">Agents read the bill, look at what actually arrived, investigate any gap with evidence, and pay only what the books and the goods both support. Runs inside the company's own network on Meta open weight models.</p>
     <div class="cta"><a class="button primary" href="https://github.com/Sriharsan/relayloom">Source on GitHub</a><a class="button" href="#video" id="videoLink">Three minute video</a></div>
     <p class="meta" id="runline"></p>
   </section>
 
   <section id="problem">
-    <h2>The problem at a small factory</h2>
+    <h2>The problem on a receiving dock</h2>
+    <p class="meta">For the receiving and accounts payable team of a manufacturer or distributor that buys physical goods.</p>
     <div class="cols3">
-      <div class="card"><h3>Paid for 40, got 34</h3><p>An oil mill in Salem takes in tins, seed bags and cartons every day. The bill says 40 bags. Nobody counts the stack before the accountant enters the bill.</p></div>
-      <div class="card"><h3>Rates drift</h3><p>A carton billed at Rs 18.50 when the purchase order said Rs 16.00 looks fine on its own. It only shows up next to the order.</p></div>
-      <div class="card"><h3>Bank change scams</h3><p>A bill can carry a line asking to pay a new account. Here, payment details come only from the supplier record in the books.</p></div>
+      <div class="card"><h3>Bills describe what was sent</h3><p>The bill says 50 cartons. The dock counted 46. A three way match only helps if someone counts, and nobody counts every pallet.</p></div>
+      <div class="card"><h3>Deliveries arrive in pieces</h3><p>One order can arrive in two deliveries and be billed once. Quantities have to add up per order, not per bill.</p></div>
+      <div class="card"><h3>The same goods get billed twice</h3><p>A repeat bill under a new number, a rate above the order, a line of hidden text asking to pay a new account. Each looks fine on its own.</p></div>
     </div>
   </section>
 
@@ -35,8 +37,9 @@
     <ol class="flow" aria-label="Agents in order">
       <li><b>Intake</b><span>watches the bills folder</span></li>
       <li><b>Reader</b><span>Muse Glimmer reads the masked bill into a strict schema</span></li>
-      <li><b>Counter</b><span>SAM 3.1 counts the goods in the delivery photo</span></li>
-      <li><b>Matcher</b><span>code compares order, bill and count</span></li>
+      <li><b>Counter</b><span>SAM 3.1 counts every photo of every delivery</span></li>
+      <li><b>Matcher</b><span>code compares order, bill and goods as a running total</span></li>
+      <li><b>Investigator</b><span>works every mismatch with cited evidence</span></li>
       <li><b>Clerk</b><span>enters a matching bill in ERPNext</span></li>
       <li><b>Checker</b><span>reads it back with separate requests</span></li>
       <li><b>Disputer</b><span>Muse Glimmer drafts, a browser agent files it</span></li>
@@ -44,8 +47,20 @@
     <div class="cols3 levels" id="levels"></div>
   </section>
 
+  <section id="investigation">
+    <h2>The Investigator</h2>
+    <p>On every mismatch an agent works before a person sees the case. It recounts from every photo, adds up all deliveries on the order, checks the order price and the last price paid, looks for a duplicate bill, and checks the supplier's past shortfalls. Every statement in its finding cites a record, a photo or a recount, and code checks that each citation exists before the finding is shown. Then it proposes an action and the policy decides.</p>
+    <div class="card" id="finding"></div>
+  </section>
+
+  <section id="benchmark">
+    <h2>Benchmark</h2>
+    <p class="caveat">Synthetic set built by us. Invented deliveries with known answers, run through two pipelines on the same set.</p>
+    <div id="benchmarkTable"></div>
+  </section>
+
   <section id="cases">
-    <h2>Five cases, run on our machine</h2>
+    <h2>The cases, run on our machine</h2>
     <p class="meta">Synthetic records. Each case is one command and prints PASS or FAIL per check.</p>
     <div id="caseList"></div>
   </section>
@@ -55,12 +70,12 @@
     <figure class="card diagram">
       <svg viewBox="0 0 760 300" role="img" aria-labelledby="bTitle bDesc">
         <title id="bTitle">Network isolated boundary</title>
-        <desc id="bDesc">Agents, Muse Glimmer, SAM 3.1, ERPNext and the supplier portal sit inside the business's machine. The only way out is a gateway that allows two named hosts and logs every request.</desc>
+        <desc id="bDesc">Agents, Muse Glimmer, SAM 3.1, ERPNext and the supplier portal sit inside the company's machine. The only way out is a gateway that allows two named hosts and logs every request.</desc>
         <rect x="10" y="10" width="560" height="280" rx="14" class="zone"/>
-        <text x="30" y="40" class="label">Inside the business's machine</text>
+        <text x="30" y="40" class="label">Inside the company's network</text>
         <rect x="30" y="60" width="160" height="56" rx="8" class="box"/><text x="110" y="93" class="t">Agents</text>
-        <rect x="210" y="60" width="160" height="56" rx="8" class="box"/><text x="290" y="85" class="t">Muse Glimmer</text><text x="290" y="104" class="s">reads bills</text>
-        <rect x="390" y="60" width="160" height="56" rx="8" class="box"/><text x="470" y="85" class="t">SAM 3.1</text><text x="470" y="104" class="s">counts goods</text>
+        <rect x="210" y="60" width="160" height="56" rx="8" class="box"/><text x="290" y="85" class="t">Muse Glimmer</text><text x="290" y="104" class="s">reads bills, writes findings</text>
+        <rect x="390" y="60" width="160" height="56" rx="8" class="box"/><text x="470" y="85" class="t">SAM 3.1</text><text x="470" y="104" class="s">counts goods in photos</text>
         <rect x="30" y="140" width="160" height="56" rx="8" class="box"/><text x="110" y="173" class="t">ERPNext ledger</text>
         <rect x="210" y="140" width="160" height="56" rx="8" class="box"/><text x="290" y="173" class="t">Checker</text>
         <rect x="390" y="140" width="160" height="56" rx="8" class="box"/><text x="470" y="173" class="t">Supplier portal</text>
@@ -85,10 +100,10 @@
 
   <section id="video">
     <h2>Video</h2>
-    <p id="videoText">Three minutes: a matching delivery entered and checked with no person involved, a short delivery held for the owner, hidden text failing to change the bank account, a network cut, and what left the building.</p>
+    <p id="videoText">Three minutes: the paperwork says 50 and the dock got 46, the investigation finding, the benchmark table, hidden text failing to change the bank account, a network cut, and what left the building.</p>
   </section>
 </main>
-<footer class="foot">Synthetic data. The working system runs on the business's own machine; this site does not.</footer>
+<footer class="foot">Synthetic data. The working system runs on the company's own machine; this site does not.</footer>
 <script src="verify.js"></script>
 <script src="site.js"></script>
 </body>
