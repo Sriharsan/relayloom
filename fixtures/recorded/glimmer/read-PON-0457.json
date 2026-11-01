@@ -1,0 +1,34 @@
+{
+ "recorded_at": "2026-10-31 23:16 +0530",
+ "machine": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+ "reply": {
+  "content": "{\n  \"supplier_id\": \"SUP-PON\",\n  \"bill_no\": \"PON-0457\",\n  \"bill_date\": \"2026-10-29\",\n  \"po_number\": \"PO-1002\",\n  \"lines\": [\n    {\n      \"item_code\": \"SEED-BAG-50\",\n      \"description\": \"Groundnut seed bag 50 kg\",\n      \"qty\": 40,\n      \"rate_inr\": 2150.00,\n      \"amount_inr\": 86000.00\n    }\n  ],\n  \"tax_inr\": 4300.00,\n  \"total_inr\": 90300.00\n}",
+  "reasoning_chars": 851,
+  "response_id": "chatcmpl-GdmWOaxU9D1yhRFlAMhFFpfdNUiSNdvS",
+  "model": "glimmer/Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+  "usage": {
+   "completion_tokens": 387,
+   "prompt_tokens": 366,
+   "total_tokens": 753,
+   "prompt_tokens_details": {
+    "cached_tokens": 132
+   }
+  },
+  "timings": {
+   "cache_n": 132,
+   "prompt_n": 234,
+   "prompt_ms": 52470.618,
+   "prompt_per_token_ms": 224.23341025641025,
+   "prompt_per_second": 4.4596387258103185,
+   "predicted_n": 387,
+   "predicted_ms": 394175.013,
+   "predicted_per_token_ms": 1021.1787901554403,
+   "predicted_per_second": 0.9792604484546564
+  },
+  "seconds": 446.9,
+  "system_fingerprint": "b12020-0ec4027a2",
+  "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop"
+ },
+ "input_sha256": "b4e9d9f3d252b426ddfd14ea748a5890995b585cfcce723b9be3a1a2274b4533",
+ "schema_check": "valid"
+}

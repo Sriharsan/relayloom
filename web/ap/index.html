@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relayloom accounts payable</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="brand"><span class="mark" aria-hidden="true"></span><span>Relayloom</span><span class="sub">Accounts payable</span></div>
+  <nav aria-label="Screens">
+    <a href="#today" data-tab="today">Today</a>
+    <a href="#approvals" data-tab="approvals">Approvals <span class="badge" id="approvalCount" hidden></span></a>
+    <a href="#boundary" data-tab="boundary">Boundary</a>
+  </nav>
+  <div class="tools">
+    <span class="net" id="net" role="status"></span>
+    <button type="button" class="ghost" id="netToggle">Cut network</button>
+    <button type="button" class="ghost" id="theme" aria-label="Switch colour theme">Light</button>
+  </div>
+</header>
+<div class="runbar" id="runbar" role="note"></div>
+<main id="main" tabindex="-1">
+  <section id="today" class="screen" aria-labelledby="todayTitle">
+    <div class="head">
+      <h1 id="todayTitle">Today</h1>
+      <button type="button" class="primary" id="start">Run today's bills</button>
+    </div>
+    <div class="tiles" id="tiles"></div>
+    <div class="table-wrap">
+      <table class="batch" aria-label="Bills in this batch">
+        <thead><tr><th scope="col">Bill</th><th scope="col">Supplier</th><th scope="col">Read</th><th scope="col">Count</th>
+          <th scope="col">Match</th><th scope="col">Enter</th><th scope="col">Check</th><th scope="col">Status</th></tr></thead>
+        <tbody id="rows"><tr><td colspan="8" class="empty">No bills yet. Run today's bills to start the agents.</td></tr></tbody>
+      </table>
+    </div>
+    <div class="autonomy" id="autonomy"></div>
+  </section>
+  <section id="case" class="screen" aria-labelledby="caseTitle" hidden>
+    <div class="head"><h1 id="caseTitle">Case</h1><a href="#today" class="ghost link">Back to today</a></div>
+    <div id="caseBody"></div>
+  </section>
+  <section id="approvals" class="screen" aria-labelledby="approvalsTitle" hidden>
+    <div class="head"><h1 id="approvalsTitle">Approvals</h1><p class="hint">Keys: <kbd>j</kbd> <kbd>k</kbd> move, <kbd>a</kbd> approve, <kbd>r</kbd> reject</p></div>
+    <div id="queue"></div>
+  </section>
+  <section id="boundary" class="screen" aria-labelledby="boundaryTitle" hidden>
+    <div class="head"><h1 id="boundaryTitle">What left the building</h1></div>
+    <div id="boundaryBody"></div>
+  </section>
+</main>
+<footer class="foot">Synthetic data. Every supplier, bill and number here is invented.</footer>
+<script src="/app.js"></script>
+</body>
+</html>

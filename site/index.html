@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relayloom</title>
+<meta name="description" content="Relayloom pays a small factory's suppliers only for what actually arrived.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="mark" aria-hidden="true"></span>Relayloom</div>
+  <nav aria-label="Sections"><a href="#how">How it works</a><a href="#cases">Five cases</a><a href="#boundary">Boundary</a><a href="#verify">Verify receipts</a></nav>
+  <button type="button" class="ghost" id="theme" aria-label="Switch colour theme">Light</button>
+</header>
+<main>
+  <section class="hero">
+    <h1>Relayloom pays a small factory's suppliers only for what actually arrived.</h1>
+    <p class="lead">Meta models read the bill and count the delivered goods. If they match, agents enter the bill into the books and a separate check reads it back. If not, nothing is entered, the owner decides, and an agent drafts the dispute to the supplier. Private numbers are masked before anything leaves the building, and no invoice text can change who gets paid.</p>
+    <div class="cta"><a class="button primary" href="https://github.com/Sriharsan/relayloom">Source on GitHub</a><a class="button" href="#video" id="videoLink">Three minute video</a></div>
+    <p class="meta" id="runline"></p>
+  </section>
+
+  <section id="problem">
+    <h2>The problem at a small factory</h2>
+    <div class="cols3">
+      <div class="card"><h3>Paid for 40, got 34</h3><p>An oil mill in Salem takes in tins, seed bags and cartons every day. The bill says 40 bags. Nobody counts the stack before the accountant enters the bill.</p></div>
+      <div class="card"><h3>Rates drift</h3><p>A carton billed at Rs 18.50 when the purchase order said Rs 16.00 looks fine on its own. It only shows up next to the order.</p></div>
+      <div class="card"><h3>Bank change scams</h3><p>A bill can carry a line asking to pay a new account. Here, payment details come only from the supplier record in the books.</p></div>
+    </div>
+  </section>
+
+  <section id="how">
+    <h2>How it works</h2>
+    <ol class="flow" aria-label="Agents in order">
+      <li><b>Intake</b><span>watches the bills folder</span></li>
+      <li><b>Reader</b><span>Muse Glimmer reads the masked bill into a strict schema</span></li>
+      <li><b>Counter</b><span>SAM 3.1 counts the goods in the delivery photo</span></li>
+      <li><b>Matcher</b><span>code compares order, bill and count</span></li>
+      <li><b>Clerk</b><span>enters a matching bill in ERPNext</span></li>
+      <li><b>Checker</b><span>reads it back with separate requests</span></li>
+      <li><b>Disputer</b><span>Muse Glimmer drafts, a browser agent files it</span></li>
+    </ol>
+    <div class="cols3 levels" id="levels"></div>
+  </section>
+
+  <section id="cases">
+    <h2>Five cases, run on our machine</h2>
+    <p class="meta">Synthetic records. Each case is one command and prints PASS or FAIL per check.</p>
+    <div id="caseList"></div>
+  </section>
+
+  <section id="boundary">
+    <h2>The boundary</h2>
+    <figure class="card diagram">
+      <svg viewBox="0 0 760 300" role="img" aria-labelledby="bTitle bDesc">
+        <title id="bTitle">Network isolated boundary</title>
+        <desc id="bDesc">Agents, Muse Glimmer, SAM 3.1, ERPNext and the supplier portal sit inside the business's machine. The only way out is a gateway that allows two named hosts and logs every request.</desc>
+        <rect x="10" y="10" width="560" height="280" rx="14" class="zone"/>
+        <text x="30" y="40" class="label">Inside the business's machine</text>
+        <rect x="30" y="60" width="160" height="56" rx="8" class="box"/><text x="110" y="93" class="t">Agents</text>
+        <rect x="210" y="60" width="160" height="56" rx="8" class="box"/><text x="290" y="85" class="t">Muse Glimmer</text><text x="290" y="104" class="s">reads bills</text>
+        <rect x="390" y="60" width="160" height="56" rx="8" class="box"/><text x="470" y="85" class="t">SAM 3.1</text><text x="470" y="104" class="s">counts goods</text>
+        <rect x="30" y="140" width="160" height="56" rx="8" class="box"/><text x="110" y="173" class="t">ERPNext ledger</text>
+        <rect x="210" y="140" width="160" height="56" rx="8" class="box"/><text x="290" y="173" class="t">Checker</text>
+        <rect x="390" y="140" width="160" height="56" rx="8" class="box"/><text x="470" y="173" class="t">Supplier portal</text>
+        <rect x="30" y="220" width="520" height="50" rx="8" class="mask"/><text x="290" y="250" class="t">Masking: GSTIN, bank account, IFSC, phone, email</text>
+        <rect x="600" y="110" width="140" height="80" rx="8" class="gate"/><text x="670" y="145" class="t">Gateway</text><text x="670" y="165" class="s">2 hosts, all logged</text>
+        <line x1="570" y1="150" x2="600" y2="150" class="wire"/>
+      </svg>
+      <figcaption id="boundaryLine"></figcaption>
+    </figure>
+    <div class="card"><h3>Gateway log sample</h3><pre class="log" id="gatewayLog"></pre></div>
+  </section>
+
+  <section id="verify">
+    <h2>Check the receipts yourself</h2>
+    <p>Every step writes a signed receipt: policy hash, input hash, model, response id, decision, approver and ledger readback, chained per case. This page checks the receipts from our runs in your browser, with no server.</p>
+    <div class="card">
+      <button type="button" class="button primary" id="verifyBtn">Verify the receipts</button>
+      <button type="button" class="button" id="tamperBtn">Change one receipt and verify again</button>
+      <p id="verifyOut" role="status" class="out"></p>
+    </div>
+  </section>
+
+  <section id="video">
+    <h2>Video</h2>
+    <p id="videoText">Three minutes: a matching delivery entered and checked with no person involved, a short delivery held for the owner, hidden text failing to change the bank account, a network cut, and what left the building.</p>
+  </section>
+</main>
+<footer class="foot">Synthetic data. The working system runs on the business's own machine; this site does not.</footer>
+<script src="verify.js"></script>
+<script src="site.js"></script>
+</body>
+</html>

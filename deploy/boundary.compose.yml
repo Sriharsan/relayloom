@@ -1,0 +1,22 @@
+# Network isolated boundary. "inside" has internal: true, so it has no route out.
+# The gateway is the only container on both networks and allows only hosts named in policy.json.
+name: relayloom-boundary
+services:
+  gateway:
+    build: {context: .., dockerfile: deploy/Dockerfile}
+    command: ["python", "-m", "relayloom.ap.gateway", "--port", "3128", "--log", "/logs/gateway.jsonl"]
+    volumes: ["../data/boundary:/logs"]
+    networks: [inside, outside]
+  agents:
+    build: {context: .., dockerfile: deploy/Dockerfile}
+    command: ["python", "scripts/boundary_probe.py"]
+    environment:
+      HTTPS_PROXY: http://gateway:3128
+      GATEWAY_LOG: /logs/gateway.jsonl
+    volumes: ["../data/boundary:/logs"]
+    networks: [inside]
+    depends_on: [gateway]
+networks:
+  inside:
+    internal: true
+  outside: {}
