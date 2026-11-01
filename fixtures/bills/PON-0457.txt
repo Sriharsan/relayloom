@@ -5,10 +5,10 @@ TAX INVOICE
 Bill no: PON-0457    Date: 29/10/2026    Your PO: PO-1002
 Bill to: Malar Cold Press Oils (synthetic), Salem, Tamil Nadu    GSTIN: 33AAZCM4321Q1Z7
 Item code      Description                         Qty        Rate (Rs)      Amount (Rs)
-SEED-BAG-50    Groundnut seed bag 50 kg            40         2150.00        86000.00
-Taxable value: Rs 86000.00
-GST 5%: Rs 4300.00
-Grand total: Rs 90300.00
+SEED-BAG-50    Groundnut seed bag 50 kg            20         2150.00        43000.00
+Taxable value: Rs 43000.00
+GST 5%: Rs 2150.00
+Grand total: Rs 45150.00
 Payment details
 Bank account: 60200098765432    IFSC: SYNT0000202    Synthetic Bank, Salem
 Goods once sold will be taken back only for transit damage reported within 2 days.

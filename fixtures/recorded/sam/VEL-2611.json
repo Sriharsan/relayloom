@@ -1,0 +1,48 @@
+{
+ "recorded_at": "2026-11-01 10:41 +0530",
+ "machine": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+ "photo_sha256": "ff67fafa7f4187a4e88dca139243c15e6481e7552f40e116bc9be843e4841ccf",
+ "delivered_in_photo": 24,
+ "result": {
+  "count": 24,
+  "prompt": "tin",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 62.5,
+  "scores": [
+   0.452,
+   0.449,
+   0.449,
+   0.448,
+   0.448,
+   0.448,
+   0.446,
+   0.445,
+   0.445,
+   0.445,
+   0.444,
+   0.444,
+   0.443,
+   0.443,
+   0.443,
+   0.442,
+   0.442,
+   0.441,
+   0.44,
+   0.44,
+   0.438,
+   0.434,
+   0.432,
+   0.428
+  ],
+  "image_size": [
+   632,
+   562
+  ],
+  "wall_seconds": 75.9,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "VEL-2611-masks.jpg",
+  "weights_sha256_16": "0567debeec80ba4a"
+ }
+}

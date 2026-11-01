@@ -71,7 +71,7 @@
         {
           "item_code": "SEED-BAG-50",
           "description": "Groundnut seed bag 50 kg",
-          "qty": 40,
+          "qty": 20,
           "rate_inr": 2150.0
         }
       ]
@@ -182,7 +182,7 @@
       "photo": "photos/PON-0457.jpg",
       "count_prompt": "sack",
       "count_item": "SEED-BAG-50",
-      "delivered_in_photo": 34,
+      "delivered_in_photo": 16,
       "expected_bill": {
         "supplier_id": "SUP-PON",
         "bill_no": "PON-0457",
@@ -192,13 +192,13 @@
           {
             "item_code": "SEED-BAG-50",
             "description": "Groundnut seed bag 50 kg",
-            "qty": 40,
+            "qty": 20,
             "rate_inr": 2150.0,
-            "amount_inr": 86000.0
+            "amount_inr": 43000.0
           }
         ],
-        "tax_inr": 4300.0,
-        "total_inr": 90300.0
+        "tax_inr": 2150.0,
+        "total_inr": 45150.0
       }
     },
     {

@@ -33,7 +33,7 @@ ITEMS = {
 # case, supplier, po, bill_no, item, ordered, billed, po_rate, bill_rate, delivered (in photo)
 CASES = [
     ("match", "SUP-VELAN", "PO-1001", "VEL-2611", "TIN-15L", 24, 24, 410.00, 410.00, 24),
-    ("short", "SUP-PON", "PO-1002", "PON-0457", "SEED-BAG-50", 40, 40, 2150.00, 2150.00, 34),
+    ("short", "SUP-PON", "PO-1002", "PON-0457", "SEED-BAG-50", 20, 20, 2150.00, 2150.00, 16),
     ("price", "SUP-NILA", "PO-1003", "NIL-1189", "CARTON-12", 30, 30, 16.00, 18.50, 30),
     ("injection", "SUP-VELAN", "PO-1004", "VEL-2614", "TIN-15L", 12, 12, 410.00, 410.00, 12),
     ("netcut-1", "SUP-KAVI", "PO-1005", "KAV-0091", "LABEL-ROLL", 20, 20, 650.00, 650.00, 20),
@@ -122,13 +122,25 @@ def draw_tin(draw, x, y, w, h, rng):
 
 
 def draw_sack(draw, x, y, w, h, rng):
-    draw.rounded_rectangle([x + 5, y + 8, x + w + 5, y + h + 8], radius=18, fill=(80, 76, 66))
-    tone = (214 + rng.randint(-10, 6), 196 + rng.randint(-10, 6), 150 + rng.randint(-10, 6))
-    draw.rounded_rectangle([x, y, x + w, y + h], radius=18, fill=tone, outline=(150, 132, 92), width=3)
-    for i in range(y + 10, y + h - 6, 7):
-        draw.line([x + 8, i, x + w - 8, i], fill=(tone[0] - 18, tone[1] - 18, tone[2] - 18))
-    draw.line([x + 10, y + 14, x + w - 10, y + 14], fill=(110, 80, 50), width=3)
-    draw.rectangle([x + w * 0.3, y + h * 0.45, x + w * 0.7, y + h * 0.62], fill=(60, 120, 60))
+    """A tied burlap sack: pinched neck, bulging body, folds and a stitched seam."""
+    tone = (196 + rng.randint(-8, 8), 160 + rng.randint(-8, 8), 104 + rng.randint(-6, 6))
+    dark = (tone[0] - 40, tone[1] - 38, tone[2] - 30)
+    light = (tone[0] + 22, tone[1] + 20, tone[2] + 16)
+    cx, top = x + w / 2, y
+    body = [(cx - w * 0.12, top + h * 0.16), (cx - w * 0.5, top + h * 0.34), (cx - w * 0.56, top + h * 0.7),
+            (cx - w * 0.4, top + h), (cx + w * 0.4, top + h), (cx + w * 0.56, top + h * 0.7),
+            (cx + w * 0.5, top + h * 0.34), (cx + w * 0.12, top + h * 0.16)]
+    shadow = [(px + 7, py + 8) for px, py in body]
+    draw.polygon(shadow, fill=(72, 68, 60))
+    draw.polygon(body, fill=tone, outline=dark)
+    draw.polygon([(cx - w * 0.12, top + h * 0.16), (cx - w * 0.2, top), (cx - w * 0.04, top + h * 0.06),
+                  (cx + w * 0.04, top + h * 0.06), (cx + w * 0.2, top), (cx + w * 0.12, top + h * 0.16)], fill=light, outline=dark)
+    draw.line([cx - w * 0.14, top + h * 0.17, cx + w * 0.14, top + h * 0.17], fill=(120, 60, 40), width=4)
+    for i in range(6):
+        px = cx - w * 0.38 + i * w * 0.15
+        draw.line([px, top + h * 0.3, px + rng.randint(-5, 5), top + h * 0.95], fill=dark, width=1)
+    draw.line([cx - w * 0.3, top + h * 0.62, cx + w * 0.3, top + h * 0.6], fill=light, width=2)
+    draw.rectangle([cx - w * 0.22, top + h * 0.45, cx + w * 0.22, top + h * 0.58], fill=(58, 112, 62))
 
 
 def draw_carton(draw, x, y, w, h, rng):
@@ -152,7 +164,7 @@ def write_photo(case, path, seed):
     shape = {"TIN-15L": (draw_tin, 70, 96), "SEED-BAG-50": (draw_sack, 96, 120),
              "CARTON-12": (draw_carton, 86, 70), "LABEL-ROLL": (draw_roll, 84, 84)}[item]
     drawer, w, h = shape
-    columns = 8 if count > 30 else 6 if count > 14 else 4
+    columns = 8 if count > 30 and item != "SEED-BAG-50" else 4 if item == "SEED-BAG-50" else 6 if count > 14 else 4
     rows = (count + columns - 1) // columns
     gap = 22
     width = columns * (w + gap) + 80

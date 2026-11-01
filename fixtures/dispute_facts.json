@@ -4,13 +4,13 @@
   "bill_no": "PON-0457",
   "po_number": "PO-1002",
   "item": "Groundnut seed bag 50 kg",
-  "ordered": 40,
-  "billed": 40,
-  "counted_on_delivery": 34,
+  "ordered": 20,
+  "billed": 20,
+  "counted_on_delivery": 16,
   "po_rate": 2150.0,
   "billed_rate": 2150.0,
   "problems": [
-   "SEED-BAG-50: counted 34, billed 40"
+   "SEED-BAG-50: counted 16, billed 20"
   ],
   "ask": "send a corrected bill for what arrived at the PO rate"
  },

@@ -17,7 +17,7 @@ def main():
 
     started = time.perf_counter()
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    predictor = SAM3SemanticPredictor(overrides=dict(conf=0.4, task="segment", mode="predict", model=weights,
+    predictor = SAM3SemanticPredictor(overrides=dict(conf=float(__import__("os").environ.get("SAM_CONF", "0.4")), task="segment", mode="predict", model=weights,
                                                      device=device, half=False, save=False, verbose=False))
     loaded = time.perf_counter()
     predictor.set_image(photo)

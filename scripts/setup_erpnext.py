@@ -129,12 +129,12 @@ def main():
 
     values = env()
     api = Client(f"token {values['ERPNEXT_API_KEY']}:{values['ERPNEXT_API_SECRET']}")
-    seed(api, admin)
+    seed(admin, admin)
     print("Seeded synthetic suppliers, bank accounts, items, GST account and purchase orders")
 
 
 def seed(api, admin):
-    """One time master data (GST account, bank) as Administrator; the rest as the agent user."""
+    """Master data is seeded as Administrator. The agent user only creates and reads purchase invoices."""
     tax_account = f"Input GST - {ABBR}"
     if not admin.exists("Account", tax_account):
         admin.insert({"doctype": "Account", "account_name": "Input GST", "parent_account": f"Duties and Taxes - {ABBR}",
@@ -153,14 +153,14 @@ def seed(api, admin):
             if doc["name"] != supplier["id"]:
                 api.call("POST", "/api/method/frappe.client.rename_doc",
                          {"doctype": "Supplier", "old_name": doc["name"], "new_name": supplier["id"]})
-        rows = api.call("GET", "/api/resource/Bank Account?" + urllib.parse.urlencode(
+        rows = api.call("GET", "/api/resource/Bank%20Account?" + urllib.parse.urlencode(
             {"filters": json.dumps([["party", "=", supplier["id"]]])}))["data"]
         if not rows:
             api.insert({"doctype": "Bank Account", "account_name": supplier["name"], "bank": "Synthetic Bank",
                         "party_type": "Supplier", "party": supplier["id"], "bank_account_no": supplier["bank_account"],
                         "branch_code": supplier["ifsc"], "is_default": 1})
     for po in DATA["purchase_orders"]:
-        found = api.call("GET", "/api/resource/Purchase Order?" + urllib.parse.urlencode(
+        found = api.call("GET", "/api/resource/Purchase%20Order?" + urllib.parse.urlencode(
             {"filters": json.dumps([["title", "=", po["po_number"]], ["docstatus", "=", 1]])}))["data"]
         if found:
             continue

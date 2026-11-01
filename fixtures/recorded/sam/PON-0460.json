@@ -1,0 +1,34 @@
+{
+ "recorded_at": "2026-11-01 11:10 +0530",
+ "machine": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+ "photo_sha256": "0e4acb7f00d920dd3f7ce203c852c0dda41cb858deaed3a9cc277231b15afe5c",
+ "delivered_in_photo": 10,
+ "result": {
+  "count": 10,
+  "prompt": "sack",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 51.2,
+  "scores": [
+   0.878,
+   0.874,
+   0.872,
+   0.866,
+   0.866,
+   0.864,
+   0.863,
+   0.862,
+   0.862,
+   0.86
+  ],
+  "image_size": [
+   552,
+   516
+  ],
+  "wall_seconds": 61.0,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "PON-0460-masks.jpg",
+  "weights_sha256_16": "0567debeec80ba4a"
+ }
+}
