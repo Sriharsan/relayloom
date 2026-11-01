@@ -11,7 +11,7 @@ import json, tempfile, pathlib
 from relayloom.ap.receipts import Signer, ReceiptChain
 d = pathlib.Path(tempfile.mkdtemp())
 s = Signer(d / "k"); c = ReceiptChain(d / "r.jsonl", s, "p" * 64)
-c.append("match", "Reader", "read", "extracted", model="glimmer", detail={"bill": {"qty": 24.0, "tax": 1771.2, "name": "Velan é"}})
+c.append("match", "Reader", "read", "extracted", model="glimmer", detail={"bill": {"qty": 24.0, "tax": 1771.2, "name": "Arden é"}})
 c.append("match", "Checker", "check", "entered and checked", detail={"ok": True, "lines": [1, 2.5]})
 c.append("short", "Matcher", "match", "mismatch", detail={})
 print(json.dumps({"key": s.public_key, "receipts": c.read()}))`;

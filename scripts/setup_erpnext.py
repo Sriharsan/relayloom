@@ -189,7 +189,7 @@ def seed_history(tax_account):
                                "bill_date": old["bill_date"], "po_number": old["po_number"],
                                "lines": [{"item_code": old["item_code"], "qty": old["qty"], "rate_inr": old["rate_inr"],
                                           "amount_inr": round(old["qty"] * old["rate_inr"], 2)}],
-                               "tax_rate": po["tax_rate"], "tax_account": tax_account})
+                               "tax_rate": po["tax_rate"], "tax_account": tax_account, "posting_date": "2026-10-29"})
         print("earlier invoice", old["bill_no"], flush=True)
 
 

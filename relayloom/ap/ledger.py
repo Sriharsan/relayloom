@@ -202,8 +202,8 @@ class ERPNextLedger:
     def create_invoice(self, entry: dict) -> str:
         po_name = self.po_name(entry["po_number"])
         doc = {"doctype": "Purchase Invoice", "company": self.company, "supplier": entry["supplier_id"],
-               "bill_no": entry["bill_no"], "bill_date": entry["bill_date"], "posting_date": entry["bill_date"],
-               "set_posting_time": 1, "due_date": entry["bill_date"],
+               "bill_no": entry["bill_no"], "bill_date": entry["bill_date"], "posting_date": entry.get("posting_date", entry["bill_date"]),
+               "set_posting_time": 1, "due_date": entry.get("posting_date", entry["bill_date"]),
                "remarks": f"Entered by Relayloom Clerk. Case {entry['case']}. Paid to supplier master bank only.",
                "items": [{"item_code": line["item_code"], "qty": line["qty"], "rate": line["rate_inr"],
                           "purchase_order": po_name} for line in entry["lines"]],
