@@ -68,8 +68,8 @@ function renderRows(cases) {
   $("rows").innerHTML = cases.map((c) => `<tr data-case="${esc(c.id)}">
     <td><a href="#case/${esc(c.id)}">${esc(c.bill_no)}</a><br><small class="meta">${esc(c.id)}</small></td>
     <td>${esc(c.supplier_id)}</td>
-    ${["read", "count", "match", "enter", "check"].map((s) => `<td>${stepCell(c.steps[s])}</td>`).join("")}
-    <td>${pill(c.state)}<br><small class="meta">${esc(c.status)}</small></td></tr>`).join("");
+    ${["read", "count", "match", "enter", "check"].map((s) => `<td data-label="${s}">${stepCell(c.steps[s])}</td>`).join("")}
+    <td class="status">${pill(c.state)}<br><small class="meta">${esc(c.status)}</small></td></tr>`).join("");
 }
 
 function renderAutonomy() {

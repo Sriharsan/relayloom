@@ -1,7 +1,7 @@
 """Read the synthetic bills with Muse Glimmer on this machine and save each real output.
 
 Usage: python scripts/record_glimmer.py [BILL_NO ...] [--disputes]
-Needs llama-server with Muse Glimmer on GLIMMER_URL (default http://127.0.0.1:8081/v1).
+Needs llama-server with Muse Glimmer on GLIMMER_URL (default http://127.0.0.1:8082/v1).
 Saved files are labelled with route, model, timings and date, and replayed only as "recorded".
 """
 import hashlib
@@ -32,7 +32,7 @@ def save(kind, key, reply, extra):
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     data = json.loads((ROOT / "fixtures" / "data.json").read_text(encoding="utf-8"))
-    client = GlimmerClient(os.environ.get("GLIMMER_URL", "http://127.0.0.1:8081/v1"), ROUTE)
+    client = GlimmerClient(os.environ.get("GLIMMER_URL", "http://127.0.0.1:8082/v1"), ROUTE)
     for case in data["cases"]:
         if args and case["bill_no"] not in args:
             continue
