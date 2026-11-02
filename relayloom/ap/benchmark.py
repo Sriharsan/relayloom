@@ -127,7 +127,7 @@ def write_markdown(result, path: Path):
     a, b = result["pipeline_a"], result["pipeline_b"]
     lines = [
         "# Benchmark", "",
-        "**Synthetic set built by us.** Every delivery, bill, photo and earlier invoice is invented and rendered by "
+        "**Synthetic set built by us.** Every delivery, bill, photo and earlier invoice is synthetic and rendered by "
         "`scripts/make_fixtures.py`. The known answers come from how each delivery was built. These results say how the "
         "checks behave on this set. They are not a claim about any real company or industry.", "",
         f"Run on {result['date']}. Command: `python -m relayloom.ap.benchmark`. Machine: {result['machine']}. "

@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "data": "python ../scripts/export_bench_run.py src/data/bench.json && python ../scripts/export_measurements.py src/data/measured.json && node copy-images.mjs",
+    "data": "python ../scripts/export_bench_run.py src/data/bench.json && python ../scripts/export_measurements.py src/data/measured.json && python ../scripts/export_benchmark.py src/data/benchmark.json && node copy-images.mjs",
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview"

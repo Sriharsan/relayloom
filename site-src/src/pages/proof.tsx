@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import {
-  benchmark, caseById, caseMeta, caseResult, fmtSeconds, glimmerSummary, meas, netcutPass, run, samSummary, samTrials, samUsed,
+  benchmark, samBenchRows, samDemoRows, caseById, caseMeta, caseResult, fmtSeconds, glimmerSummary, meas, netcutPass, run, samSummary, samTrials,
   type SignedReceipt,
 } from "@/data/site";
 import { Pill, RunLabel, SectionHead } from "@/components/bits";
@@ -57,7 +57,7 @@ function Counting() {
             head={[{ t: "Photo" }, { t: "Goods" }, { t: "Wording" }, { t: "Counted", right: true }, { t: "Record", right: true }, { t: "Time", right: true }]}
             min={720}
           >
-            {samUsed.map((r) => (
+            {samDemoRows.map((r) => (
               <tr key={r.photo + r.prompt} className="border-b border-line last:border-0">
                 <td className="tnum px-5 py-3 font-mono text-[12.5px] text-foreground">{r.photo}</td>
                 <td className="px-5 py-3 text-foreground">{r.item}</td>
@@ -71,7 +71,7 @@ function Counting() {
         </div>
         <p className="mt-3 max-w-[78ch] text-[12.5px] leading-relaxed text-ink-muted">
           The recount wording for each item was chosen from trials on these same photos, so this table shows the system at work, not a test on unseen photos.
-          {samTrials.length > 0 && ` The ${samTrials.length} trial runs are saved alongside.`}
+          {` The ${samBenchRows.length} benchmark photos were counted the same way and are not listed here. The ${samTrials.length} trial runs are saved alongside.`}
         </p>
       </div>
     </section>
@@ -170,13 +170,14 @@ function Benchmark() {
         </Table>
         <p className="mt-8 kLabel">Per scenario</p>
         <div className="mt-3">
-          <Table head={[{ t: "Scenario" }, { t: "Deliveries", right: true }, { t: "Caught, paperwork only", right: true }, { t: "Caught, with goods", right: true }]}>
+          <Table head={[{ t: "Scenario" }, { t: "Right call" }, { t: "Deliveries", right: true }, { t: "Paperwork only", right: true }, { t: "Paperwork plus goods", right: true }]}>
             {benchmark.perScenario.map((s) => (
               <tr key={s.scenario} className="border-b border-line last:border-0">
                 <td className="px-5 py-3 text-foreground">{s.scenario}</td>
+                <td className="px-5 py-3 text-[12.5px] text-ink-muted">{s.rule}</td>
                 <td className={num}>{s.deliveries}</td>
-                <td className={num}>{s.paperworkOnly}</td>
-                <td className={num + " !text-green-ink"}>{s.plusGoods}</td>
+                <td className={num + (s.paperworkOnly < s.deliveries ? " !text-amber-ink" : "")}>{s.paperworkOnly} of {s.deliveries}</td>
+                <td className={num + " !text-green-ink"}>{s.plusGoods} of {s.deliveries}</td>
               </tr>
             ))}
           </Table>

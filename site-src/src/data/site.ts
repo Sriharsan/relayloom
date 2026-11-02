@@ -137,6 +137,7 @@ export const meas = measured as unknown as {
     overlay: string;
     recorded_at: string;
     used: boolean;
+    world: "demo" | "benchmark";
   }[];
   glimmer: {
     bill: string;
@@ -156,7 +157,7 @@ export const meas = measured as unknown as {
 export interface BenchmarkResult {
   setSize: number;
   rows: { metric: string; paperworkOnly: string; paperworkPlusGoods: string; basis: string }[];
-  perScenario: { scenario: string; deliveries: number; paperworkOnly: number; plusGoods: number }[];
+  perScenario: { scenario: string; deliveries: number; rule: string; paperworkOnly: number; plusGoods: number }[];
   note: string;
 }
 const found = import.meta.glob("./benchmark.json", { eager: true, import: "default" }) as Record<string, BenchmarkResult>;
@@ -287,6 +288,8 @@ export const counters = {
 /** Runs with the wordings the system uses. Other wordings were trials, listed separately. */
 export const samUsed = meas.sam.filter((r) => r.used);
 export const samTrials = meas.sam.filter((r) => !r.used);
+export const samDemoRows = samUsed.filter((r) => r.world === "demo");
+export const samBenchRows = samUsed.filter((r) => r.world === "benchmark");
 
 export const samSummary = (() => {
   const runs = samUsed;

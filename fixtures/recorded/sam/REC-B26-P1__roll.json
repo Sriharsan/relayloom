@@ -1,0 +1,37 @@
+{
+ "recorded_at": "2026-11-02 22:09 +0530",
+ "photo_sha256": "d6ef4e1199fb71c48c44dd0e24ab5aac290c9112417274832a596a0875ab18a9",
+ "result": {
+  "count": 15,
+  "prompt": "roll",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 36.7,
+  "scores": [
+   0.488,
+   0.488,
+   0.488,
+   0.487,
+   0.485,
+   0.484,
+   0.484,
+   0.483,
+   0.481,
+   0.481,
+   0.481,
+   0.478,
+   0.478,
+   0.476,
+   0.455
+  ],
+  "image_size": [
+   716,
+   408
+  ],
+  "wall_seconds": 41.7,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "REC-B26-P1__roll.jpg",
+  "recorded": false
+ }
+}

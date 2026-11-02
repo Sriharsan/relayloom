@@ -1,0 +1,46 @@
+{
+ "recorded_at": "2026-11-02 22:20 +0530",
+ "photo_sha256": "ce3648ea4283ca4e81b842802a8ca96ccf346f9d1985c9b1f3680749a24c0d83",
+ "result": {
+  "count": 24,
+  "prompt": "can",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 42.4,
+  "scores": [
+   0.887,
+   0.885,
+   0.885,
+   0.885,
+   0.883,
+   0.881,
+   0.881,
+   0.88,
+   0.88,
+   0.88,
+   0.878,
+   0.878,
+   0.878,
+   0.878,
+   0.874,
+   0.873,
+   0.873,
+   0.871,
+   0.871,
+   0.87,
+   0.87,
+   0.865,
+   0.86,
+   0.851
+  ],
+  "image_size": [
+   632,
+   562
+  ],
+  "wall_seconds": 47.5,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "REC-B34-P1__can.jpg",
+  "recorded": false
+ }
+}

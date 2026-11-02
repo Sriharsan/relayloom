@@ -1,0 +1,30 @@
+{
+ "recorded_at": "2026-11-02 22:01 +0530",
+ "photo_sha256": "ce705d95916050e46a56b0a190ea9b02d2322eb8fa64de736300ced9f1d622b3",
+ "result": {
+  "count": 8,
+  "prompt": "bag",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 25.0,
+  "scores": [
+   0.837,
+   0.831,
+   0.829,
+   0.828,
+   0.824,
+   0.823,
+   0.823,
+   0.822
+  ],
+  "image_size": [
+   552,
+   374
+  ],
+  "wall_seconds": 29.1,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "REC-B18-P1__bag.jpg",
+  "recorded": false
+ }
+}

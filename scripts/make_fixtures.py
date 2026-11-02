@@ -1,7 +1,7 @@
 """Create the synthetic world for Northgate Components: suppliers, purchase orders, receiving events,
 earlier invoices, bill PDFs and rendered delivery photos, plus a benchmark set with known answers.
 
-Every name, GSTIN, bank number, phone and email is invented. Bank codes use the made up prefix SYNT.
+Every name, GSTIN, bank number, phone and email is synthetic. Bank codes use the made up prefix SYNT.
 Photos are rendered by this script, not taken of real goods. Needs PyMuPDF and Pillow.
 Outputs: fixtures/data.json (the demo world), fixtures/benchmark.json (the benchmark world),
 fixtures/bills, fixtures/photos.
@@ -410,8 +410,8 @@ def main():
     for world in (demo, bench):
         for pid, item, count, seed, variant in world.photo_jobs:
             write_photo(ROOT / "photos" / f"{pid}.jpg", item, count, seed, variant)
-    (ROOT / "data.json").write_text(json.dumps(world_json(demo, about="Synthetic records for the Relayloom demo. Every name and number is invented.", cases=cases), indent=1), encoding="utf-8")
-    (ROOT / "benchmark.json").write_text(json.dumps(world_json(bench, about="Synthetic set built by us. Known answers, invented records.", deliveries=deliveries), indent=1), encoding="utf-8")
+    (ROOT / "data.json").write_text(json.dumps(world_json(demo, about="Synthetic records for the Relayloom demo. Every name and number is synthetic.", cases=cases), indent=1), encoding="utf-8")
+    (ROOT / "benchmark.json").write_text(json.dumps(world_json(bench, about="Synthetic set built by us. Known answers, synthetic records.", deliveries=deliveries), indent=1), encoding="utf-8")
     print(f"demo: {len(cases)} bills, {len(demo.events)} receiving events; benchmark: {len(deliveries)} deliveries, "
           f"{len(bench.events)} events, {len(bench.photo_jobs)} photos")
 

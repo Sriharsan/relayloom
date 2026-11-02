@@ -1,0 +1,87 @@
+{
+ "setSize": 30,
+ "rows": [
+  {
+   "metric": "Bad bills caught",
+   "paperworkOnly": "5 of 17",
+   "paperworkPlusGoods": "17 of 17",
+   "basis": "short, over priced, duplicate and short split bills"
+  },
+  {
+   "metric": "Wrong payments made",
+   "paperworkOnly": "₹ 60,035.92",
+   "paperworkPlusGoods": "₹ 0.00",
+   "basis": "synthetic rupees"
+  },
+  {
+   "metric": "Wrong payments avoided",
+   "paperworkOnly": "₹ 4,238.90",
+   "paperworkPlusGoods": "₹ 64,274.82",
+   "basis": "synthetic rupees"
+  },
+  {
+   "metric": "Clean bills held by mistake",
+   "paperworkOnly": "0 of 13",
+   "paperworkPlusGoods": "0 of 13",
+   "basis": "good bills held"
+  },
+  {
+   "metric": "Cost of the goods check",
+   "paperworkOnly": "none",
+   "paperworkPlusGoods": "42.9 s per delivery",
+   "basis": "SAM 3.1 inference on a laptop CPU, recorded"
+  }
+ ],
+ "perScenario": [
+  {
+   "scenario": "Correct delivery",
+   "deliveries": 6,
+   "rule": "should be entered",
+   "paperworkOnly": 6,
+   "plusGoods": 6
+  },
+  {
+   "scenario": "Short delivery",
+   "deliveries": 6,
+   "rule": "should be held",
+   "paperworkOnly": 0,
+   "plusGoods": 6
+  },
+  {
+   "scenario": "Price above the order",
+   "deliveries": 5,
+   "rule": "should be held",
+   "paperworkOnly": 5,
+   "plusGoods": 5
+  },
+  {
+   "scenario": "Duplicate bill",
+   "deliveries": 4,
+   "rule": "should be held",
+   "paperworkOnly": 0,
+   "plusGoods": 4
+  },
+  {
+   "scenario": "Split delivery",
+   "deliveries": 3,
+   "rule": "should be entered",
+   "paperworkOnly": 3,
+   "plusGoods": 3
+  },
+  {
+   "scenario": "Split delivery that ends short",
+   "deliveries": 2,
+   "rule": "should be held",
+   "paperworkOnly": 0,
+   "plusGoods": 2
+  },
+  {
+   "scenario": "Hidden text in the bill",
+   "deliveries": 4,
+   "rule": "should be entered",
+   "paperworkOnly": 4,
+   "plusGoods": 4
+  }
+ ],
+ "note": "SAM 3.1 counted 36 of 36 unique photos exactly right. Bill values come from the generator, and findings are written by code from the evidence."
+}

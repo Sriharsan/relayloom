@@ -13,12 +13,15 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 SAM = ROOT / "fixtures" / "recorded" / "sam"
-DATA = json.loads((ROOT / "fixtures" / "data.json").read_text(encoding="utf-8"))
-TRUE = {p["id"]: p["true_count"] for e in DATA["receiving_events"] for p in e["photos"]}
-ITEMS = {e["id"]: DATA["items"][e["item_code"]]["name"] for e in DATA["receiving_events"]}
+DEMO = json.loads((ROOT / "fixtures" / "data.json").read_text(encoding="utf-8"))
+BENCH = json.loads((ROOT / "fixtures" / "benchmark.json").read_text(encoding="utf-8"))
+WORLDS = (("demo", DEMO), ("benchmark", BENCH))
+TRUE = {p["id"]: p["true_count"] for _, w in WORLDS for e in w["receiving_events"] for p in e["photos"]}
+ITEMS = {e["id"]: w["items"][e["item_code"]]["name"] for _, w in WORLDS for e in w["receiving_events"]}
+WORLD = {e["id"]: name for name, w in WORLDS for e in w["receiving_events"]}
 # The two wordings the system uses per item: the first count and the Investigator's independent recount.
-USED = {e["id"]: {DATA["items"][e["item_code"]]["prompt"], DATA["items"][e["item_code"]]["alt_prompt"]}
-        for e in DATA["receiving_events"]}
+USED = {e["id"]: {w["items"][e["item_code"]]["prompt"], w["items"][e["item_code"]]["alt_prompt"]}
+        for _, w in WORLDS for e in w["receiving_events"]}
 GLIMMER_COMMIT = "6597d87^"
 GLIMMER_FILES = ["read-VEL-2611", "read-PON-0457", "read-NIL-1189", "read-VEL-2614", "read-KAV-0091",
                  "read-PON-0460", "read-NIL-1192"]
@@ -34,7 +37,8 @@ def sam_runs():
                      "count": result["count"], "truth": TRUE[photo], "infer_seconds": result["infer_seconds"],
                      "wall_seconds": result["wall_seconds"], "device": result["device"], "route": result["route"],
                      "overlay": result["overlay"], "recorded_at": record["recorded_at"],
-                     "used": result["prompt"] in USED[photo.rsplit("-", 1)[0]]})
+                     "used": result["prompt"] in USED[photo.rsplit("-", 1)[0]],
+                     "world": WORLD[photo.rsplit("-", 1)[0]]})
     return runs
 
 
