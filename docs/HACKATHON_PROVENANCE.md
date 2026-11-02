@@ -7,7 +7,7 @@ Meta Global AI Developer Hackathon, Startup track. Repository created on
 The organizer's precise eligible-start interpretation remains to be confirmed;
 this timestamp alone does not establish eligibility.
 
-The founder previously worked on a private agent-operations prototype. Its
+The founder previously worked on a private earlier agent-operations project. Its
 existing scheduler, review, recovery, security controls and interface are prior
 work. They are not presented as newly built for the event. No private source,
 history, tests, data or implementation has been imported in this initial commit.

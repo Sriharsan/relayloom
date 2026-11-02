@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # Start the Relayloom rehearsal workroom on loopback and open it in a browser.
-# Rehearsal mode: invented records, deterministic outputs, no model calls.
+# Rehearsal mode: synthetic records, deterministic outputs, no model calls.
 # Usage: ./demo.sh [port]   Stop with Ctrl+C.
 cd "$(dirname "$0")" || exit 1
 PORT="${1:-8800}"

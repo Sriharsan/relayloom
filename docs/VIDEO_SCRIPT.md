@@ -1,50 +1,28 @@
-# Video script (2 minutes 50 seconds)
+# Video script (3 minutes)
 
-Everything recorded with this script is the **local rehearsal**: invented
-records, deterministic specialist outputs written by code, zero model calls.
-Do not caption any part as AI output or Meta output. Live Meta inference has
-not been run; if it is run later, record it as a separate clip with its own
-caption and the output of `scripts/check_meta.ps1 --i-have-credit`.
+Shows only work built from 27 October. Screens come from https://relayloom.vercel.app (Demo and Proof pages). Say plainly what is
+recorded: the SAM 3.1 counts and Muse Glimmer timings on screen come from real runs on one laptop CPU and are replayed with their
+date and timings. Numbers come from `docs/BENCHMARK.md` and
+`docs/RESULTS.md`; read them from the screen, do not round them up. No savings, customer or industry numbers.
 
-Caption labels used below:
-
-- **REHEARSAL**: invented records, deterministic outputs, no model calls.
-- **LOCAL AI**: not available. Relayloom has no local model path today. Do not use this label.
-- **LIVE META**: not recorded. Use only for a clip that actually called the Meta API.
-
-## Building period only
-
-The guide requires the demo to highlight only work built during the hackathon.
-Everything shown below comes from commits on or after 28 October (first code
-commit `3668d31`), inside the 27 October to 4 November building period. The
-three 26 October commits are scope documents only; do not show them as built
-work. Say this once in the video: "All code shown was written from 28 October."
-
-## Before recording
-
-1. Open a terminal in the repository root.
-2. Run `scripts/check_demo.ps1` (or `sh scripts/check_demo.sh`). Every line must say PASS.
-3. Start the workroom: `.\demo.ps1` (or `./demo.sh`). It opens http://127.0.0.1:8800.
-4. Use a browser window at 1440 by 900. Keep a second browser profile ready if you
-   want to show a teammate joining (optional, not in the timing below).
-
-## Shots
-
-| Time | Do exactly this | On screen caption |
+| Time | On screen | Say |
 | --- | --- | --- |
-| 0:00 to 0:15 | Show the welcome page. | "Relayloom: people and AI specialists on one goal. REHEARSAL: invented records, no model calls." |
-| 0:15 to 0:30 | Click **Create a workroom**. Name: `Ada`. Workroom: `Refund policy`. Goal: `Draft a fictional refund policy for the Relayloom demo store.` Click **Create workroom**. | "REHEARSAL. You are the owner." |
-| 0:30 to 0:55 | Point at the Autonomy policy panel. Click **Run specialists**. Watch Product and Engineering both show WORKING, Support waiting. | "Within limits: specialists run on their own. Product and Engineering in parallel. Support waits for both." |
-| 0:55 to 1:15 | When all three are done, click **Change intent**. Set Refund window to `14`. Click **Save new revision**. Point at the loom: Product thread continues (kept), Engineering and Support marked to redo. | "Intent changed. Kept: work whose inputs did not change. Redo: only what the change touched." |
-| 1:15 to 1:40 | Click **Run specialists**. While Engineering shows WORKING, click **Change intent**, set `21`, save. Open **Activity**. | "A late result from the old revision is refused, not published." |
-| 1:40 to 1:55 | Click **Run specialists** and wait for all three to finish. Point at the loom row for Engineering: "late, refused" then "redone". | "REHEARSAL. The loom shows every revision: kept, redone, refused." |
-| 1:55 to 2:10 | Point at **Approval and proof**: Decision says no approval recorded. The Publish button is disabled. | "Explicit approval where it matters. No approval record, no publication." |
-| 2:10 to 2:30 | Tick **Approve publication of this revision**. Click **Publish checked artifact**. | "Approval recorded: who, which action, when, which limit." |
-| 2:30 to 2:45 | Point at the checks and **Verified outcome**. | "Proof after the action: the stored artifact was read back and matched its approval. This outcome passed these checks." |
-| 2:45 to 2:50 | Show the terminal with `check_demo` PASS lines and the repository URL. | "All code shown written from 28 October. Open source, MIT. Live Meta inference not yet run." |
+| 0:00 | Case screen for bill CAL-0990: the bill line "50 cartons" next to the two photos with 28 and 18 counted | "The paperwork says 50. The dock got 46." |
+| 0:12 | The Today screen: bills moving through Read, Count, Match, Investigate, Enter, Check | "Relayloom is autonomous accounts payable that checks the goods, not just the paperwork. Agents read the bill, look at what arrived, and investigate any gap with evidence." |
+| 0:25 | Investigation panel: the finding, click two citations (a photo, an earlier invoice) | "Every statement cites a record or a photo, and code checks each citation exists before anyone sees the finding. It recounted both photos, ignored a repeated photo, and found this supplier billed 40 and the dock counted 38 on an earlier order." |
+| 0:55 | Approvals tab: the proposal next to the policy decision, the dispute draft preview, press A | "It proposes a dispute for the four missing cartons. The policy says this needs the owner. One key approves, and the dispute goes out only after that." |
+| 1:15 | A matching delivery entered and checked with no person; the split delivery matching as a running total; the duplicate bill held | "A matching delivery is entered and read back by a separate checker with nobody involved. One order that arrived in two deliveries still matches. The same goods billed again under a new number are held." |
+| 1:40 | Benchmark page: table A against B, then the caveat | "On a synthetic set built by us, paperwork only against paperwork plus goods. Here is what each caught and missed, in our own numbers." Read the table values as shown. |
+| 2:05 | Case with hidden text: the white text revealed, the receipt line, the payment details from the ledger | "White text on a bill asked to pay a new account. It never reached the model, and payment details come only from the supplier master." |
+| 2:20 | Today screen: cut network, cases show "held, offline", reconnect, the ledger is read first, no duplicate | "Cut the network and nothing is entered or sent. Reconnect and the ledger is read first, so there is no duplicate." |
+| 2:40 | Boundary page and the verifier in the browser | "Private numbers are masked before any model sees them. Muse Glimmer and SAM 3.1 run on this machine. Every step is a signed receipt you can verify offline." |
+| 2:52 | Title card | "Relayloom. Autonomous accounts payable that checks the goods, not just the paperwork." |
 
-## Do not
-
-- Do not say or caption that a model wrote the outputs.
-- Do not show a `.env` file, an API key or the terminal environment.
-- Do not claim customers, savings, speed or cost numbers.
+Notes for recording:
+- Say "network isolated", never "air gapped", unless a run with the network physically disconnected is shown and dated.
+- Show the real timings. Muse Glimmer takes several minutes per bill and SAM 3.1 about a minute per photo on this CPU.
+- Video counting is not built. Do not mention it except as planned.
+- In the site replay the bill values come from the bill record and the dispute text comes from a template. Do not say Muse Glimmer
+  wrote that text. Muse Glimmer's real readings and timings are on the Proof page; point at them if you mention the model.
+- The benchmark findings are written by code from the evidence. Say so if you describe them.
+- Do not claim a Docker no route out run or a disconnected run. Neither has been done.

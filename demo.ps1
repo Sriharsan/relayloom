@@ -1,5 +1,5 @@
 # Start the Relayloom rehearsal workroom on loopback and open it in a browser.
-# Rehearsal mode: invented records, deterministic outputs, no model calls.
+# Rehearsal mode: synthetic records, deterministic outputs, no model calls.
 # Usage: .\demo.ps1 [-Port 8800] [-NoBrowser]   Stop with Ctrl+C.
 param([int]$Port = 8800, [switch]$NoBrowser)
 $ErrorActionPreference = 'Stop'

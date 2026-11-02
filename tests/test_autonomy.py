@@ -27,7 +27,7 @@ class AutonomyTests(unittest.TestCase):
     def open(self, worker=quick_worker, policy_path=POLICY_PATH, name="room.sqlite3"):
         controller = Controller(self.root / name, worker=worker, policy_path=policy_path)
         self.controllers.append(controller)
-        token = controller.create({"name": "Autonomy rehearsal", "display_name": "Owner", "brief": "Invented refund policy"})
+        token = controller.create({"name": "Autonomy rehearsal", "display_name": "Owner", "brief": "Synthetic refund policy"})
         csrf = controller.session(token)["csrf"]
         return controller, lambda action, **body: controller.mutate(token, csrf, action, body), token
 

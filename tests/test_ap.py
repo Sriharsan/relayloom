@@ -317,12 +317,12 @@ class FindingVerificationTests(unittest.TestCase):
         ok, problems = verify_finding([{"text": "The bill says 50 and the dock counted 46.", "cites": ["BILL:X-1", "REC:R-1"]}], self.evidence)
         self.assertTrue(ok, problems)
 
-    def test_invented_record_is_rejected(self):
+    def test_citation_of_a_missing_record_is_rejected(self):
         ok, problems = verify_finding([{"text": "Seen earlier.", "cites": ["INV:NOPE"]}], self.evidence)
         self.assertFalse(ok)
         self.assertIn("not a record", problems[0])
 
-    def test_statement_without_a_citation_and_invented_number_are_rejected(self):
+    def test_statement_without_a_citation_and_unsupported_number_are_rejected(self):
         self.assertFalse(verify_finding([{"text": "Probably short.", "cites": []}], self.evidence)[0])
         ok, problems = verify_finding([{"text": "The dock counted 40.", "cites": ["REC:R-1"]}], self.evidence)
         self.assertFalse(ok)

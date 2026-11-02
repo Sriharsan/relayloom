@@ -16,7 +16,7 @@ is 27 October to 4 November (ET)**. Submissions are due 4 November, 9:00 PM ET.
 - `3668d31`, 28 October, 9:08 AM ET, is the **first code commit** and is inside
   the building period. Every later commit is inside it too.
 - Planning notes from 26 October informed the first documents. Those notes are
-  not in this repository. A private prototype by the same founder exists; no
+  not in this repository. A private earlier project by the same founder exists; no
   private source, history, tests or data were imported (see
   [HACKATHON_PROVENANCE.md](HACKATHON_PROVENANCE.md)).
 
@@ -39,13 +39,33 @@ is 27 October to 4 November (ET)**. Submissions are due 4 November, 9:00 PM ET.
 | `c33d876` | 30 Oct 12:14 PM | Workroom redesign: dark control room, the revision loom, autonomy policy panel, approval and proof steps, 3 more UI tests. | Inside |
 | `a98e2e4` | 30 Oct 12:14 PM | PowerShell launcher stops its Python child on exit. | Inside |
 
-Commits after `a98e2e4` on 30 October add screenshots and documentation only
-(this file, the video kit, submission notes and the README). The release notes
-for the tag list them.
+Commits `ec15789` to `e7eb2bc` (30 and 31 October) add screenshots and documentation only: this file, the autonomy notes,
+the video script, the submission notes and the README. Every commit below is inside the building period.
+
+| Commit | Date (ET) | What it added |
+| --- | --- | --- |
+| `ca62000` | 31 Oct 1:46 PM | Accounts payable core: policy levels in a file the model cannot change, signed receipt chain, masking of tax ids, bank accounts, phones and emails, strict bill schema, three way match, ledger adapter. |
+| `cc8ed60` | 31 Oct 1:46 PM | Synthetic suppliers, purchase orders, bill PDFs and rendered delivery photos (replaced by the Northgate Components set in `6597d87`). |
+| `82a78c9` | 31 Oct 1:46 PM | Agents for read, count, match, enter, check and dispute, egress gateway, local supplier portal and tests. |
+| `5b13b84` | 31 Oct 1:46 PM | First real Muse Glimmer 30B bill reading on this laptop's CPU. |
+| `ed73145` | 31 Oct 1:47 PM | Fixture bytes kept exact so recorded model inputs hash the same on every clone. |
+| `3356d7b` | 31 Oct 1:49 PM | Receipt verification in the browser with WebCrypto Ed25519, same canonical bytes as Python. |
+| `ef16205` | 1 Nov 1:06 AM | Accounts payable app and UI, five case runner, boundary files and six more Muse Glimmer readings. |
+| `1cad2f0` | 1 Nov 1:44 AM | Real SAM 3.1 counts for the delivery photos, ERPNext seeding fix. |
+| `8024117` | 1 Nov 1:53 AM | Batch rows stack on narrow screens, screenshot script. |
+| `6cf3440` | 1 Nov 1:00 AM EST | Sources list and site data builder. |
+| `6597d87` | 1 Nov 1:17 AM EST | Northgate Components replaces the first story everywhere in code, fixtures and tests. Receiving log with duplicate photo detection, the Investigator with code-verified citations, running total matching across receiving events, multi photo counting. |
+| `280b7e9` | 1 Nov 1:21 AM EST | Investigation panel and per photo gallery in the app, Benchmark page, benchmark runner. |
+| `4670f87` | 1 Nov 1:23 AM EST | Requirements for the accounts payable app, CI installs them, screenshots of the earlier story removed. |
+| `f8de996` | 2 Nov 11:24 AM EST | Site rebuilt from the Lovable design in `site-src`, reading every figure from exported run files. New recount wordings after trials: cylinder, package, spool. More real SAM 3.1 recordings. |
+| `2a5ed30` | 2 Nov 11:56 AM EST | The 30 delivery benchmark on real SAM 3.1 counts, added to the Proof page. |
+| `304c87c` | 2 Nov 12:00 PM EST | Every page route served from the app on Vercel. |
+
+The commit that adds this table also updates the README, submission notes, results and the wording of the synthetic data labels.
 
 ## What has not happened
 
-- No live Meta model call has been made from this repository.
+- No paid Meta Model API call has been made from this repository. The adapter stays off.
+- Muse Glimmer 30B and SAM 3.1 open weights have run on this laptop. Numbers and timings are in [RESULTS.md](RESULTS.md).
 - No customer, pilot, revenue or funding exists or is claimed.
-- All demo records are invented. Rehearsal outputs are deterministic text
-  produced by code, not by a model.
+- All demo records are synthetic. The first workroom's rehearsal outputs are deterministic text produced by code, not by a model.

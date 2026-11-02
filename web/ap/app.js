@@ -1,5 +1,5 @@
 "use strict";
-// Relayloom accounts payable UI. Shows server state only; nothing on screen is invented.
+// Relayloom accounts payable UI. Shows server state only; nothing on screen is synthetic.
 
 const $ = (id) => document.getElementById(id);
 const STEPS = ["read", "count", "match", "investigate", "enter", "check"];
@@ -207,7 +207,7 @@ async function renderBenchmark() {
   if (!benchmark) { box.innerHTML = "<p class='meta'>No benchmark results yet. Run <code>python -m relayloom.ap.benchmark</code>.</p>"; return; }
   const a = benchmark.pipeline_a, b = benchmark.pipeline_b;
   const row = (label, x, y) => `<tr><th scope="row">${label}</th><td class="num">${x}</td><td class="num">${y}</td></tr>`;
-  box.innerHTML = `<p class="caveat"><b>Synthetic set built by us.</b> ${a.deliveries} invented deliveries with known answers, run through two pipelines on ${esc(benchmark.date)}. ${esc(benchmark.counter_mode)}.</p>
+  box.innerHTML = `<p class="caveat"><b>Synthetic set built by us.</b> ${a.deliveries} synthetic deliveries with known answers, run through two pipelines on ${esc(benchmark.date)}. ${esc(benchmark.counter_mode)}.</p>
     <div class="table-wrap"><table><thead><tr><th></th><th>A: paperwork only</th><th>B: paperwork plus goods</th></tr></thead><tbody>
       ${row("Bad bills in the set", a.should_hold, b.should_hold)}${row("Errors caught", a.errors_caught, b.errors_caught)}${row("Errors missed", a.errors_missed, b.errors_missed)}
       ${row("Wrong payments avoided", rupees(a.wrong_payments_avoided_inr), rupees(b.wrong_payments_avoided_inr))}${row("Wrong payments made", rupees(a.wrong_payments_made_inr), rupees(b.wrong_payments_made_inr))}

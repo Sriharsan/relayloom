@@ -11,7 +11,7 @@ Publication does not authorize paying for services or making unrestricted calls.
 
 Record each implemented feature, date, commit, evidence and demo location.
 Distinguish plans, simulations, recorded execution and live model work. Never
-backdate or present a private prototype's existing functions as event-built.
+backdate or present a private earlier project's existing functions as event-built.
 
 Use real permission, revision, budget and outcome checks. Model votes do not
 grant authority. Reuse valid work only with current input/config/authority

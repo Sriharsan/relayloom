@@ -2,7 +2,7 @@
 
 Starts a private loopback server on a free port with a temporary database,
 drives the same API the browser uses, then stops the server and deletes the
-database. Rehearsal mode only: invented records, deterministic specialist
+database. Rehearsal mode only: synthetic records, deterministic specialist
 outputs, zero model calls. No network inference and no API key.
 """
 import http.client
@@ -93,7 +93,7 @@ def run(out=print):
         owner = Client(server.server_address[1])
         try:
             def create():
-                status, _ = owner.post("rooms", {"name": "Refund policy rehearsal", "display_name": "Owner (invented)",
+                status, _ = owner.post("rooms", {"name": "Refund policy rehearsal", "display_name": "Owner (synthetic)",
                                                  "brief": "Draft a fictional refund policy for the Relayloom demo store."})
                 owner.csrf = owner.call("GET", "/api/session")[1].get("csrf", "")
                 state = owner.state()
@@ -156,7 +156,7 @@ def run(out=print):
                 approval = (artifact or {}).get("payload", {}).get("approval", {})
                 ok = (refused == 403 and old >= 400 and published == 200 and again == 200 and replay.get("replayed") is True
                       and checks and state["metrics"]["artifacts_published"] == 1 and state["metrics"]["model_calls"] == 0
-                      and approval.get("approver") == "Owner (invented)" and approval.get("revision") == revision)
+                      and approval.get("approver") == "Owner (synthetic)" and approval.get("revision") == revision)
                 return ok, (f"refused without approval (HTTP {refused}), older revision refused (HTTP {old}), "
                             f"published revision {revision} with {len(artifact['checks']) if artifact else 0} checks passed and an approval record, replay created no second artifact")
             case("checked publication needs a recorded approval", publication)
@@ -183,7 +183,7 @@ def run(out=print):
 
 
 def main(out=print):
-    out("Relayloom rehearsal check: invented records, deterministic outputs, no model calls.")
+    out("Relayloom rehearsal check: synthetic records, deterministic outputs, no model calls.")
     results = run(out)
     failed = sum(not passed for passed in results)
     out(f"{len(results) - failed} passed, {failed} failed")

@@ -1,4 +1,4 @@
-# Rehearsal demo check: invented records, deterministic outputs, no model calls.
+# Rehearsal demo check: synthetic records, deterministic outputs, no model calls.
 $ErrorActionPreference = 'Stop'
 Set-Location (Join-Path $PSScriptRoot '..')
 $python = if (Get-Command py -ErrorAction SilentlyContinue) { 'py' } else { 'python' }

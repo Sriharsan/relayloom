@@ -2,7 +2,7 @@
 
 Usage: python scripts/build_site.py DATA_DIR [--label "text"] [--video URL]
 DATA_DIR holds run-* folders made by `python -m relayloom.ap.cases all --data DATA_DIR`.
-Nothing is invented here: every fact comes from result.json and receipts.jsonl of those runs.
+Nothing is typed in here: every fact comes from result.json and receipts.jsonl of those runs.
 """
 import json
 from pathlib import Path

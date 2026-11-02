@@ -70,7 +70,7 @@
     $('#revision').textContent = 'REV —'; $('#event-count').textContent = '0';
     $('#artifact-status').textContent = 'Awaiting publication';
     $('#mode-title').textContent = 'Local rehearsal';
-    $('#mode-description').textContent = 'Invented records · deterministic outputs · no model calls';
+    $('#mode-description').textContent = 'Synthetic records · deterministic outputs · no model calls';
     $('#invite-code').value = ''; $('#invite-result').hidden = true;
     $('#copy-invite').textContent = 'Copy invite code';
     for (const id of ['edit-intent', 'invite-button', 'run-button', 'publish-button', 'publish-permission']) {
@@ -143,7 +143,7 @@
     $('#authority').textContent = state.member.role.toUpperCase(); $('#revision').textContent = `REV ${state.room.revision}`;
     const rehearsal = state.room.mode !== 'meta';
     $('#mode-title').textContent = rehearsal ? 'Local rehearsal' : 'Meta adapter configured';
-    $('#mode-description').textContent = rehearsal ? 'Invented records · deterministic outputs · no model calls' : 'Meta requests on the fixed public fixture · attempts and reported usage below';
+    $('#mode-description').textContent = rehearsal ? 'Synthetic records · deterministic outputs · no model calls' : 'Meta requests on the fixed public fixture · attempts and reported usage below';
     $('#intent-brief').textContent = state.room.intent.brief;
     $('#intent-audience').textContent = state.room.intent.audience || 'Not specified';
     $('#intent-refund').textContent = `${state.room.intent.refund_days ?? '—'} days`;
