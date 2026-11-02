@@ -1,110 +1,33 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Relayloom</title>
-<meta name="description" content="Relayloom: autonomous accounts payable that checks the goods, not just the paperwork.">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<header class="top">
-  <div class="brand"><span class="mark" aria-hidden="true"></span>Relayloom</div>
-  <nav aria-label="Sections"><a href="#how">How it works</a><a href="#investigation">Investigation</a><a href="#benchmark">Benchmark</a><a href="#cases">Cases</a><a href="#boundary">Boundary</a><a href="#verify">Receipts</a></nav>
-  <button type="button" class="ghost" id="theme" aria-label="Switch colour theme">Light</button>
-</header>
-<main>
-  <section class="hero">
-    <p class="kicker">The paperwork says 50. The dock got 46.</p>
-    <h1>Relayloom: autonomous accounts payable that checks the goods, not just the paperwork.</h1>
-    <p class="lead">Agents read the bill, look at what actually arrived, investigate any gap with evidence, and pay only what the books and the goods both support. Runs inside the company's own network on Meta open weight models.</p>
-    <div class="cta"><a class="button primary" href="https://github.com/Sriharsan/relayloom">Source on GitHub</a><a class="button" href="#video" id="videoLink">Three minute video</a></div>
-    <p class="meta" id="runline"></p>
-  </section>
-
-  <section id="problem">
-    <h2>The problem on a receiving dock</h2>
-    <p class="meta">For the receiving and accounts payable team of a manufacturer or distributor that buys physical goods.</p>
-    <div class="cols3">
-      <div class="card"><h3>Bills describe what was sent</h3><p>The bill says 50 cartons. The dock counted 46. A three way match only helps if someone counts, and nobody counts every pallet.</p></div>
-      <div class="card"><h3>Deliveries arrive in pieces</h3><p>One order can arrive in two deliveries and be billed once. Quantities have to add up per order, not per bill.</p></div>
-      <div class="card"><h3>The same goods get billed twice</h3><p>A repeat bill under a new number, a rate above the order, a line of hidden text asking to pay a new account. Each looks fine on its own.</p></div>
-    </div>
-  </section>
-
-  <section id="how">
-    <h2>How it works</h2>
-    <ol class="flow" aria-label="Agents in order">
-      <li><b>Intake</b><span>watches the bills folder</span></li>
-      <li><b>Reader</b><span>Muse Glimmer reads the masked bill into a strict schema</span></li>
-      <li><b>Counter</b><span>SAM 3.1 counts every photo of every delivery</span></li>
-      <li><b>Matcher</b><span>code compares order, bill and goods as a running total</span></li>
-      <li><b>Investigator</b><span>works every mismatch with cited evidence</span></li>
-      <li><b>Clerk</b><span>enters a matching bill in ERPNext</span></li>
-      <li><b>Checker</b><span>reads it back with separate requests</span></li>
-      <li><b>Disputer</b><span>Muse Glimmer drafts, a browser agent files it</span></li>
-    </ol>
-    <div class="cols3 levels" id="levels"></div>
-  </section>
-
-  <section id="investigation">
-    <h2>The Investigator</h2>
-    <p>On every mismatch an agent works before a person sees the case. It recounts from every photo, adds up all deliveries on the order, checks the order price and the last price paid, looks for a duplicate bill, and checks the supplier's past shortfalls. Every statement in its finding cites a record, a photo or a recount, and code checks that each citation exists before the finding is shown. Then it proposes an action and the policy decides.</p>
-    <div class="card" id="finding"></div>
-  </section>
-
-  <section id="benchmark">
-    <h2>Benchmark</h2>
-    <p class="caveat">Synthetic set built by us. Invented deliveries with known answers, run through two pipelines on the same set.</p>
-    <div id="benchmarkTable"></div>
-  </section>
-
-  <section id="cases">
-    <h2>The cases, run on our machine</h2>
-    <p class="meta">Synthetic records. Each case is one command and prints PASS or FAIL per check.</p>
-    <div id="caseList"></div>
-  </section>
-
-  <section id="boundary">
-    <h2>The boundary</h2>
-    <figure class="card diagram">
-      <svg viewBox="0 0 760 300" role="img" aria-labelledby="bTitle bDesc">
-        <title id="bTitle">Network isolated boundary</title>
-        <desc id="bDesc">Agents, Muse Glimmer, SAM 3.1, ERPNext and the supplier portal sit inside the company's machine. The only way out is a gateway that allows two named hosts and logs every request.</desc>
-        <rect x="10" y="10" width="560" height="280" rx="14" class="zone"/>
-        <text x="30" y="40" class="label">Inside the company's network</text>
-        <rect x="30" y="60" width="160" height="56" rx="8" class="box"/><text x="110" y="93" class="t">Agents</text>
-        <rect x="210" y="60" width="160" height="56" rx="8" class="box"/><text x="290" y="85" class="t">Muse Glimmer</text><text x="290" y="104" class="s">reads bills, writes findings</text>
-        <rect x="390" y="60" width="160" height="56" rx="8" class="box"/><text x="470" y="85" class="t">SAM 3.1</text><text x="470" y="104" class="s">counts goods in photos</text>
-        <rect x="30" y="140" width="160" height="56" rx="8" class="box"/><text x="110" y="173" class="t">ERPNext ledger</text>
-        <rect x="210" y="140" width="160" height="56" rx="8" class="box"/><text x="290" y="173" class="t">Checker</text>
-        <rect x="390" y="140" width="160" height="56" rx="8" class="box"/><text x="470" y="173" class="t">Supplier portal</text>
-        <rect x="30" y="220" width="520" height="50" rx="8" class="mask"/><text x="290" y="250" class="t">Masking: GSTIN, bank account, IFSC, phone, email</text>
-        <rect x="600" y="110" width="140" height="80" rx="8" class="gate"/><text x="670" y="145" class="t">Gateway</text><text x="670" y="165" class="s">2 hosts, all logged</text>
-        <line x1="570" y1="150" x2="600" y2="150" class="wire"/>
-      </svg>
-      <figcaption id="boundaryLine"></figcaption>
-    </figure>
-    <div class="card"><h3>Gateway log sample</h3><pre class="log" id="gatewayLog"></pre></div>
-  </section>
-
-  <section id="verify">
-    <h2>Check the receipts yourself</h2>
-    <p>Every step writes a signed receipt: policy hash, input hash, model, response id, decision, approver and ledger readback, chained per case. This page checks the receipts from our runs in your browser, with no server.</p>
-    <div class="card">
-      <button type="button" class="button primary" id="verifyBtn">Verify the receipts</button>
-      <button type="button" class="button" id="tamperBtn">Change one receipt and verify again</button>
-      <p id="verifyOut" role="status" class="out"></p>
-    </div>
-  </section>
-
-  <section id="video">
-    <h2>Video</h2>
-    <p id="videoText">Three minutes: the paperwork says 50 and the dock got 46, the investigation finding, the benchmark table, hidden text failing to change the bank account, a network cut, and what left the building.</p>
-  </section>
-</main>
-<footer class="foot">Synthetic data. The working system runs on the company's own machine; this site does not.</footer>
-<script src="verify.js"></script>
-<script src="site.js"></script>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relayloom. Accounts payable that checks the goods.</title>
+    <meta
+      name="description"
+      content="Agents read the bill, look at what actually arrived, investigate any gap with evidence, and pay only what the books and the goods both support. Runs inside the company's own network on Meta open weight models."
+    />
+    <meta property="og:title" content="Relayloom. Accounts payable that checks the goods." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem("relayloom-theme") === "light") document.documentElement.classList.add("light");
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-C1fnweQJ.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BmptbxuR.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>

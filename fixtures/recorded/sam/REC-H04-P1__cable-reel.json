@@ -1,0 +1,21 @@
+{
+ "recorded_at": "2026-11-02 21:07 +0530",
+ "photo_sha256": "669540df51d520dc80254bfb4b6c44e2beb090c0802c31fddc06d87535d4483d",
+ "result": {
+  "count": 0,
+  "prompt": "cable reel",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 40.6,
+  "scores": [],
+  "image_size": [
+   716,
+   514
+  ],
+  "wall_seconds": 50.3,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "REC-H04-P1__cable-reel.jpg",
+  "recorded": false
+ }
+}

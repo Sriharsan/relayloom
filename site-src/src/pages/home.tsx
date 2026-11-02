@@ -1,0 +1,422 @@
+import { ArrowRight, MoveRight, ShieldCheck } from "lucide-react";
+import { Link } from "@/lib/router";
+import {
+  caseById, caseMeta, caseResult, casePhotos, company, firstImage, links, netcutPass, rupees, run, supplierName,
+} from "@/data/site";
+import { Photo, Pill, RunLabel, SectionHead } from "@/components/bits";
+import { FindingCard } from "@/components/finding";
+
+const SHORT = caseById("short")!;
+const BILL_QTY = SHORT.bill!.lines[0]!.qty;
+const GOODS = SHORT.counter.total;
+const GAP = BILL_QTY - GOODS;
+const SHORT_PHOTOS = casePhotos(SHORT).filter((p) => p.counted);
+const RUN_LABEL = "Rehearsal";
+
+const primary =
+  "inline-flex h-12 items-center gap-2 rounded-lg bg-foreground px-5 text-sm font-medium text-background transition-opacity duration-150 hover:opacity-90";
+const secondary =
+  "inline-flex h-12 items-center gap-2 rounded-lg border border-line bg-surface px-5 text-sm font-medium text-foreground transition-colors duration-150 hover:bg-raised";
+
+function Hero() {
+  return (
+    <section className="hero-glow relative overflow-hidden border-b border-line">
+      <div className="blueprint absolute inset-0" aria-hidden="true" />
+      <div className="relative mx-auto grid max-w-[1200px] grid-cols-1 gap-12 px-4 pb-16 pt-14 sm:px-6 md:pb-24 md:pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+        <div className="rise">
+          <p className="kLabel">Autonomous accounts payable</p>
+          <h1 className="mt-4 max-w-[19ch] text-balance text-[34px] font-semibold leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[46px] lg:text-[54px]">
+            It checks the goods, not just the paperwork.
+          </h1>
+          <p className="mt-5 max-w-[52ch] text-[15.5px] leading-relaxed text-ink-muted">
+            Agents read the bill, look at what actually arrived, investigate any gap with evidence, and pay only what the
+            books and the goods both support. Runs inside the company's own network on Meta open weight models.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            {links.video && (
+              <a href={links.video} target="_blank" rel="noreferrer" className={primary}>
+                Watch the 3 minute demo
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            )}
+            <Link to="/proof" className={links.video ? secondary : primary}>
+              See the proof
+              {!links.video && <ArrowRight className="h-4 w-4" />}
+            </Link>
+            <Link to="/demo" className={secondary}>Open the demo</Link>
+          </div>
+          <p className="mt-8 font-mono text-[11.5px] leading-relaxed text-ink-muted">
+            Demo company: {company.name}. {company.note} Muse Glimmer 30B reads bills. SAM 3.1 counts delivered goods.
+            Everything else is code.
+          </p>
+        </div>
+
+        <div className="rise-late relative">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[0.8fr_1.2fr]">
+            <div className="rounded-xl border border-line bg-surface p-4">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[11px] text-ink-muted">Bill</span>
+                <span className="tnum font-mono text-[12px] text-foreground">{SHORT.bill_no}</span>
+              </div>
+              <p className="mt-4 text-[15px] font-medium text-foreground">{supplierName(SHORT.supplier_id)}</p>
+              <p className="mt-1 text-[13px] text-ink-muted">{SHORT.bill!.lines[0]!.description}, qty {BILL_QTY}</p>
+              <p className="tnum mt-4 font-mono text-[15px] text-foreground">{rupees(SHORT.bill!.total_inr)}</p>
+              <div className="mt-4 border-t border-line pt-3">
+                <Pill tone="muted">order {SHORT.po_number}</Pill>
+              </div>
+            </div>
+            <div className="rounded-xl border border-line bg-surface p-4">
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-mono text-[11px] text-ink-muted">Dock photos</span>
+                <Pill tone="green">counted by SAM 3.1</Pill>
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                {SHORT_PHOTOS.map((p) => (
+                  <figure key={p.photo}>
+                    <Photo src={p.image} alt={`${p.photo} with ${p.count} items outlined and numbered`} />
+                    <figcaption className="tnum mt-1 font-mono text-[10.5px] text-ink-muted">{p.photo}: {p.count}</figcaption>
+                  </figure>
+                ))}
+              </div>
+              <div className="mt-3 flex items-baseline justify-between">
+                <span className="text-[12px] text-ink-muted">counted on the dock</span>
+                <span className="tnum font-mono text-[26px] font-medium leading-none text-green-ink">{GOODS}</span>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 flex items-center justify-center">
+            <span className="pill !whitespace-normal text-center border-amber/40 bg-amber/10 px-3 py-1.5 text-[11.5px] text-amber-ink">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber" aria-hidden="true" />
+              Gap of {GAP}. Investigator finding ready. Held for a person.
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const PROBLEMS = [
+  { n: "01", title: `The bill says ${BILL_QTY}. The dock got ${GOODS}.`, body: "The paperwork matches itself. The goods on the floor never get asked." },
+  { n: "02", title: "Paperwork matching cannot see the goods.", body: "A three way match on documents only proves the documents agree, not that anything arrived." },
+  { n: "03", title: "Someone pays the gap or spends the afternoon chasing it.", body: "Short deliveries get paid in full, or a person spends hours gathering proof." },
+];
+
+function Problem() {
+  return (
+    <section className="border-b border-line">
+      <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
+        <SectionHead index="01 / The problem" title="Every bill is a claim. Few of them get checked against the floor." />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {PROBLEMS.map((p) => (
+            <div key={p.n} className="rounded-xl border border-line bg-surface p-6">
+              <span className="tnum font-mono text-[11px] text-ink-muted">{p.n}</span>
+              <h3 className="mt-3 text-[16px] font-medium leading-snug text-foreground">{p.title}</h3>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-ink-muted">{p.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const AGENTS = [
+  { name: "Intake", does: "Takes bills and dock photos in and masks private numbers.", chip: "code" },
+  { name: "Reader", does: "Reads the bill line by line into a strict schema.", chip: "Muse Glimmer 30B" },
+  { name: "Counter", does: "Counts delivered goods in every dock photo.", chip: "SAM 3.1" },
+  { name: "Matcher", does: "Compares order, bill and counted goods as a running total.", chip: "code" },
+  { name: "Investigator", does: "Chases any gap and cites every statement.", chip: "Muse Glimmer 30B" },
+  { name: "Clerk", does: "Posts matching bills to the ledger.", chip: "ledger" },
+  { name: "Checker", does: "Reads the ledger back with a separate request.", chip: "independent readback" },
+  { name: "Disputer", does: "Drafts the dispute and files it once a person approves.", chip: "Muse Glimmer 30B + browser agent" },
+];
+
+function HowItWorks() {
+  return (
+    <section id="how" className="scroll-mt-20 border-b border-line">
+      <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
+        <SectionHead
+          index="02 / How it works"
+          title="Eight agents, each one auditable"
+          note="Models do the reading and counting. Code does the matching, entering and checking. Every step leaves a signed receipt."
+        />
+        <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {AGENTS.map((a, i) => (
+            <li key={a.name}>
+              <div className="h-full rounded-xl border border-line bg-surface p-4 transition-colors duration-150 hover:border-line-strong">
+                <div className="flex items-center justify-between">
+                  <span className="tnum font-mono text-[10.5px] text-ink-muted">{String(i + 1).padStart(2, "0")}</span>
+                  <MoveRight className="h-3.5 w-3.5 text-ink-muted lg:hidden" aria-hidden="true" />
+                </div>
+                <h3 className="mt-2.5 text-[15px] font-medium text-foreground">{a.name}</h3>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted">{a.does}</p>
+                <div className="mt-3">
+                  <Pill tone={a.chip.includes("Muse") || a.chip.includes("SAM") ? "amber" : "muted"}>{a.chip}</Pill>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+const COLUMNS = [
+  {
+    title: "Runs alone", tone: "green",
+    items: ["Read bills", "Count goods", "Match", "Investigate any gap", "Enter matching bills", "Check the readback", "Reconcile after reconnect"],
+  },
+  {
+    title: "Waits for a person", tone: "amber",
+    items: ["Any mismatch", "Bills above the limit", "Sending a dispute", "A new supplier or changed bank details"],
+  },
+  {
+    title: "Never", tone: "red",
+    items: ["Change bank details from invoice text", "Enter a bill whose readback failed", "Change the books while offline"],
+  },
+] as const;
+
+function Autonomy() {
+  return (
+    <section className="border-b border-line">
+      <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
+        <SectionHead index="03 / Autonomy" title="Where it runs alone, where it waits" />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {COLUMNS.map((c) => (
+            <div key={c.title} className={`rounded-xl border bg-surface p-6 ${c.tone === "amber" ? "border-amber/30" : c.tone === "red" ? "border-red/30" : "border-line"}`}>
+              <h3 className={`text-[15px] font-medium ${c.tone === "amber" ? "text-amber-ink" : c.tone === "red" ? "text-red-ink" : "text-foreground"}`}>{c.title}</h3>
+              <ul className="mt-4 space-y-2.5">
+                {c.items.map((t) => (
+                  <li key={t} className="flex items-start gap-2.5 text-[13.5px] text-ink-muted">
+                    <span className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${c.tone === "amber" ? "bg-amber" : c.tone === "red" ? "bg-red" : "bg-green"}`} aria-hidden="true" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <p className="mt-5 text-[13px] text-ink-muted">These levels live in a policy file the models cannot change.</p>
+      </div>
+    </section>
+  );
+}
+
+function Spotlight() {
+  const inv = SHORT.investigation!;
+  const proposal = SHORT.proposal as { reason: string; policy_level: string };
+  const cites = [...new Set(inv.finding.statements.flatMap((s) => s.cites))].slice(0, 5);
+  return (
+    <section className="border-b border-line">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+        <div>
+          <SectionHead index="04 / Investigation" title="A gap becomes evidence before it becomes a question" />
+          <p className="max-w-lg text-[14.5px] leading-relaxed text-ink-muted">
+            When the count and the bill disagree, the Investigator recounts every photo, adds up earlier deliveries on the
+            same order, checks the price and the supplier's history, and writes a finding. Every statement carries its citation.
+          </p>
+          <div className="mt-6 flex flex-col gap-3 rounded-xl border border-line bg-surface p-5">
+            <p className="font-mono text-[11px] text-ink-muted">Code checks every citation and every number before a person sees the finding.</p>
+            <div className="flex flex-wrap gap-2">
+              {cites.map((c) => (
+                <span key={c} className="tnum pill bg-raised text-[11px] text-foreground">{c}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="lg:pt-24">
+          <FindingCard title={`Short delivery on ${SHORT.po_number}`} statements={inv.finding.statements} label={RUN_LABEL} />
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <span className="pill !whitespace-normal border-line bg-raised text-[11.5px] text-foreground">Proposed: {proposal.reason}</span>
+            <span className="pill border-amber/40 bg-amber/10 text-[11.5px] text-amber-ink">
+              Policy: {proposal.policy_level === "run_with_approval" ? "needs approval" : proposal.policy_level.replace(/_/g, " ")}
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Cases() {
+  return (
+    <section id="cases" className="scroll-mt-20 border-b border-line">
+      <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
+        <SectionHead
+          index="05 / Cases"
+          title="Seven runs, seven outcomes"
+          note="Each card is one run of the real agents, ledger and receipts on synthetic bills and delivery photos."
+        />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {caseMeta.map((m) => {
+            const c = caseById(m.id)!;
+            const result = caseResult(m.id);
+            return (
+              <article key={m.id} className="flex flex-col rounded-xl border border-line bg-surface p-5">
+                <div className="flex items-center justify-between gap-2">
+                  <Pill tone={result === "PASS" ? "green" : "red"}>{result}</Pill>
+                  <RunLabel label={RUN_LABEL} />
+                </div>
+                <h3 className="mt-4 text-[15.5px] font-medium leading-snug text-foreground">{m.title}</h3>
+                <p className="mt-2 text-[13.5px] leading-relaxed text-ink-muted">{m.sentence}</p>
+                <p className="mt-3 font-mono text-[11.5px] text-foreground">{c.status}</p>
+                <div className="mt-4 flex-1" />
+                <Photo src={firstImage(c)} alt={`${m.title}, delivery photo`} aspect="16 / 10" />
+              </article>
+            );
+          })}
+          <article className="flex flex-col rounded-xl border border-line bg-surface p-5">
+            <div className="flex items-center justify-between gap-2">
+              <Pill tone={netcutPass ? "green" : "red"}>{netcutPass ? "PASS" : "FAIL"}</Pill>
+              <RunLabel label={RUN_LABEL} />
+            </div>
+            <h3 className="mt-4 text-[15.5px] font-medium leading-snug text-foreground">Network cut mid batch</h3>
+            <p className="mt-2 text-[13.5px] leading-relaxed text-ink-muted">
+              The link drops after the first invoice. Reading continues, nothing else is entered. On reconnect the ledger is read first and nothing is entered twice.
+            </p>
+            <div className="mt-4 flex-1" />
+            <dl className="grid grid-cols-2 gap-3 rounded-lg border border-line bg-raised p-4">
+              <div>
+                <dd className="tnum font-mono text-[26px] leading-none text-amber-ink">{run.netcut.in_books_while_cut}</dd>
+                <dt className="mt-1.5 text-[12px] text-ink-muted">in the books while cut</dt>
+              </div>
+              <div>
+                <dd className="tnum font-mono text-[26px] leading-none text-green-ink">{run.netcut.in_books_after_reconnect}</dd>
+                <dt className="mt-1.5 text-[12px] text-ink-muted">after reconnect, none twice</dt>
+              </div>
+            </dl>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const INSIDE = ["Agents", "Muse Glimmer", "SAM 3.1", "Ledger", "Checker", "Receipts"];
+const KIND_LABEL: Record<string, string> = {
+  gstin: "Tax ID", bank_account: "Bank account", ifsc: "Bank code", phone: "Phone", email: "Email",
+};
+
+function Boundary() {
+  const injection = caseById("injection")!;
+  const masks = injection.masks;
+  const hidden = injection.injection && typeof injection.injection === "object" ? injection.injection : null;
+  return (
+    <section className="border-b border-line">
+      <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
+        <SectionHead
+          index="06 / The boundary"
+          title="Private numbers are masked before anything leaves the building"
+          note="Models run on the machine. Tax ids, bank accounts, phones and emails are masked in what any model sees, and the originals stay inside."
+        />
+        <div className="rounded-xl border border-line bg-surface p-4 sm:p-8">
+          <svg viewBox="0 0 760 300" className="h-auto w-full" role="img" aria-label="Diagram of the company network boundary with an egress gateway on the edge">
+            <rect x="24" y="24" width="640" height="252" rx="16" fill="var(--raised)" stroke="var(--line-strong)" strokeWidth="1.5" />
+            <text x="52" y="58" fill="var(--ink-muted)" fontSize="11" fontFamily="JetBrains Mono, monospace" letterSpacing="2">INSIDE THE COMPANY NETWORK</text>
+            {INSIDE.map((label, i) => {
+              const x = 52 + (i % 3) * 196;
+              const y = 84 + Math.floor(i / 3) * 92;
+              const model = label.includes("Muse") || label.includes("SAM");
+              return (
+                <g key={label}>
+                  <rect x={x} y={y} width="176" height="68" rx="10" fill="var(--surface)" stroke="var(--line)" />
+                  <circle cx={x + 20} cy={y + 24} r="3.5" fill={model ? "var(--amber)" : "var(--green)"} />
+                  <text x={x + 34} y={y + 28} fill="var(--foreground)" fontSize="13" fontFamily="Candara, Nunito Sans, sans-serif" fontWeight="500">{label}</text>
+                  <text x={x + 20} y={y + 50} fill="var(--ink-muted)" fontSize="10.5" fontFamily="JetBrains Mono, monospace">{model ? "open weight model" : "on machine"}</text>
+                </g>
+              );
+            })}
+            <rect x="648" y="128" width="104" height="44" rx="8" fill="var(--surface)" stroke="var(--amber)" strokeWidth="1.5" />
+            <text x="700" y="146" textAnchor="middle" fill="var(--amber-ink)" fontSize="10.5" fontFamily="JetBrains Mono, monospace">EGRESS</text>
+            <text x="700" y="160" textAnchor="middle" fill="var(--amber-ink)" fontSize="10.5" fontFamily="JetBrains Mono, monospace">GATEWAY</text>
+            <text x="700" y="196" textAnchor="middle" fill="var(--ink-muted)" fontSize="10.5" fontFamily="JetBrains Mono, monospace">off by default</text>
+          </svg>
+        </div>
+
+        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="overflow-hidden rounded-xl border border-line bg-surface">
+            <div className="flex items-center justify-between border-b border-line px-5 py-3">
+              <span className="kLabel">Masked in bill {injection.bill_no}</span>
+              <RunLabel label={RUN_LABEL} />
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[420px] text-left font-mono text-[12px]">
+                <thead>
+                  <tr className="border-b border-line text-ink-muted">
+                    <th className="px-5 py-2.5 font-medium">what</th>
+                    <th className="px-5 py-2.5 text-right font-medium">length</th>
+                    <th className="px-5 py-2.5 font-medium">fingerprint</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {masks.map((m, i) => (
+                    <tr key={i} className="border-b border-line last:border-0">
+                      <td className="px-5 py-2.5 text-foreground">{KIND_LABEL[m.kind] ?? m.kind}</td>
+                      <td className="tnum px-5 py-2.5 text-right text-foreground">{m.length}</td>
+                      <td className="tnum px-5 py-2.5 text-ink-muted">{m.sha256}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {hidden && (
+            <div className="rounded-xl border border-red/30 bg-surface">
+              <div className="flex items-center justify-between border-b border-line px-5 py-3">
+                <span className="kLabel">Hidden text found in the bill</span>
+                <Pill tone="red">ignored</Pill>
+              </div>
+              <div className="px-5 py-4">
+                <p className="rounded-lg border border-line bg-raised px-3.5 py-3 font-mono text-[12px] leading-relaxed text-foreground">{hidden.lines[0]}</p>
+                <p className="mt-3 text-[13.5px] leading-relaxed text-ink-muted">
+                  The text asked to move the payment to a new account. The attempt is receipted, and payment goes to the account in the
+                  ledger's supplier master: ending {injection.pay_to && typeof injection.pay_to === "object" ? injection.pay_to.account_last4 : ""}.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ClosingBand() {
+  return (
+    <section className="hero-glow relative overflow-hidden">
+      <div className="relative mx-auto max-w-[1200px] px-4 py-20 text-center sm:px-6">
+        <ShieldCheck className="mx-auto h-5 w-5 text-green-ink" aria-hidden="true" />
+        <h2 className="mx-auto mt-4 max-w-[24ch] text-balance text-[28px] font-semibold leading-tight tracking-[-0.02em] text-foreground sm:text-[34px]">
+          It checks the goods, not just the paperwork.
+        </h2>
+        <p className="mx-auto mt-3 max-w-[52ch] text-[14.5px] leading-relaxed text-ink-muted">
+          Agents read the bill, look at what actually arrived, investigate any gap with evidence, and pay only what the books and the goods both support.
+        </p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <Link to="/demo" className={primary}>
+            Open the demo
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link to="/proof" className={secondary}>See the proof</Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function Home() {
+  return (
+    <div>
+      <Hero />
+      <Problem />
+      <HowItWorks />
+      <Autonomy />
+      <Spotlight />
+      <Cases />
+      <Boundary />
+      <ClosingBand />
+    </div>
+  );
+}

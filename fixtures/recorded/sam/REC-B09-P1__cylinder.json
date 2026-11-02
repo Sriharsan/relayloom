@@ -1,0 +1,36 @@
+{
+ "recorded_at": "2026-11-02 21:49 +0530",
+ "photo_sha256": "3f7dfb4108eab25b71be28398cd5deb6cf104be0d029cbf4e39a555aff310e80",
+ "result": {
+  "count": 14,
+  "prompt": "cylinder",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 49.9,
+  "scores": [
+   0.946,
+   0.94,
+   0.94,
+   0.939,
+   0.938,
+   0.937,
+   0.936,
+   0.932,
+   0.928,
+   0.924,
+   0.923,
+   0.913,
+   0.909,
+   0.893
+  ],
+  "image_size": [
+   448,
+   562
+  ],
+  "wall_seconds": 59.5,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "REC-B09-P1__cylinder.jpg",
+  "recorded": false
+ }
+}

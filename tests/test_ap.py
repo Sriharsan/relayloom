@@ -56,7 +56,7 @@ class FakeCounter:
 
     def count(self, photo, prompt, key):
         count = TRUE[key]
-        if key in self.wrong and prompt in ("container", "bag", "carton", "reel"):
+        if key in self.wrong and prompt in ("cylinder", "bag", "package", "spool"):
             count = self.wrong[key]
         return {"count": count, "prompt": prompt, "model": "fake-sam", "route": "fake", "infer_seconds": 0.0,
                 "overlay": f"{key}.jpg"}

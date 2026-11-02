@@ -1,0 +1,50 @@
+{
+ "recorded_at": "2026-11-02 21:00 +0530",
+ "photo_sha256": "ade4ac5519a9ebf1aa0bc6fdd02865a1d8552c2f91cc652d1b884b5238531367",
+ "result": {
+  "count": 28,
+  "prompt": "box",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 36.4,
+  "scores": [
+   0.961,
+   0.96,
+   0.96,
+   0.959,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.958,
+   0.957,
+   0.957,
+   0.956,
+   0.956,
+   0.955,
+   0.955,
+   0.955,
+   0.955,
+   0.954,
+   0.954,
+   0.953,
+   0.953,
+   0.945,
+   0.942,
+   0.941,
+   0.929
+  ],
+  "image_size": [
+   728,
+   550
+  ],
+  "wall_seconds": 42.2,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "REC-H06-P1__box.jpg",
+  "recorded": false
+ }
+}

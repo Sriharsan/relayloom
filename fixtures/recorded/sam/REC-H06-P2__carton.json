@@ -1,0 +1,21 @@
+{
+ "recorded_at": "2026-11-02 20:58 +0530",
+ "photo_sha256": "bbe069372d70e3915a5fa496795c33120ad7bd9a8ad64dbdb944a426739bb429",
+ "result": {
+  "count": 0,
+  "prompt": "carton",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 35.4,
+  "scores": [],
+  "image_size": [
+   728,
+   366
+  ],
+  "wall_seconds": 41.6,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "REC-H06-P2__carton.jpg",
+  "recorded": false
+ }
+}

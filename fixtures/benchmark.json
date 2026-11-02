@@ -47,7 +47,7 @@
    "name": "Coolant can 5 litre",
    "supplier_id": "SUP-ARDEN",
    "prompt": "can",
-   "alt_prompt": "container",
+   "alt_prompt": "cylinder",
    "tax_rate": 0.18,
    "rate_inr": 410.0
   },
@@ -63,7 +63,7 @@
    "name": "Heavy duty shipping carton",
    "supplier_id": "SUP-CALDER",
    "prompt": "cardboard box",
-   "alt_prompt": "carton",
+   "alt_prompt": "package",
    "tax_rate": 0.18,
    "rate_inr": 118.0
   },
@@ -71,7 +71,7 @@
    "name": "Cable reel 100 m",
    "supplier_id": "SUP-DUNMORE",
    "prompt": "roll",
-   "alt_prompt": "reel",
+   "alt_prompt": "spool",
    "tax_rate": 0.18,
    "rate_inr": 650.0
   }

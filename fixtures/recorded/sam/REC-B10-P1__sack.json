@@ -1,0 +1,29 @@
+{
+ "recorded_at": "2026-11-02 21:50 +0530",
+ "photo_sha256": "fc9d6934ec5b4b68d0ecf5dcb2548426f785d7916cf4e652d497af8917890191",
+ "result": {
+  "count": 7,
+  "prompt": "sack",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 46.6,
+  "scores": [
+   0.736,
+   0.734,
+   0.732,
+   0.729,
+   0.728,
+   0.727,
+   0.723
+  ],
+  "image_size": [
+   552,
+   374
+  ],
+  "wall_seconds": 56.1,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "REC-B10-P1__sack.jpg",
+  "recorded": false
+ }
+}
