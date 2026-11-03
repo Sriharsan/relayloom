@@ -4,6 +4,7 @@ import {
 } from "@/data/site";
 import { Photo, Pill, RunLabel, StepPill } from "@/components/bits";
 import { FindingCard, citeId } from "@/components/finding";
+import { run as runData } from "@/data/site";
 import { Link } from "@/lib/router";
 
 type Tab = "today" | "case" | "approvals";
@@ -37,6 +38,84 @@ function Card({ title, right, children }: { title: string; right?: React.ReactNo
       </div>
       {children}
     </div>
+  );
+}
+
+
+function CauseCard({ c }: { c: BenchCase }) {
+  const d = c.diagnosis!;
+  return (
+    <div id="guide-cause" className="rounded-xl border border-line bg-surface">
+      <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-3">
+        <span className="kLabel">Likely cause</span>
+        <Pill tone={d.confidence === "high" ? "green" : d.confidence === "medium" ? "amber" : "muted"}>confidence {d.confidence}</Pill>
+      </div>
+      <div className="px-5 py-4">
+        <h3 className="text-[16px] font-medium text-foreground">{d.label}</h3>
+        <p className="mt-1 text-[13px] text-ink-muted">Probably: {d.responsible}.</p>
+        <ul className="mt-3 space-y-2.5">
+          {d.because.map((b, i) => (
+            <li key={i} className="flex flex-col gap-1.5">
+              <span className="text-[13.5px] leading-relaxed text-foreground">{b.text}</span>
+              <span className="flex flex-wrap gap-1.5">
+                {b.cites.map((x) => (
+                  <button key={x} onClick={() => scrollToCite(x)} className="tnum pill bg-raised text-[10.5px] text-foreground transition-colors duration-150 hover:border-line-strong">{x}</button>
+                ))}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-3 border-t border-line pt-3 text-[13px] text-ink-muted"><span className="text-foreground">Next:</span> {d.next_step}</p>
+      </div>
+    </div>
+  );
+}
+
+function SupplierCard({ c }: { c: BenchCase }) {
+  const sf = runData.supplier_files[c.supplier_id];
+  if (!sf) return null;
+  return (
+    <Card title="Supplier file" right={<span className="font-mono text-[11px] text-ink-muted">{sf.short_orders} short of {sf.orders.length} orders</span>}>
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[300px] text-left text-[12.5px]">
+          <thead>
+            <tr className="border-b border-line text-ink-muted">
+              <th className="px-5 py-2 font-medium">Order</th>
+              <th className="px-5 py-2 text-right font-medium">Billed</th>
+              <th className="px-5 py-2 text-right font-medium">Counted</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sf.orders.map((o) => (
+              <tr key={o.invoice} className={`border-b border-line last:border-0 ${o.short ? "bg-amber/5" : ""}`}>
+                <td className="tnum px-5 py-2 font-mono text-foreground">{o.po}</td>
+                <td className="tnum px-5 py-2 text-right font-mono text-foreground">{o.billed}</td>
+                <td className={`tnum px-5 py-2 text-right font-mono ${o.short ? "text-amber-ink" : "text-foreground"}`}>{o.counted ?? "no photos"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="border-t border-line px-5 py-3 text-[12px] leading-relaxed text-ink-muted">
+        {sf.name}. Every new investigation of this supplier reads this record.
+      </p>
+    </Card>
+  );
+}
+
+function CaseFileCard({ c }: { c: BenchCase }) {
+  if (!c.casefile) return null;
+  return (
+    <Card title="Case file" right={<Pill tone="green">filed</Pill>}>
+      <div className="px-5 py-4 text-[13px] leading-relaxed text-ink-muted">
+        <p>
+          Filed when the case ended as <span className="text-foreground">{c.casefile.state.replace(/_/g, " ")}</span>: the bill, the count, the cause and its reasons,
+          the decision and the supplier's record at that time.
+        </p>
+        <p className="mt-2 break-all font-mono text-[11px] text-foreground">{c.casefile.file} · {c.casefile.sha256.slice(0, 16)}</p>
+        <p className="mt-2">Its hash is in the signed receipt chain, so it cannot be changed quietly.</p>
+      </div>
+    </Card>
   );
 }
 
@@ -113,6 +192,8 @@ function CaseView({ c }: { c: BenchCase }) {
             )}
           </ul>
         </Card>
+        <SupplierCard c={c} />
+        <CaseFileCard c={c} />
       </div>
 
       <div className="flex flex-col gap-4">
@@ -174,6 +255,7 @@ function CaseView({ c }: { c: BenchCase }) {
       <div className="flex flex-col gap-4">
         {c.investigation ? (
           <>
+            {c.diagnosis && <CauseCard c={c} />}
             <div id="guide-finding">
               <FindingCard title={`${c.bill_no} on ${c.po_number}`} statements={c.investigation.finding.statements} label={LABEL} onCite={scrollToCite} />
             </div>
@@ -408,6 +490,8 @@ const GUIDE: GuideStep[] = [
     body: "Six bills went through Read, Count, Match, Investigate, Enter and Check without a person. Green means entered and checked. Amber means someone had to decide." },
   { tab: "case", case: "short", target: "photo-REC-H06-P1", title: "See the gap on bill CAL-0990",
     body: "The bill says 50 cartons. SAM 3.1 counted the dock photos: 28 and 18. A third photo repeats the first, so it is counted once. That is 46." },
+  { tab: "case", case: "short", target: "guide-cause", title: "Read the likely cause",
+    body: "Before the evidence, the Investigator says what is probably wrong, who is probably responsible, and how sure the records let it be. Unclear is a valid answer." },
   { tab: "case", case: "short", target: "guide-finding", title: "Follow the evidence",
     body: "Every statement carries citations. Click one, such as PHOTO:REC-H06-P3, and the record it rests on lights up on the right." },
   { tab: "approvals", target: "guide-approvals", title: "Decide with one key",
@@ -473,7 +557,7 @@ export function Demo() {
   const qCase = query.get("case");
   const [tab, setTab] = useState<Tab>(qTab === "case" || qTab === "approvals" || qTab === "today" ? qTab : "today");
   const [caseId, setCaseId] = useState(qCase && caseById(qCase) ? qCase : "short");
-  const [step, setStep] = useState<number | null>(() => (readGuideOff() ? null : qTab === "case" ? 1 : qTab === "approvals" ? 3 : 0));
+  const [step, setStep] = useState<number | null>(() => (readGuideOff() ? null : qTab === "case" ? 1 : qTab === "approvals" ? 4 : 0));
 
   useEffect(() => {
     if (step === null) return;

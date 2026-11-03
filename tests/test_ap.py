@@ -285,6 +285,45 @@ class APTests(unittest.TestCase):
         bench.reconnect()
         self.assertEqual(self.portal.sent, ["short"])
 
+    # diagnosis and case file
+    def test_short_delivery_is_diagnosed_as_the_supplier_with_every_reason_cited(self):
+        [case] = self.bench().run_batch([CASES["short"]])
+        d = case.diagnosis
+        self.assertEqual((d["cause"], d["confidence"]), ("short_delivery", "high"))
+        self.assertTrue(d["verified"], d["problems"])
+        self.assertIn("supplier", d["responsible"])
+        self.assertTrue(any("earlier order" in b["text"] for b in d["because"]))
+        evidence = case.investigation["evidence"]
+        self.assertTrue(all(c in evidence for b in d["because"] for c in b["cites"]))
+
+    def test_disagreeing_counts_are_unreliable_and_not_blamed_on_the_supplier(self):
+        counter = FakeCounter(wrong={"REC-H06-P2": 15})
+        [case] = self.bench(counter=counter).run_batch([CASES["short"]])
+        self.assertEqual(case.diagnosis["cause"], "count_unreliable")
+        self.assertEqual(case.diagnosis["confidence"], "low")
+        self.assertNotIn("supplier", case.diagnosis["responsible"])
+
+    def test_price_and_duplicate_causes_and_a_clean_bill_has_none(self):
+        cases = {c.id: c for c in self.bench().run_batch([CASES["price"], CASES["duplicate"], CASES["match"]])}
+        self.assertEqual(cases["price"].diagnosis["cause"], "price_above_order")
+        self.assertEqual(cases["duplicate"].diagnosis["cause"], "duplicate_bill")
+        self.assertIsNone(cases["match"].diagnosis)
+
+    def test_case_file_is_written_receipted_and_the_supplier_file_shows_history(self):
+        bench = self.bench()
+        bench.casefile_dir = self.root / "casefiles"
+        [case] = bench.run_batch([CASES["short"]])
+        bench.decide(case.id, "approve", "Owner")
+        saved = json.loads((self.root / "casefiles" / "short.json").read_text(encoding="utf-8"))
+        self.assertEqual(saved["diagnosis"]["cause"], "short_delivery")
+        self.assertEqual(saved["decision"]["decision"], "approve")
+        self.assertEqual(saved["supplier_file"]["short_orders"], 1)
+        filed = [r for r in self.chain.read() if r["body"]["agent"] == "Archivist"]
+        self.assertEqual(len(filed), 1)
+        self.assertEqual(filed[0]["body"]["input_hash"], case.casefile["sha256"])
+        ok, problems = verify(self.chain.read(), self.signer.public_key)
+        self.assertTrue(ok, problems)
+
     def test_receipts_verify_offline_and_detect_tampering(self):
         bench = self.bench()
         bench.run_batch([CASES["match"], CASES["short"]])

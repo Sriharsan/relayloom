@@ -27,10 +27,11 @@ Relayloom is for the receiving and accounts payable team of a manufacturer or di
    deliveries on one order add up as a running total.
 3. **Investigates before a person sees it.** The Investigator recounts with a second wording, checks earlier deliveries, the
    order price, the last price paid, duplicate bills and the supplier's past shortfalls. Every statement cites a record or a
-   photo, and code checks each citation and number before the finding is shown.
+   photo, and code checks each citation and number before the finding is shown. It then names the likely cause and how sure the
+   records let it be, and "unclear" is a valid answer.
 4. **Decides within a policy the models cannot change.** Matching bills are entered and read back by a separate Checker.
    Mismatches, large bills, disputes and new bank details wait for the owner.
-5. **Proves it.** Every step writes a signed receipt. The site verifies all of them in the browser and breaks the chain if one
+5. **Keeps a file and proves it.** Each case ends with a filed case file, and every step writes a signed receipt. The site verifies all of them in the browser and breaks the chain if one
    decision is changed.
 
 On a synthetic set of 30 deliveries built by us, paperwork only caught 5 of 17 bad bills and let Rs 60,035.92 of wrong

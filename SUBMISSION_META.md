@@ -43,10 +43,13 @@ The paid Meta Model API adapter in `relayloom/meta.py` is kept and stays off. No
 1. A bill says 50 cartons. SAM 3.1 counts 46 on the dock photos (a repeated photo is counted once).
 2. The Investigator recounts, adds up earlier deliveries on the order, checks the price and the supplier's history, and writes a
    finding. Every statement cites a record, photo or recount, and code checks every citation and number first.
-3. The policy holds the bill for the owner. After approval a dispute is drafted and filed. Nothing is entered.
-4. Hidden text in a bill that asks to change the bank account is ignored and receipted.
-5. A network cut mid batch holds the books. After reconnect nothing is entered twice.
-6. Every step writes a signed receipt, chained per case. The Proof page verifies all 78 receipts of the demo run in the browser,
+3. The Investigator names the likely cause (here, the supplier shipped less than it billed), how sure the records let it be,
+   and what to do next. "Unclear" is a valid answer. Every reason cites a record.
+4. The policy holds the bill for the owner. After approval a dispute is drafted and filed. Nothing is entered.
+5. Hidden text in a bill that asks to change the bank account is ignored and receipted.
+6. A network cut mid batch holds the books. After reconnect nothing is entered twice.
+7. A case file is written when each case ends, with the cause, the decision and the supplier's record. Its hash is in the receipts.
+   Every step writes a signed receipt, chained per case. The Proof page verifies all 90 receipts of the demo run in the browser,
    and fails exactly one when a decision is changed.
 
 Benchmark on a synthetic set built by us, 30 deliveries with known answers: paperwork only caught 5 of 17 bad bills and let

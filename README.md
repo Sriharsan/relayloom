@@ -33,12 +33,15 @@ built in ledger. `--live` runs the models on your own machine and uses ERPNext (
 4. **Investigates every mismatch before a person sees it.** The Investigator recounts from every photo, adds up all deliveries
    on the order, checks the order price and the last price paid, looks for a duplicate bill, and checks the supplier's
    past shortfalls. Every statement in its finding cites a record, a photo or a recount, and code checks every citation
-   and every number before the finding is shown. It proposes an action and the policy decides.
+   and every number before the finding is shown. It then names the likely cause (short delivery, price above the order, duplicate bill,
+   or the two counts disagree, or unclear), how sure the records let it be, and what to do next, and it proposes an action. The policy decides.
 5. **Enters and checks.** A matching bill is entered by the Clerk, and a separate Checker reads it back and compares every
    field. Only then does the case say "entered and checked". Payment details only ever come from the supplier master.
 6. **Waits for the owner where it matters.** Disputes, mismatches, bills above the owner's limit and new suppliers wait in
    the approval inbox. Muse Glimmer drafts the dispute and a browser agent files it in a local supplier portal.
-7. **Proves it.** Every step writes a signed receipt, chained per case, that anyone can verify offline.
+7. **Keeps a file.** When a case ends, the Archivist writes a case file (cause, reasons, decision, the supplier's record) and puts its hash in
+   the receipts. Later investigations of that supplier read the supplier file.
+8. **Proves it.** Every step writes a signed receipt, chained per case, that anyone can verify offline.
 
 ## Autonomy
 

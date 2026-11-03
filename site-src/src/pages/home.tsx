@@ -227,6 +227,13 @@ function Spotlight() {
         </div>
         <div className="lg:pt-24">
           <FindingCard title={`Short delivery on ${SHORT.po_number}`} statements={inv.finding.statements} label={RUN_LABEL} />
+          {SHORT.diagnosis && (
+            <div className="mb-4 rounded-xl border border-line bg-surface px-5 py-4">
+              <p className="kLabel">Likely cause</p>
+              <p className="mt-2 text-[15.5px] font-medium text-foreground">{SHORT.diagnosis.label}</p>
+              <p className="mt-1 text-[13px] text-ink-muted">Probably: {SHORT.diagnosis.responsible}. Confidence {SHORT.diagnosis.confidence}.</p>
+            </div>
+          )}
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <span className="pill !whitespace-normal border-line bg-raised text-[11.5px] text-foreground">Proposed: {proposal.reason}</span>
             <span className="pill border-amber/40 bg-amber/10 text-[11.5px] text-amber-ink">
@@ -517,6 +524,37 @@ function SetUp() {
   );
 }
 
+
+const PLANNED = [
+  { title: "Live camera and video", body: "SAM 3.1 can track objects in video. We have not run it here, and a laptop CPU is too slow for live use. Photos only today." },
+  { title: "Alerts to a phone", body: "The Demo page works on a phone. Push alerts when a delivery does not match are not built." },
+  { title: "Seconds, not minutes", body: "Code steps take under a second. Measured on a CPU, a photo takes about 41 seconds and a bill 5 to 12 minutes. A GPU should be far faster, but we have not measured one." },
+  { title: "Learning from past cases", body: "The supplier file is the first step: every investigation reads it. Patterns across suppliers and over time come next." },
+];
+
+function Planned() {
+  return (
+    <section className="border-b border-line">
+      <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
+        <SectionHead
+          index="What is next"
+          title="Planned, and not built yet"
+          note="Everything above is built and measured. These are the next steps, and they are labelled as plans."
+        />
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
+          {PLANNED.map((x) => (
+            <div key={x.title} className="rounded-xl border border-dashed border-line bg-surface p-5">
+              <Pill tone="muted">planned</Pill>
+              <h3 className="mt-3 text-[15px] font-medium text-foreground">{x.title}</h3>
+              <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">{x.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ClosingBand() {
   return (
     <section className="relative overflow-hidden border-t border-line">
@@ -552,6 +590,7 @@ export function Home() {
       <Cases />
       <Boundary />
       <SetUp />
+      <Planned />
       <ClosingBand />
     </div>
   );

@@ -2,7 +2,7 @@
 
 **Synthetic set built by us.** Every delivery, bill, photo and earlier invoice is synthetic and rendered by `scripts/make_fixtures.py`. The known answers come from how each delivery was built. These results say how the checks behave on this set. They are not a claim about any real company or industry.
 
-Run on 2026-11-02 22:26 +0530. Command: `python -m relayloom.ap.benchmark`. Machine: Intel64 Family 6 Model 170 Stepping 4, GenuineIntel, CPU only. Counter: SAM 3.1 recorded counts from earlier real runs. Reader step: bills come from the generator's structured bill, not from Muse Glimmer (see docs/BENCHMARK.md header).
+Run on 2026-11-03 16:33 +0530. Command: `python -m relayloom.ap.benchmark`. Machine: Intel64 Family 6 Model 170 Stepping 4, GenuineIntel, CPU only. Counter: SAM 3.1 recorded counts from earlier real runs. Reader step: bills come from the generator's structured bill, not from Muse Glimmer (see docs/BENCHMARK.md header).
 
 ## What was compared
 
@@ -22,7 +22,7 @@ Run on 2026-11-02 22:26 +0530. Command: `python -m relayloom.ap.benchmark`. Mach
 | Wrong payments made (Rs, synthetic) | 60,035.92 | 0.00 |
 | False holds (good bill held) | 0 | 0 |
 | Good bills entered | 13 of 13 | 13 of 13 |
-| Mean processing time per delivery, this run | 0.01 s | 0.01 s |
+| Mean processing time per delivery, this run | 0.1 s | 0.1 s |
 
 SAM 3.1 counted 36 of 36 unique photos exactly right.
 
@@ -78,5 +78,5 @@ Recorded SAM 3.1 inference time behind B: 1287.5 s over the whole set (about 42.
 ## Notes
 
 - Pipeline B's findings in this run are written by code from the evidence (`template`), because writing 30 findings with Muse Glimmer at 1 token per second is not practical here. Every citation in them was still checked by code. Findings written by Muse Glimmer for the demo cases are recorded in `fixtures/recorded/glimmer`.
-- Receipts verified offline: A 179 receipts, B 228 receipts.
+- Receipts verified offline: A 179 receipts, B 245 receipts.
 - A bad bill is one that should not be entered as billed: short delivery, rate above the order, a repeat of goods already billed, or a split delivery that ends short. Hidden text injection bills are otherwise correct and both pipelines enter them with payment details from the supplier master.

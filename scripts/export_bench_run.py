@@ -73,6 +73,7 @@ def main():
         ledger.seed(DATA["suppliers"], DATA["purchase_orders"], DATA["history_invoices"])
         bench = Workbench(policy, ledger, ledger, chain, RecordReader(), SamOrRecordCounter(), Network(ledger),
                           FIXTURES, DATA, portal=BenchPortal())
+        bench.casefile_dir = root / "casefiles"
         records = [c for c in DATA["cases"] if c["case"] in DEMO]
         started = time.time()
         cases = bench.run_batch(records)
@@ -83,6 +84,7 @@ def main():
         # Network cut mid batch: the link drops after the first invoice is accepted, then comes back.
         cut_bench = Workbench(policy, ledger, ledger, chain, RecordReader(), SamOrRecordCounter(), Network(ledger),
                               FIXTURES, DATA, portal=BenchPortal())
+        cut_bench.casefile_dir = root / "casefiles"
         cut_bench.after_create = lambda case: cut_bench.network.cut() if cut_bench.network.online else None
         cut_bench.pool._max_workers = 1
         cut_records = [c for c in DATA["cases"] if c["case"].startswith("netcut")]
@@ -99,6 +101,8 @@ def main():
                   "after": [{"id": c.id, "bill_no": c.bill_no, "state": c.state, "status": c.status}
                             for c in cut_cases]}
         receipts = chain.read()
+        casefiles = {f.stem: json.loads(f.read_text(encoding="utf-8")) for f in sorted((root / "casefiles").glob("*.json"))}
+        supplier_files = {sid: bench.supplier_file(sid) for sid in sorted({c.supplier_id for c in cases})}
         ok, problems = verify(receipts, signer.public_key)
         export = {
             "ran_at": time.strftime("%Y-%m-%d %H:%M %z"),
@@ -110,6 +114,8 @@ def main():
             "suppliers": {s["id"]: s["name"] for s in DATA["suppliers"]},
             "cases": [case.view() for case in cases],
             "netcut": netcut,
+            "casefiles": casefiles,
+            "supplier_files": supplier_files,
             "receipts": receipts,
         }
         ledger.db.close()

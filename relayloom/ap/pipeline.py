@@ -13,6 +13,8 @@ import re
 import threading
 import time
 
+from .casefile import build_casefile, supplier_file, write_casefile
+from .diagnosis import diagnose
 from .ledger import LedgerOffline
 from .investigator import Investigator
 from .masking import find, mask
@@ -77,6 +79,8 @@ class Case:
         self.dispute: dict | None = None
         self.queued_action: str = ""
         self.ledger_name = ""
+        self.diagnosis: dict | None = None
+        self.casefile: dict | None = None
 
     def view(self) -> dict:
         return {"id": self.id, "bill_no": self.bill_no, "supplier_id": self.supplier_id, "po_number": self.po_number,
@@ -86,6 +90,7 @@ class Case:
                 "match": self.match, "proposal": self.proposal, "decision": self.decision,
                 "invoice_id": self.invoice_id, "readback": self.readback, "pay_to": self.pay_to,
                 "dispute": self.dispute, "queued_action": self.queued_action, "ledger": self.ledger_name,
+                "diagnosis": self.diagnosis, "casefile": self.casefile,
                 }
 
 
@@ -103,6 +108,7 @@ class Workbench:
         self.locks: dict[str, threading.Lock] = {}
         self.pool = ThreadPoolExecutor(max_workers=policy.limits["parallel_cases"], thread_name_prefix="case")
         self.after_create = None  # test and demo hook: called after the ledger accepted an invoice
+        self.casefile_dir = None  # when set, every finished case is filed here and the file's hash is receipted
 
     # Intake -------------------------------------------------------------
     def intake(self, record: dict) -> Case:
@@ -269,6 +275,10 @@ class Workbench:
                              "written_by": finding["written_by"], "statements": finding["statements"],
                              "evidence_ids": sorted(report["evidence"]), "proposal": case.proposal,
                              "seconds": seconds})
+        case.diagnosis = diagnose(report["evidence"], report["checks"], case.match, case.proposal)
+        self.receipt(case, "Investigator", "diagnose", f"likely cause: {case.diagnosis['cause']}",
+                     input_hash=sha256({"checks": report["checks"], "evidence": sorted(report["evidence"])}),
+                     detail={k: case.diagnosis[k] for k in ("cause", "responsible", "confidence", "because", "next_step")})
 
     # Clerk and Checker --------------------------------------------------
     def entry(self, case: Case) -> dict:
@@ -339,6 +349,7 @@ class Workbench:
         self.mark(case, "check", "done", seconds, "every field matches")
         self.receipt(case, "Checker", "check", "entered and checked", ledger_readback=sha256(stored),
                      detail={"invoice": case.invoice_id, "pay_to": case.pay_to, "ledger": self.checker_ledger.name})
+        self.file_case(case)
 
     def data_supplier(self, supplier_id: str) -> dict:
         return next(s for s in self.data["suppliers"] if s["id"] == supplier_id)
@@ -377,6 +388,26 @@ class Workbench:
 
     # Approvals and disputes --------------------------------------------
     def decide(self, case_id: str, decision: str, by: str) -> Case:
+        case = self._decide(case_id, decision, by)
+        if case.state in ("closed_by_owner", "dispute_sent"):
+            self.file_case(case)
+        return case
+
+    def file_case(self, case: Case):
+        """The Archivist: write the case file and put its hash in the receipt chain. Does nothing unless a folder is set."""
+        if self.casefile_dir is None or (case.casefile and case.casefile["state"] == case.state):
+            return
+        casefile = build_casefile(self, case)
+        path, digest = write_casefile(self.casefile_dir, casefile)
+        case.casefile = {"state": case.state, "file": path.name, "sha256": digest}
+        self.receipt(case, "Archivist", "file", f"case filed: {case.state}", input_hash=digest,
+                     detail={"file": path.name, "cause": (case.diagnosis or {}).get("cause", ""),
+                             "supplier_orders": len(casefile["supplier_file"]["orders"])})
+
+    def supplier_file(self, supplier_id: str) -> dict:
+        return supplier_file(self, supplier_id)
+
+    def _decide(self, case_id: str, decision: str, by: str) -> Case:
         case = self.cases[case_id]
         if case.state != "held_for_owner" or decision not in ("approve", "reject"):
             raise Refused("this case is not waiting for a decision")

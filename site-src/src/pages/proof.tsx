@@ -147,13 +147,14 @@ function Cases() {
           title="The agents, the policy and the ledger behave as written"
           note="One run of the real agents, matcher, Investigator, approval policy, ledger and Checker. Bill values come from the bill record, and counts from SAM 3.1 where a recording exists."
         />
-        <Table head={[{ t: "Case" }, { t: "Outcome" }, { t: "Result", right: true }]} min={620}>
+        <Table head={[{ t: "Case" }, { t: "Likely cause" }, { t: "Outcome" }, { t: "Result", right: true }]} min={720}>
           {caseMeta.map((m) => {
             const c = caseById(m.id)!;
             const r = caseResult(m.id);
             return (
               <tr key={m.id} className="border-b border-line last:border-0">
                 <td className="px-5 py-3 text-foreground">{m.title}</td>
+                <td className="px-5 py-3 text-[13px] text-ink-muted">{c.diagnosis ? `${c.diagnosis.label}, confidence ${c.diagnosis.confidence}` : "none, nothing to investigate"}</td>
                 <td className="px-5 py-3 text-[13px] text-ink-muted">{c.status}</td>
                 <td className="px-5 py-3 text-right"><Pill tone={r === "PASS" ? "green" : "red"}>{r}</Pill></td>
               </tr>
@@ -161,6 +162,7 @@ function Cases() {
           })}
           <tr>
             <td className="px-5 py-3 text-foreground">Network cut mid batch</td>
+            <td className="px-5 py-3 text-[13px] text-ink-muted">none, nothing to investigate</td>
             <td className="px-5 py-3 text-[13px] text-ink-muted">
               {run.netcut.in_books_while_cut} in the books while cut, {run.netcut.in_books_after_reconnect} after reconnect, none twice
             </td>

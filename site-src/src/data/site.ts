@@ -89,6 +89,23 @@ export interface BenchCase {
   readback: { differences: unknown[]; ledger: string } | "";
   pay_to: { source: string; account_last4: string; ifsc: string } | "";
   dispute: { text: string; model: string; sent: boolean; portal_ref?: string; form_filled_by: string } | "";
+  diagnosis: {
+    cause: string;
+    label: string;
+    responsible: string;
+    confidence: "high" | "medium" | "low";
+    because: Statement[];
+    next_step: string;
+    verified: boolean;
+  } | null;
+  casefile: { state: string; file: string; sha256: string } | null;
+}
+export interface SupplierFile {
+  supplier_id: string;
+  name: string;
+  orders: { invoice: string; bill_no: string; po: string; billed: number; counted: number | null; short: boolean }[];
+  short_orders: number;
+  cases: { case: string; bill_no: string; state: string; cause: string }[];
 }
 export interface SignedReceipt {
   body: {
@@ -121,6 +138,8 @@ export const run = bench as unknown as {
     in_books_after_reconnect: number;
   };
   receipts: SignedReceipt[];
+  casefiles: Record<string, unknown>;
+  supplier_files: Record<string, SupplierFile>;
 };
 
 export const meas = measured as unknown as {

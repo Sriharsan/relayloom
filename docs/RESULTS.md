@@ -73,12 +73,13 @@ Final wordings: cans "can" and "cylinder", cartons "cardboard box" and "package"
 
 `scripts/export_bench_run.py` runs the agents, matcher, Investigator, approval policy, built in ledger and Checker on the
 demo bills and writes signed receipts. Bill values come from the bill record in this run, and counts come from the saved
-SAM 3.1 runs. Result: matching delivery entered and checked; short delivery (50 billed, 46 received) held, approved by the
+SAM 3.1 runs. Each held case also gets a likely cause with its reasons (short delivery, price above the order, duplicate bill, or the two counts
+disagree) and a case file whose hash is in the receipt chain. Result: matching delivery entered and checked; short delivery (50 billed, 46 received) held, approved by the
 owner, dispute sent, nothing entered; price above the order rejected by the owner; hidden text ignored and the bill entered with
 payment details from the supplier master; duplicate bill rejected; split delivery entered as a running total; network cut:
 1 invoice in the books while cut and 3 after reconnect, none twice.
 
-Receipts: 78 signed receipts over 9 cases, all verified (Ed25519 signature, SHA 256 hash and chain order). The Proof page
+Receipts: 90 signed receipts over 9 cases, all verified (Ed25519 signature, SHA 256 hash and chain order). The Proof page
 verifies them in your browser, and `python scripts/export_bench_run.py` regenerates the run and checks them offline.
 
 ## Benchmark (synthetic set built by us)
