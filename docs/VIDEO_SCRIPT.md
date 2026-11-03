@@ -1,10 +1,16 @@
 # Demo video script (3 minutes)
 
-The video shows only work built from 27 October. Two ways to use this page:
+The video shows only work built from 27 October. **You speak it, in your own voice.** The demo should be felt and delivered by a human, so the
+captioned video is only the picture. Do not upload it silent.
 
-1. **Upload the captioned video as it is.** `python scripts/record_demo_video.py` records the live site with captions that say what is on screen.
-2. **Speak over it.** Play the captioned video, read the lines below in your own voice, and record the audio, or screen-record the live site
-   yourself and follow the same scenes. Speak calmly, one idea at a time.
+Two good ways to record:
+
+1. **Voice over the picture.** Play `relayloom-demo-picture-only.mp4`, read the lines below as it plays, and record your voice with the Windows Voice
+   Recorder or your phone. Then run `python scripts/add_voice.py your-voice.m4a`. It puts your voice on the picture and checks the three minute limit.
+2. **Record yourself live.** Open https://relayloom.vercel.app, start Xbox Game Bar (Win+G) or OBS, and follow the same scenes while you speak.
+
+Make it yours: add one sentence of your own before the hook, about why this problem matters to you. Speak calmly, one idea at a time, and pause where
+a number appears on screen. The lines are a guide, so say them the way you would say them to a colleague.
 
 The captioned video runs 2 minutes 54 seconds. Every number comes from `docs/RESULTS.md`, `docs/BENCHMARK.md` and `docs/SECURITY_CHECKS.md`. Read them as they appear on screen.
 

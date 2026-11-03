@@ -20,7 +20,8 @@ python scripts/export_bench_run.py out.json           # the seven cases on the r
 python -m relayloom.ap --batch                        # the app on http://127.0.0.1:8800 (replays the saved readings)
 python -m relayloom.ap --batch --phone                # also prints a link for alerts on a phone on the same Wi-Fi
 python scripts/security_report.py                     # runs and times every security control
-python scripts/record_demo_video.py                    # records the captioned demo video of the live site
+python scripts/record_demo_video.py                    # records the captioned picture of the live site to speak over
+python scripts/add_voice.py my-voice.m4a              # puts your own voice on that picture and checks the three minute limit
 python scripts/video_demo.py                          # a dock clip becomes a held delivery, from saved frames and counts
 ```
 
