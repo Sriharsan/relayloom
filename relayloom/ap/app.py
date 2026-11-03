@@ -1,6 +1,6 @@
 """Relayloom accounts payable: the local app. Loopback only.
 
-python -m relayloom.ap                      rehearsal: recorded Meta model outputs, built in ledger
+python -m relayloom.ap                      recorded mode: recorded Meta model outputs, built in ledger
 python -m relayloom.ap --live               Muse Glimmer and SAM 3.1 on this machine, ERPNext from .env
 Mix with --reader, --counter and --ledger. The screen and every receipt say which ran.
 """
@@ -71,7 +71,7 @@ def build(args) -> tuple[Workbench, dict]:
     run = {"started": time.strftime("%Y-%m-%d %H:%M %z"), "dir": run_dir.name, "ledger": ledger.name,
            "reader": "Muse Glimmer (live)" if args.reader == "live" else "Muse Glimmer (recorded outputs)",
            "counter": "SAM 3.1 (live)" if args.counter == "live" else "SAM 3.1 (recorded outputs)",
-           "mode": "live" if args.reader == args.counter == "live" else "rehearsal" if args.reader == args.counter == "recorded" else "mixed",
+           "mode": "live" if args.reader == args.counter == "live" else "recorded" if args.reader == args.counter == "recorded" else "mixed",
            "public_key": signer.public_key, "policy_hash": policy.hash}
     (run_dir / "run.json").write_text(json.dumps(run, indent=1), encoding="utf-8")
     bench.portal_server = portal_server
@@ -226,7 +226,7 @@ def main():
         phone.start()
         announce(phone)
     print(f"Relayloom accounts payable, {run['mode']} mode: http://127.0.0.1:{args.port}")
-    print(f"Reader: {run['reader']}. Counter: {run['counter']}. Ledger: {run['ledger']}. Synthetic data only.")
+    print(f"Reader: {run['reader']}. Counter: {run['counter']}. Ledger: {run['ledger']}. Demo data.")
     if args.batch:
         bench.submit(bench.data["cases"])
     try:

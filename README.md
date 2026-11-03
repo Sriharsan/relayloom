@@ -25,7 +25,7 @@ python scripts/add_voice.py my-voice.m4a              # puts your own voice on t
 python scripts/video_demo.py                          # a dock clip becomes a held delivery, from saved frames and counts
 ```
 
-Rehearsal mode replays outputs from real runs on one laptop with their date, route and timings on screen, and uses a small
+Recorded mode replays outputs from real runs on one laptop with their date, route and timings on screen, and uses a small
 built in ledger. `--live` runs the models on your own machine and uses ERPNext (see below).
 
 ## What it does
@@ -64,7 +64,7 @@ and requests cannot change them.
 | --- | --- |
 | Muse Glimmer 30B reading bills and writing disputes | Real runs on a laptop CPU: 9 Northgate bill readings, all valid, 4 min 33 s to 8 min 51 s each, and 2 dispute drafts, plus 7 readings on the first bill set ([docs/RESULTS.md](docs/RESULTS.md)). Findings in recorded mode are written by code from the evidence. |
 | SAM 3.1 counting photos | Real runs on the same CPU, 115 saved in `fixtures/recorded/sam` with the numbered overlays. 101 of the 102 counts the system uses match the delivery record. |
-| ERPNext ledger | Real, in Docker on localhost. A built in ledger with the same calls is used for rehearsal. Each run says which ran. |
+| ERPNext ledger | Real, in Docker on localhost. A built in ledger with the same calls is used in recorded mode. Each run says which ran. |
 | Benchmark | Demo set built by us, real SAM 3.1 counts. See [docs/BENCHMARK.md](docs/BENCHMARK.md). In it the bills come from the generator and the findings are written by code. |
 | Network boundary | **Tested in Docker on 3 November 2026, all checks pass** ([docs/boundary-result.json](docs/boundary-result.json)): the agents run on a network with no route out, direct connections fail, the gateway refuses hosts that are not in the policy and logs each refusal, and all seven cases pass inside. Verification with the laptop itself switched offline is one command, `python scripts/offline_check.py`, which writes a dated report. |
 | Phone alerts | Built: `python -m relayloom.ap --phone`. A separate read only page on your local network, behind a random token, no internet. Covered by unit tests and verified end to end in a phone sized browser. |

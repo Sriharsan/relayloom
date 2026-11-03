@@ -1,7 +1,7 @@
 """The demo cases, one command each, PASS or FAIL per check.
 
 python -m relayloom.ap.cases match|short|price|injection|netcut|duplicate|split|all [--live | --reader ... --counter ... --ledger ...]
-Default is rehearsal: recorded Muse Glimmer and SAM 3.1 outputs from real runs, built in ledger.
+Default is recorded mode: recorded Muse Glimmer and SAM 3.1 outputs from real runs, built in ledger.
 Every run prints which model route and which ledger it used.
 """
 from __future__ import annotations
