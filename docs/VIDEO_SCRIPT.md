@@ -21,7 +21,8 @@ date and timings. Numbers come from `docs/BENCHMARK.md` and
 Notes for recording:
 - Say "network isolated", never "air gapped", unless a run with the network physically disconnected is shown and dated.
 - Show the real timings. Muse Glimmer takes several minutes per bill and SAM 3.1 about a minute per photo on this CPU.
-- Video evidence is the roadmap. Mention it as the next step, never as a current feature.
+- Video evidence is built and verified on a synthetic clip made from two photographs. Say "a dock video", show the two steady views and the 46 of 50,
+  and do not claim a real warehouse camera.
 - In the site replay the bill values come from the bill record and the dispute text comes from a template. Do not say Muse Glimmer
   wrote that text. Muse Glimmer's real readings and timings are on the Proof page; point at them if you mention the model.
 - The benchmark findings are written by code from the evidence. Say so if you describe them.

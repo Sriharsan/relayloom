@@ -111,6 +111,19 @@ SAM 3.1 counted 36 of 36 benchmark photos exactly right. The goods check costs a
 SAM 3.1 time on this CPU. In the benchmark the bills come from the generator and the findings are written by code from the
 evidence, so Muse Glimmer's 4 min 33 s to 8 min 51 s per bill does not apply to those numbers.
 
+## Video evidence
+
+`scripts/video_demo.py` builds a synthetic dock clip (17.5 s, 640 by 480, 8 frames a second) in which the two photographs of the
+short delivery slide into an empty dock. `relayloom/ap/video.py` watches it:
+
+- Movement is detected 0.25 s after it begins, at 0.35 ms of compute per sampled frame, so it keeps up with a live camera.
+- Two steady views are kept as photographs. The empty dock between pallets is not kept.
+- SAM 3.1 counts them on this CPU: 28 and 18, with a second wording agreeing on both, which is 46 against 50 billed.
+- The case is held for the owner with the likely cause "Short delivery" (confidence high), a phone alert is raised at detection
+  and another when the delivery needs the owner, and all receipts verify.
+
+The clip is synthetic. The detector, the counts and the case are real, and a camera stream goes through the same reader.
+
 ## Network boundary in Docker (3 November 2026)
 
 `docker compose -f deploy/boundary.compose.yml up --build` puts the agents on a network marked internal, so it has no route out, and
@@ -128,4 +141,4 @@ This verifies network isolation. Verification with the laptop itself switched of
   runs a live Muse Glimmer reading, a live SAM 3.1 count and all seven cases, and writes `docs/OFFLINE_RUN.md`. Until it has run, this
   repository says "network isolated" and never "air gapped".
 - Muse Glimmer written findings. Findings are written by code in the recorded run.
-- Video evidence with SAM 3.1 object tracking (roadmap). Today's evidence is photographs.
+- A physical camera and a physical phone: the video path was verified on a video file and the phone page in a phone sized browser.

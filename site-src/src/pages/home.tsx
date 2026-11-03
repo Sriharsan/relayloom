@@ -1,6 +1,6 @@
 import { ArrowRight, MoveRight, ShieldCheck } from "lucide-react";
 import { Link } from "@/lib/router";
-import { fmtSeconds, glimmerSummary, samSummary } from "@/data/site";
+import { fmtSeconds, glimmerSummary, samSummary, video } from "@/data/site";
 import {
   boundary, caseById, caseMeta, caseResult, casePhotos, company, firstImage, links, netcutPass, rupees, run, supplierName,
 } from "@/data/site";
@@ -561,6 +561,64 @@ function SetUp() {
 }
 
 
+function VideoEvidence() {
+  const v = video;
+  const steps = [
+    { at: `${v.detection.first_motion_s.toFixed(2)} s`, title: "Movement starts on the dock", body: "The detector compares each frame with the one before it." },
+    { at: `${v.detection.detected_at_s.toFixed(2)} s`, title: `Delivery detected, ${v.detection.detection_lag_s.toFixed(2)} s after it began`, body: `First phone alert. The detector uses ${v.median_ms_per_frame} ms per frame, so it keeps up with a live camera.` },
+    ...v.frames.map((f) => ({ at: `${f.t.toFixed(2)} s`, title: `Steady view ${f.id.slice(-2)} kept: ${f.count} counted`, body: `SAM 3.1, ${Math.round(f.seconds ?? 0)} s on this CPU. A second wording agrees.` })),
+    { at: "result", title: `${v.total} counted against ${v.billed} billed`, body: `${v.diagnosis?.label}, confidence ${v.diagnosis?.confidence}. Second phone alert: the delivery needs the owner.` },
+  ];
+  return (
+    <section id="video" className="scroll-mt-20 border-b border-line">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_1fr] lg:items-start">
+        <div>
+          <SectionHead index="Built" title="The dock camera raises the alert in under a second" />
+          <p className="max-w-[60ch] text-[14.5px] leading-relaxed text-ink-muted">
+            A video file or a camera stream goes through the same reader. Movement is detected within a quarter of a second, steady views are kept as
+            photographs, and they join the purchase order like any other delivery evidence. Counting is the slower step on a CPU, so the alert does not wait for it.
+          </p>
+          <ol className="mt-6 space-y-0">
+            {steps.map((s, i) => (
+              <li key={i} className="relative flex gap-4 pb-5 last:pb-0">
+                {i < steps.length - 1 && <span className="absolute left-[41px] top-6 h-full w-px bg-line" aria-hidden="true" />}
+                <span className="tnum w-[64px] shrink-0 pt-0.5 text-right font-mono text-[11.5px] text-ink-muted">{s.at}</span>
+                <span className="relative mt-1.5 h-[11px] w-[11px] shrink-0 rounded-full border-2 border-green bg-green/20" aria-hidden="true" />
+                <div>
+                  <p className="text-[14px] font-medium text-foreground">{s.title}</p>
+                  <p className="mt-0.5 text-[12.5px] leading-relaxed text-ink-muted">{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <div className="mt-5 max-w-[60ch]">
+            <CopyBlock command="python scripts/dock_watch.py 0 --phone --count CARTON-HD" />
+          </div>
+          <p className="mt-3 max-w-[60ch] text-[12.5px] leading-relaxed text-ink-muted">
+            The clip is synthetic: two pallet photographs slide into an empty dock. The detector, the counts and the case are real. Cameras and streams use the
+            same reader, and this run was verified on a video file.
+          </p>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          {v.frames.map((f) => (
+            <figure key={f.id} className="rounded-xl border border-line bg-surface p-3">
+              <Photo src={`/img/${f.overlay || f.id + ".jpg"}`} alt={`Key frame ${f.id} with ${f.count} items outlined and numbered`} />
+              <figcaption className="mt-2 flex items-baseline justify-between">
+                <span className="tnum font-mono text-[11px] text-ink-muted">{f.id} at {f.t.toFixed(2)} s</span>
+                <span className="tnum font-mono text-[20px] leading-none text-green-ink">{f.count}</span>
+              </figcaption>
+            </figure>
+          ))}
+          <div className="col-span-2 flex items-baseline justify-between rounded-xl border border-amber/40 bg-surface px-5 py-4">
+            <span className="text-[13px] text-ink-muted">Video total against the bill</span>
+            <span className="tnum font-mono text-[24px] leading-none text-amber-ink">{v.total} of {v.billed}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function PhoneAlerts() {
   const alerts = run.alerts.filter((a) => a.kind !== "offline").slice(0, 4);
   return (
@@ -599,7 +657,7 @@ function PhoneAlerts() {
 }
 
 const PLANNED = [
-  { title: "Video evidence", body: "The next step for the evidence loop: SAM 3.1 tracks objects across frames, and live feeds run on GPU class hardware. Today the evidence is dock photographs." },
+  { title: "Many cameras, one dock", body: "Several cameras per dock, each steady view matched to its purchase order automatically, counted on a GPU server." },
   { title: "Real time on a GPU server", body: `Every match, policy and security step completes in under a second. On this laptop, with no GPU, Muse Glimmer reads a bill in ${fmtSeconds(glimmerSummary.min)} to ${fmtSeconds(glimmerSummary.max)} and SAM 3.1 counts a photo in about ${Math.round(samSummary.mean)} seconds. A GPU server is the target for real time.` },
   { title: "Supplier intelligence", body: "The supplier file is in place and every investigation reads it. Patterns across suppliers and over time build on it." },
 ];
@@ -662,6 +720,7 @@ export function Home() {
       <Cases />
       <Boundary />
       <SetUp />
+      <VideoEvidence />
       <PhoneAlerts />
       <Planned />
       <ClosingBand />

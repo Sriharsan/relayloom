@@ -1,0 +1,50 @@
+{
+ "recorded_at": "2026-11-03 20:38 +0530",
+ "photo_sha256": "196a0f6d93ffe70948c39a9501182263045e6e9119122bca2b4d889a6a397d4e",
+ "result": {
+  "count": 28,
+  "prompt": "cardboard box",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 37.5,
+  "scores": [
+   0.952,
+   0.952,
+   0.952,
+   0.951,
+   0.951,
+   0.95,
+   0.95,
+   0.95,
+   0.949,
+   0.949,
+   0.949,
+   0.949,
+   0.948,
+   0.948,
+   0.948,
+   0.948,
+   0.948,
+   0.947,
+   0.947,
+   0.945,
+   0.942,
+   0.941,
+   0.939,
+   0.934,
+   0.93,
+   0.917,
+   0.906,
+   0.892
+  ],
+  "image_size": [
+   640,
+   480
+  ],
+  "wall_seconds": 46.2,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "REC-V01-F1__cardboard-box.jpg",
+  "recorded": false
+ }
+}

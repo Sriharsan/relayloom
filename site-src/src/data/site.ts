@@ -9,6 +9,7 @@ import bench from "./bench.json";
 import measured from "./measured.json";
 import securityData from "./security.json";
 import boundaryData from "./boundary.json";
+import videoData from "./video.json";
 
 export const links = {
   repo: "https://github.com/Sriharsan/relayloom",
@@ -385,4 +386,17 @@ export const boundary = boundaryData as unknown as {
   passed: boolean;
   checks: { check: string; result: string; detail: string }[];
   gateway_log: { time: string; host: string; method: string; decision: string; case?: string }[];
+};
+
+export const video = videoData as unknown as {
+  clip: { seconds: number; fps: number; size: number[] };
+  detection: { detected_at_s: number; first_motion_s: number; detection_lag_s: number };
+  median_ms_per_frame: number;
+  frames: { id: string; t: number; count: number; seconds: number | null; overlay: string }[];
+  total: number;
+  billed: number;
+  state: string;
+  diagnosis: { label: string; confidence: string } | null;
+  alerts: { id: number; time: string; kind: string; title: string; body: string }[];
+  receipts_verified: boolean;
 };

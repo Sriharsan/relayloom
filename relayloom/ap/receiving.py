@@ -32,6 +32,12 @@ class Receiving:
         self.items = world["items"]
         self.cache: dict[str, dict] = {}
 
+    def add_event(self, event: dict):
+        """Register a receiving event made at run time, such as the key frames of a dock video."""
+        self.world["receiving_events"].append(event)
+        self.events[event["id"]] = event
+        self.cache.pop(event["id"], None)
+
     def events_for_po(self, po_number: str) -> list[dict]:
         return sorted((e for e in self.world["receiving_events"] if e["po_number"] == po_number), key=lambda e: e["date"])
 

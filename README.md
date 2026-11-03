@@ -20,6 +20,7 @@ python scripts/export_bench_run.py out.json           # the seven cases on the r
 python -m relayloom.ap --batch                        # the app on http://127.0.0.1:8800 (replays the saved readings)
 python -m relayloom.ap --batch --phone                # also prints a link for alerts on a phone on the same Wi-Fi
 python scripts/security_report.py                     # runs and times every security control
+python scripts/video_demo.py                          # a dock clip becomes a held delivery, from saved frames and counts
 ```
 
 Rehearsal mode replays outputs from real runs on one laptop with their date, route and timings on screen, and uses a small
@@ -66,7 +67,7 @@ and requests cannot change them.
 | Network boundary | **Tested in Docker on 3 November 2026, all checks pass** ([docs/boundary-result.json](docs/boundary-result.json)): the agents run on a network with no route out, direct connections fail, the gateway refuses hosts that are not in the policy and logs each refusal, and all seven cases pass inside. Verification with the laptop itself switched offline is one command, `python scripts/offline_check.py`, which writes a dated report. |
 | Phone alerts | Built: `python -m relayloom.ap --phone`. A separate read only page on your local network, behind a random token, no internet. Covered by unit tests and verified end to end in a phone sized browser. |
 | Security controls | 11 of 11 pass their checks and add about 85 ms to a case ([docs/SECURITY_CHECKS.md](docs/SECURITY_CHECKS.md)). |
-| Video evidence | Roadmap. Today's evidence is dock photographs counted by SAM 3.1. |
+| Video evidence | Built: `python scripts/dock_watch.py clip.mp4` (or a camera number or stream address). A delivery is detected 0.25 s after the first movement at 0.35 ms of compute per frame, the steady views become photographs, and SAM 3.1 counts them. Verified on a recorded synthetic clip (28 and 18 counted, 46 of 50 billed). The clip is synthetic. |
 | Sensors | Out of scope. Nothing is simulated. |
 
 Timings on the screen are real. On this laptop Muse Glimmer needs several minutes per bill and SAM 3.1 about a minute

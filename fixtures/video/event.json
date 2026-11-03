@@ -1,0 +1,32 @@
+{
+ "clip": {
+  "seconds": 17.5,
+  "fps": 8.0,
+  "size": [
+   640,
+   480
+  ]
+ },
+ "detection": {
+  "detected_at_s": 1.5,
+  "first_motion_s": 1.25,
+  "detection_lag_s": 0.25
+ },
+ "started_s": 1.5,
+ "ended_s": 16.25,
+ "median_ms_per_frame": 0.35,
+ "frames": [
+  {
+   "id": "REC-V01-F1",
+   "file": "video/frames/REC-V01-F1.jpg",
+   "t": 3.25,
+   "sharpness": 250.4
+  },
+  {
+   "id": "REC-V01-F2",
+   "file": "video/frames/REC-V01-F2.jpg",
+   "t": 8.75,
+   "sharpness": 188.1
+  }
+ ]
+}
