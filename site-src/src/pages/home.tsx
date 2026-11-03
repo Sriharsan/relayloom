@@ -2,7 +2,7 @@ import { ArrowRight, MoveRight, ShieldCheck } from "lucide-react";
 import { Link } from "@/lib/router";
 import { benchmark, fmtSeconds, glimmerSummary, samSummary, video } from "@/data/site";
 import {
-  boundary, caseById, caseMeta, caseResult, casePhotos, company, firstImage, links, netcutPass, rupees, run, supplierName,
+  boundary, offlineRun, caseById, caseMeta, caseResult, casePhotos, company, firstImage, links, netcutPass, rupees, run, supplierName,
 } from "@/data/site";
 import { CopyBlock, Photo, Pill, RunLabel, SectionHead } from "@/components/bits";
 import { FindingCard } from "@/components/finding";
@@ -521,8 +521,21 @@ function Boundary() {
               </table>
               <p className="mt-3 text-[12px] leading-relaxed text-ink-muted">
                 The agents ran the cases on a Docker network with no route out. Direct connections failed, and the gateway refused hosts that are not in the policy.
-                Network isolation verified in Docker on {boundary.time.slice(0, 10)}. Verification with the laptop itself switched offline follows.
+                Network isolation verified in Docker on {boundary.time.slice(0, 10)}.
               </p>
+              <p className="kLabel mt-5">Tested fully disconnected, {offlineRun.started.slice(0, 10)}</p>
+              <p className="mt-1 text-[12.5px] leading-relaxed text-ink-muted">
+                Airplane mode on and every cable unplugged. The laptop had no route to the internet, and then the agents ran on it.
+              </p>
+              <ul className="mt-2 divide-y divide-line text-[13px]">
+                {offlineRun.steps.map((st) => (
+                  <li key={st.step} className="flex items-start justify-between gap-3 py-2">
+                    <span className="text-foreground">{st.step}</span>
+                    <span className="shrink-0 font-mono text-[11px] text-green-ink">{st.result.toLowerCase()}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-2 text-[12px] text-ink-muted">Live Muse Glimmer read a bill in 194 s and live SAM 3.1 counted 24 of 24 cans in 39 s, with no network. Full report: docs/OFFLINE_RUN.md in the repository.</p>
             </div>
           </div>
         </div>

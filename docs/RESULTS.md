@@ -138,7 +138,7 @@ This verifies network isolation. Verification with the laptop itself switched of
 ## Next verification
 
 - A run with the laptop itself switched offline: `python scripts/offline_check.py` waits for Wi-Fi to go off, proves there is no network, then
-  runs a live Muse Glimmer reading, a live SAM 3.1 count and all seven cases, and writes `docs/OFFLINE_RUN.md`. Until it has run, this
-  repository says "network isolated" and never "air gapped".
+  runs a live Muse Glimmer reading, a live SAM 3.1 count and all seven cases, and writes `docs/OFFLINE_RUN.md`. It ran on 3 November 2026 and passed, with the report in `docs/OFFLINE_RUN.md`. The repository says
+  "tested fully disconnected" for that run and "network isolated" for the Docker boundary.
 - Muse Glimmer written findings. Findings are written by code in the recorded run.
 - A physical camera and a physical phone: the video path was verified on a video file and the phone page in a phone sized browser.

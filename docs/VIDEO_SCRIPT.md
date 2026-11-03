@@ -32,7 +32,7 @@ The captioned video runs 2 minutes 54 seconds. Every number comes from `docs/RES
 | Close | 2:46 to 2:54 | Home, the close | "Pay for what arrived. Prove it. Relayloom, at relayloom dot vercel dot app. The code is open source." |
 
 Notes for recording:
-- Say "network isolated". Do not say "air gapped" unless `docs/OFFLINE_RUN.md` exists, and then read its date aloud.
+- Say "network isolated" for the Docker boundary, and "tested fully disconnected on 3 November" for the laptop run in `docs/OFFLINE_RUN.md`.
 - The dock video in the demo is a demo clip made from two photographs. Say "a dock video", show the two steady views and the 46 of 50, and do not
   claim a warehouse camera.
 - In the replay the bill values come from the bill record and the dispute text from the recorded run. If you mention the model there, point at the

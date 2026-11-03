@@ -9,6 +9,7 @@ import bench from "./bench.json";
 import measured from "./measured.json";
 import securityData from "./security.json";
 import boundaryData from "./boundary.json";
+import offlineData from "./offline.json";
 import videoData from "./video.json";
 
 export const links = {
@@ -400,3 +401,5 @@ export const video = videoData as unknown as {
   alerts: { id: number; time: string; kind: string; title: string; body: string }[];
   receipts_verified: boolean;
 };
+
+export const offlineRun = offlineData as unknown as { started: string; finished?: string; steps: { step: string; result: string; detail: string }[] };

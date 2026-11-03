@@ -1,0 +1,32 @@
+{
+ "started": "2026-11-03 21:51 +0530",
+ "steps": [
+  {
+   "step": "the network is really off",
+   "result": "PASS",
+   "detail": "1.1.1.1:443: OSError: [WinError 10065] A socket operation was attempted to an unreachable host; 8.8.8.8:53: OSError: [WinError 10065] A socket operation was attempted to an unreachable host; dns example.com: gaierror: [Errno 11001] getaddrinfo failed"
+  },
+  {
+   "step": "live Muse Glimmer bill reading",
+   "result": "PASS",
+   "detail": "ARD-5101 read in 194.0 s, valid schema, total 11611.2"
+  },
+  {
+   "step": "live SAM 3.1 count",
+   "result": "PASS",
+   "detail": "counted 24 of 24 cans in 39.2 s"
+  },
+  {
+   "step": "seven cases with signed receipts verified offline",
+   "result": "PASS",
+   "detail": "match: PASS in 0.2 s, short: PASS in 2.1 s, price: PASS in 0.0 s, injection: PASS in 0.0 s, netcut: PASS in 0.1 s, duplicate: PASS in 0.0 s, split: PASS in 0.0 s"
+  }
+ ],
+ "passed": true,
+ "network": {
+  "1.1.1.1:443": "OSError: [WinError 10065] A socket operation was attempted to an unreachable host",
+  "8.8.8.8:53": "OSError: [WinError 10065] A socket operation was attempted to an unreachable host",
+  "dns example.com": "gaierror: [Errno 11001] getaddrinfo failed"
+ },
+ "finished": "2026-11-03 21:56 +0530"
+}
