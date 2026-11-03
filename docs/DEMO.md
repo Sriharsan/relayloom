@@ -1,8 +1,7 @@
 # Three-minute demo plan
 
-This is the original storyboard, not a recording or a claim that the product is complete.
-The current shot list for the rehearsal recording is [VIDEO_SCRIPT.md](VIDEO_SCRIPT.md).
-The Meta rows below need a live run that has not happened.
+This is the original storyboard from 28 October. The shot list for the final video is [VIDEO_SCRIPT.md](VIDEO_SCRIPT.md).
+The Meta rows below describe the optional paid API, which stays off. The final video uses Meta open weights.
 
 | Time | Audience sees | Proof |
 | --- | --- | --- |

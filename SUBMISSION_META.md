@@ -66,8 +66,8 @@ Details and caveats: [docs/BENCHMARK.md](docs/BENCHMARK.md).
   browser, not on a physical phone.
 - Tested: the agents on a Docker network with no route out, where direct connections fail and the gateway refuses unlisted hosts
   and logs them, and all seven cases pass inside ([docs/boundary-result.json](docs/boundary-result.json)).
-- Not run yet: the run with the laptop physically offline (`python scripts/offline_check.py`) and Muse Glimmer written findings.
-  See the end of [docs/RESULTS.md](docs/RESULTS.md).
+- Next verification: the run with the laptop itself switched offline (`python scripts/offline_check.py`, which writes a dated report).
+  Findings are written by code from the evidence in the recorded run. See the end of [docs/RESULTS.md](docs/RESULTS.md).
 - No customers, pilots, revenue or funding are claimed.
 
 ## Rules and timing

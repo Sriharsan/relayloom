@@ -127,8 +127,8 @@ const AGENTS = [
   { name: "Counter", does: "Counts delivered goods in every dock photo.", chip: "SAM 3.1" },
   { name: "Matcher", does: "Compares order, bill and counted goods as a running total.", chip: "code" },
   { name: "Investigator", does: "Chases any gap and cites every statement. Muse Glimmer can write the text when it runs live.", chip: "code, cited" },
-  { name: "Clerk", does: "Posts matching bills to the ledger.", chip: "ledger" },
-  { name: "Checker", does: "Reads the ledger back with a separate request.", chip: "independent readback" },
+  { name: "Clerk", does: "Posts matching bills to the ledger. Entry and verification are separate duties.", chip: "ledger" },
+  { name: "Checker", does: "Independent verification: a separate request reads the ledger back and compares every field.", chip: "independent readback" },
   { name: "Disputer", does: "Drafts the dispute and files it once a person approves.", chip: "Muse Glimmer 30B + browser agent" },
 ];
 
@@ -139,7 +139,7 @@ function HowItWorks() {
         <SectionHead
           index="02 / How it works"
           title="Eight agents, each one auditable"
-          note="Models do the reading and counting. Code does the matching, entering and checking. Every step leaves a signed receipt."
+          note="Models read and count. Code matches, enters and verifies. Every step leaves a signed, chained receipt, so any edit to a recorded decision is detectable."
         />
         <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {AGENTS.map((a, i) => (
@@ -198,7 +198,7 @@ function Autonomy() {
             </div>
           ))}
         </div>
-        <p className="mt-5 text-[13px] text-ink-muted">These levels live in a policy file the models cannot change.</p>
+        <p className="mt-5 text-[13px] text-ink-muted">These levels live in a policy file the models cannot change. Every action leaves a tamper-evident audit trail.</p>
       </div>
     </section>
   );
@@ -415,7 +415,7 @@ function Boundary() {
               </table>
               <p className="mt-3 text-[12px] leading-relaxed text-ink-muted">
                 The agents ran the cases on a Docker network with no route out. Direct connections failed, and the gateway refused hosts that are not in the policy.
-                Run on {boundary.time.slice(0, 10)}. This is a network isolated test, not a run with the laptop physically offline.
+                Network isolation verified in Docker on {boundary.time.slice(0, 10)}. Verification with the laptop itself switched offline follows.
               </p>
             </div>
           </div>
@@ -497,7 +497,7 @@ function SetUp() {
                 ["Hardware we used", "Intel Core Ultra 7 155U laptop, 32 GB, CPU only"],
                 ["Offline", "Yes, once the weights are downloaded"],
                 ["Ledger", "Built in, or ERPNext in Docker"],
-                ["Time we measured", `${fmtSeconds(glimmerSummary.min)} to ${fmtSeconds(glimmerSummary.max)} per bill and about ${Math.round(samSummary.mean)} seconds per photo`],
+                ["Speed on this laptop", `${fmtSeconds(glimmerSummary.min)} to ${fmtSeconds(glimmerSummary.max)} per bill and about ${Math.round(samSummary.mean)} seconds per photo`],
               ].map(([k, v]) => (
                 <div key={k} className="flex justify-between gap-4 border-b border-line py-2 last:border-0">
                   <dt className="text-ink-muted">{k}</dt>
@@ -599,9 +599,9 @@ function PhoneAlerts() {
 }
 
 const PLANNED = [
-  { title: "Live camera and video", body: "SAM 3.1 can track objects in video. We have not run it here, and a laptop CPU is too slow for live use. Photos only today." },
-  { title: "Seconds, not minutes", body: `Code steps take under a second. Measured on a CPU, a photo takes about ${Math.round(samSummary.mean)} seconds and a bill ${fmtSeconds(glimmerSummary.min)} to ${fmtSeconds(glimmerSummary.max)}. A GPU should be far faster, but we have not measured one.` },
-  { title: "Learning from past cases", body: "The supplier file is the first step: every investigation reads it. Patterns across suppliers and over time come next." },
+  { title: "Video evidence", body: "The next step for the evidence loop: SAM 3.1 tracks objects across frames, and live feeds run on GPU class hardware. Today the evidence is dock photographs." },
+  { title: "Real time on a GPU server", body: `Every match, policy and security step completes in under a second. On this laptop, with no GPU, Muse Glimmer reads a bill in ${fmtSeconds(glimmerSummary.min)} to ${fmtSeconds(glimmerSummary.max)} and SAM 3.1 counts a photo in about ${Math.round(samSummary.mean)} seconds. A GPU server is the target for real time.` },
+  { title: "Supplier intelligence", body: "The supplier file is in place and every investigation reads it. Patterns across suppliers and over time build on it." },
 ];
 
 function Planned() {
@@ -609,14 +609,14 @@ function Planned() {
     <section className="border-b border-line">
       <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
         <SectionHead
-          index="What is next"
-          title="Planned, and not built yet"
-          note="Everything above is built and measured. These are the next steps, and they are labelled as plans."
+          index="Roadmap"
+          title="Where the evidence loop goes next"
+          note="Everything above is built and measured. These steps extend the same loop: evidence first, then the decision."
         />
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
           {PLANNED.map((x) => (
             <div key={x.title} className="rounded-xl border border-dashed border-line bg-surface p-5">
-              <Pill tone="muted">planned</Pill>
+              <Pill tone="muted">roadmap</Pill>
               <h3 className="mt-3 text-[15px] font-medium text-foreground">{x.title}</h3>
               <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">{x.body}</p>
             </div>

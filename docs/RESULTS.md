@@ -120,12 +120,12 @@ puts a gateway on both networks. Seven checks, all passed ([boundary-result.json
 - The gateway answers 403 to example.com and huggingface.co, which are not in the policy, and writes both refusals to its log.
 - The seven cases run inside the container with the built in ledger and pass.
 
-This is a network isolated test. It is not a run with the laptop itself switched offline.
+This verifies network isolation. Verification with the laptop itself switched offline follows with `scripts/offline_check.py`.
 
-## Not yet run
+## Next verification
 
-- A run with the laptop physically offline: `python scripts/offline_check.py` waits for Wi-Fi to go off, proves there is no network, then
+- A run with the laptop itself switched offline: `python scripts/offline_check.py` waits for Wi-Fi to go off, proves there is no network, then
   runs a live Muse Glimmer reading, a live SAM 3.1 count and all seven cases, and writes `docs/OFFLINE_RUN.md`. Until it has run, this
   repository says "network isolated" and never "air gapped".
 - Muse Glimmer written findings. Findings are written by code in the recorded run.
-- Video counting with SAM 3.1. Photos only.
+- Video evidence with SAM 3.1 object tracking (roadmap). Today's evidence is photographs.

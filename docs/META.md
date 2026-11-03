@@ -1,6 +1,6 @@
-# Optional Meta adapter: implemented, live acceptance not run
+# Optional Meta Model API adapter (switched off)
 
-28 October 2026. **No live provider call has been made for this implementation.**
+28 October 2026. **This adapter is switched off, and no provider call is made.** The project runs Meta open weights locally; see RESULTS.md.
 All adapter tests replace transport with local functions. Account billing,
 credit eligibility, the real model response and an end-to-end video remain gates.
 
@@ -66,7 +66,7 @@ Keep the Meta ledger at a different absolute path from the workroom database.
 Do not delete or replace ledgers to bypass held requests; review unknown entries
 and provider records before deciding whether a new authorized experiment is safe.
 
-## Live acceptance check (not run)
+## Live acceptance check (opt in)
 
 `scripts/check_meta.ps1 --i-have-credit` (or `sh scripts/check_meta.sh --i-have-credit`)
 runs `scripts/check_meta.py`. Without the flag it prints REFUSED and sends

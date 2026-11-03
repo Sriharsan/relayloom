@@ -43,7 +43,8 @@ built in ledger. `--live` runs the models on your own machine and uses ERPNext (
    the approval inbox. Muse Glimmer drafts the dispute and a browser agent files it in a local supplier portal.
 7. **Keeps a file.** When a case ends, the Archivist writes a case file (cause, reasons, decision, the supplier's record) and puts its hash in
    the receipts. Later investigations of that supplier read the supplier file.
-8. **Proves it.** Every step writes a signed receipt, chained per case, that anyone can verify offline.
+8. **Proves it.** Every step writes a signed receipt, chained per case, that anyone can verify offline. The audit trail is tamper-evident:
+   change any recorded decision and the chain breaks at that step.
 
 ## Autonomy
 
@@ -62,11 +63,11 @@ and requests cannot change them.
 | SAM 3.1 counting photos | Real runs on the same CPU, 115 saved in `fixtures/recorded/sam` with the numbered overlays. 101 of the 102 counts the system uses match the delivery record. |
 | ERPNext ledger | Real, in Docker on localhost. A built in ledger with the same calls is used for rehearsal. Each run says which ran. |
 | Benchmark | Synthetic set built by us, real SAM 3.1 counts. See [docs/BENCHMARK.md](docs/BENCHMARK.md). In it the bills come from the generator and the findings are written by code. |
-| Network boundary | **Tested in Docker on 3 November 2026, all checks pass** ([docs/boundary-result.json](docs/boundary-result.json)): the agents run on a network with no route out, direct connections fail, the gateway refuses hosts that are not in the policy and logs each refusal, and all seven cases pass inside. A run with the laptop physically offline is one command, `python scripts/offline_check.py`, and has not been done yet. |
-| Phone alerts | Built: `python -m relayloom.ap --phone`. A separate read only page on your local network, behind a random token, no internet. Covered by unit tests and tested in a phone sized browser. Not yet tried on a physical phone. |
+| Network boundary | **Tested in Docker on 3 November 2026, all checks pass** ([docs/boundary-result.json](docs/boundary-result.json)): the agents run on a network with no route out, direct connections fail, the gateway refuses hosts that are not in the policy and logs each refusal, and all seven cases pass inside. Verification with the laptop itself switched offline is one command, `python scripts/offline_check.py`, which writes a dated report. |
+| Phone alerts | Built: `python -m relayloom.ap --phone`. A separate read only page on your local network, behind a random token, no internet. Covered by unit tests and verified end to end in a phone sized browser. |
 | Security controls | 11 of 11 pass their checks and add about 85 ms to a case ([docs/SECURITY_CHECKS.md](docs/SECURITY_CHECKS.md)). |
-| Delivery video counting | Not built. Photos only. |
-| Sensors | None. Nothing is simulated. |
+| Video evidence | Roadmap. Today's evidence is dock photographs counted by SAM 3.1. |
+| Sensors | Out of scope. Nothing is simulated. |
 
 Timings on the screen are real. On this laptop Muse Glimmer needs several minutes per bill and SAM 3.1 about a minute
 per photo. That is why the app runs bills as a background batch.

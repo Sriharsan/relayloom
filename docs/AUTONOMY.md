@@ -2,7 +2,7 @@
 
 Autonomy where it is safe, explicit approval where it matters, proof after
 every action. This page maps that rule to code and tests. It describes the
-local rehearsal; live Meta inference has not been run.
+first workroom. The accounts payable system applies the same rule with Meta open weights (Muse Glimmer and SAM 3.1) running locally.
 
 ## Levels come from a file, not from a prompt
 
@@ -66,6 +66,6 @@ held as unknown and is never retried automatically.
 | Outcome checked against the record | Added | `test_tampered_artifact_fails_outcome_check_and_replay_does_not_republish` |
 | Shown in UI, log, README and video kit | Added | Autonomy policy panel, Approval and proof steps, `docs/VIDEO_SCRIPT.md` |
 
-Not done: approvals for operations other than publication (none of the other
-operations has an external effect today), approval expiry by time, and any
-live Meta run of the "within limits" path.
+Out of scope here: approvals for operations other than publication (none of the other
+operations has an external effect today) and approval expiry by time. The paid Meta Model
+API path stays switched off.

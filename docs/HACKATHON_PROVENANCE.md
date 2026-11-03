@@ -26,7 +26,7 @@ Implementation status must be established by commits and tests, not this plan.
 | --- | --- | --- | --- |
 | Public project scaffold | Adapted from 26 October planning; published 27 October | README.md, AGENTS.md, SECURITY.md, docs/* | Documentation only; no runnable product |
 | Shared intent revision | New public implementation, 28 October | relayloom/controller.py, relayloom/server.py, tests/test_controller.py | Transactional revisions, role and CSRF tests; final release commit recorded by parent |
-| Live Meta-backed parallel acceptance | Pending separate approval/access | Optional adapter is implemented; live run not performed | No live API call claimed |
+| Live Meta-backed parallel acceptance | Optional, switched off | Optional adapter is implemented and offline tested | No paid API call is made |
 | Optional Meta transport and durable attempt ledger | New public implementation, 28 October | relayloom/meta.py, controller.py, __main__.py, tests/test_meta.py, docs/META.md | 11 offline tests including prompt/reuse field alignment; real inference disabled by default and unrun |
 | Selective replanning and reuse | New public implementation, 28 October | relayloom/controller.py, tests/test_controller.py | Parallel/wait, selective reuse, late-output and checked publication tests; no savings claimed |
 | Shared live interface and outcome proof | New public implementation, 27–28 October | web/*, relayloom/server.py | Browser consumes real state/SSE; synthetic outputs, no Meta inference claimed; final visual acceptance separate |

@@ -35,9 +35,9 @@ votes are evidence, not proof of correctness or authority.
 The local revision controller, dependency scheduler, scoped room roles and
 evidence UI now have an executable rehearsal foundation. Specialist outputs are
 deterministic synthetic records by default. The optional Meta adapter and durable
-attempt ledger are implemented and offline-tested; real inference remains
-unrun. External scoped execution and measured provider dollar controls remain
-planned; see IMPLEMENTATION.md and META.md.
+attempt ledger are implemented and offline-tested; the paid
+Meta Model API stays switched off, and the accounts payable system runs Meta open weights locally. External scoped execution
+and measured provider dollar controls are on the roadmap; see IMPLEMENTATION.md and META.md.
 
 ## Design contract
 

@@ -70,7 +70,7 @@ function Counting() {
           </Table>
         </div>
         <p className="mt-3 max-w-[78ch] text-[12.5px] leading-relaxed text-ink-muted">
-          The recount wording for each item was chosen from trials on these same photos, so this table shows the system at work, not a test on unseen photos.
+          The recount wordings were fixed on the demo photos. The benchmark photos, counted afterwards with the same wordings unchanged, are the held-out check.
           {` The ${samBenchRows.length} benchmark photos were counted the same way and are not listed here. The ${samTrials.length} trial runs are saved alongside.`}
         </p>
       </div>
@@ -362,8 +362,8 @@ const LABELS = [
   { item: "SAM 3.1 counts and times", kind: "Measured", note: "real runs of the open weight model on this laptop's CPU, saved with photo hashes" },
   { item: "Muse Glimmer 30B bill readings and times", kind: "Measured", note: "real runs on the same laptop, each checked against the strict schema" },
   { item: "Case outcomes and receipts", kind: "Measured", note: "the real agents, policy, built in ledger and Checker, with signed receipts" },
-  { item: "Bill values in the replay", kind: "Labelled", note: "taken from the bill record, not re-read by the model in that run" },
-  { item: "Delivery photos, companies, suppliers and money", kind: "Labelled", note: "synthetic: our own drawings, fictional names, amounts in rupees" },
+  { item: "Bill values in the replay", kind: "Synthetic", note: "taken from the bill record, not re-read by the model in that run" },
+  { item: "Delivery photos, companies, suppliers and money", kind: "Synthetic", note: "synthetic: our own drawings, fictional names, amounts in rupees" },
 ];
 
 export function Proof() {
@@ -393,7 +393,7 @@ export function Proof() {
       </section>
       <section>
         <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6">
-          <SectionHead index={benchmark ? "06 / Labels" : "05 / Labels"} title="What is measured and what is labelled" />
+          <SectionHead index={benchmark ? "06 / Labels" : "05 / Labels"} title="What is measured and what is synthetic" />
           <ul className="overflow-hidden rounded-xl border border-line bg-surface">
             {LABELS.map((l) => (
               <li key={l.item} className="flex flex-col gap-1 border-b border-line px-5 py-3.5 last:border-0 sm:flex-row sm:items-center sm:justify-between">

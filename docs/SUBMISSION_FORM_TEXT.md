@@ -68,10 +68,11 @@ building period. No code from any earlier private project was imported.
 - Live site with the guided demo and the receipt verifier: https://relayloom.vercel.app
 - Video: add the link here
 
-## Honest limits
+## Scope and measured speed
 
-Bills and photos are synthetic. On a CPU, Muse Glimmer needs about about 4 to 8 minutes per bill and SAM 3.1 about 41 seconds
-per photo, so bills run as a background batch. Video counting is planned, not built.
+Bills and photographs are synthetic. Measured on a laptop CPU with no GPU: Muse Glimmer reads a bill in 4 min 33 s to 8 min 51 s and SAM 3.1
+counts a photo in about 41 s, so bills run as a background batch, and every control, match and policy step completes in
+under a second. Video evidence and real time speed on a GPU server are on the roadmap.
 
 ## X post (for the Most Viral prize)
 

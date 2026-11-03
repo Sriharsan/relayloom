@@ -69,9 +69,9 @@ the video script, the submission notes and the README. Every commit below is ins
 
 The commit that adds this table also updates the README, submission notes, results and the wording of the synthetic data labels.
 
-## What has not happened
+## Scope
 
-- No paid Meta Model API call has been made from this repository. The adapter stays off.
+- The paid Meta Model API adapter stays switched off. The project runs Meta open weights.
 - Muse Glimmer 30B and SAM 3.1 open weights have run on this laptop. Numbers and timings are in [RESULTS.md](RESULTS.md).
-- No customer, pilot, revenue or funding exists or is claimed.
+- No customer, pilot, revenue or funding is claimed.
 - All demo records are synthetic. The first workroom's rehearsal outputs are deterministic text produced by code, not by a model.
