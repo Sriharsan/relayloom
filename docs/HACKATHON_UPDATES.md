@@ -69,6 +69,8 @@ the video script, the submission notes and the README. Every commit below is ins
 | `6640b51` | 3 Nov 11:26 AM EST | The Docker boundary proof passes, the offline check script, and the evidence on the site. |
 | `ee3023b` | 3 Nov 12:20 PM EST | Confident, official wording: a roadmap, a tamper-evident audit trail, entry and verification as separate duties. |
 | `21586a7` | 3 Nov 3:15 PM EST | Video evidence: a dock detector, key frames counted by SAM 3.1, and the case from a video. |
+| `6986992` | 3 Nov 10:26 AM EST | The landing page tells the story (who we are, why we matter, why you need us, with three primary sources), weak wording removed, share tags and the X card, and a clearer checks workflow. |
+| `96b6351` | 3 Nov 10:40 AM EST | A Python 3.12 only f-string fixed so everything runs on Python 3.11, and CI compiles every file. |
 
 The commit that adds this table also updates the README, submission notes, results and the wording of the demo data labels.
 

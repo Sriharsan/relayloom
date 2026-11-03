@@ -31,3 +31,6 @@ build/
 .vercel/
 .DS_Store
 Thumbs.db
+
+# Recorded demo video (large, uploaded to a video host)
+docs/video/

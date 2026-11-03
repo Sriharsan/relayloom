@@ -1,30 +1,36 @@
-# Video script (3 minutes)
+# Demo video script (3 minutes)
 
-Shows only work built from 27 October. Screens come from https://relayloom.vercel.app (Demo and Proof pages). Say plainly what is
-recorded: the SAM 3.1 counts and Muse Glimmer timings on screen come from real runs on one laptop CPU and are replayed with their
-date and timings. Numbers come from `docs/BENCHMARK.md` and
-`docs/RESULTS.md`; read them from the screen, do not round them up. No savings, customer or industry numbers.
+The video shows only work built from 27 October. Two ways to use this page:
 
-| Time | On screen | Say |
-| --- | --- | --- |
-| 0:00 | Case screen for bill CAL-0990: the bill line "50 cartons" next to the two photos with 28 and 18 counted | "The paperwork says 50. The dock got 46." |
-| 0:12 | The Today screen: bills moving through Read, Count, Match, Investigate, Enter, Check | "Relayloom is autonomous accounts payable that checks the goods, not just the paperwork. Agents read the bill, look at what arrived, and investigate any gap with evidence." |
-| 0:25 | Investigation panel: the finding, click two citations (a photo, an earlier invoice) | "Every statement cites a record or a photo, and code checks each citation exists before anyone sees the finding. It recounted both photos, ignored a repeated photo, and found this supplier billed 40 and the dock counted 38 on an earlier order." |
-| 0:55 | Approvals tab: the proposal next to the policy decision, the dispute draft preview, press A | "It proposes a dispute for the four missing cartons. The policy says this needs the owner. One key approves, and the dispute goes out only after that." |
-| 1:15 | A matching delivery entered and checked with no person; the split delivery matching as a running total; the duplicate bill held | "A matching delivery is entered and read back by a separate checker with nobody involved. One order that arrived in two deliveries still matches. The same goods billed again under a new number are held." |
-| 1:40 | Benchmark page: table A against B, then the caveat | "On a demo set built by us, paperwork only against paperwork plus goods. Here is what each caught and missed, in our own numbers." Read the table values as shown. |
-| 2:05 | Case with hidden text: the white text revealed, the receipt line, the payment details from the ledger | "White text on a bill asked to pay a new account. It never reached the model, and payment details come only from the supplier master." |
-| 2:20 | Today screen: cut network, cases show "held, offline", reconnect, the ledger is read first, no duplicate | "Cut the network and nothing is entered or sent. Reconnect and the ledger is read first, so there is no duplicate." |
-| 2:40 | Boundary page and the verifier in the browser | "Private numbers are masked before any model sees them. Muse Glimmer and SAM 3.1 run on this machine. Every step is a signed receipt you can verify offline." |
-| 2:52 | Title card | "Relayloom. Autonomous accounts payable that checks the goods, not just the paperwork." |
+1. **Upload the captioned video as it is.** `python scripts/record_demo_video.py` records the live site with captions that say what is on screen.
+2. **Speak over it.** Play the captioned video, read the lines below in your own voice, and record the audio, or screen-record the live site
+   yourself and follow the same scenes. Speak calmly, one idea at a time.
+
+The captioned video runs 2 minutes 54 seconds. Every number comes from `docs/RESULTS.md`, `docs/BENCHMARK.md` and `docs/SECURITY_CHECKS.md`. Read them as they appear on screen.
+
+| Scene | Time | On screen | Say |
+| --- | --- | --- | --- |
+| Hook | 0:01 to 0:06 | Home, the hero | "The paperwork says fifty. The dock got forty-six." |
+| Promise | 0:06 to 0:23 | Home, the hero | "I'm Sriharsan. Relayloom is autonomous accounts payable that checks the goods, not just the paperwork. Meta's Muse Glimmer reads the bill. Meta's SAM 3.1 counts what actually arrived. Both run on this laptop." |
+| Why it matters | 0:23 to 0:41 | Who we are, why we matter, why you need us, then the three sources | "Paying for goods that never arrived is an improper payment in U.S. law, and auditors keep finding invoices approved with no proof of receipt. Matching paperwork only proves the documents agree with each other." |
+| A batch | 0:41 to 0:52 | Demo, Today | "Six bills ran by themselves. Green means entered and checked, with no person involved. Amber means someone decides." |
+| The gap | 0:52 to 1:05 | Demo, the short delivery | "The bill says fifty cartons. SAM 3.1 counted the dock photos: twenty-eight and eighteen. A repeated photo is counted once. That is forty-six." |
+| The cause | 1:05 to 1:15 | Demo, likely cause | "The Investigator names the likely cause, who is probably responsible, and how sure the records let it be." |
+| The evidence | 1:15 to 1:26 | Demo, citations lighting up | "No claim stands without its evidence. Every statement cites a record or a photo, and code checks each citation before anyone reads it." |
+| The decision | 1:26 to 1:35 | Demo, approvals | "The policy holds the bill for the owner. One key approves, and only then does a dispute go out." |
+| Proof | 1:35 to 1:50 | Proof, security controls | "Every number here came from our own runs. Eleven security controls pass their checks, and together they add about thirty milliseconds to a case." |
+| The result | 1:50 to 2:07 | Proof, benchmark | "On a demo set of thirty deliveries, paperwork alone caught five of seventeen bad bills and paid sixty thousand rupees wrongly. With the goods in the loop: seventeen of seventeen, and nothing paid wrongly." |
+| Tamper evidence | 2:07 to 2:19 | Proof, receipt verifier | "Every step is a signed receipt. Change one recorded decision and the chain breaks at that step. The audit trail is tamper-evident." |
+| Video and phone | 2:19 to 2:38 | Home, video evidence and phone alerts | "A dock video is detected a quarter of a second after the first movement. SAM 3.1 counts the steady views, and a phone on the local network gets the alert. No internet needed." |
+| Boundary | 2:38 to 2:46 | Home, Docker evidence | "Network isolated: no route out, and every refused request is logged." |
+| Close | 2:46 to 2:54 | Home, the close | "Pay for what arrived. Prove it. Relayloom, at relayloom dot vercel dot app. The code is open source." |
 
 Notes for recording:
-- Say "network isolated", never "air gapped", unless a run with the network physically disconnected is shown and dated.
-- Show the real timings. Muse Glimmer takes several minutes per bill and SAM 3.1 about a minute per photo on this CPU.
-- Video evidence is built and verified on a demo clip made from two photographs. Say "a dock video", show the two steady views and the 46 of 50,
-  and do not claim a real warehouse camera.
-- In the site replay the bill values come from the bill record and the dispute text comes from a template. Do not say Muse Glimmer
-  wrote that text. Muse Glimmer's real readings and timings are on the Proof page; point at them if you mention the model.
-- The benchmark findings are written by code from the evidence. Say so if you describe them.
-- The Docker run with no route out has been done and dated (3 November 2026): say "network isolated". Do not say "air gapped" or
-  "works with the network off" unless `python scripts/offline_check.py` has been run and docs/OFFLINE_RUN.md exists.
+- Say "network isolated". Do not say "air gapped" unless `docs/OFFLINE_RUN.md` exists, and then read its date aloud.
+- The dock video in the demo is a demo clip made from two photographs. Say "a dock video", show the two steady views and the 46 of 50, and do not
+  claim a warehouse camera.
+- In the replay the bill values come from the bill record and the dispute text from the recorded run. If you mention the model there, point at the
+  Muse Glimmer timings on the Proof page.
+- Findings are written by code from the evidence, with every citation checked.
+- Real timings: on this laptop's CPU Muse Glimmer reads a bill in 4 min 33 s to 8 min 51 s and SAM 3.1 counts a photo in about 41 s. Bills run as a
+  background batch.

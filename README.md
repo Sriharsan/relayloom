@@ -20,6 +20,7 @@ python scripts/export_bench_run.py out.json           # the seven cases on the r
 python -m relayloom.ap --batch                        # the app on http://127.0.0.1:8800 (replays the saved readings)
 python -m relayloom.ap --batch --phone                # also prints a link for alerts on a phone on the same Wi-Fi
 python scripts/security_report.py                     # runs and times every security control
+python scripts/record_demo_video.py                    # records the captioned demo video of the live site
 python scripts/video_demo.py                          # a dock clip becomes a held delivery, from saved frames and counts
 ```
 
@@ -139,7 +140,7 @@ accounts payable system is built on its approval, limit and receipt ideas.
 
 - [Benchmark](docs/BENCHMARK.md) · [Results from our own runs](docs/RESULTS.md) · [Sources](docs/SOURCES.md) · [Submission text](docs/SUBMISSION_FORM_TEXT.md)
 - [Hackathon updates by commit](docs/HACKATHON_UPDATES.md) · [Submission notes](SUBMISSION_META.md) · [Video script](docs/VIDEO_SCRIPT.md)
-- [Autonomy](docs/AUTONOMY.md) · [Product and architecture](docs/PRODUCT.md) · [Security](SECURITY.md)
+- [Submission checklist](docs/SUBMIT_CHECKLIST.md) · [X post](docs/X_POST.md) · [Autonomy](docs/AUTONOMY.md) · [Product and architecture](docs/PRODUCT.md) · [Security](SECURITY.md)
 
 Use demo information only. This is a loopback app, not a hosting service; do not expose its port.
 
