@@ -150,8 +150,7 @@ def write_markdown(result, path: Path):
         f"| Good bills entered | {a['correctly_entered']} of {a['should_enter']} | {b['correctly_entered']} of {b['should_enter']} |",
         f"| Mean processing time per delivery, this run | {a['mean_seconds_per_case']} s | {b['mean_seconds_per_case']} s |", "",
         f"SAM 3.1 counted {result['sam']['exactly_right']} of {result['sam']['photos']} unique photos exactly right"
-        + (f" (wrong: {', '.join(f'{w['photo']} counted {w['counted']}, true {w['true']}' for w in result['sam']['wrong'])})."
-           if result["sam"]["wrong"] else "."), "",
+        + (f" (wrong: {wrong_photos(result)})." if result["sam"]["wrong"] else "."), "",
         f"Recorded SAM 3.1 inference time behind B: {result['sam_seconds_total']} s over the whole set "
         f"(about {result['sam_seconds_per_delivery']} s per delivery). The processing times above replay those counts from the "
         "cache when the counter is `recorded`, so the recorded inference time is the honest cost of the goods check on this CPU.", "",
@@ -173,6 +172,11 @@ def write_markdown(result, path: Path):
               "already billed, or a split delivery that ends short. Hidden text injection bills are otherwise correct and both "
               "pipelines enter them with payment details from the supplier master."]
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+
+def wrong_photos(result: dict) -> str:
+    return ", ".join("%s counted %s, true %s" % (w["photo"], w["counted"], w["true"]) for w in result["sam"]["wrong"])
 
 
 def main():

@@ -21,6 +21,8 @@ jobs:
           node-version: '22'
       - name: Install the Python requirements (no Playwright browser is needed)
         run: python -m pip install cryptography PyMuPDF opencv-python-headless numpy Pillow
+      - name: Every Python file compiles on Python 3.11
+        run: python -m compileall -q relayloom scripts tests
       - name: Python tests
         run: python -m unittest discover -s tests -v
       - name: Browser logic tests
