@@ -60,6 +60,12 @@ the video script, the submission notes and the README. Every commit below is ins
 | `f8de996` | 2 Nov 11:24 AM EST | Site rebuilt from the Lovable design in `site-src`, reading every figure from exported run files. New recount wordings after trials: cylinder, package, spool. More real SAM 3.1 recordings. |
 | `2a5ed30` | 2 Nov 11:56 AM EST | The 30 delivery benchmark on real SAM 3.1 counts, added to the Proof page. |
 | `304c87c` | 2 Nov 12:00 PM EST | Every page route served from the app on Vercel. |
+| `9b07b9b` | 2 Nov 12:25 PM EST | Docs updated to the measured results and the live site link; the offline verifier restored; "synthetic" used everywhere. |
+| `16d54b8` | 3 Nov 5:29 AM EST | A guided tour on the Demo page, Five clicks to try it, and a set up section laid out like Meta's open-weight cookbook. |
+| `f6c46c5` | 3 Nov 5:30 AM EST | Repository map in the README and paste-ready submission and X post text. |
+| `a8072c8` | 3 Nov 5:37 AM EST | Track named "Startups", as in the guide. |
+| `7211000` | 3 Nov 6:05 AM EST | The likely cause of a mismatch with its reasons, a case file for every finished case, and the supplier file. 4 tests. |
+| `a38e479` | 3 Nov 6:26 AM EST | Alerts to a phone on the local network, the security cost report (11 controls), a balanced Case screen, and the Northgate Muse Glimmer recordings (9 readings, 2 disputes). |
 
 The commit that adds this table also updates the README, submission notes, results and the wording of the synthetic data labels.
 

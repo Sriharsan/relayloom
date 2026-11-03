@@ -1,0 +1,97 @@
+{
+ "time": "2026-11-03T11:29:45+0000",
+ "passed": true,
+ "checks": [
+  {
+   "check": "direct connection to 1.1.1.1 fails",
+   "result": "PASS",
+   "detail": "OSError: [Errno 101] Network is unreachable"
+  },
+  {
+   "check": "direct connection to 8.8.8.8 fails",
+   "result": "PASS",
+   "detail": "OSError: [Errno 101] Network is unreachable"
+  },
+  {
+   "check": "direct connection to example.com fails",
+   "result": "PASS",
+   "detail": "gaierror: [Errno -3] Temporary failure in name resolution"
+  },
+  {
+   "check": "gateway refuses example.com",
+   "result": "PASS",
+   "detail": "HTTP/1.1 403 Forbidden"
+  },
+  {
+   "check": "gateway refuses huggingface.co",
+   "result": "PASS",
+   "detail": "HTTP/1.1 403 Forbidden"
+  },
+  {
+   "check": "every refusal is in the gateway log",
+   "result": "PASS",
+   "detail": "2 new log lines"
+  },
+  {
+   "check": "five demo cases pass inside the boundary (rehearsal mode, built in ledger)",
+   "result": "PASS",
+   "detail": ""
+  }
+ ],
+ "gateway_log": [
+  {
+   "time": "2026-11-01T05:59:13+0000",
+   "host": "example.com",
+   "method": "CONNECT",
+   "decision": "blocked: host not in policy",
+   "model": "",
+   "masks": "",
+   "case": "boundary-probe"
+  },
+  {
+   "time": "2026-11-01T05:59:13+0000",
+   "host": "huggingface.co",
+   "method": "CONNECT",
+   "decision": "blocked: host not in policy",
+   "model": "",
+   "masks": "",
+   "case": "boundary-probe"
+  },
+  {
+   "time": "2026-11-03T11:26:50+0000",
+   "host": "example.com",
+   "method": "CONNECT",
+   "decision": "blocked: host not in policy",
+   "model": "",
+   "masks": "",
+   "case": "boundary-probe"
+  },
+  {
+   "time": "2026-11-03T11:26:50+0000",
+   "host": "huggingface.co",
+   "method": "CONNECT",
+   "decision": "blocked: host not in policy",
+   "model": "",
+   "masks": "",
+   "case": "boundary-probe"
+  },
+  {
+   "time": "2026-11-03T11:29:45+0000",
+   "host": "example.com",
+   "method": "CONNECT",
+   "decision": "blocked: host not in policy",
+   "model": "",
+   "masks": "",
+   "case": "boundary-probe"
+  },
+  {
+   "time": "2026-11-03T11:29:45+0000",
+   "host": "huggingface.co",
+   "method": "CONNECT",
+   "decision": "blocked: host not in policy",
+   "model": "",
+   "masks": "",
+   "case": "boundary-probe"
+  }
+ ]
+}

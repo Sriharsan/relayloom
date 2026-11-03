@@ -2,7 +2,7 @@ import { ArrowRight, MoveRight, ShieldCheck } from "lucide-react";
 import { Link } from "@/lib/router";
 import { fmtSeconds, glimmerSummary, samSummary } from "@/data/site";
 import {
-  caseById, caseMeta, caseResult, casePhotos, company, firstImage, links, netcutPass, rupees, run, supplierName,
+  boundary, caseById, caseMeta, caseResult, casePhotos, company, firstImage, links, netcutPass, rupees, run, supplierName,
 } from "@/data/site";
 import { CopyBlock, Photo, Pill, RunLabel, SectionHead } from "@/components/bits";
 import { FindingCard } from "@/components/finding";
@@ -384,6 +384,41 @@ function Boundary() {
               </div>
             </div>
           )}
+        </div>
+
+        <div className="mt-4 overflow-hidden rounded-xl border border-line bg-surface">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-5 py-3">
+            <span className="kLabel">Tested in Docker, no route out</span>
+            <Pill tone={boundary.passed ? "green" : "red"}>{boundary.passed ? "all checks pass" : "failed"}</Pill>
+          </div>
+          <div className="grid grid-cols-1 gap-0 lg:grid-cols-2">
+            <ul className="border-b border-line px-5 py-4 lg:border-b-0 lg:border-r">
+              {boundary.checks.map((c) => (
+                <li key={c.check} className="flex items-start justify-between gap-3 py-1.5 text-[13px]">
+                  <span className="text-foreground">{c.check}</span>
+                  <span className="shrink-0 font-mono text-[11px] text-green-ink">{c.result.toLowerCase()}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="overflow-x-auto px-5 py-4">
+              <p className="kLabel">Gateway log from that run</p>
+              <table className="mt-2 w-full min-w-[360px] text-left font-mono text-[12px]">
+                <tbody>
+                  {boundary.gateway_log.map((e, i) => (
+                    <tr key={i} className="border-b border-line last:border-0">
+                      <td className="py-1.5 pr-3 text-ink-muted">{e.time.slice(11, 19)}</td>
+                      <td className="py-1.5 pr-3 text-foreground">{e.host}</td>
+                      <td className="py-1.5 text-amber-ink">{e.decision}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="mt-3 text-[12px] leading-relaxed text-ink-muted">
+                The agents ran the cases on a Docker network with no route out. Direct connections failed, and the gateway refused hosts that are not in the policy.
+                Run on {boundary.time.slice(0, 10)}. This is a network isolated test, not a run with the laptop physically offline.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

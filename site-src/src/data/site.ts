@@ -8,6 +8,7 @@
 import bench from "./bench.json";
 import measured from "./measured.json";
 import securityData from "./security.json";
+import boundaryData from "./boundary.json";
 
 export const links = {
   repo: "https://github.com/Sriharsan/relayloom",
@@ -377,4 +378,11 @@ export const security = securityData as unknown as {
   all_passed: boolean;
   cost_in_money: string;
   ran_at: string;
+};
+
+export const boundary = boundaryData as unknown as {
+  time: string;
+  passed: boolean;
+  checks: { check: string; result: string; detail: string }[];
+  gateway_log: { time: string; host: string; method: string; decision: string; case?: string }[];
 };

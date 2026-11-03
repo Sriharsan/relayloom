@@ -25,4 +25,5 @@ Notes for recording:
 - In the site replay the bill values come from the bill record and the dispute text comes from a template. Do not say Muse Glimmer
   wrote that text. Muse Glimmer's real readings and timings are on the Proof page; point at them if you mention the model.
 - The benchmark findings are written by code from the evidence. Say so if you describe them.
-- Do not claim a Docker no route out run or a disconnected run. Neither has been done.
+- The Docker run with no route out has been done and dated (3 November 2026): say "network isolated". Do not say "air gapped" or
+  "works with the network off" unless `python scripts/offline_check.py` has been run and docs/OFFLINE_RUN.md exists.

@@ -62,7 +62,7 @@ and requests cannot change them.
 | SAM 3.1 counting photos | Real runs on the same CPU, 115 saved in `fixtures/recorded/sam` with the numbered overlays. 101 of the 102 counts the system uses match the delivery record. |
 | ERPNext ledger | Real, in Docker on localhost. A built in ledger with the same calls is used for rehearsal. Each run says which ran. |
 | Benchmark | Synthetic set built by us, real SAM 3.1 counts. See [docs/BENCHMARK.md](docs/BENCHMARK.md). In it the bills come from the generator and the findings are written by code. |
-| Network boundary | A Docker network with no route out and one logging gateway are built, and the gateway tests pass. The run with no route out and the run with the network disconnected are not done yet ([docs/RESULTS.md](docs/RESULTS.md)). |
+| Network boundary | **Tested in Docker on 3 November 2026, all checks pass** ([docs/boundary-result.json](docs/boundary-result.json)): the agents run on a network with no route out, direct connections fail, the gateway refuses hosts that are not in the policy and logs each refusal, and all seven cases pass inside. A run with the laptop physically offline is one command, `python scripts/offline_check.py`, and has not been done yet. |
 | Phone alerts | Built: `python -m relayloom.ap --phone`. A separate read only page on your local network, behind a random token, no internet. Covered by unit tests and tested in a phone sized browser. Not yet tried on a physical phone. |
 | Security controls | 11 of 11 pass their checks and add about 85 ms to a case ([docs/SECURITY_CHECKS.md](docs/SECURITY_CHECKS.md)). |
 | Delivery video counting | Not built. Photos only. |

@@ -64,8 +64,10 @@ Details and caveats: [docs/BENCHMARK.md](docs/BENCHMARK.md).
 - Built and tested: alerts to a phone on the local network (read only, token link, no internet) and 11 security controls that all
   pass and add about 85 ms to a case ([docs/SECURITY_CHECKS.md](docs/SECURITY_CHECKS.md)). The phone page was tested in a phone sized
   browser, not on a physical phone.
-- Not run yet: the Docker network with no route out, the run with the network physically disconnected, and Muse Glimmer
-  Muse Glimmer written findings. See the end of [docs/RESULTS.md](docs/RESULTS.md).
+- Tested: the agents on a Docker network with no route out, where direct connections fail and the gateway refuses unlisted hosts
+  and logs them, and all seven cases pass inside ([docs/boundary-result.json](docs/boundary-result.json)).
+- Not run yet: the run with the laptop physically offline (`python scripts/offline_check.py`) and Muse Glimmer written findings.
+  See the end of [docs/RESULTS.md](docs/RESULTS.md).
 - No customers, pilots, revenue or funding are claimed.
 
 ## Rules and timing
