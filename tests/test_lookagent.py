@@ -19,14 +19,14 @@ class FakeSam:
 
 
 class FakeGlimmer:
-    def __init__(self, propose, next_words=()):
-        self.propose, self.next_words, self.seen_images = propose, list(next_words), []
+    def __init__(self, propose, next_words=(), verdict="missed"):
+        self.propose, self.next_words, self.seen_images, self.verdict = propose, list(next_words), [], verdict
 
     def chat(self, system, user, schema=None, max_tokens=0, images=None):
         self.seen_images.append(images)
         if "words list" in system:
             return {"content": json.dumps({"words": self.propose}), "seconds": 2.0}
-        return {"content": json.dumps({"verdict": "missed", "note": "two boxes at the back have no mask", "next_words": self.next_words}), "seconds": 3.0}
+        return {"content": json.dumps({"verdict": self.verdict, "note": "two boxes at the back have no mask", "next_words": self.next_words}), "seconds": 3.0}
 
 
 class LookAgentTests(unittest.TestCase):
@@ -34,8 +34,8 @@ class LookAgentTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
 
-    def agent(self, table, propose, next_words=(), max_calls=4):
-        sam, glimmer = FakeSam(table, self.tmp.name), FakeGlimmer(propose, next_words)
+    def agent(self, table, propose, next_words=(), max_calls=4, verdict="missed"):
+        sam, glimmer = FakeSam(table, self.tmp.name), FakeGlimmer(propose, next_words, verdict)
         return LookAgent(glimmer, sam, max_calls), sam, glimmer
 
     def test_two_different_words_that_agree_are_accepted_without_a_second_look(self):
@@ -59,6 +59,18 @@ class LookAgentTests(unittest.TestCase):
         found = agent.look(Path("p.jpg"), "50 cartons", "k")
         self.assertTrue(found["held"])
         self.assertIsNone(found["count"])
+
+    def test_a_word_that_finds_nothing_is_a_miss_and_a_single_count_the_model_confirms_by_looking_is_accepted(self):
+        agent, sam, _ = self.agent({"coolant can": 0, "can": 18, "coolant": 0}, ["coolant can", "can", "coolant"], verdict="good")
+        found = agent.look(Path("p.jpg"), "Coolant can 5 litre", "k")
+        self.assertEqual((found["count"], found["agreed"]), (18, True))
+        self.assertIn("looked at the overlay", found["confirmed_by"])
+        self.assertEqual(sam.calls, ["coolant can", "can", "coolant"])
+
+    def test_a_good_look_never_overrides_a_contradicting_count(self):
+        agent, _, _ = self.agent({"box": 40, "carton": 44}, ["box", "carton"], verdict="good")
+        found = agent.look(Path("p.jpg"), "50 cartons", "k")
+        self.assertTrue(found["held"])
 
     def test_the_model_cannot_set_the_number_and_zero_never_agrees(self):
         agent, _, _ = self.agent({"box": 0, "carton": 0}, ["box", "carton"])

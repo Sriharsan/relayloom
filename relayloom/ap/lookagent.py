@@ -6,7 +6,8 @@ images), says what it sees, and proposes better words. The loop ends when two in
 agree, or it gives up and holds for a person.
 
 The model never decides the number. A count is always the number of masks SAM returned, an accepted count must be
-reached twice from different words, and every tool call goes into the trace that the pipeline puts in the signed
+reached twice from different words (or, for a single count, confirmed by Glimmer looking at the overlay while no other
+count contradicts it), and every tool call goes into the trace that the pipeline puts in the signed
 receipt.
 """
 from __future__ import annotations
@@ -81,20 +82,32 @@ class LookAgent:
                 trace.append({"step": "propose", "tool": "memory", "output": {"words": self.memory[description]}})
             queue += clean_words(self.memory[description], queue)
         agreed = None
-        while len(tries) < self.max_calls and queue:
-            result = call_sam(queue.pop(0))
-            agreed = self.agreement(tries)
+        for _ in range(3):  # a round of SAM tries, then Glimmer looks if nothing agrees yet, then new words
+            while len(tries) < self.max_calls and queue and not agreed:
+                call_sam(queue.pop(0))
+                agreed = self.agreement(tries)
             if agreed or len(tries) >= self.max_calls:
                 break
-            if len(tries) >= 2 or not queue:  # two tries that disagree, or nothing left: Glimmer looks at the picture
-                overlay = getattr(self.sam, "cache", None)
-                overlay = Path(overlay) / result["overlay"] if overlay and result.get("overlay") else None
-                image = overlay if overlay and overlay.exists() else None
-                seen = call_glimmer("look", LOOK_SYSTEM, f"Bill line: {description}\nWord searched: {tries[-1]['words']}", LOOK_SCHEMA, image)
-                queue = clean_words(seen["next_words"], [t["words"] for t in tries]) + queue
+            positive = [x for x in tries if x["count"] and "verdict" not in x]  # a word that finds nothing is a miss, not a disagreement
+            if not positive:
+                break
+            last = positive[-1]
+            overlay = getattr(self.sam, "cache", None)
+            overlay = Path(overlay) / last["overlay"] if overlay and last.get("overlay") else None
+            image = overlay if overlay and overlay.exists() else None
+            seen = call_glimmer("look", LOOK_SYSTEM, f"Bill line: {description}" + chr(10) + f"Word searched: {last['words']}", LOOK_SCHEMA, image)
+            last["verdict"] = seen["verdict"]
+            rivals = [x for x in tries if x["count"] and x["count"] != last["count"]]
+            if seen["verdict"] == "good" and image and not rivals:
+                agreed = {"count": last["count"], "tries": [last], "how": "Glimmer looked at the overlay and found every item numbered once"}
+                break
+            queue = clean_words(seen["next_words"], [x["words"] for x in tries])
+            if not queue:
+                break
         first = tries[0]["count"] if tries else None
         return {"count": agreed["count"] if agreed else None, "agreed": bool(agreed), "held": not agreed,
                 "agreed_words": [t["words"] for t in agreed["tries"]] if agreed else [],
+                "confirmed_by": ("two words agree" if agreed and len(agreed["tries"]) == 2 else agreed.get("how", "")) if agreed else "",
                 "first_try_count": first, "calls": len(trace), "tries": tries, "trace": trace,
                 "seconds": round(time.perf_counter() - started, 1),
                 "reason": "" if agreed else "No two counts from different words agree, so a person looks at the photo."}
