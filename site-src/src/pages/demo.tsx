@@ -4,6 +4,7 @@ import {
 } from "@/data/site";
 import { Photo, Pill, RunLabel, StepPill } from "@/components/bits";
 import { FindingCard, citeId } from "@/components/finding";
+import { Link } from "@/lib/router";
 
 type Tab = "today" | "case" | "approvals";
 
@@ -173,7 +174,9 @@ function CaseView({ c }: { c: BenchCase }) {
       <div className="flex flex-col gap-4">
         {c.investigation ? (
           <>
-            <FindingCard title={`${c.bill_no} on ${c.po_number}`} statements={c.investigation.finding.statements} label={LABEL} onCite={scrollToCite} />
+            <div id="guide-finding">
+              <FindingCard title={`${c.bill_no} on ${c.po_number}`} statements={c.investigation.finding.statements} label={LABEL} onCite={scrollToCite} />
+            </div>
             {proposal && (
               <div className="flex flex-wrap items-center gap-2">
                 <span className="pill !whitespace-normal border-line bg-raised text-[11.5px] text-foreground">Proposed: {proposal.reason}</span>
@@ -253,7 +256,7 @@ function ApprovalsView() {
   }, [shown, press]);
 
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <div id="guide-approvals" className="grid grid-cols-1 gap-4 lg:grid-cols-2">
       {approvals.map((a) => (
         <article key={a.id} className="flex flex-col rounded-xl border border-line bg-surface">
           <div className="flex items-center justify-between border-b border-line px-5 py-3">
@@ -307,7 +310,7 @@ function ApprovalsView() {
 function TodayView({ onOpen }: { onOpen: (id: string) => void }) {
   return (
     <div>
-      <div className="mb-6 grid gap-3 sm:grid-cols-3">
+      <div id="guide-counters" className="mb-6 grid gap-3 sm:grid-cols-3">
         <div className="rounded-xl border border-green/30 bg-surface px-5 py-4">
           <span className="tnum font-mono text-[26px] leading-none text-green-ink">{counters.entered}</span>
           <p className="mt-2 text-[12.5px] text-ink-muted">Entered and checked</p>
@@ -397,9 +400,114 @@ function TodayView({ onOpen }: { onOpen: (id: string) => void }) {
   );
 }
 
+
+type GuideStep = { tab: Tab; case?: string; target?: string; title: string; body: string };
+
+const GUIDE: GuideStep[] = [
+  { tab: "today", target: "guide-counters", title: "A batch runs by itself",
+    body: "Six bills went through Read, Count, Match, Investigate, Enter and Check without a person. Green means entered and checked. Amber means someone had to decide." },
+  { tab: "case", case: "short", target: "photo-REC-H06-P1", title: "See the gap on bill CAL-0990",
+    body: "The bill says 50 cartons. SAM 3.1 counted the dock photos: 28 and 18. A third photo repeats the first, so it is counted once. That is 46." },
+  { tab: "case", case: "short", target: "guide-finding", title: "Follow the evidence",
+    body: "Every statement carries citations. Click one, such as PHOTO:REC-H06-P3, and the record it rests on lights up on the right." },
+  { tab: "approvals", target: "guide-approvals", title: "Decide with one key",
+    body: "The proposal sits next to the policy decision. Press A to approve or R to reject. The replay shows the decision recorded in the run." },
+  { tab: "approvals", title: "Check the receipts yourself",
+    body: "Every step above left a signed receipt. The Proof page verifies all of them in your browser, and breaks the chain if you change one decision." },
+];
+
+function readGuideOff(): boolean {
+  try {
+    return localStorage.getItem("relayloom-guide") === "off";
+  } catch {
+    return false;
+  }
+}
+
+function Guide({ step, setStep, onHide }: { step: number; setStep: (n: number) => void; onHide: () => void }) {
+  const g = GUIDE[step]!;
+  const last = step === GUIDE.length - 1;
+  return (
+    <div className="sticky top-16 z-30 border-b border-line bg-background/95 backdrop-blur-md" role="region" aria-label="Guided tour">
+      <div className="mx-auto flex max-w-[1200px] flex-col gap-3 px-4 py-3 sm:px-6 md:flex-row md:items-center">
+        <div className="flex-1">
+          <p className="kLabel">Guide, step {step + 1} of {GUIDE.length}</p>
+          <p className="mt-1 text-[14px] font-medium text-foreground">{g.title}</p>
+          <p className="mt-0.5 max-w-[78ch] text-[13px] leading-relaxed text-ink-muted">{g.body}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setStep(Math.max(0, step - 1))}
+            disabled={step === 0}
+            className="inline-flex h-11 items-center rounded-md border border-line px-3.5 text-[13px] font-medium text-foreground transition-colors duration-150 hover:bg-raised disabled:opacity-40"
+          >
+            Back
+          </button>
+          {last ? (
+            <Link to="/proof" hash="#verifier" className="inline-flex h-11 items-center rounded-md bg-foreground px-4 text-[13px] font-medium text-background transition-opacity duration-150 hover:opacity-90">
+              Open the verifier
+            </Link>
+          ) : (
+            <button
+              onClick={() => setStep(step + 1)}
+              className="inline-flex h-11 items-center rounded-md bg-foreground px-4 text-[13px] font-medium text-background transition-opacity duration-150 hover:opacity-90"
+            >
+              Next
+            </button>
+          )}
+          <button onClick={onHide} className="inline-flex h-11 items-center rounded-md px-3 text-[13px] text-ink-muted transition-colors duration-150 hover:text-foreground">
+            Hide
+          </button>
+        </div>
+      </div>
+      <div className="h-0.5 bg-line" aria-hidden="true">
+        <div className="h-full bg-foreground" style={{ width: `${((step + 1) / GUIDE.length) * 100}%` }} />
+      </div>
+    </div>
+  );
+}
+
 export function Demo() {
-  const [tab, setTab] = useState<Tab>("today");
-  const [caseId, setCaseId] = useState("short");
+  const query = new URLSearchParams(window.location.search);
+  const qTab = query.get("tab");
+  const qCase = query.get("case");
+  const [tab, setTab] = useState<Tab>(qTab === "case" || qTab === "approvals" || qTab === "today" ? qTab : "today");
+  const [caseId, setCaseId] = useState(qCase && caseById(qCase) ? qCase : "short");
+  const [step, setStep] = useState<number | null>(() => (readGuideOff() ? null : qTab === "case" ? 1 : qTab === "approvals" ? 3 : 0));
+
+  useEffect(() => {
+    if (step === null) return;
+    const g = GUIDE[step]!;
+    setTab(g.tab);
+    if (g.case) setCaseId(g.case);
+    const timer = window.setTimeout(() => {
+      document.querySelectorAll(".guide-ring").forEach((el) => el.classList.remove("guide-ring"));
+      const el = g.target ? document.getElementById(g.target) : null;
+      if (el) {
+        el.classList.add("guide-ring");
+        el.scrollIntoView({ block: "center", behavior: "smooth" });
+      }
+    }, 140);
+    return () => window.clearTimeout(timer);
+  }, [step]);
+
+  const hideGuide = () => {
+    document.querySelectorAll(".guide-ring").forEach((el) => el.classList.remove("guide-ring"));
+    setStep(null);
+    try {
+      localStorage.setItem("relayloom-guide", "off");
+    } catch {
+      /* storage unavailable, the guide stays hidden for this visit */
+    }
+  };
+  const showGuide = () => {
+    setStep(0);
+    try {
+      localStorage.removeItem("relayloom-guide");
+    } catch {
+      /* ignore */
+    }
+  };
   const open = useCallback((id: string) => {
     setCaseId(id);
     setTab("case");
@@ -423,7 +531,13 @@ export function Demo() {
           <span className="tnum font-mono text-[11px] text-ink-muted">run at {run.ran_at.slice(11, 16)}, {run.ran_at.slice(0, 10)}</span>
         </div>
       </div>
+      {step !== null && <Guide step={step} setStep={setStep} onHide={hideGuide} />}
       <div className="mx-auto max-w-[1200px] px-4 py-8 sm:px-6">
+        {step === null && (
+          <button onClick={showGuide} className="mb-4 inline-flex h-11 items-center rounded-md border border-line px-3.5 text-[13px] font-medium text-foreground transition-colors duration-150 hover:bg-raised">
+            Show the guide
+          </button>
+        )}
         <div role="tablist" aria-label="Demo sections" className="mb-6 flex gap-1 border-b border-line">
           {tabs.map((t) => (
             <button

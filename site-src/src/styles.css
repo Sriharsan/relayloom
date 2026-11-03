@@ -121,3 +121,6 @@
 }
 
 * { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+
+/* the element the guided tour is pointing at */
+.guide-ring { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 10px; }

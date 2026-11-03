@@ -318,6 +318,11 @@ export const glimmerSummary = (() => {
   };
 })();
 
+export const glimmerRate = (() => {
+  const r = meas.glimmer.map((g) => g.output_tokens / g.seconds);
+  return { min: Math.min(...r), max: Math.max(...r) };
+})();
+
 export const approvals = run.cases
   .filter((c) => c.decision)
   .map((c) => ({

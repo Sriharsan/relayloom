@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import {
-  benchmark, samBenchRows, samDemoRows, caseById, caseMeta, caseResult, fmtSeconds, glimmerSummary, meas, netcutPass, run, samSummary, samTrials,
+  benchmark, glimmerRate, samBenchRows, samDemoRows, caseById, caseMeta, caseResult, fmtSeconds, glimmerSummary, meas, netcutPass, run, samSummary, samTrials,
   type SignedReceipt,
 } from "@/data/site";
 import { Pill, RunLabel, SectionHead } from "@/components/bits";
@@ -87,6 +87,30 @@ function Reading() {
           title="Muse Glimmer 30B read bills on the same laptop"
           note={`${meas.glimmer[0]?.model}, ${meas.glimmer[0]?.route}. Every reading passed the strict schema, and none can return bank details.`}
         />
+        <div className="mb-6 overflow-hidden rounded-xl border border-line bg-surface">
+          <div className="border-b border-line px-5 py-3"><span className="kLabel">Recipe banner</span></div>
+          <dl className="grid grid-cols-1 gap-x-8 px-5 py-2 text-[13px] sm:grid-cols-2">
+            {[
+              ["Model", "Muse Glimmer 30B"],
+              ["Precision", "Q4_K_M, 17 GB"],
+              ["Server", "llama.cpp b12020, one slot, 8192 context"],
+              ["Hardware", meas.machine.cpu],
+              ["Memory", meas.machine.memory + ", no GPU"],
+              ["Offline", "Yes, after the weights are downloaded"],
+              ["Output", "Strict JSON schema, low reasoning effort"],
+              ["Output speed", `${glimmerRate.min.toFixed(1)} to ${glimmerRate.max.toFixed(1)} tokens per second end to end`],
+            ].map(([k, v]) => (
+              <div key={k} className="flex justify-between gap-4 border-b border-line py-2 last:border-0 sm:[&:nth-last-child(2)]:border-0">
+                <dt className="text-ink-muted">{k}</dt>
+                <dd className="text-right text-foreground">{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="border-t border-line px-5 py-3 text-[12.5px] leading-relaxed text-ink-muted">
+            Meta's open-weight cookbook lists Intel Core Ultra laptops as verified for Q4_K_M but has no speed numbers for them yet. These are ours,
+            from a Core Ultra 7 155U on the CPU alone, with prompts of 357 to 410 tokens.
+          </p>
+        </div>
         <div className="grid gap-3 sm:grid-cols-3">
           <Tile value={`${glimmerSummary.valid} of ${glimmerSummary.runs}`} label="readings valid against the schema" tone="green" />
           <Tile value={fmtSeconds(glimmerSummary.mean)} label="average per bill, CPU only" />
@@ -224,7 +248,7 @@ function Verifier() {
   const cases = new Set(receipts.map((r) => r.body.case)).size;
 
   return (
-    <div className="rounded-xl border border-line bg-surface">
+    <div id="verifier" className="scroll-mt-24 rounded-xl border border-line bg-surface">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-5 py-3">
         <span className="kLabel">Receipt verifier</span>
         <span className="font-mono text-[11px] text-ink-muted">runs in your browser, nothing uploaded</span>

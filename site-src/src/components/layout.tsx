@@ -4,8 +4,10 @@ import { Link, useLocation } from "@/lib/router";
 import { footerNote, links } from "@/data/site";
 
 const NAV = [
+  { label: "Try it", to: "/", hash: "#try" },
   { label: "How it works", to: "/", hash: "#how" },
   { label: "Cases", to: "/", hash: "#cases" },
+  { label: "Set up", to: "/", hash: "#setup" },
   { label: "Proof", to: "/proof", hash: "" },
   { label: "Demo", to: "/demo", hash: "" },
 ];

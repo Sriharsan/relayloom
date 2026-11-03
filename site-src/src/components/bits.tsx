@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 export function RunLabel({ label }: { label: string }) {
   return <span className="kLabel">{label}</span>;
@@ -52,6 +52,32 @@ export function Photo({ src, alt, aspect = "4 / 3" }: { src: string | null; alt:
   return (
     <div className="overflow-hidden rounded-lg border border-line bg-raised" style={{ aspectRatio: aspect }}>
       <img src={src} alt={alt} loading="lazy" className="h-full w-full object-cover" />
+    </div>
+  );
+}
+
+/** A command with a copy button. */
+export function CopyBlock({ command }: { command: string }) {
+  const [done, setDone] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(command);
+      setDone(true);
+      window.setTimeout(() => setDone(false), 1600);
+    } catch {
+      /* clipboard unavailable, the text can still be selected */
+    }
+  };
+  return (
+    <div className="flex items-start gap-2 rounded-lg border border-line bg-raised">
+      <pre className="min-w-0 flex-1 overflow-x-auto px-3.5 py-3 font-mono text-[12.5px] leading-relaxed text-foreground">{command}</pre>
+      <button
+        onClick={copy}
+        aria-label={`Copy: ${command}`}
+        className="m-1.5 h-9 shrink-0 rounded-md border border-line px-3 font-mono text-[11px] text-ink-muted transition-colors duration-150 hover:bg-surface hover:text-foreground"
+      >
+        {done ? "Copied" : "Copy"}
+      </button>
     </div>
   );
 }

@@ -7,11 +7,27 @@ Author: Sriharsan B S, the only contributor.
 Agents read the bill, look at what actually arrived, investigate any gap with evidence, and pay only what the books and
 the goods both support. Runs inside the company's own network on Meta open weight models.
 
+## Theme, track and prizes
+
+Source: the participant guide, read again on 3 November 2026.
+
+- **Theme: Push the Frontier.** The guide names manufacturing and controlling a physical system. Relayloom puts Meta's models
+  between paperwork and the real world: SAM 3.1 looks at the goods that arrived and Muse Glimmer reads the bill.
+  It also fits Build for Your World, for the receiving and accounts payable team that lives this problem.
+- **Track: Startups.** One project, one Representative (Sriharsan B S), and the only person who worked on it.
+- **Judged on:** Impact 30%, Use of Meta AI Tooling 25%, Technical Depth and Execution 20%, Demo 25%.
+- **Prizes flagged:** Best Build on Meta Open Weight Models (Muse Glimmer on this laptop's CPU, no paid API) and Best Agentic Use-Case
+  (autonomy levels, investigation, approval, receipts). Most Viral Project: post the demo on X and submit the post link on the
+  platform; engagement counts until 8 November end of day.
+- **Deadline:** Wednesday 4 November, 9:00 PM Eastern (Thursday 5 November, 7:30 AM IST). Late submissions are not considered.
+  Before submitting, check that the repository is public and the video link opens.
+
 ## Links
 
 - Repository: https://github.com/Sriharsan/relayloom
 - Live site (home, proof with a receipt verifier that runs in your browser, and a replay of the app): https://relayloom.vercel.app
-- Video: linked from the live site and the submission form once uploaded. Script: [docs/VIDEO_SCRIPT.md](docs/VIDEO_SCRIPT.md)
+- Video: linked from the live site and the submission form once uploaded.
+- X post for the Most Viral prize: added to the submission form once posted. Script: [docs/VIDEO_SCRIPT.md](docs/VIDEO_SCRIPT.md)
 
 ## Use of Meta models (open weights, run on one laptop CPU)
 

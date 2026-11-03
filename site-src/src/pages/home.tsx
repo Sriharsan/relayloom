@@ -3,7 +3,7 @@ import { Link } from "@/lib/router";
 import {
   caseById, caseMeta, caseResult, casePhotos, company, firstImage, links, netcutPass, rupees, run, supplierName,
 } from "@/data/site";
-import { Photo, Pill, RunLabel, SectionHead } from "@/components/bits";
+import { CopyBlock, Photo, Pill, RunLabel, SectionHead } from "@/components/bits";
 import { FindingCard } from "@/components/finding";
 
 const SHORT = caseById("short")!;
@@ -20,10 +20,10 @@ const secondary =
 
 function Hero() {
   return (
-    <section className="hero-glow relative overflow-hidden border-b border-line">
+    <section className="relative overflow-hidden border-b border-line">
       <div className="blueprint absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto grid max-w-[1200px] grid-cols-1 gap-12 px-4 pb-16 pt-14 sm:px-6 md:pb-24 md:pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-        <div className="rise">
+        <div>
           <p className="kLabel">Autonomous accounts payable</p>
           <h1 className="mt-4 max-w-[19ch] text-balance text-[34px] font-semibold leading-[1.08] tracking-[-0.03em] text-foreground sm:text-[46px] lg:text-[54px]">
             It checks the goods, not just the paperwork.
@@ -33,17 +33,16 @@ function Hero() {
             books and the goods both support. Runs inside the company's own network on Meta open weight models.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link to="/demo" className={primary}>
+              Take the 60 second tour
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link to="/proof" className={secondary}>See the proof</Link>
             {links.video && (
-              <a href={links.video} target="_blank" rel="noreferrer" className={primary}>
-                Watch the 3 minute demo
-                <ArrowRight className="h-4 w-4" />
+              <a href={links.video} target="_blank" rel="noreferrer" className={secondary}>
+                Watch the 3 minute video
               </a>
             )}
-            <Link to="/proof" className={links.video ? secondary : primary}>
-              See the proof
-              {!links.video && <ArrowRight className="h-4 w-4" />}
-            </Link>
-            <Link to="/demo" className={secondary}>Open the demo</Link>
           </div>
           <p className="mt-8 font-mono text-[11.5px] leading-relaxed text-ink-muted">
             Demo company: {company.name}. {company.note} Muse Glimmer 30B reads bills. SAM 3.1 counts delivered goods.
@@ -51,7 +50,7 @@ function Hero() {
           </p>
         </div>
 
-        <div className="rise-late relative">
+        <div className="relative">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-[0.8fr_1.2fr]">
             <div className="rounded-xl border border-line bg-surface p-4">
               <div className="flex items-center justify-between">
@@ -383,9 +382,144 @@ function Boundary() {
   );
 }
 
+
+const TOUR = [
+  { n: "1", title: "Watch a batch run itself", body: "Six bills went through Read, Count, Match, Investigate, Enter and Check without a person. Green is entered and checked. Amber waits for you.", cta: "Open Today", to: "/demo?tab=today" },
+  { n: "2", title: "See the gap on bill CAL-0990", body: `The bill says ${BILL_QTY} cartons. SAM 3.1 counted ${GOODS} across two dock photos, and a repeated photo was counted once.`, cta: "Open the case", to: "/demo?tab=case&case=short" },
+  { n: "3", title: "Follow the evidence", body: "Click any citation under the finding. The record or photo it rests on lights up.", cta: "Open the finding", to: "/demo?tab=case&case=short" },
+  { n: "4", title: "Decide with one key", body: "Press A to approve or R to reject. A dispute goes out only after you decide.", cta: "Open approvals", to: "/demo?tab=approvals" },
+  { n: "5", title: "Check the receipts yourself", body: `Verify all ${run.receipts.length} signed receipts in your browser, then change one decision and watch the chain break.`, cta: "Open the verifier", to: "/proof#verifier" },
+];
+
+function TryIt() {
+  return (
+    <section id="try" className="scroll-mt-20 border-b border-line">
+      <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
+        <SectionHead
+          index="Start here"
+          title="Five clicks show the whole idea"
+          note="Nothing is sent anywhere. The Demo page also walks you through it with a guide that points at each thing to look at."
+        />
+        <ol className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-5">
+          {TOUR.map((s) => (
+            <li key={s.n} className="flex">
+              <div className="flex w-full flex-col rounded-xl border border-line bg-surface p-5">
+                <span className="tnum font-mono text-[11px] text-ink-muted">Step {s.n}</span>
+                <h3 className="mt-2 text-[15px] font-medium leading-snug text-foreground">{s.title}</h3>
+                <p className="mt-2 flex-1 text-[13px] leading-relaxed text-ink-muted">{s.body}</p>
+                <Link
+                  to={s.to.split("#")[0]!}
+                  hash={s.to.includes("#") ? "#" + s.to.split("#")[1] : ""}
+                  className="mt-4 inline-flex h-11 items-center justify-between gap-2 rounded-md border border-line px-3.5 text-[13px] font-medium text-foreground transition-colors duration-150 hover:bg-raised"
+                >
+                  {s.cta}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+const FIXES = [
+  ["SAM 3.1 counts 0", "The wording does not match the picture. 8 of our 13 trial wordings returned 0.", "Try another noun. Keep two wordings that agree: one for the count and one for the Investigator's recount."],
+  ["Muse Glimmer needs minutes per bill", "CPU only, about 1 output token a second on this laptop.", "Run bills as a background batch, or serve the model on a GPU."],
+  ["Hugging Face answers 403 for SAM 3.1", "The weights are gated.", "Request access with your own account and put a read token in .env as HF_TOKEN."],
+  ["llama-server runs out of memory loading Glimmer", "Weight repacking needs about 12 GB more.", "Start llama-server with --no-repack."],
+  ["A bill is held as a recount disagreement", "The two counts differ.", "A person recounts. That hold is the design, not an error."],
+];
+
+function SetUp() {
+  const lines = run.cases.map((c) => `${c.id.padEnd(10)} ${c.state}`).concat([
+    `netcut     held_offline, then entered_checked (${run.netcut.in_books_while_cut} in the books while cut, ${run.netcut.in_books_after_reconnect} after reconnect)`,
+    `receipts   ${run.receipts.length} signed, verified: ${run.receipts_verified ? "yes" : "no"}`,
+  ]);
+  return (
+    <section id="setup" className="scroll-mt-20 border-b border-line">
+      <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
+        <SectionHead
+          index="Set it up for your work"
+          title="Three commands to see it run, then make it yours"
+          note="Laid out like Meta's open-weight cookbook: what you need, a quickstart, what you should see, how to change it, and what to do when something fails."
+        />
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="rounded-xl border border-line bg-surface">
+            <div className="border-b border-line px-5 py-3"><span className="kLabel">What you need</span></div>
+            <dl className="px-5 py-4 text-[13.5px]">
+              {[
+                ["Models", "Muse Glimmer 30B (Q4_K_M) and SAM 3.1"],
+                ["Hardware we used", "Intel Core Ultra 7 155U laptop, 32 GB, CPU only"],
+                ["Offline", "Yes, once the weights are downloaded"],
+                ["Ledger", "Built in, or ERPNext in Docker"],
+                ["Time we measured", "About 5 to 12 minutes per bill and 41 seconds per photo"],
+              ].map(([k, v]) => (
+                <div key={k} className="flex justify-between gap-4 border-b border-line py-2 last:border-0">
+                  <dt className="text-ink-muted">{k}</dt>
+                  <dd className="text-right text-foreground">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <div className="flex flex-col gap-3">
+            <p className="kLabel">Quickstart</p>
+            <CopyBlock command={`git clone ${links.repo} && cd relayloom && pip install -r requirements-ap.txt`} />
+            <CopyBlock command="python -m pytest -q" />
+            <CopyBlock command="python scripts/export_bench_run.py out.json" />
+            <p className="kLabel mt-2">What you should see</p>
+            <pre className="overflow-x-auto rounded-lg border border-line bg-raised px-3.5 py-3 font-mono text-[12px] leading-relaxed text-foreground">{lines.join("\n")}</pre>
+          </div>
+        </div>
+
+        <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="rounded-xl border border-line bg-surface p-5">
+            <p className="kLabel">Make it yours</p>
+            <ul className="mt-3 space-y-2.5 text-[13.5px] leading-relaxed text-ink-muted">
+              <li><span className="text-foreground">Change what runs alone.</span> Edit <code className="font-mono text-[12px] text-foreground">relayloom/ap/policy.json</code>: levels, limits, tolerances. The models cannot change it.</li>
+              <li><span className="text-foreground">Count your own goods.</span> Change the item words in the catalogue, for example "cardboard box", and give each item a second wording for the recount.</li>
+              <li><span className="text-foreground">Use your books.</span> Put your ERPNext address and keys in <code className="font-mono text-[12px] text-foreground">.env</code> and run with <code className="font-mono text-[12px] text-foreground">--live</code>.</li>
+              <li><span className="text-foreground">Run the models yourself.</span> Muse Glimmer through llama.cpp and SAM 3.1 through Ultralytics, as in the README.</li>
+            </ul>
+          </div>
+          <div className="overflow-hidden rounded-xl border border-line bg-surface">
+            <div className="border-b border-line px-5 py-3"><span className="kLabel">If something fails</span></div>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[520px] text-left text-[12.5px]">
+                <thead>
+                  <tr className="border-b border-line text-ink-muted">
+                    <th className="px-5 py-2.5 font-medium">Symptom</th>
+                    <th className="px-5 py-2.5 font-medium">Cause</th>
+                    <th className="px-5 py-2.5 font-medium">Fix</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {FIXES.map(([a, b, c]) => (
+                    <tr key={a} className="border-b border-line align-top last:border-0">
+                      <td className="px-5 py-2.5 text-foreground">{a}</td>
+                      <td className="px-5 py-2.5 text-ink-muted">{b}</td>
+                      <td className="px-5 py-2.5 text-ink-muted">{c}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <p className="mt-4 text-[13px] text-ink-muted">
+          Next: <Link to="/demo" className="text-foreground underline underline-offset-4">the demo</Link>,{" "}
+          <Link to="/proof" className="text-foreground underline underline-offset-4">the proof</Link>, or{" "}
+          <a href={links.repo} target="_blank" rel="noreferrer" className="text-foreground underline underline-offset-4">the code</a>.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function ClosingBand() {
   return (
-    <section className="hero-glow relative overflow-hidden">
+    <section className="relative overflow-hidden border-t border-line">
       <div className="relative mx-auto max-w-[1200px] px-4 py-20 text-center sm:px-6">
         <ShieldCheck className="mx-auto h-5 w-5 text-green-ink" aria-hidden="true" />
         <h2 className="mx-auto mt-4 max-w-[24ch] text-balance text-[28px] font-semibold leading-tight tracking-[-0.02em] text-foreground sm:text-[34px]">
@@ -410,12 +544,14 @@ export function Home() {
   return (
     <div>
       <Hero />
+      <TryIt />
       <Problem />
       <HowItWorks />
       <Autonomy />
       <Spotlight />
       <Cases />
       <Boundary />
+      <SetUp />
       <ClosingBand />
     </div>
   );
