@@ -60,13 +60,19 @@ class GatewayTests(unittest.TestCase):
                 reply += s.recv(200)
             return reply.decode()
 
-    def entries(self):
-        # A tunnel is logged when it closes, a moment after the client has its reply.
-        for _ in range(100):
+    def entries(self, expect=1):
+        # A tunnel is logged when it closes, a moment after the client has its reply. Wait for the lines, not just the file.
+        found = []
+        for _ in range(250):
             if self.log.exists():
-                return [json.loads(line) for line in self.log.read_text().splitlines()]
+                try:
+                    found = [json.loads(line) for line in self.log.read_text().splitlines() if line.strip()]
+                except ValueError:
+                    found = []
+                if len(found) >= expect:
+                    return found
             time.sleep(0.02)
-        return []
+        return found
 
     def test_host_outside_policy_is_blocked_and_logged(self):
         reply = self.request("CONNECT example.com:443 HTTP/1.1")
@@ -80,7 +86,7 @@ class GatewayTests(unittest.TestCase):
         self.assertIn("403", self.request("GET http://api.groq.com/ HTTP/1.1"))
         self.assertIn("403", self.request("CONNECT api.groq.com:80 HTTP/1.1"))
         self.assertEqual(self.connected, [])
-        self.assertEqual(len(self.entries()), 2)
+        self.assertEqual(len(self.entries(2)), 2)
 
     def test_allowed_host_is_tunnelled_and_logged_with_sizes_model_and_masks(self):
         reply = self.request("CONNECT api.groq.com:443 HTTP/1.1", b"hello")
