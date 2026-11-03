@@ -1,0 +1,121 @@
+{
+ "rows": [
+  {
+   "level": "Input",
+   "control": "Mask private numbers",
+   "prevents": "A model never sees a tax id, bank account, bank code, phone or email",
+   "passed": true,
+   "median_ms": 0.234,
+   "max_ms": 4.704,
+   "test": "test_masking_removes_gstin_bank_ifsc_phone_and_email",
+   "note": ""
+  },
+  {
+   "level": "Input",
+   "control": "Find hidden text in the PDF",
+   "prevents": "White text that tries to give the model orders never reaches it",
+   "passed": true,
+   "median_ms": 7.437,
+   "max_ms": 12.804,
+   "test": "test_injection_is_recorded_and_payment_uses_master_data",
+   "note": ""
+  },
+  {
+   "level": "Input",
+   "control": "Strict bill schema",
+   "prevents": "Extra fields such as bank details, and bad values, are refused",
+   "passed": true,
+   "median_ms": 0.036,
+   "max_ms": 5.125,
+   "test": "test_schema_refuses_extra_keys_bank_fields_and_bad_values",
+   "note": ""
+  },
+  {
+   "level": "Decision",
+   "control": "Policy levels",
+   "prevents": "Actions that need the owner are refused without approval; changing bank details from a bill is never allowed",
+   "passed": true,
+   "median_ms": 0.004,
+   "max_ms": 0.228,
+   "test": "test_policy_levels_and_refusals",
+   "note": ""
+  },
+  {
+   "level": "Decision",
+   "control": "Three way match",
+   "prevents": "A bill for more than arrived is held, however it is worded",
+   "passed": true,
+   "median_ms": 0.012,
+   "max_ms": 0.208,
+   "test": "test_matcher_running_total_and_tolerances",
+   "note": ""
+  },
+  {
+   "level": "Decision",
+   "control": "Repeated photo detection",
+   "prevents": "The same goods photographed twice are counted once",
+   "passed": true,
+   "median_ms": 33.115,
+   "max_ms": 41.589,
+   "test": "test_duplicate_photo_is_found_and_different_photos_are_not",
+   "note": ""
+  },
+  {
+   "level": "Decision",
+   "control": "Citation check",
+   "prevents": "A finding that cites a record that does not exist, or a number its sources lack, is never shown",
+   "passed": true,
+   "median_ms": 0.008,
+   "max_ms": 0.087,
+   "test": "test_invented_record_is_rejected",
+   "note": ""
+  },
+  {
+   "level": "Action",
+   "control": "Ledger readback",
+   "prevents": "A bill whose stored copy differs in any field is not treated as entered",
+   "passed": true,
+   "median_ms": 0.003,
+   "max_ms": 0.052,
+   "test": "test_readback_mismatch_refuses_entered_status",
+   "note": ""
+  },
+  {
+   "level": "Evidence",
+   "control": "Signed receipts",
+   "prevents": "Changing any recorded decision breaks the chain",
+   "passed": true,
+   "median_ms": 0.915,
+   "max_ms": 4.574,
+   "test": "test_receipts_verify_offline_and_detect_tampering",
+   "note": "append and sign 0.91 ms, verify three receipts 0.76 ms"
+  },
+  {
+   "level": "Boundary",
+   "control": "Egress gateway",
+   "prevents": "Only listed hosts over HTTPS, every refusal logged",
+   "passed": true,
+   "median_ms": 4.976,
+   "max_ms": 24.168,
+   "test": "tests/test_gateway.py",
+   "note": ""
+  },
+  {
+   "level": "Boundary",
+   "control": "Phone alert token",
+   "prevents": "No token, no alerts, and the page can change nothing",
+   "passed": true,
+   "median_ms": 3.635,
+   "max_ms": 6.143,
+   "test": "tests/test_alerts.py",
+   "note": ""
+  }
+ ],
+ "controls_per_case_ms": 85.0,
+ "sam_seconds_median": 40.6,
+ "glimmer_seconds_median": 475.8,
+ "ratio_to_glimmer": 5600,
+ "all_passed": true,
+ "cost_in_money": "none: every control runs locally, with no API call",
+ "ran_at": "2026-11-03 16:47 +0530"
+}

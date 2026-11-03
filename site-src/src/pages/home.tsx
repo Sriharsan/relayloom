@@ -1,5 +1,6 @@
 import { ArrowRight, MoveRight, ShieldCheck } from "lucide-react";
 import { Link } from "@/lib/router";
+import { fmtSeconds, glimmerSummary, samSummary } from "@/data/site";
 import {
   caseById, caseMeta, caseResult, casePhotos, company, firstImage, links, netcutPass, rupees, run, supplierName,
 } from "@/data/site";
@@ -125,7 +126,7 @@ const AGENTS = [
   { name: "Reader", does: "Reads the bill line by line into a strict schema.", chip: "Muse Glimmer 30B" },
   { name: "Counter", does: "Counts delivered goods in every dock photo.", chip: "SAM 3.1" },
   { name: "Matcher", does: "Compares order, bill and counted goods as a running total.", chip: "code" },
-  { name: "Investigator", does: "Chases any gap and cites every statement.", chip: "Muse Glimmer 30B" },
+  { name: "Investigator", does: "Chases any gap and cites every statement. Muse Glimmer can write the text when it runs live.", chip: "code, cited" },
   { name: "Clerk", does: "Posts matching bills to the ledger.", chip: "ledger" },
   { name: "Checker", does: "Reads the ledger back with a separate request.", chip: "independent readback" },
   { name: "Disputer", does: "Drafts the dispute and files it once a person approves.", chip: "Muse Glimmer 30B + browser agent" },
@@ -461,7 +462,7 @@ function SetUp() {
                 ["Hardware we used", "Intel Core Ultra 7 155U laptop, 32 GB, CPU only"],
                 ["Offline", "Yes, once the weights are downloaded"],
                 ["Ledger", "Built in, or ERPNext in Docker"],
-                ["Time we measured", "About 5 to 12 minutes per bill and 41 seconds per photo"],
+                ["Time we measured", `${fmtSeconds(glimmerSummary.min)} to ${fmtSeconds(glimmerSummary.max)} per bill and about ${Math.round(samSummary.mean)} seconds per photo`],
               ].map(([k, v]) => (
                 <div key={k} className="flex justify-between gap-4 border-b border-line py-2 last:border-0">
                   <dt className="text-ink-muted">{k}</dt>
@@ -525,10 +526,46 @@ function SetUp() {
 }
 
 
+function PhoneAlerts() {
+  const alerts = run.alerts.filter((a) => a.kind !== "offline").slice(0, 4);
+  return (
+    <section id="phone" className="scroll-mt-20 border-b border-line">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_340px]">
+        <div>
+          <SectionHead index="Built" title="The alert reaches your phone, without the internet" />
+          <ul className="max-w-[60ch] space-y-3 text-[14.5px] leading-relaxed text-ink-muted">
+            <li><span className="text-foreground">Raised by the agents.</span> A delivery that needs you, hidden text that tried to change a bank account, a failed readback, a cut network.</li>
+            <li><span className="text-foreground">Local network only.</span> Start it with <code className="font-mono text-[12.5px] text-foreground">--phone</code>. It prints a link with a random token. Open it on a phone on the same Wi-Fi. No cloud, no account, no internet.</li>
+            <li><span className="text-foreground">Read only.</span> The phone page shows alerts and can change nothing. The main app stays on the laptop's own address.</li>
+          </ul>
+          <div className="mt-5 max-w-[60ch]"><CopyBlock command="python -m relayloom.ap --phone --batch" /></div>
+          <p className="mt-3 max-w-[60ch] text-[12.5px] leading-relaxed text-ink-muted">
+            Tested with unit tests (wrong token, read only, instant delivery) and in a phone sized browser. The alerts on the right are the ones this run raised.
+          </p>
+        </div>
+        <div className="mx-auto w-full max-w-[320px] rounded-[28px] border border-line-strong bg-surface p-3">
+          <div className="rounded-[20px] border border-line bg-background px-3 pb-4 pt-3">
+            <p className="text-[15px] font-semibold text-foreground">Relayloom alerts</p>
+            <p className="text-[12px] text-ink-muted">Connected, waiting for deliveries</p>
+            <div className="mt-3 flex flex-col gap-2">
+              {alerts.map((a) => (
+                <div key={a.id} className={`rounded-xl border bg-surface p-3 ${a.kind === "needs_owner" ? "border-amber/50" : a.kind === "injection" ? "border-red/50" : "border-line"}`}>
+                  <p className="text-[14px] font-medium text-foreground">{a.title}</p>
+                  <p className="mt-1 text-[12.5px] leading-snug text-ink-muted">{a.body}</p>
+                  <p className="mt-2 font-mono text-[10.5px] text-ink-muted">{a.time} · {a.case}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 const PLANNED = [
   { title: "Live camera and video", body: "SAM 3.1 can track objects in video. We have not run it here, and a laptop CPU is too slow for live use. Photos only today." },
-  { title: "Alerts to a phone", body: "The Demo page works on a phone. Push alerts when a delivery does not match are not built." },
-  { title: "Seconds, not minutes", body: "Code steps take under a second. Measured on a CPU, a photo takes about 41 seconds and a bill 5 to 12 minutes. A GPU should be far faster, but we have not measured one." },
+  { title: "Seconds, not minutes", body: `Code steps take under a second. Measured on a CPU, a photo takes about ${Math.round(samSummary.mean)} seconds and a bill ${fmtSeconds(glimmerSummary.min)} to ${fmtSeconds(glimmerSummary.max)}. A GPU should be far faster, but we have not measured one.` },
   { title: "Learning from past cases", body: "The supplier file is the first step: every investigation reads it. Patterns across suppliers and over time come next." },
 ];
 
@@ -590,6 +627,7 @@ export function Home() {
       <Cases />
       <Boundary />
       <SetUp />
+      <PhoneAlerts />
       <Planned />
       <ClosingBand />
     </div>

@@ -17,7 +17,9 @@ pip install -r requirements-ap.txt
 python -m pytest -q                                   # 68 tests
 python -m relayloom.ap.benchmark --counter recorded   # the benchmark on saved SAM 3.1 counts, a few seconds
 python scripts/export_bench_run.py out.json           # the seven cases on the real agents, with signed receipts
-python -m relayloom.ap --batch                        # the app on http://127.0.0.1:8800 (needs saved Muse Glimmer readings)
+python -m relayloom.ap --batch                        # the app on http://127.0.0.1:8800 (replays the saved readings)
+python -m relayloom.ap --batch --phone                # also prints a link for alerts on a phone on the same Wi-Fi
+python scripts/security_report.py                     # runs and times every security control
 ```
 
 Rehearsal mode replays outputs from real runs on one laptop with their date, route and timings on screen, and uses a small
@@ -56,11 +58,13 @@ and requests cannot change them.
 
 | Part | Status |
 | --- | --- |
-| Muse Glimmer 30B reading bills, writing findings and disputes | Real runs on a laptop CPU: 7 bill readings, all valid, 4 min 56 s to 11 min 50 s each ([docs/RESULTS.md](docs/RESULTS.md)). Readings of the Northgate bills are recorded with `python scripts/record_glimmer.py`. |
+| Muse Glimmer 30B reading bills and writing disputes | Real runs on a laptop CPU: 9 Northgate bill readings, all valid, 4 min 33 s to 8 min 51 s each, and 2 dispute drafts, plus 7 readings on the first bill set ([docs/RESULTS.md](docs/RESULTS.md)). Findings in recorded mode are written by code from the evidence. |
 | SAM 3.1 counting photos | Real runs on the same CPU, 115 saved in `fixtures/recorded/sam` with the numbered overlays. 101 of the 102 counts the system uses match the delivery record. |
 | ERPNext ledger | Real, in Docker on localhost. A built in ledger with the same calls is used for rehearsal. Each run says which ran. |
 | Benchmark | Synthetic set built by us, real SAM 3.1 counts. See [docs/BENCHMARK.md](docs/BENCHMARK.md). In it the bills come from the generator and the findings are written by code. |
 | Network boundary | A Docker network with no route out and one logging gateway are built, and the gateway tests pass. The run with no route out and the run with the network disconnected are not done yet ([docs/RESULTS.md](docs/RESULTS.md)). |
+| Phone alerts | Built: `python -m relayloom.ap --phone`. A separate read only page on your local network, behind a random token, no internet. Covered by unit tests and tested in a phone sized browser. Not yet tried on a physical phone. |
+| Security controls | 11 of 11 pass their checks and add about 85 ms to a case ([docs/SECURITY_CHECKS.md](docs/SECURITY_CHECKS.md)). |
 | Delivery video counting | Not built. Photos only. |
 | Sensors | None. Nothing is simulated. |
 
@@ -70,9 +74,9 @@ per photo. That is why the app runs bills as a background batch.
 ## Run the cases
 
 Each case is one command that prints PASS or FAIL per check and says which models and which ledger ran. They read bills from
-saved Muse Glimmer readings, so record the Northgate readings once first (`python scripts/record_glimmer.py`, about 2 hours on
-a laptop CPU). `python scripts/export_bench_run.py out.json` runs the seven cases right away, with bill values from the bill
-record and counts from the saved SAM 3.1 runs.
+the saved Muse Glimmer readings and count from the saved SAM 3.1 runs, so all seven pass from a clean clone in seconds.
+`python scripts/export_bench_run.py out.json` runs them with signed receipts. To record fresh readings, run
+`python scripts/record_glimmer.py` (about 1 hour on a laptop CPU).
 
 ```sh
 python -m relayloom.ap.cases match       # a matching delivery, entered and checked, no person involved

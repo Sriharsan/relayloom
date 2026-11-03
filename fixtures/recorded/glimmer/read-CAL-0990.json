@@ -1,0 +1,34 @@
+{
+ "recorded_at": "2026-11-03 15:57 +0530",
+ "machine": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+ "reply": {
+  "content": "{\"supplier_id\":\"SUP-CALDER\",\"bill_no\":\"CAL-0990\",\"bill_date\":\"2026-10-29\",\"po_number\":\"PO-2002\",\"lines\":[{\"item_code\":\"CARTON-HD\",\"description\":\"Heavy duty shipping carton\",\"qty\":50,\"rate_inr\":118.00,\"amount_inr\":5900.00}],\"tax_inr\":1062.00,\"total_inr\":6962.00}",
+  "reasoning_chars": 1163,
+  "response_id": "chatcmpl-HKuWzEdpOWvWPkxSO7mxKBzI0WLSHxhn",
+  "model": "glimmer/Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+  "usage": {
+   "completion_tokens": 421,
+   "prompt_tokens": 366,
+   "total_tokens": 787,
+   "prompt_tokens_details": {
+    "cached_tokens": 142
+   }
+  },
+  "timings": {
+   "cache_n": 142,
+   "prompt_n": 224,
+   "prompt_ms": 59682.069,
+   "prompt_per_token_ms": 266.4378080357143,
+   "prompt_per_second": 3.7532210889002524,
+   "predicted_n": 421,
+   "predicted_ms": 470615.537,
+   "predicted_per_token_ms": 1120.5131833333335,
+   "predicted_per_second": 0.8924482236123029
+  },
+  "seconds": 530.6,
+  "system_fingerprint": "b12020-0ec4027a2",
+  "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop"
+ },
+ "input_sha256": "9df014444940d317e687a0763060c93bace7d4d2c5164e51d59fce569cd6e090",
+ "schema_check": "valid"
+}

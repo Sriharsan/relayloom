@@ -33,7 +33,7 @@ Source: the participant guide, read again on 3 November 2026.
 
 | Model | Used for | Evidence |
 | --- | --- | --- |
-| Muse Glimmer 30B (Apache 2.0, Q4_K_M, llama.cpp) | Reads bills into a strict schema, writes findings and disputes | 7 readings, all valid against the schema, 4 min 56 s to 11 min 50 s each. [docs/RESULTS.md](docs/RESULTS.md) |
+| Muse Glimmer 30B (Apache 2.0, Q4_K_M, llama.cpp) | Reads bills into a strict schema and writes dispute drafts | 9 Northgate bill readings, all valid against the schema, 4 min 33 s to 8 min 51 s each, plus 2 dispute drafts. [docs/RESULTS.md](docs/RESULTS.md) |
 | SAM 3.1 (facebook/sam3.1, gated, access granted) | Counts delivered goods in every dock photo | 115 saved runs in `fixtures/recorded/sam`, 101 of the 102 counts used by the system match the delivery record, about 41 s per photo |
 
 The paid Meta Model API adapter in `relayloom/meta.py` is kept and stays off. No paid route is used anywhere.
@@ -61,8 +61,11 @@ Details and caveats: [docs/BENCHMARK.md](docs/BENCHMARK.md).
 - Measured: SAM 3.1 counts and times, Muse Glimmer readings and times, case outcomes, signed receipts, benchmark numbers.
 - Labelled: bills, photos, companies, suppliers and money are synthetic. In the demo replay the bill values come from the bill
   record. Findings in the benchmark are written by code from the evidence.
+- Built and tested: alerts to a phone on the local network (read only, token link, no internet) and 11 security controls that all
+  pass and add about 85 ms to a case ([docs/SECURITY_CHECKS.md](docs/SECURITY_CHECKS.md)). The phone page was tested in a phone sized
+  browser, not on a physical phone.
 - Not run yet: the Docker network with no route out, the run with the network physically disconnected, and Muse Glimmer
-  readings of the nine Northgate bills. See the end of [docs/RESULTS.md](docs/RESULTS.md).
+  Muse Glimmer written findings. See the end of [docs/RESULTS.md](docs/RESULTS.md).
 - No customers, pilots, revenue or funding are claimed.
 
 ## Rules and timing

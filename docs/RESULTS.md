@@ -21,22 +21,36 @@ Route for Muse Glimmer: CPU on this laptop. There is no GPU with 24 GB. Muse Gli
 
 ## Muse Glimmer 30B reading bills
 
-7 bill readings, each the text layer of a synthetic PDF bill, masked first, then read into the strict schema.
-All 7 passed the schema check. Average 7 min 55 s per bill, fastest
-4 min 56 s, slowest 11 min 50 s.
+9 Northgate Components bill readings, each the text layer of a synthetic PDF bill, masked first, then read into the strict
+schema. All 9 passed the schema check. Median 5 min 26 s per bill, fastest
+4 min 33 s, slowest 8 min 51 s. End to end that is 0.7 to 1.3 output tokens per second, with prompts of
+365 to 418 tokens. Recorded on 3 November 2026 with `python scripts/record_glimmer.py`.
 
-| Reading | Recorded | Prompt tokens | Output tokens | Time | Schema |
+| Bill | Recorded | Prompt tokens | Output tokens | Time | Schema |
 | --- | --- | --- | --- | --- | --- |
-| Reading 1 | 2026-10-31 23:09 | 362 | 404 | 8 min 11 s | valid |
-| Reading 2 | 2026-10-31 23:16 | 366 | 387 | 7 min 27 s | valid |
-| Reading 3 | 2026-10-31 23:28 | 357 | 373 | 11 min 50 s | valid |
-| Reading 4 | 2026-10-31 23:36 | 410 | 475 | 7 min 56 s | valid |
-| Reading 5 | 2026-10-31 23:45 | 359 | 377 | 9 min 04 s | valid |
-| Reading 6 | 2026-10-31 23:51 | 366 | 391 | 6 min 03 s | valid |
-| Reading 7 | 2026-10-31 23:56 | 357 | 346 | 4 min 56 s | valid |
+| ARD-5101 | 2026-11-03 15:48 | 370 | 292 | 7 min 11 s | valid |
+| CAL-0990 | 2026-11-03 15:57 | 366 | 421 | 8 min 51 s | valid |
+| BRI-0731 | 2026-11-03 16:04 | 375 | 366 | 7 min 11 s | valid |
+| ARD-5104 | 2026-11-03 16:09 | 418 | 332 | 5 min 20 s | valid |
+| DUN-0211 | 2026-11-03 16:15 | 370 | 386 | 5 min 44 s | valid |
+| BRI-0735 | 2026-11-03 16:20 | 375 | 404 | 5 min 16 s | valid |
+| CAL-0992 | 2026-11-03 16:25 | 365 | 342 | 4 min 33 s | valid |
+| DUN-0219 | 2026-11-03 16:30 | 370 | 328 | 5 min 26 s | valid |
+| CAL-0994 | 2026-11-03 16:36 | 366 | 340 | 5 min 14 s | valid |
 
-These readings were recorded on 31 October on the first synthetic bill set. The nine Northgate Components bills are read
-with `python scripts/record_glimmer.py`, which saves each reading with its route and timings.
+Muse Glimmer also wrote 2 dispute drafts for held deliveries, from the case facts:
+
+| Case | Recorded | Prompt tokens | Output tokens | Time |
+| --- | --- | --- | --- | --- |
+| BRI-0731 | 2026-11-03 16:50 | 253 | 388 | 6 min 54 s |
+| CAL-0990 | 2026-11-03 16:43 | 240 | 445 | 7 min 30 s |
+
+Earlier, on 31 October, it read 7 bills of the first synthetic bill set, all valid, 4 min 56 s to
+11 min 50 s each. In the recorded run, findings are written by code from the evidence, with every
+citation checked. A model-written finding is wired in for live runs and was not recorded.
+
+For comparison, Meta's open-weight cookbook lists Intel Core Ultra laptops as verified for Q4_K_M but gives no speed numbers for them yet.
+These are ours, from a Core Ultra 7 155U on the CPU alone.
 
 ## SAM 3.1 counting delivered goods
 
@@ -95,11 +109,11 @@ verifies them in your browser, and `python scripts/export_bench_run.py` regenera
 
 SAM 3.1 counted 36 of 36 benchmark photos exactly right. The goods check costs about 42.9 s per delivery of
 SAM 3.1 time on this CPU. In the benchmark the bills come from the generator and the findings are written by code from the
-evidence, so Muse Glimmer's 4 min 56 s to 11 min 50 s per bill does not apply to those numbers.
+evidence, so Muse Glimmer's 4 min 33 s to 8 min 51 s per bill does not apply to those numbers.
 
 ## Not yet run
 
 - The Docker network with no route out (`deploy/boundary.compose.yml`) and the run with the network physically
   disconnected. Until they run, this repository makes no network isolation claim beyond the gateway tests.
-- Muse Glimmer readings of the nine Northgate bills, and Glimmer written findings and disputes for the demo cases.
+- Muse Glimmer written findings. Findings are written by code in the recorded run.
 - Video counting with SAM 3.1. Photos only.

@@ -42,30 +42,39 @@ def sam_runs():
     return runs
 
 
+def _glimmer_row(record, label):
+    reply = record["reply"]
+    usage = reply.get("usage") or {}
+    return {"bill": label, "seconds": reply["seconds"], "model": reply["model"].split("/")[-1], "route": reply["route"],
+            "prompt_tokens": usage.get("prompt_tokens"), "output_tokens": usage.get("completion_tokens"),
+            "schema_check": record.get("schema_check", ""), "recorded_at": record["recorded_at"]}
+
+
 def glimmer_runs():
-    runs = []
+    """The Northgate bill readings and disputes in fixtures/recorded/glimmer, and the first set's readings from git history."""
+    folder = ROOT / "fixtures" / "recorded" / "glimmer"
+    reads = [_glimmer_row(json.loads(f.read_text(encoding="utf-8")), f.stem.removeprefix("read-"))
+             for f in sorted(folder.glob("read-*.json"), key=lambda f: json.loads(f.read_text(encoding="utf-8"))["recorded_at"])]
+    disputes = [_glimmer_row(json.loads(f.read_text(encoding="utf-8")), f.stem.removeprefix("dispute-"))
+                for f in sorted(folder.glob("dispute-*.json"))]
+    earlier = []
     for number, name in enumerate(GLIMMER_FILES, 1):
         text = subprocess.run(["git", "-C", str(ROOT), "show", f"{GLIMMER_COMMIT}:fixtures/recorded/glimmer/{name}.json"],
                               capture_output=True, text=True, encoding="utf-8", check=True).stdout
-        record = json.loads(text)
-        reply = record["reply"]
-        usage = reply.get("usage") or {}
-        runs.append({"bill": f"Bill {number}", "seconds": reply["seconds"], "model": reply["model"].split("/")[-1],
-                     "route": reply["route"], "prompt_tokens": usage.get("prompt_tokens"),
-                     "output_tokens": usage.get("completion_tokens"), "schema_check": record["schema_check"],
-                     "recorded_at": record["recorded_at"]})
-    return runs
+        earlier.append(_glimmer_row(json.loads(text), f"Bill {number}"))
+    return reads, disputes, earlier
 
 
 def main():
     out = Path(sys.argv[1])
-    sam, glimmer = sam_runs(), glimmer_runs()
-    export = {"sam": sam, "glimmer": glimmer, "machine": {
+    sam = sam_runs()
+    glimmer, disputes, earlier = glimmer_runs()
+    export = {"sam": sam, "glimmer": glimmer, "glimmer_disputes": disputes, "glimmer_earlier": earlier, "machine": {
         "os": "Windows 11 Home 10.0.26300", "cpu": "Intel Core Ultra 7 155U, 12 cores, 14 threads",
         "memory": "31.4 GB", "gpu": "Intel integrated graphics, no NVIDIA GPU"}}
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(export, indent=1), encoding="utf-8")
-    print(f"{len(sam)} SAM 3.1 runs, {len(glimmer)} Muse Glimmer readings -> {out}")
+    print(f"{len(sam)} SAM 3.1 runs, {len(glimmer)} Muse Glimmer readings, {len(disputes)} disputes, {len(earlier)} earlier readings -> {out}")
 
 
 if __name__ == "__main__":

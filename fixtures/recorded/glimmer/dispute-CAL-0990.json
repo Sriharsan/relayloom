@@ -1,0 +1,33 @@
+{
+ "recorded_at": "2026-11-03 16:43 +0530",
+ "machine": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+ "reply": {
+  "content": "Calder Packaging, bill CAL-0990 against PO-2002 for Heavy duty shipping carton. Ordered 50, billed 50.0, received in total 46. Billed before on this order 0. PO rate 118.0, billed rate 118.0. CARTON-HD billed 50 with 0 already billed, received 46. Recount agrees. Please send a credit note or a corrected bill for what was received, at the order rate.",
+  "reasoning_chars": 1343,
+  "response_id": "chatcmpl-cVM4U4OtF7S0jfHppOMeJqCJEZOvSz9A",
+  "model": "glimmer/Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+  "usage": {
+   "completion_tokens": 445,
+   "prompt_tokens": 240,
+   "total_tokens": 685,
+   "prompt_tokens_details": {
+    "cached_tokens": 0
+   }
+  },
+  "timings": {
+   "cache_n": 0,
+   "prompt_n": 240,
+   "prompt_ms": 49750.375,
+   "prompt_per_token_ms": 207.29322916666666,
+   "prompt_per_second": 4.824084240571051,
+   "predicted_n": 445,
+   "predicted_ms": 400083.499,
+   "predicted_per_token_ms": 901.0889617117117,
+   "predicted_per_second": 1.1097683386337311
+  },
+  "seconds": 450.1,
+  "system_fingerprint": "b12020-0ec4027a2",
+  "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop"
+ },
+ "facts_sha256": "f149bb0a290bf2cf65ce81d6cc66d6167c3d7eab003f99781b6715f1e328e875"
+}

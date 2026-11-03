@@ -1,0 +1,34 @@
+{
+ "recorded_at": "2026-11-03 16:30 +0530",
+ "machine": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+ "reply": {
+  "content": "{\"supplier_id\":\"SUP-DUNMORE\",\"bill_no\":\"DUN-0219\",\"bill_date\":\"2026-10-27\",\"po_number\":\"PO-2008\",\"lines\":[{\"item_code\":\"REEL-100M\",\"description\":\"Cable reel 100 m\",\"qty\":20,\"rate_inr\":650,\"amount_inr\":13000}],\"tax_inr\":2340,\"total_inr\":15340}",
+  "reasoning_chars": 847,
+  "response_id": "chatcmpl-oJJ2o7XBZuQxNsbAU2RBmU0oAWc3OkUE",
+  "model": "glimmer/Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+  "usage": {
+   "completion_tokens": 328,
+   "prompt_tokens": 370,
+   "total_tokens": 698,
+   "prompt_tokens_details": {
+    "cached_tokens": 142
+   }
+  },
+  "timings": {
+   "cache_n": 142,
+   "prompt_n": 228,
+   "prompt_ms": 50405.349,
+   "prompt_per_token_ms": 221.07609210526317,
+   "prompt_per_second": 4.523329458546155,
+   "predicted_n": 328,
+   "predicted_ms": 275730.687,
+   "predicted_per_token_ms": 843.213110091743,
+   "predicted_per_second": 1.1859398152516845
+  },
+  "seconds": 326.3,
+  "system_fingerprint": "b12020-0ec4027a2",
+  "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop"
+ },
+ "input_sha256": "3cf13a40466c9480deec71fc67a07c04bdc9863fccb15f25689db78c93aa9d13",
+ "schema_check": "valid"
+}

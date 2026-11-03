@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import {
-  benchmark, glimmerRate, samBenchRows, samDemoRows, caseById, caseMeta, caseResult, fmtSeconds, glimmerSummary, meas, netcutPass, run, samSummary, samTrials,
+  benchmark, glimmerRate, security, samBenchRows, samDemoRows, caseById, caseMeta, caseResult, fmtSeconds, glimmerSummary, meas, netcutPass, run, samSummary, samTrials,
   type SignedReceipt,
 } from "@/data/site";
 import { Pill, RunLabel, SectionHead } from "@/components/bits";
@@ -108,7 +108,7 @@ function Reading() {
           </dl>
           <p className="border-t border-line px-5 py-3 text-[12.5px] leading-relaxed text-ink-muted">
             Meta's open-weight cookbook lists Intel Core Ultra laptops as verified for Q4_K_M but has no speed numbers for them yet. These are ours,
-            from a Core Ultra 7 155U on the CPU alone, with prompts of 357 to 410 tokens.
+            from a Core Ultra 7 155U on the CPU alone, with prompts of {Math.min(...meas.glimmer.map((x) => x.prompt_tokens))} to {Math.max(...meas.glimmer.map((x) => x.prompt_tokens))} tokens.
           </p>
         </div>
         <div className="grid gap-3 sm:grid-cols-3">
@@ -130,6 +130,11 @@ function Reading() {
             ))}
           </Table>
         </div>
+        <p className="mt-3 max-w-[78ch] text-[12.5px] leading-relaxed text-ink-muted">
+          Muse Glimmer also wrote {meas.glimmer_disputes.length} dispute drafts ({meas.glimmer_disputes.map((x) => fmtSeconds(x.seconds)).join(" and ")}), and read {meas.glimmer_earlier.length} bills
+          on the first bill set ({fmtSeconds(Math.min(...meas.glimmer_earlier.map((x) => x.seconds)))} to {fmtSeconds(Math.max(...meas.glimmer_earlier.map((x) => x.seconds)))}). In the
+          recorded run, findings are written by code from the evidence, and every citation in them is checked.
+        </p>
         <p className="mt-3 font-mono text-[11.5px] text-ink-muted">
           Machine: {meas.machine.cpu}, {meas.machine.memory}, {meas.machine.gpu}, {meas.machine.os}.
         </p>
@@ -169,6 +174,45 @@ function Cases() {
             <td className="px-5 py-3 text-right"><Pill tone={netcutPass ? "green" : "red"}>{netcutPass ? "PASS" : "FAIL"}</Pill></td>
           </tr>
         </Table>
+      </div>
+    </section>
+  );
+}
+
+
+function Security() {
+  const passed = security.rows.filter((r) => r.passed).length;
+  return (
+    <section className="border-b border-line">
+      <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6">
+        <SectionHead
+          index="Security at every level"
+          title="Every control passed its check, and none slows the work"
+          note="Each control ran on the synthetic bills and photos. It passes only if it blocks what it must block and lets good input through."
+        />
+        <div className="grid gap-3 sm:grid-cols-3">
+          <Tile value={`${passed} of ${security.rows.length}`} label="controls pass, from input to boundary" tone="green" />
+          <Tile value={`${security.controls_per_case_ms.toFixed(0)} ms`} label="all controls together, per case" />
+          <Tile value="no cost" label="every control runs locally: no API call, no network, no fee" />
+        </div>
+        <div className="mt-6">
+          <Table head={[{ t: "Level" }, { t: "Control" }, { t: "What it prevents" }, { t: "Result", right: true }, { t: "Median", right: true }]} min={760}>
+            {security.rows.map((r) => (
+              <tr key={r.control} className="border-b border-line align-top last:border-0">
+                <td className="px-5 py-3 font-mono text-[12px] text-ink-muted">{r.level}</td>
+                <td className="px-5 py-3 text-foreground">{r.control}</td>
+                <td className="px-5 py-3 text-[13px] text-ink-muted">{r.prevents}</td>
+                <td className="px-5 py-3 text-right"><Pill tone={r.passed ? "green" : "red"}>{r.passed ? "pass" : "FAIL"}</Pill></td>
+                <td className={num}>{r.median_ms < 0.1 ? "under 0.1" : r.median_ms.toFixed(1)} ms</td>
+              </tr>
+            ))}
+          </Table>
+        </div>
+        <p className="mt-3 max-w-[78ch] text-[12.5px] leading-relaxed text-ink-muted">
+          Compared with the models: a Muse Glimmer bill reading took a median of {Math.round(security.glimmer_seconds_median)} s and a SAM 3.1 count
+          {" "}{Math.round(security.sam_seconds_median)} s on this CPU. The controls are about 1 part in {security.ratio_to_glimmer.toLocaleString("en-US")} of one
+          bill reading, so the delay people feel comes from the models, not from the checks. Measured on {security.ran_at.slice(0, 10)}.
+        </p>
       </div>
     </section>
   );
@@ -339,6 +383,7 @@ export function Proof() {
       <Counting />
       <Reading />
       <Cases />
+      <Security />
       <Benchmark />
       <section className="border-b border-line">
         <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6">

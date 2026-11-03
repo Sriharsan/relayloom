@@ -1,0 +1,33 @@
+{
+ "recorded_at": "2026-11-03 16:50 +0530",
+ "machine": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+ "reply": {
+  "content": "Briarwood Polymers, bill BRI-0731 against PO-2003 for Resin pellet sack 25 kg. Ordered 10, billed 10.0, received in total 10. Billed rate 2290.00 differs from PO rate 2150.00. Recount agrees. Please send a credit note or a corrected bill for what was received at the order rate.",
+  "reasoning_chars": 1144,
+  "response_id": "chatcmpl-k1FQ3Aij0oOLO9owazhFzfDIUvolIVHv",
+  "model": "glimmer/Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+  "usage": {
+   "completion_tokens": 388,
+   "prompt_tokens": 253,
+   "total_tokens": 641,
+   "prompt_tokens_details": {
+    "cached_tokens": 71
+   }
+  },
+  "timings": {
+   "cache_n": 71,
+   "prompt_n": 182,
+   "prompt_ms": 35260.518,
+   "prompt_per_token_ms": 193.73910989010986,
+   "prompt_per_second": 5.1615804396293905,
+   "predicted_n": 388,
+   "predicted_ms": 378117.815,
+   "predicted_per_token_ms": 977.0486175710595,
+   "predicted_per_second": 1.0234905223918107
+  },
+  "seconds": 413.5,
+  "system_fingerprint": "b12020-0ec4027a2",
+  "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop"
+ },
+ "facts_sha256": "7b1a7c827cca44e87b7ab9dcb089ef8d42f2455be5bcff62e63baec1eb8b9eac"
+}

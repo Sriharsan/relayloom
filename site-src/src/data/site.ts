@@ -7,6 +7,7 @@
  */
 import bench from "./bench.json";
 import measured from "./measured.json";
+import securityData from "./security.json";
 
 export const links = {
   repo: "https://github.com/Sriharsan/relayloom",
@@ -140,6 +141,7 @@ export const run = bench as unknown as {
   receipts: SignedReceipt[];
   casefiles: Record<string, unknown>;
   supplier_files: Record<string, SupplierFile>;
+  alerts: { id: number; time: string; kind: string; title: string; body: string; case: string }[];
 };
 
 export const meas = measured as unknown as {
@@ -158,6 +160,8 @@ export const meas = measured as unknown as {
     used: boolean;
     world: "demo" | "benchmark";
   }[];
+  glimmer_disputes: { bill: string; seconds: number }[];
+  glimmer_earlier: { bill: string; seconds: number }[];
   glimmer: {
     bill: string;
     seconds: number;
@@ -355,3 +359,22 @@ export const approvals = run.cases
   }));
 
 export const fmtSeconds = (s: number) => (s >= 60 ? `${Math.floor(s / 60)} min ${Math.round(s % 60)} s` : `${s.toFixed(1)} s`);
+
+export interface SecurityRow {
+  level: string;
+  control: string;
+  prevents: string;
+  passed: boolean;
+  median_ms: number;
+  test: string;
+}
+export const security = securityData as unknown as {
+  rows: SecurityRow[];
+  controls_per_case_ms: number;
+  glimmer_seconds_median: number;
+  sam_seconds_median: number;
+  ratio_to_glimmer: number;
+  all_passed: boolean;
+  cost_in_money: string;
+  ran_at: string;
+};

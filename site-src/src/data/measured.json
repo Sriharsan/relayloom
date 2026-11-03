@@ -1728,6 +1728,120 @@
  ],
  "glimmer": [
   {
+   "bill": "ARD-5101",
+   "seconds": 431.3,
+   "model": "Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+   "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop",
+   "prompt_tokens": 370,
+   "output_tokens": 292,
+   "schema_check": "valid",
+   "recorded_at": "2026-11-03 15:48 +0530"
+  },
+  {
+   "bill": "CAL-0990",
+   "seconds": 530.6,
+   "model": "Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+   "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop",
+   "prompt_tokens": 366,
+   "output_tokens": 421,
+   "schema_check": "valid",
+   "recorded_at": "2026-11-03 15:57 +0530"
+  },
+  {
+   "bill": "BRI-0731",
+   "seconds": 431.1,
+   "model": "Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+   "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop",
+   "prompt_tokens": 375,
+   "output_tokens": 366,
+   "schema_check": "valid",
+   "recorded_at": "2026-11-03 16:04 +0530"
+  },
+  {
+   "bill": "ARD-5104",
+   "seconds": 320.2,
+   "model": "Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+   "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop",
+   "prompt_tokens": 418,
+   "output_tokens": 332,
+   "schema_check": "valid",
+   "recorded_at": "2026-11-03 16:09 +0530"
+  },
+  {
+   "bill": "DUN-0211",
+   "seconds": 344.0,
+   "model": "Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+   "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop",
+   "prompt_tokens": 370,
+   "output_tokens": 386,
+   "schema_check": "valid",
+   "recorded_at": "2026-11-03 16:15 +0530"
+  },
+  {
+   "bill": "BRI-0735",
+   "seconds": 316.2,
+   "model": "Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+   "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop",
+   "prompt_tokens": 375,
+   "output_tokens": 404,
+   "schema_check": "valid",
+   "recorded_at": "2026-11-03 16:20 +0530"
+  },
+  {
+   "bill": "CAL-0992",
+   "seconds": 273.0,
+   "model": "Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+   "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop",
+   "prompt_tokens": 365,
+   "output_tokens": 342,
+   "schema_check": "valid",
+   "recorded_at": "2026-11-03 16:25 +0530"
+  },
+  {
+   "bill": "DUN-0219",
+   "seconds": 326.3,
+   "model": "Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+   "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop",
+   "prompt_tokens": 370,
+   "output_tokens": 328,
+   "schema_check": "valid",
+   "recorded_at": "2026-11-03 16:30 +0530"
+  },
+  {
+   "bill": "CAL-0994",
+   "seconds": 313.6,
+   "model": "Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+   "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop",
+   "prompt_tokens": 366,
+   "output_tokens": 340,
+   "schema_check": "valid",
+   "recorded_at": "2026-11-03 16:36 +0530"
+  }
+ ],
+ "glimmer_disputes": [
+  {
+   "bill": "BRI-0731",
+   "seconds": 413.5,
+   "model": "Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+   "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop",
+   "prompt_tokens": 253,
+   "output_tokens": 388,
+   "schema_check": "",
+   "recorded_at": "2026-11-03 16:50 +0530"
+  },
+  {
+   "bill": "CAL-0990",
+   "seconds": 450.1,
+   "model": "Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+   "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop",
+   "prompt_tokens": 240,
+   "output_tokens": 445,
+   "schema_check": "",
+   "recorded_at": "2026-11-03 16:43 +0530"
+  }
+ ],
+ "glimmer_earlier": [
+  {
    "bill": "Bill 1",
    "seconds": 491.0,
    "model": "Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",

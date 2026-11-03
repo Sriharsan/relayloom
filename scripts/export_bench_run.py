@@ -15,6 +15,7 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from relayloom.ap.alerts import AlertHub  # noqa: E402
 from relayloom.ap.ledger import LocalLedger  # noqa: E402
 from relayloom.ap.pipeline import Network, Workbench  # noqa: E402
 from relayloom.ap.policy import load_policy  # noqa: E402
@@ -73,7 +74,9 @@ def main():
         ledger.seed(DATA["suppliers"], DATA["purchase_orders"], DATA["history_invoices"])
         bench = Workbench(policy, ledger, ledger, chain, RecordReader(), SamOrRecordCounter(), Network(ledger),
                           FIXTURES, DATA, portal=BenchPortal())
+        hub = AlertHub()
         bench.casefile_dir = root / "casefiles"
+        bench.notify = lambda kind, title, body, case: hub.publish(kind, title, body, case)
         records = [c for c in DATA["cases"] if c["case"] in DEMO]
         started = time.time()
         cases = bench.run_batch(records)
@@ -85,6 +88,7 @@ def main():
         cut_bench = Workbench(policy, ledger, ledger, chain, RecordReader(), SamOrRecordCounter(), Network(ledger),
                               FIXTURES, DATA, portal=BenchPortal())
         cut_bench.casefile_dir = root / "casefiles"
+        cut_bench.notify = lambda kind, title, body, case: hub.publish(kind, title, body, case)
         cut_bench.after_create = lambda case: cut_bench.network.cut() if cut_bench.network.online else None
         cut_bench.pool._max_workers = 1
         cut_records = [c for c in DATA["cases"] if c["case"].startswith("netcut")]
@@ -115,6 +119,7 @@ def main():
             "cases": [case.view() for case in cases],
             "netcut": netcut,
             "casefiles": casefiles,
+            "alerts": hub.items,
             "supplier_files": supplier_files,
             "receipts": receipts,
         }

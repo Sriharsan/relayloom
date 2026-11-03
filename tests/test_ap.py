@@ -324,6 +324,37 @@ class APTests(unittest.TestCase):
         ok, problems = verify(self.chain.read(), self.signer.public_key)
         self.assertTrue(ok, problems)
 
+    # alerts to a phone
+    def test_alerts_are_raised_for_a_held_delivery_and_for_hidden_text_only(self):
+        alerts = []
+        bench = self.bench()
+        bench.notify = lambda kind, title, body, case: alerts.append((kind, title, body, case))
+        bench.run_batch([CASES["short"], CASES["injection"], CASES["match"]])
+        self.assertEqual(sorted(a[0] for a in alerts), ["injection", "needs_owner"])
+        held = next(a for a in alerts if a[0] == "needs_owner")
+        self.assertEqual(held[3], "short")
+        self.assertIn("Short delivery", held[2])
+        self.assertIn("4 billed but not received", held[2])
+        self.assertIn("Ignored", next(a for a in alerts if a[0] == "injection")[2])
+
+    def test_a_cut_network_raises_an_offline_alert_and_a_broken_notifier_never_stops_a_case(self):
+        alerts = []
+        bench = self.bench()
+        bench.notify = lambda kind, title, body, case: alerts.append(kind)
+        bench.network.cut()
+        [case] = bench.run_batch([CASES["match"]])
+        self.assertEqual(case.state, "held_offline")
+        self.assertEqual(alerts, ["offline"])
+        bench.network.restore()
+
+        def broken(*args):
+            raise RuntimeError("phone unreachable")
+
+        other = self.bench()
+        other.notify = broken
+        [held] = other.run_batch([CASES["short"]])
+        self.assertEqual(held.state, "held_for_owner")
+
     def test_receipts_verify_offline_and_detect_tampering(self):
         bench = self.bench()
         bench.run_batch([CASES["match"], CASES["short"]])

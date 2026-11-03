@@ -119,6 +119,19 @@ function CaseFileCard({ c }: { c: BenchCase }) {
   );
 }
 
+
+function SummaryTile({ label, value, sub, tone = "foreground" }: { label: string; value: string; sub: string; tone?: "foreground" | "green" | "amber" }) {
+  const color = tone === "green" ? "text-green-ink" : tone === "amber" ? "text-amber-ink" : "text-foreground";
+  const edge = tone === "green" ? "border-green/30" : tone === "amber" ? "border-amber/30" : "border-line";
+  return (
+    <div className={`rounded-xl border bg-surface px-5 py-4 ${edge}`}>
+      <p className="kLabel">{label}</p>
+      <p className={`mt-2 text-[17px] font-medium leading-snug ${color}`}>{value}</p>
+      <p className="mt-1 text-[12.5px] text-ink-muted">{sub}</p>
+    </div>
+  );
+}
+
 function CaseView({ c }: { c: BenchCase }) {
   const photos = casePhotos(c);
   const receipts = run.receipts.filter((r) => r.body.case === c.id);
@@ -130,9 +143,74 @@ function CaseView({ c }: { c: BenchCase }) {
   const hidden = c.injection && typeof c.injection === "object" ? c.injection : null;
   const received = c.counter.total;
 
+  const billedQty = c.bill?.lines[0]?.qty ?? 0;
+  const gap = billedQty - received;
+  const d = c.diagnosis;
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-      <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <SummaryTile label="Bill" value={c.bill_no} sub={`${supplierName(c.supplier_id)} · ${rupees(c.bill?.total_inr ?? 0)}`} />
+        <SummaryTile label="Goods on the dock" value={`${received} of ${billedQty}`} sub={gap > 0 ? `gap of ${gap}` : "bill and goods agree"} tone={gap > 0 ? "amber" : "green"} />
+        <SummaryTile label="Likely cause" value={d ? d.label : "None needed"} sub={d ? `confidence ${d.confidence}` : "nothing to investigate"} tone={d ? "amber" : "green"} />
+        <SummaryTile label="Outcome" value={c.status} sub={decision ? `${decision.decision}d by ${decision.by}` : c.state === "entered_checked" ? "no person involved" : "waiting"} tone={c.state === "entered_checked" ? "green" : "foreground"} />
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:items-start">
+        <div className="flex flex-col gap-4">
+          <p className="kLabel">What arrived</p>
+        <Card title="Delivery photos" right={<Pill tone="green">counted by SAM 3.1</Pill>}>
+          <div className="grid grid-cols-1 gap-4 px-5 py-4 sm:grid-cols-2">
+            {photos.map((p) => (
+              <figure key={p.photo} id={"photo-" + p.photo} className="scroll-mt-24 rounded-lg border border-line bg-raised p-3">
+                {p.counted ? (
+                  <Photo src={p.image} alt={`${p.photo} with ${p.count} items outlined and numbered`} />
+                ) : (
+                  <div className="flex aspect-[4/3] items-center justify-center rounded-lg border border-dashed border-line px-3 text-center font-mono text-[11px] text-ink-muted">
+                    repeat of {p.duplicate_of}, similarity {p.similarity}
+                  </div>
+                )}
+                <figcaption className="mt-2.5 flex items-baseline justify-between gap-2">
+                  <span className="tnum font-mono text-[11px] text-ink-muted">{p.photo}</span>
+                  {p.counted ? <span className="tnum font-mono text-[18px] leading-none text-green-ink">{p.count}</span> : <span className="font-mono text-[11px] text-ink-muted">repeat</span>}
+                </figcaption>
+                <span className="mt-1 block font-mono text-[10.5px] text-ink-muted">
+                  {p.counted ? (p.sam ? `SAM 3.1, ${Math.round(p.seconds ?? 0)} s on CPU` : "count from the delivery record") : "not counted twice"}
+                </span>
+              </figure>
+            ))}
+          </div>
+          <div className="border-t border-line px-5 py-3">
+            <span className="tnum font-mono text-[12px] text-foreground">Running total on {c.po_number}: {received} received</span>
+          </div>
+        </Card>
+
+        <Card title="Three way match">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[300px] text-left text-[13px]">
+              <thead>
+                <tr className="border-b border-line text-ink-muted">
+                  <th className="px-5 py-2.5 font-medium">Item</th>
+                  <th className="px-5 py-2.5 text-right font-medium">Order</th>
+                  <th className="px-5 py-2.5 text-right font-medium">Bill</th>
+                  <th className="px-5 py-2.5 text-right font-medium">Goods</th>
+                </tr>
+              </thead>
+              <tbody>
+                {c.match?.rows.map((r) => (
+                  <tr key={r.item_code} className={`border-b border-line last:border-0 ${r.issues.length ? "bg-amber/5" : ""}`}>
+                    <td className="px-5 py-2.5 text-foreground">{r.description}</td>
+                    <td className="tnum px-5 py-2.5 text-right font-mono text-[12.5px] text-foreground">{r.po_qty}</td>
+                    <td className="tnum px-5 py-2.5 text-right font-mono text-[12.5px] text-foreground">{r.bill_qty}</td>
+                    <td className={`tnum px-5 py-2.5 text-right font-mono text-[12.5px] ${r.issues.length ? "text-amber-ink" : "text-foreground"}`}>{r.received}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {c.match?.rows.some((r) => r.issues.length) && (
+            <p className="border-t border-line px-5 py-3 font-mono text-[11.5px] text-ink-muted">{c.match.rows.flatMap((r) => r.issues).join(". ")}</p>
+          )}
+        </Card>
         <Card title="Bill" right={<RunLabel label={LABEL} />}>
           <dl className="px-5 py-4 text-[13.5px]">
             {[
@@ -192,67 +270,10 @@ function CaseView({ c }: { c: BenchCase }) {
             )}
           </ul>
         </Card>
-        <SupplierCard c={c} />
-        <CaseFileCard c={c} />
-      </div>
+        </div>
 
-      <div className="flex flex-col gap-4">
-        <Card title="Delivery photos" right={<Pill tone="green">counted by SAM 3.1</Pill>}>
-          <div className="grid grid-cols-1 gap-4 px-5 py-4 sm:grid-cols-2">
-            {photos.map((p) => (
-              <figure key={p.photo} id={"photo-" + p.photo} className="scroll-mt-24 rounded-lg border border-line bg-raised p-3">
-                {p.counted ? (
-                  <Photo src={p.image} alt={`${p.photo} with ${p.count} items outlined and numbered`} />
-                ) : (
-                  <div className="flex aspect-[4/3] items-center justify-center rounded-lg border border-dashed border-line px-3 text-center font-mono text-[11px] text-ink-muted">
-                    repeat of {p.duplicate_of}, similarity {p.similarity}
-                  </div>
-                )}
-                <figcaption className="mt-2.5 flex items-baseline justify-between gap-2">
-                  <span className="tnum font-mono text-[11px] text-ink-muted">{p.photo}</span>
-                  {p.counted ? <span className="tnum font-mono text-[18px] leading-none text-green-ink">{p.count}</span> : <span className="font-mono text-[11px] text-ink-muted">repeat</span>}
-                </figcaption>
-                <span className="mt-1 block font-mono text-[10.5px] text-ink-muted">
-                  {p.counted ? (p.sam ? `SAM 3.1, ${Math.round(p.seconds ?? 0)} s on CPU` : "count from the delivery record") : "not counted twice"}
-                </span>
-              </figure>
-            ))}
-          </div>
-          <div className="border-t border-line px-5 py-3">
-            <span className="tnum font-mono text-[12px] text-foreground">Running total on {c.po_number}: {received} received</span>
-          </div>
-        </Card>
-
-        <Card title="Three way match">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[300px] text-left text-[13px]">
-              <thead>
-                <tr className="border-b border-line text-ink-muted">
-                  <th className="px-5 py-2.5 font-medium">Item</th>
-                  <th className="px-5 py-2.5 text-right font-medium">Order</th>
-                  <th className="px-5 py-2.5 text-right font-medium">Bill</th>
-                  <th className="px-5 py-2.5 text-right font-medium">Goods</th>
-                </tr>
-              </thead>
-              <tbody>
-                {c.match?.rows.map((r) => (
-                  <tr key={r.item_code} className={`border-b border-line last:border-0 ${r.issues.length ? "bg-amber/5" : ""}`}>
-                    <td className="px-5 py-2.5 text-foreground">{r.description}</td>
-                    <td className="tnum px-5 py-2.5 text-right font-mono text-[12.5px] text-foreground">{r.po_qty}</td>
-                    <td className="tnum px-5 py-2.5 text-right font-mono text-[12.5px] text-foreground">{r.bill_qty}</td>
-                    <td className={`tnum px-5 py-2.5 text-right font-mono text-[12.5px] ${r.issues.length ? "text-amber-ink" : "text-foreground"}`}>{r.received}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {c.match?.rows.some((r) => r.issues.length) && (
-            <p className="border-t border-line px-5 py-3 font-mono text-[11.5px] text-ink-muted">{c.match.rows.flatMap((r) => r.issues).join(". ")}</p>
-          )}
-        </Card>
-      </div>
-
-      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
+          <p className="kLabel">Why</p>
         {c.investigation ? (
           <>
             {c.diagnosis && <CauseCard c={c} />}
@@ -272,16 +293,6 @@ function CaseView({ c }: { c: BenchCase }) {
                 Owner decision: {decision.decision}d, policy {decision.policy_hash.slice(0, 8)}
               </p>
             )}
-            <Card title="Evidence">
-              <ul className="px-5 py-4">
-                {evidence.map((e) => (
-                  <li key={e.id} id={citeId(e.id)} className="scroll-mt-24 border-b border-line py-2 last:border-0">
-                    <span className="tnum font-mono text-[11px] text-foreground">{e.id}</span>
-                    <span className="mt-0.5 block text-[12px] leading-relaxed text-ink-muted">{e.text}</span>
-                  </li>
-                ))}
-              </ul>
-            </Card>
           </>
         ) : (
           <div className="rounded-xl border border-line bg-surface p-5">
@@ -290,8 +301,27 @@ function CaseView({ c }: { c: BenchCase }) {
           </div>
         )}
 
+          <SupplierCard c={c} />
+          <CaseFileCard c={c} />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:items-start">
+        {c.investigation && (
+            <Card title="Evidence">
+              <ul className="max-h-[420px] overflow-y-auto px-5 py-4">
+                {evidence.map((e) => (
+                  <li key={e.id} id={citeId(e.id)} className="scroll-mt-24 border-b border-line py-2 last:border-0">
+                    <span className="tnum font-mono text-[11px] text-foreground">{e.id}</span>
+                    <span className="mt-0.5 block text-[12px] leading-relaxed text-ink-muted">{e.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+        )}
+        <div className={c.investigation ? "" : "lg:col-span-2"}>
         <Card title="Receipt chain" right={<span className="font-mono text-[11px] text-ink-muted">signed, verified in your browser on Proof</span>}>
-          <ul className="max-h-[360px] overflow-y-auto px-5 py-4">
+          <ul className="max-h-[420px] overflow-y-auto px-5 py-4">
             {receipts.map((r, i) => (
               <li key={r.hash} className="relative pb-4 pl-6 last:pb-0">
                 {i < receipts.length - 1 && <span className="absolute left-[5px] top-3 h-full w-px bg-line" aria-hidden="true" />}
@@ -305,6 +335,7 @@ function CaseView({ c }: { c: BenchCase }) {
             ))}
           </ul>
         </Card>
+        </div>
       </div>
     </div>
   );

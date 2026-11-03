@@ -37,6 +37,9 @@ Relayloom is for the receiving and accounts payable team of a manufacturer or di
 On a synthetic set of 30 deliveries built by us, paperwork only caught 5 of 17 bad bills and let Rs 60,035.92 of wrong
 payments through. Paperwork plus goods caught 17 of 17, made no wrong payment and held no clean bill.
 
+Alerts reach the owner's phone over the local network with no internet, and every security control from input to boundary
+passes its check and adds about 85 ms to a case.
+
 ## Theme
 
 Push the Frontier: Meta's models meet the real world of physical goods, in manufacturing and supply chains. It also fits
@@ -44,8 +47,9 @@ Build for Your World for the team that lives this problem.
 
 ## How Meta models are used
 
-- **Muse Glimmer 30B (open weights, Q4_K_M, llama.cpp):** reads bills with a strict JSON schema, writes findings and
-  disputes. Runs on a laptop CPU with no GPU and no paid API. Seven bill readings are recorded with their timings.
+- **Muse Glimmer 30B (open weights, Q4_K_M, llama.cpp):** reads bills with a strict JSON schema and writes dispute
+  drafts. Runs on a laptop CPU with no GPU and no paid API. Nine Northgate bill readings are recorded with their timings
+  (4 min 33 s to 8 min 51 s each, all valid).
 - **SAM 3.1 (open weights, gated, access granted):** counts delivered goods from text prompts. 115 runs are saved, and the
   Investigator uses a second wording as an independent recount.
 - No paid Meta API is used. The Reader follows the official Meta open-weight cookbook recipes for structured output and
@@ -66,7 +70,7 @@ building period. No code from any earlier private project was imported.
 
 ## Honest limits
 
-Bills and photos are synthetic. On a CPU, Muse Glimmer needs about 5 to 12 minutes per bill and SAM 3.1 about 41 seconds
+Bills and photos are synthetic. On a CPU, Muse Glimmer needs about about 4 to 8 minutes per bill and SAM 3.1 about 41 seconds
 per photo, so bills run as a background batch. Video counting is planned, not built.
 
 ## X post (for the Most Viral prize)

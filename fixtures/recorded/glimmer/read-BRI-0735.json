@@ -1,0 +1,34 @@
+{
+ "recorded_at": "2026-11-03 16:20 +0530",
+ "machine": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+ "reply": {
+  "content": "{\"supplier_id\":\"SUP-BRIAR\",\"bill_no\":\"BRI-0735\",\"bill_date\":\"2026-10-29\",\"po_number\":\"PO-2006\",\"lines\":[{\"item_code\":\"SACK-RESIN-25\",\"description\":\"Resin pellet sack 25 kg\",\"qty\":10,\"rate_inr\":2150.00,\"amount_inr\":21500.00}],\"tax_inr\":1075.00,\"total_inr\":22575.00}",
+  "reasoning_chars": 1027,
+  "response_id": "chatcmpl-T5F3DTeEBeE6iFfYQ3LsnHiCCs8UNoht",
+  "model": "glimmer/Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf",
+  "usage": {
+   "completion_tokens": 404,
+   "prompt_tokens": 375,
+   "total_tokens": 779,
+   "prompt_tokens_details": {
+    "cached_tokens": 142
+   }
+  },
+  "timings": {
+   "cache_n": 142,
+   "prompt_n": 233,
+   "prompt_ms": 42638.816,
+   "prompt_per_token_ms": 182.99921030042918,
+   "prompt_per_second": 5.464504455283186,
+   "predicted_n": 404,
+   "predicted_ms": 273424.821,
+   "predicted_per_token_ms": 678.4735012406948,
+   "predicted_per_second": 1.4738969144282625
+  },
+  "seconds": 316.2,
+  "system_fingerprint": "b12020-0ec4027a2",
+  "route": "Muse Glimmer 30B Q4_K_M, llama.cpp b12020 CPU, this laptop"
+ },
+ "input_sha256": "8fbfd398a9cf1a158fbe47481f52304502d75418cc49f86801b7f9ca0693c8f4",
+ "schema_check": "valid"
+}
