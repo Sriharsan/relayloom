@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "relayloom"
+version = "0.2.0"
+description = "Pay for what arrived. Prove it. Accounts payable that counts the goods with open weight Meta models, on your own machine."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Sriharsan B S" }]
+keywords = ["accounts payable", "three-way match", "SAM 3.1", "Muse Glimmer", "signed receipts"]
+dependencies = ["cryptography>=44", "PyMuPDF>=1.26", "opencv-python-headless>=4.10", "numpy>=1.26", "Pillow>=10"]
+
+[project.optional-dependencies]
+models = ["ultralytics>=8.3", "huggingface_hub>=0.26"]
+qr = ["segno>=1.6"]
+
+[project.scripts]
+relayloom = "relayloom.cli:main"
+
+[project.urls]
+Homepage = "https://relayloom.vercel.app"
+Source = "https://github.com/Sriharsan/relayloom"
+
+[tool.setuptools]
+packages = ["relayloom", "relayloom.ap"]
+
+[tool.setuptools.package-data]
+relayloom = ["policy.json"]
+"relayloom.ap" = ["policy.json"]

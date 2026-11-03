@@ -73,7 +73,7 @@ building period. No code from any earlier private project was imported.
 
 Bills and photographs are demo. Measured on a laptop CPU with no GPU: Muse Glimmer reads a bill in 4 min 33 s to 8 min 51 s and SAM 3.1
 counts a photo in about 41 s, so bills run as a background batch, and every control, match and policy step completes in
-under a second. Real time counting on a GPU server and multi camera docks are on the roadmap.
+under a second. Real time counting on a GPU server and multi camera docks are the vision.
 
 ## X post (for the Most Viral prize)
 

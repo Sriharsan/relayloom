@@ -10,6 +10,7 @@ const NAV = [
   { label: "Set up", to: "/", hash: "#setup" },
   { label: "Proof", to: "/proof", hash: "" },
   { label: "Demo", to: "/demo", hash: "" },
+  { label: "Developers", to: "/developers", hash: "" },
 ];
 
 const readTheme = (): "dark" | "light" => {
@@ -157,6 +158,7 @@ export function SiteFooter() {
           <Link to="/" hash="#cases" className={item}>Cases</Link>
           <Link to="/proof" className={item}>Proof</Link>
           <Link to="/demo" className={item}>Demo</Link>
+          <Link to="/developers" className={item}>Developers</Link>
           <a href={links.repo} target="_blank" rel="noreferrer" className={item}>Code</a>
         </nav>
       </div>

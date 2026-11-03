@@ -324,6 +324,16 @@ class APTests(unittest.TestCase):
         ok, problems = verify(self.chain.read(), self.signer.public_key)
         self.assertTrue(ok, problems)
 
+    def test_patterns_across_suppliers_rank_by_units_missing_and_cite_invoices(self):
+        bench = self.bench()
+        bench.run_batch([CASES["short"], CASES["match"]])
+        found = bench.supplier_patterns()
+        self.assertEqual([r["units_missing"] for r in found["suppliers"]], sorted((r["units_missing"] for r in found["suppliers"]), reverse=True))
+        top = found["suppliers"][0]
+        self.assertGreater(top["units_missing"], 0)
+        self.assertTrue(top["evidence"])
+        self.assertEqual(bench.supplier_patterns(min_short=1)["flags"][0]["cites"], top["evidence"])
+
     # alerts to a phone
     def test_alerts_are_raised_for_a_held_delivery_and_for_hidden_text_only(self):
         alerts = []

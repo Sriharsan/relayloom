@@ -29,6 +29,28 @@ def supplier_file(workbench, supplier_id: str) -> dict:
             "short_orders": sum(1 for o in orders if o["short"]), "cases": cases}
 
 
+def supplier_patterns(workbench, min_short: int = 2) -> dict:
+    """Patterns across suppliers, read from every supplier file. Each flag cites the invoices it rests on.
+
+    A supplier with `min_short` or more short orders is a repeat pattern. Suppliers are ranked by units billed but not
+    received, so the owner sees where the money leaks first.
+    """
+    rows = []
+    for s in workbench.data["suppliers"]:
+        sf = supplier_file(workbench, s["id"])
+        counted = [o for o in sf["orders"] if o["counted"] is not None]
+        short = [o for o in counted if o["short"]]
+        missing = sum(o["billed"] - o["counted"] for o in short)
+        rows.append({"supplier_id": s["id"], "name": sf["name"], "orders_counted": len(counted), "short_orders": len(short),
+                     "units_missing": missing, "short_rate": round(len(short) / len(counted), 3) if counted else 0.0,
+                     "evidence": [o["invoice"] for o in short]})
+    rows.sort(key=lambda r: (-r["units_missing"], r["supplier_id"]))
+    flags = [{"supplier_id": r["supplier_id"], "pattern": "repeat_short_delivery",
+              "text": f"{r['name']} billed {r['units_missing']} units that never arrived across {r['short_orders']} of {r['orders_counted']} counted orders.",
+              "cites": r["evidence"]} for r in rows if r["short_orders"] >= min_short]
+    return {"suppliers": rows, "flags": flags}
+
+
 def build_casefile(workbench, case) -> dict:
     return {
         "case": case.id, "bill_no": case.bill_no, "supplier_id": case.supplier_id, "po_number": case.po_number,

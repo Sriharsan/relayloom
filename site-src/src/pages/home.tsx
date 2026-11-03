@@ -778,22 +778,55 @@ function PhoneAlerts() {
 const PLANNED = [
   { title: "Many cameras, one dock", body: "Several cameras per dock, each steady view matched to its purchase order automatically, counted on a GPU server." },
   { title: "Real time on a GPU server", body: `Every match, policy and security step completes in under a second. On this laptop, with no GPU, Muse Glimmer reads a bill in ${fmtSeconds(glimmerSummary.min)} to ${fmtSeconds(glimmerSummary.max)} and SAM 3.1 counts a photo in about ${Math.round(samSummary.mean)} seconds. A GPU server is the target for real time.` },
-  { title: "Supplier intelligence", body: "The supplier file is in place and every investigation reads it. Patterns across suppliers and over time build on it." },
 ];
+
+function AcrossSuppliers() {
+  const found = run.supplier_patterns;
+  return (
+    <section className="border-b border-line">
+      <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
+        <SectionHead
+          index="Across suppliers"
+          title="Where the money leaks first"
+          note="Every supplier file is read together. Suppliers rank by units billed and never received, and a repeat pattern is flagged with the invoices it rests on."
+        />
+        <div className="overflow-x-auto rounded-xl border border-line bg-surface">
+          <table className="w-full min-w-[480px] text-left text-[13px]">
+            <thead className="text-[11px] uppercase tracking-wide text-ink-muted">
+              <tr><th className="px-4 py-3">Supplier</th><th className="px-4 py-3">Counted orders</th><th className="px-4 py-3">Short orders</th><th className="px-4 py-3">Units missing</th><th className="px-4 py-3">Evidence</th></tr>
+            </thead>
+            <tbody>
+              {found.suppliers.map((r) => (
+                <tr key={r.supplier_id} className="border-t border-line">
+                  <td className="px-4 py-3 text-foreground">{r.name}</td>
+                  <td className="tnum px-4 py-3">{r.orders_counted}</td>
+                  <td className="tnum px-4 py-3">{r.short_orders}</td>
+                  <td className="tnum px-4 py-3 font-mono">{r.units_missing}</td>
+                  <td className="px-4 py-3 font-mono text-[12px] text-ink-muted">{r.evidence.join(", ") || "none"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-3 text-[12.5px] text-ink-muted">{found.flags.length ? found.flags.map((f) => f.text).join(" ") : "No supplier has two or more short orders yet, so nothing is flagged as a repeat pattern."}</p>
+      </div>
+    </section>
+  );
+}
 
 function Planned() {
   return (
     <section className="border-b border-line">
       <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
         <SectionHead
-          index="Roadmap"
+          index="Vision"
           title="Where the evidence loop goes next"
-          note="Everything above is built and measured. These steps extend the same loop: evidence first, then the decision."
+          note="Everything above is built and measured. The vision extends the same loop: evidence first, then the decision."
         />
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-4">
           {PLANNED.map((x) => (
             <div key={x.title} className="rounded-xl border border-dashed border-line bg-surface p-5">
-              <Pill tone="muted">roadmap</Pill>
+              <Pill tone="muted">vision</Pill>
               <h3 className="mt-3 text-[15px] font-medium text-foreground">{x.title}</h3>
               <p className="mt-2 text-[13px] leading-relaxed text-ink-muted">{x.body}</p>
             </div>
@@ -845,6 +878,7 @@ export function Home() {
       <SetUp />
       <VideoEvidence />
       <PhoneAlerts />
+      <AcrossSuppliers />
       <Planned />
       <WhoWeAre />
       <ClosingBand />

@@ -6,11 +6,13 @@ import { SiteFooter, SiteHeader } from "@/components/layout";
 import { Home } from "@/pages/home";
 import { Proof } from "@/pages/proof";
 import { Demo } from "@/pages/demo";
+import { Developers } from "@/pages/developers";
 
 const TITLES: Record<string, string> = {
   "/": "Relayloom. Accounts payable that checks the goods.",
   "/proof": "Proof. Relayloom, measured on demo data.",
   "/demo": "Demo. Replay of a Relayloom run.",
+  "/developers": "Developers. Install and run Relayloom.",
 };
 
 function App() {
@@ -27,7 +29,7 @@ function App() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">{page === "/proof" ? <Proof /> : page === "/demo" ? <Demo /> : <Home />}</main>
+      <main className="flex-1">{page === "/proof" ? <Proof /> : page === "/demo" ? <Demo /> : page === "/developers" ? <Developers /> : <Home />}</main>
       <SiteFooter />
     </div>
   );

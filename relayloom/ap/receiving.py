@@ -46,7 +46,7 @@ class Receiving:
         result = self.counter.count(self.fixtures / photo["file"], prompt, photo["id"])
         return {"photo": photo["id"], "prompt": prompt, "count": result["count"], "model": result.get("model", "SAM 3.1"),
                 "route": result["route"], "seconds": result.get("infer_seconds"), "overlay": result.get("overlay", ""),
-                "recorded": result.get("recorded", False)}
+                "recorded": result.get("recorded", False), "trace": result.get("trace", [])}
 
     def count_event(self, event_id: str) -> dict:
         """Count every unique photo of one receiving event. Duplicate photos are listed and not counted."""

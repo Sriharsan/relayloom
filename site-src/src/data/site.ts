@@ -144,6 +144,7 @@ export const run = bench as unknown as {
   receipts: SignedReceipt[];
   casefiles: Record<string, unknown>;
   supplier_files: Record<string, SupplierFile>;
+  supplier_patterns: { suppliers: { supplier_id: string; name: string; orders_counted: number; short_orders: number; units_missing: number; short_rate: number; evidence: string[] }[]; flags: { supplier_id: string; text: string; cites: string[] }[] };
   alerts: { id: number; time: string; kind: string; title: string; body: string; case: string }[];
 };
 

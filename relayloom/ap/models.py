@@ -63,9 +63,15 @@ class GlimmerClient:
         self.reasoning = reasoning
         self.opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 
-    def chat(self, system: str, user: str, schema: dict | None = None, max_tokens: int = 2048) -> dict:
+    def chat(self, system: str, user: str, schema: dict | None = None, max_tokens: int = 2048, images=None) -> dict:
+        content = user
+        if images:  # the model looks at the pictures itself; they go as data in the same local request
+            import base64
+            content = [{"type": "text", "text": user}] + [
+                {"type": "image_url", "image_url": {"url": "data:image/jpeg;base64," + base64.b64encode(Path(i).read_bytes()).decode()}}
+                for i in images]
         body = {"model": GLIMMER_MODEL, "messages": [{"role": "system", "content": system},
-                                                    {"role": "user", "content": user}],
+                                                    {"role": "user", "content": content}],
                 "max_tokens": max_tokens, "temperature": 0.2, "top_p": 0.95,
                 "chat_template_kwargs": {"reasoning_strength": self.reasoning}}
         if schema:

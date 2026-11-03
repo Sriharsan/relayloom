@@ -218,10 +218,11 @@ def main():
     bench, run = build(args)
     server = App(("127.0.0.1", args.port), bench, run)
     if args.phone:
-        from .alerts import AlertHub, PhoneServer, announce
+        from .alerts import AlertHub, PhoneInbox, PhoneServer, announce
         hub = AlertHub()
         bench.notify = lambda kind, title, body, case: hub.publish(kind, title, body, case)
-        phone = PhoneServer(("0.0.0.0", args.phone_port), hub)
+        inbox = PhoneInbox(Path(args.data) / "phone", hub, bench.counter if args.counter == "live" else None)
+        phone = PhoneServer(("0.0.0.0", args.phone_port), hub, photo_handler=inbox)
         phone.start()
         announce(phone)
     print(f"Relayloom accounts payable, {run['mode']} mode: http://127.0.0.1:{args.port}")

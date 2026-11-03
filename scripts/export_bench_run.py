@@ -106,6 +106,7 @@ def main():
                             for c in cut_cases]}
         receipts = chain.read()
         casefiles = {f.stem: json.loads(f.read_text(encoding="utf-8")) for f in sorted((root / "casefiles").glob("*.json"))}
+        patterns = bench.supplier_patterns()
         supplier_files = {sid: bench.supplier_file(sid) for sid in sorted({c.supplier_id for c in cases})}
         ok, problems = verify(receipts, signer.public_key)
         export = {
@@ -121,6 +122,7 @@ def main():
             "casefiles": casefiles,
             "alerts": hub.items,
             "supplier_files": supplier_files,
+            "supplier_patterns": patterns,
             "receipts": receipts,
         }
         ledger.db.close()

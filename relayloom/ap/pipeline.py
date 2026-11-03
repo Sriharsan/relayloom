@@ -13,7 +13,7 @@ import re
 import threading
 import time
 
-from .casefile import build_casefile, supplier_file, write_casefile
+from .casefile import build_casefile, supplier_file, supplier_patterns, write_casefile
 from .diagnosis import diagnose
 from .ledger import LedgerOffline
 from .investigator import Investigator
@@ -215,7 +215,7 @@ class Workbench:
                          input_hash=sha256([p["photo"] for p in event["photos"]]), model="SAM 3.1",
                          route="; ".join(sorted({p["route"] for p in event["photos"] if p["counted"]})),
                          detail={"event": event["event_id"], "date": event["date"], "total": event["total"],
-                                 "photos": [{k: p.get(k) for k in ("photo", "count", "counted", "duplicate_of", "prompt", "seconds")}
+                                 "photos": [{k: p.get(k) for k in ("photo", "count", "counted", "duplicate_of", "prompt", "seconds", "trace")}
                                             for p in event["photos"]]})
 
     def _match(self, case: Case):
@@ -420,6 +420,9 @@ class Workbench:
 
     def supplier_file(self, supplier_id: str) -> dict:
         return supplier_file(self, supplier_id)
+
+    def supplier_patterns(self, min_short: int = 2) -> dict:
+        return supplier_patterns(self, min_short)
 
     def _decide(self, case_id: str, decision: str, by: str) -> Case:
         case = self.cases[case_id]
