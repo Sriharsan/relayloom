@@ -104,6 +104,21 @@ node --test tests/ui.test.cjs tests/verify.test.cjs   # 14 Node tests
 
 The site is built from `site-src` (`npm install`, `npm run data`, `npm run build`) into `site/`.
 
+## Repository map
+
+| Where | What |
+| --- | --- |
+| `relayloom/ap/` | The product: policy, masking, schema, matcher, Investigator, ledger, receipts, gateway, agents. |
+| `fixtures/` | Synthetic bills, delivery photos and the benchmark set, plus `fixtures/recorded/` with real SAM 3.1 and Muse Glimmer outputs. |
+| `docs/RESULTS.md`, `docs/BENCHMARK.md` | The evidence: timings, counts, the seven cases and the benchmark. |
+| `site-src/` and `site/` | The website: source and the built version served on Vercel. |
+| `scripts/` | Recording, exporting, fixtures and the boundary probe. |
+| `deploy/` | The Docker network with no route out. |
+| `relayloom/` (controller, server) and `web/` | The first workroom from 28 to 30 October. The accounts payable system reuses its approval, limit and receipt ideas. |
+
+Built on Meta open weights and the official open-weight cookbook: the Reader uses the structured output and reasoning
+effort recipes for Muse Glimmer ([sources](docs/SOURCES.md)). Theme: Push the Frontier.
+
 ## Hackathon
 
 Meta Global AI Developer Hackathon, Startup track. The building period is 27 October to 4 November 2026 (ET).
@@ -113,7 +128,7 @@ accounts payable system is built on its approval, limit and receipt ideas.
 
 ## Read more
 
-- [Benchmark](docs/BENCHMARK.md) · [Results from our own runs](docs/RESULTS.md) · [Sources](docs/SOURCES.md)
+- [Benchmark](docs/BENCHMARK.md) · [Results from our own runs](docs/RESULTS.md) · [Sources](docs/SOURCES.md) · [Submission text](docs/SUBMISSION_FORM_TEXT.md)
 - [Hackathon updates by commit](docs/HACKATHON_UPDATES.md) · [Submission notes](SUBMISSION_META.md) · [Video script](docs/VIDEO_SCRIPT.md)
 - [Autonomy](docs/AUTONOMY.md) · [Product and architecture](docs/PRODUCT.md) · [Security](SECURITY.md)
 
