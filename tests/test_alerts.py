@@ -6,7 +6,7 @@ import unittest
 import urllib.error
 import urllib.request
 
-from relayloom.ap.alerts import AlertHub, PhoneServer
+from relayloom.ap.alerts import AlertHub, PhoneServer, announce, lan_addresses
 
 
 def fetch(url, method="GET"):
@@ -58,6 +58,38 @@ class PhoneServerTests(unittest.TestCase):
         self.assertEqual(fetch(self.base + "/api/state?t=secret-token")[0], 404)
         self.assertEqual(fetch(self.base + "/api/decide?t=secret-token", "POST")[0], 405)
         self.assertEqual(fetch(self.base + "/../relayloom/ap/policy.json?t=secret-token")[0], 404)
+
+
+class AddressTests(unittest.TestCase):
+    def test_every_usable_address_is_listed_and_none_is_loopback_or_link_local_unless_alone(self):
+        found = lan_addresses()
+        self.assertTrue(found and all(isinstance(a, str) for a in found))
+        self.assertEqual(len(found), len(set(found)))
+        if len(found) > 1:
+            self.assertFalse(any(a.startswith(("127.", "169.254.")) for a in found))
+
+    def test_announcing_the_links_survives_a_console_that_cannot_print_block_characters(self):
+        import contextlib
+        import io
+        server = PhoneServer(("127.0.0.1", 0), AlertHub(), token="t")
+        try:
+            console = io.TextIOWrapper(io.BytesIO(), encoding="cp1252", errors="strict")  # the Windows console encoding that broke a real run
+            with contextlib.redirect_stdout(console):
+                announce(server)
+            console.flush()
+            self.assertIn("?t=t", console.buffer.getvalue().decode("cp1252"))
+        finally:
+            server.server_close()
+
+
+class PortTests(unittest.TestCase):
+    def test_a_second_server_cannot_share_the_port(self):
+        first = PhoneServer(("127.0.0.1", 0), AlertHub(), token="a")
+        try:
+            with self.assertRaises(OSError):
+                PhoneServer(("127.0.0.1", first.server_address[1]), AlertHub(), token="b")
+        finally:
+            first.server_close()
 
 
 if __name__ == "__main__":

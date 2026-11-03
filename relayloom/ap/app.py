@@ -218,13 +218,12 @@ def main():
     bench, run = build(args)
     server = App(("127.0.0.1", args.port), bench, run)
     if args.phone:
-        from .alerts import AlertHub, PhoneServer, lan_address
+        from .alerts import AlertHub, PhoneServer, announce
         hub = AlertHub()
         bench.notify = lambda kind, title, body, case: hub.publish(kind, title, body, case)
         phone = PhoneServer(("0.0.0.0", args.phone_port), hub)
         phone.start()
-        print(f"Phone alerts, local network only, read only: {phone.link(lan_address())}")
-        print("Open that link on a phone on the same Wi-Fi. Anyone with the link sees the alerts, so keep it to yourself.")
+        announce(phone)
     print(f"Relayloom accounts payable, {run['mode']} mode: http://127.0.0.1:{args.port}")
     print(f"Reader: {run['reader']}. Counter: {run['counter']}. Ledger: {run['ledger']}. Synthetic data only.")
     if args.batch:

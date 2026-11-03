@@ -20,7 +20,7 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from relayloom.ap.alerts import AlertHub, PhoneServer, lan_address  # noqa: E402
+from relayloom.ap.alerts import AlertHub, PhoneServer, announce  # noqa: E402
 from relayloom.ap.video import DockWatcher, save_frames  # noqa: E402
 
 
@@ -34,8 +34,7 @@ def main():
     if "--phone" in args:
         phone = PhoneServer(("0.0.0.0", 8801), hub)
         phone.start()
-        print(f"Phone alerts, local network only, read only: {phone.link(lan_address())}")
-        print("Anyone with that link sees the alerts, so keep it to yourself.", flush=True)
+        announce(phone)
     item = args[args.index("--count") + 1] if "--count" in args else ""
     folder = ROOT / "data" / "dock" / time.strftime("watch-%Y%m%d-%H%M%S")
 

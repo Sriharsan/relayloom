@@ -6,3 +6,5 @@ numpy>=1.26
 Pillow>=10
 # Only for the browser agent that files disputes; without it the same form is posted over HTTP and the run says so.
 playwright>=1.50
+# Optional: prints a QR code for the phone alert link.
+segno>=1.6

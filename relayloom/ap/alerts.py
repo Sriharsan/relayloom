@@ -50,6 +50,37 @@ def lan_address() -> str:
         probe.close()
 
 
+def lan_addresses() -> list[str]:
+    """Every address a phone on a connected network could use, the default route first. A laptop on Wi-Fi and a USB cable has two."""
+    first = lan_address()
+    found = []
+    try:
+        for info in socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET):
+            ip = info[4][0]
+            if not ip.startswith(("127.", "169.254.")):
+                found.append(ip)
+    except OSError:
+        pass
+    ordered = ([first] if first != "127.0.0.1" else []) + [ip for ip in dict.fromkeys(found) if ip != first]
+    return ordered or [first]
+
+
+def announce(server: "PhoneServer") -> None:
+    """Print the phone links, one per network, and a QR code for each so a phone camera can scan it."""
+    print("Phone alerts, local network only, read only. Open the link that is on the SAME network as the phone,")
+    print("or scan its QR code with the phone camera. Anyone with a link sees the alerts, so keep it to yourself.", flush=True)
+    for ip in lan_addresses():
+        link = server.link(ip)
+        print(f"\n  {link}", flush=True)
+        try:
+            import segno
+            segno.make(link, error="m").terminal(compact=False, border=2)  # colour blocks made of spaces: safe on any console encoding
+        except ImportError:
+            print("  (install segno with: python -m pip install segno, to get a QR code here)", flush=True)
+        except Exception:  # a QR code that cannot be drawn never stops the alerts
+            print("  (the QR code could not be drawn in this window, use the link above)", flush=True)
+
+
 PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Relayloom alerts</title>
 <style>
@@ -126,6 +157,7 @@ class PhoneHandler(BaseHTTPRequestHandler):
 
 class PhoneServer(ThreadingHTTPServer):
     daemon_threads = True
+    allow_reuse_address = False  # on Windows reuse lets a second copy share the port and answer with a different token
 
     def __init__(self, address, hub: AlertHub, token: str | None = None, wait: float = 20.0):
         self.hub, self.token, self.wait = hub, token or secrets.token_urlsafe(16), wait

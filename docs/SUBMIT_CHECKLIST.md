@@ -7,7 +7,7 @@ Wednesday evening IST.
 
 - Code on GitHub, public, one author: https://github.com/Sriharsan/relayloom
 - Live site: https://relayloom.vercel.app (Home, Demo, Proof)
-- Tests: 83 Python tests and 14 browser logic tests, and the checks workflow runs them on Linux and Windows
+- Tests: 86 Python tests and 14 browser logic tests, and the checks workflow runs them on Linux and Windows
 - Muse Glimmer 30B and SAM 3.1 run on this laptop, with recorded timings; no paid API
 - Docker network with no route out, tested and dated (`docs/boundary-result.json`)
 - Form text, X post and card, narration script, picture only demo video to speak over
