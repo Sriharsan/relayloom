@@ -121,7 +121,7 @@ effort recipes for Muse Glimmer ([sources](docs/SOURCES.md)). Theme: Push the Fr
 
 ## Hackathon
 
-Meta Global AI Developer Hackathon, Startup track. The building period is 27 October to 4 November 2026 (ET).
+Meta Global AI Developer Hackathon, Startups track. The building period is 27 October to 4 November 2026 (ET).
 Everything in this repository was built inside it; see [docs/HACKATHON_UPDATES.md](docs/HACKATHON_UPDATES.md) for each
 commit and what it added. The shared revision workroom from 28 to 30 October is still here (`python -m relayloom`); the
 accounts payable system is built on its approval, limit and receipt ideas.

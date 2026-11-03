@@ -2,7 +2,7 @@
 
 ## Event and boundary
 
-Meta Global AI Developer Hackathon, Startup track. Repository created on
+Meta Global AI Developer Hackathon, Startups track. Repository created on
 27 October 2026, Asia/Kolkata. Git timestamps record the actual commit time.
 The organizer's precise eligible-start interpretation remains to be confirmed;
 this timestamp alone does not establish eligibility.

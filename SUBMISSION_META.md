@@ -1,6 +1,6 @@
 # Relayloom: Meta Global AI Developer Hackathon submission notes
 
-Startup track. Submissions due 4 November 2026, 9:00 PM US Eastern (5 November, 7:30 AM IST).
+Startups track. Submissions due 4 November 2026, 9:00 PM US Eastern (5 November, 7:30 AM IST).
 Author: Sriharsan B S, the only contributor.
 
 **Relayloom: autonomous accounts payable that checks the goods, not just the paperwork.**
