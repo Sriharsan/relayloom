@@ -1,6 +1,6 @@
 # Results from our own runs
 
-Every number on this page comes from a run on the machine below, on synthetic records. The live site shows the same
+Every number on this page comes from a run on the machine below, on demo records. The live site shows the same
 figures: https://relayloom.vercel.app (the Proof page). Recorded outputs are in `fixtures/recorded/`, each with its date,
 route, model and timings.
 
@@ -21,7 +21,7 @@ Route for Muse Glimmer: CPU on this laptop. There is no GPU with 24 GB. Muse Gli
 
 ## Muse Glimmer 30B reading bills
 
-9 Northgate Components bill readings, each the text layer of a synthetic PDF bill, masked first, then read into the strict
+9 Northgate Components bill readings, each the text layer of a demo PDF bill, masked first, then read into the strict
 schema. All 9 passed the schema check. Median 5 min 26 s per bill, fastest
 4 min 33 s, slowest 8 min 51 s. End to end that is 0.7 to 1.3 output tokens per second, with prompts of
 365 to 418 tokens. Recorded on 3 November 2026 with `python scripts/record_glimmer.py`.
@@ -45,7 +45,7 @@ Muse Glimmer also wrote 2 dispute drafts for held deliveries, from the case fact
 | BRI-0731 | 2026-11-03 16:50 | 253 | 388 | 6 min 54 s |
 | CAL-0990 | 2026-11-03 16:43 | 240 | 445 | 7 min 30 s |
 
-Earlier, on 31 October, it read 7 bills of the first synthetic bill set, all valid, 4 min 56 s to
+Earlier, on 31 October, it read 7 bills of the first demo bill set, all valid, 4 min 56 s to
 11 min 50 s each. In the recorded run, findings are written by code from the evidence, with every
 citation checked. A model-written finding is wired in for live runs and was not recorded.
 
@@ -96,7 +96,7 @@ payment details from the supplier master; duplicate bill rejected; split deliver
 Receipts: 90 signed receipts over 9 cases, all verified (Ed25519 signature, SHA 256 hash and chain order). The Proof page
 verifies them in your browser, and `python scripts/export_bench_run.py` regenerates the run and checks them offline.
 
-## Benchmark (synthetic set built by us)
+## Benchmark (demo set built by us)
 
 30 deliveries with known answers, two pipelines on the same set. Full tables in [BENCHMARK.md](BENCHMARK.md).
 
@@ -104,7 +104,7 @@ verifies them in your browser, and `python scripts/export_bench_run.py` regenera
 | --- | --- | --- |
 | Bad bills caught | 5 of 17 | 17 of 17 |
 | Bad bills entered | 12 | 0 |
-| Wrong payments made (Rs, synthetic) | 60,035.92 | 0.00 |
+| Wrong payments made (Rs, demo) | 60,035.92 | 0.00 |
 | Clean bills held by mistake | 0 of 13 | 0 of 13 |
 
 SAM 3.1 counted 36 of 36 benchmark photos exactly right. The goods check costs about 42.9 s per delivery of
@@ -113,7 +113,7 @@ evidence, so Muse Glimmer's 4 min 33 s to 8 min 51 s per bill does not apply to 
 
 ## Video evidence
 
-`scripts/video_demo.py` builds a synthetic dock clip (17.5 s, 640 by 480, 8 frames a second) in which the two photographs of the
+`scripts/video_demo.py` builds a demo dock clip (17.5 s, 640 by 480, 8 frames a second) in which the two photographs of the
 short delivery slide into an empty dock. `relayloom/ap/video.py` watches it:
 
 - Movement is detected 0.25 s after it begins, at 0.35 ms of compute per sampled frame, so it keeps up with a live camera.
@@ -122,7 +122,7 @@ short delivery slide into an empty dock. `relayloom/ap/video.py` watches it:
 - The case is held for the owner with the likely cause "Short delivery" (confidence high), a phone alert is raised at detection
   and another when the delivery needs the owner, and all receipts verify.
 
-The clip is synthetic. The detector, the counts and the case are real, and a camera stream goes through the same reader.
+The clip is demo. The detector, the counts and the case are real, and a camera stream goes through the same reader.
 
 ## Network boundary in Docker (3 November 2026)
 

@@ -45,7 +45,7 @@ the video script, the submission notes and the README. Every commit below is ins
 | Commit | Date (ET) | What it added |
 | --- | --- | --- |
 | `ca62000` | 31 Oct 1:46 PM | Accounts payable core: policy levels in a file the model cannot change, signed receipt chain, masking of tax ids, bank accounts, phones and emails, strict bill schema, three way match, ledger adapter. |
-| `cc8ed60` | 31 Oct 1:46 PM | Synthetic suppliers, purchase orders, bill PDFs and rendered delivery photos (replaced by the Northgate Components set in `6597d87`). |
+| `cc8ed60` | 31 Oct 1:46 PM | Demo suppliers, purchase orders, bill PDFs and rendered delivery photos (replaced by the Northgate Components set in `6597d87`). |
 | `82a78c9` | 31 Oct 1:46 PM | Agents for read, count, match, enter, check and dispute, egress gateway, local supplier portal and tests. |
 | `5b13b84` | 31 Oct 1:46 PM | First real Muse Glimmer 30B bill reading on this laptop's CPU. |
 | `ed73145` | 31 Oct 1:47 PM | Fixture bytes kept exact so recorded model inputs hash the same on every clone. |
@@ -60,7 +60,7 @@ the video script, the submission notes and the README. Every commit below is ins
 | `f8de996` | 2 Nov 11:24 AM EST | Site rebuilt from the Lovable design in `site-src`, reading every figure from exported run files. New recount wordings after trials: cylinder, package, spool. More real SAM 3.1 recordings. |
 | `2a5ed30` | 2 Nov 11:56 AM EST | The 30 delivery benchmark on real SAM 3.1 counts, added to the Proof page. |
 | `304c87c` | 2 Nov 12:00 PM EST | Every page route served from the app on Vercel. |
-| `9b07b9b` | 2 Nov 12:25 PM EST | Docs updated to the measured results and the live site link; the offline verifier restored; "synthetic" used everywhere. |
+| `9b07b9b` | 2 Nov 12:25 PM EST | Docs updated to the measured results and the live site link; the offline verifier restored; "demo" used everywhere. |
 | `16d54b8` | 3 Nov 5:29 AM EST | A guided tour on the Demo page, Five clicks to try it, and a set up section laid out like Meta's open-weight cookbook. |
 | `f6c46c5` | 3 Nov 5:30 AM EST | Repository map in the README and paste-ready submission and X post text. |
 | `a8072c8` | 3 Nov 5:37 AM EST | Track named "Startups", as in the guide. |
@@ -68,12 +68,13 @@ the video script, the submission notes and the README. Every commit below is ins
 | `a38e479` | 3 Nov 6:26 AM EST | Alerts to a phone on the local network, the security cost report (11 controls), a balanced Case screen, and the Northgate Muse Glimmer recordings (9 readings, 2 disputes). |
 | `6640b51` | 3 Nov 11:26 AM EST | The Docker boundary proof passes, the offline check script, and the evidence on the site. |
 | `ee3023b` | 3 Nov 12:20 PM EST | Confident, official wording: a roadmap, a tamper-evident audit trail, entry and verification as separate duties. |
+| `21586a7` | 3 Nov 3:15 PM EST | Video evidence: a dock detector, key frames counted by SAM 3.1, and the case from a video. |
 
-The commit that adds this table also updates the README, submission notes, results and the wording of the synthetic data labels.
+The commit that adds this table also updates the README, submission notes, results and the wording of the demo data labels.
 
 ## Scope
 
 - The paid Meta Model API adapter stays switched off. The project runs Meta open weights.
 - Muse Glimmer 30B and SAM 3.1 open weights have run on this laptop. Numbers and timings are in [RESULTS.md](RESULTS.md).
 - No customer, pilot, revenue or funding is claimed.
-- All demo records are synthetic. The first workroom's rehearsal outputs are deterministic text produced by code, not by a model.
+- All demo records are demo. The first workroom's rehearsal outputs are deterministic text produced by code, not by a model.

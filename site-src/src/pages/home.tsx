@@ -1,6 +1,6 @@
 import { ArrowRight, MoveRight, ShieldCheck } from "lucide-react";
 import { Link } from "@/lib/router";
-import { fmtSeconds, glimmerSummary, samSummary, video } from "@/data/site";
+import { benchmark, fmtSeconds, glimmerSummary, samSummary, video } from "@/data/site";
 import {
   boundary, caseById, caseMeta, caseResult, casePhotos, company, firstImage, links, netcutPass, rupees, run, supplierName,
 } from "@/data/site";
@@ -12,7 +12,7 @@ const BILL_QTY = SHORT.bill!.lines[0]!.qty;
 const GOODS = SHORT.counter.total;
 const GAP = BILL_QTY - GOODS;
 const SHORT_PHOTOS = casePhotos(SHORT).filter((p) => p.counted);
-const RUN_LABEL = "Rehearsal";
+const RUN_LABEL = "Recorded run";
 
 const primary =
   "inline-flex h-12 items-center gap-2 rounded-lg bg-foreground px-5 text-sm font-medium text-background transition-opacity duration-150 hover:opacity-90";
@@ -101,6 +101,112 @@ const PROBLEMS = [
   { n: "02", title: "Paperwork matching cannot see the goods.", body: "A three way match on documents only proves the documents agree, not that anything arrived." },
   { n: "03", title: "Someone pays the gap or spends the afternoon chasing it.", body: "Short deliveries get paid in full, or a person spends hours gathering proof." },
 ];
+
+const bench = (metric: string) => benchmark?.rows.find((r) => r.metric === metric);
+
+function Story() {
+  const caught = bench("Bad bills caught");
+  const made = bench("Wrong payments made");
+  return (
+    <section className="border-b border-line bg-surface/40">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-px px-4 py-12 sm:px-6 lg:grid-cols-3">
+        <div className="pb-8 lg:pb-0 lg:pr-10">
+          <p className="kLabel">Who we are</p>
+          <h2 className="mt-3 text-[20px] font-semibold leading-snug tracking-tight text-foreground">One founder, one promise.</h2>
+          <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">
+            Relayloom is built by Sriharsan B S. The promise is simple: a company pays a supplier only for what actually arrived, and can prove it.
+            Open source, on Meta open weights, on the company's own machine.
+          </p>
+          <a href="#who" className="mt-3 inline-block text-[13px] text-foreground underline underline-offset-4">Meet the founder</a>
+        </div>
+        <div className="border-line py-8 lg:border-l lg:px-10 lg:py-0">
+          <p className="kLabel">Why we matter</p>
+          <h2 className="mt-3 text-[20px] font-semibold leading-snug tracking-tight text-foreground">Paperwork cannot see the dock.</h2>
+          <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">
+            Bills get paid on documents that only agree with each other. U.S. federal law names paying for goods not received as an improper payment, and
+            auditors keep finding invoices approved with no proof of receipt.
+          </p>
+          <a href="#stakes" className="mt-3 inline-block text-[13px] text-foreground underline underline-offset-4">See the sources</a>
+        </div>
+        <div className="border-line pt-8 lg:border-l lg:pl-10 lg:pt-0">
+          <p className="kLabel">Why you need us</p>
+          <h2 className="mt-3 text-[20px] font-semibold leading-snug tracking-tight text-foreground">It catches what paperwork lets through.</h2>
+          <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">
+            On a demo set of 30 deliveries, paperwork alone caught {caught?.paperworkOnly} bad bills and paid {made?.paperworkOnly} wrongly. With the goods in the loop,
+            Relayloom caught {caught?.paperworkPlusGoods} and paid {made?.paperworkPlusGoods} wrongly.
+          </p>
+          <Link to="/proof" className="mt-3 inline-block text-[13px] text-foreground underline underline-offset-4">See the proof</Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const STAKES = [
+  { title: "Law calls it an improper payment", body: "U.S. federal law defines an improper payment to include a payment for a good or service not received.", source: "31 U.S.C. § 3351", href: "https://www.law.cornell.edu/uscode/text/31/3351" },
+  { title: "Auditors find invoices approved blind", body: "When an agency lacked an effective review of contractor invoices, it had no assurance that the goods and services billed had been received.", source: "GAO-06-547", href: "https://www.gao.gov/products/gao-06-547" },
+  { title: "Controls cut losses and speed up detection", body: "The largest global study of occupational fraud links anti-fraud controls to lower losses and faster detection.", source: "ACFE, Occupational Fraud 2026", href: "https://www.acfe.com/fraud-resources/report-to-the-nations" },
+];
+
+function Stakes() {
+  return (
+    <section id="stakes" className="scroll-mt-20 border-b border-line">
+      <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
+        <SectionHead
+          index="Why it matters"
+          title="The risk is written into law and into every audit"
+          note="Three primary sources. They describe the problem. The results further down are our own measurements."
+        />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {STAKES.map((s) => (
+            <a key={s.source} href={s.href} target="_blank" rel="noreferrer" className="group flex flex-col rounded-xl border border-line bg-surface p-6 transition-colors duration-150 hover:border-line-strong">
+              <h3 className="text-[16px] font-medium leading-snug text-foreground">{s.title}</h3>
+              <p className="mt-2 flex-1 text-[13.5px] leading-relaxed text-ink-muted">{s.body}</p>
+              <span className="mt-4 font-mono text-[11.5px] text-foreground underline-offset-4 group-hover:underline">{s.source}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const PRINCIPLES = [
+  { title: "Evidence before payment", body: "Nothing is entered unless the books and the goods agree." },
+  { title: "Autonomy inside a policy", body: "What runs alone and what waits for the owner is set in a file the models cannot change." },
+  { title: "Every claim traceable", body: "Findings cite records and photos, and code checks each citation before anyone reads it." },
+  { title: "Private by default", body: "Models run on the company's own machine, and private numbers are masked before any model sees them." },
+];
+
+function WhoWeAre() {
+  return (
+    <section id="who" className="scroll-mt-20 border-b border-line">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <SectionHead index="Who we are" title="A founder who ships the proof" />
+          <p className="max-w-[54ch] text-[14.5px] leading-relaxed text-ink-muted">
+            Relayloom is built by <span className="text-foreground">Sriharsan B S</span>, founder and engineer. It was built between 27 October and 4 November 2026
+            for the Meta Global AI Developer Hackathon, on Meta's open weight models: Muse Glimmer 30B reads the bill and SAM 3.1 counts the goods.
+            Every commit in the repository has one author, and every figure on this site comes from a run you can repeat.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <a href={links.repo} target="_blank" rel="noreferrer" className={primary}>Read the code<ArrowRight className="h-4 w-4" /></a>
+            <Link to="/proof" className={secondary}>Check the numbers</Link>
+          </div>
+        </div>
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {PRINCIPLES.map((x, i) => (
+            <li key={x.title} className="rounded-xl border border-line bg-surface p-5">
+              <span className="tnum font-mono text-[11px] text-ink-muted">0{i + 1}</span>
+              <h3 className="mt-2 text-[15px] font-medium text-foreground">{x.title}</h3>
+              <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted">{x.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
 
 function Problem() {
   return (
@@ -254,7 +360,7 @@ function Cases() {
         <SectionHead
           index="05 / Cases"
           title="Seven runs, seven outcomes"
-          note="Each card is one run of the real agents, ledger and receipts on synthetic bills and delivery photos."
+          note="Each card is one run of the real agents, ledger and receipts on demo bills and delivery photos."
         />
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {caseMeta.map((m) => {
@@ -595,7 +701,7 @@ function VideoEvidence() {
             <CopyBlock command="python scripts/dock_watch.py 0 --phone --count CARTON-HD" />
           </div>
           <p className="mt-3 max-w-[60ch] text-[12.5px] leading-relaxed text-ink-muted">
-            The clip is synthetic: two pallet photographs slide into an empty dock. The detector, the counts and the case are real. Cameras and streams use the
+            The clip is a demo: two pallet photographs slide into an empty dock. The detector, the counts and the case are real. Cameras and streams use the
             same reader, and this run was verified on a video file.
           </p>
         </div>
@@ -687,21 +793,23 @@ function Planned() {
 
 function ClosingBand() {
   return (
-    <section className="relative overflow-hidden border-t border-line">
+    <section className="relative overflow-hidden">
       <div className="relative mx-auto max-w-[1200px] px-4 py-20 text-center sm:px-6">
         <ShieldCheck className="mx-auto h-5 w-5 text-green-ink" aria-hidden="true" />
-        <h2 className="mx-auto mt-4 max-w-[24ch] text-balance text-[28px] font-semibold leading-tight tracking-[-0.02em] text-foreground sm:text-[34px]">
-          It checks the goods, not just the paperwork.
+        <h2 className="mx-auto mt-4 max-w-[24ch] text-balance text-[28px] font-semibold leading-tight tracking-[-0.02em] text-foreground sm:text-[36px]">
+          Pay for what arrived. Prove it.
         </h2>
-        <p className="mx-auto mt-3 max-w-[52ch] text-[14.5px] leading-relaxed text-ink-muted">
+        <p className="mx-auto mt-3 max-w-[56ch] text-[14.5px] leading-relaxed text-ink-muted">
           Agents read the bill, look at what actually arrived, investigate any gap with evidence, and pay only what the books and the goods both support.
+          Every step leaves a tamper-evident receipt.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link to="/demo" className={primary}>
-            Open the demo
+            Take the 60 second tour
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link to="/proof" className={secondary}>See the proof</Link>
+          <a href={links.repo} target="_blank" rel="noreferrer" className={secondary}>Read the code</a>
         </div>
       </div>
     </section>
@@ -712,8 +820,10 @@ export function Home() {
   return (
     <div>
       <Hero />
-      <TryIt />
+      <Story />
       <Problem />
+      <Stakes />
+      <TryIt />
       <HowItWorks />
       <Autonomy />
       <Spotlight />
@@ -723,6 +833,7 @@ export function Home() {
       <VideoEvidence />
       <PhoneAlerts />
       <Planned />
+      <WhoWeAre />
       <ClosingBand />
     </div>
   );

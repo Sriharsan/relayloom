@@ -50,7 +50,7 @@ check("every refusal is in the gateway log", sum(1 for e in logged if e["decisio
 done = subprocess.run([sys.executable, "-m", "relayloom.ap.cases", "all", "--data", "/tmp/ap"], capture_output=True, text=True)
 print(done.stdout[-4000:], done.stderr[-1500:], flush=True)
 results["cases_output"] = done.stdout
-check("five demo cases pass inside the boundary (rehearsal mode, built in ledger)", done.returncode == 0)
+check("all seven demo cases pass inside the boundary (recorded run, built in ledger)", done.returncode == 0)
 results["passed"] = all(c["result"] == "PASS" for c in results["checks"])
 Path("/logs/boundary_result.json").write_text(json.dumps(results, indent=1))
 sys.exit(0 if results["passed"] else 1)

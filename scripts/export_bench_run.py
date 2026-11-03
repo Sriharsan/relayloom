@@ -116,7 +116,7 @@ def main():
             "receipts_verified": ok,
             "receipt_problems": problems,
             "suppliers": {s["id"]: s["name"] for s in DATA["suppliers"]},
-            "cases": [case.view() for case in cases],
+            "cases": [{**case.view(), "masked_text": ""} for case in cases],  # the bill text is not shown on the site
             "netcut": netcut,
             "casefiles": casefiles,
             "alerts": hub.items,

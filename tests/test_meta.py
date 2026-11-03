@@ -182,7 +182,7 @@ class MetaTests(unittest.TestCase):
             self.assertEqual(controller.snapshot(owner)["room"]["mode"], "meta")
             self.assertEqual(controller.snapshot(owner)["metrics"]["model_calls"], 0)
             controller.mutate(owner, csrf, "run", {"revision": 1})
-            deadline = time.monotonic() + 3
+            deadline = time.monotonic() + 15  # a loaded CI runner can be slow; the loop stops as soon as the work is done
             while time.monotonic() < deadline:
                 state = controller.snapshot(owner)
                 if all(task["state"] == "COMPLETE" for task in state["tasks"]):

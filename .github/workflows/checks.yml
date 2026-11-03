@@ -1,14 +1,16 @@
-name: Public workroom checks
+name: Relayloom checks
 on: [push, pull_request, workflow_dispatch]
 permissions:
   contents: read
 jobs:
-  offline:
+  tests:
+    name: Tests (${{ matrix.os }})
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -17,8 +19,43 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: pip install cryptography PyMuPDF opencv-python-headless numpy Pillow
-      - run: python -m unittest discover -s tests -v
-      - run: node --check web/app.js
-      - run: node --test tests/ui.test.cjs
-      # No provider key, cloud credential, inference or paid resource is used.
+      - name: Install the Python requirements (no Playwright browser is needed)
+        run: python -m pip install cryptography PyMuPDF opencv-python-headless numpy Pillow
+      - name: Python tests
+        run: python -m unittest discover -s tests -v
+      - name: Browser logic tests
+        run: node --test tests/ui.test.cjs tests/verify.test.cjs
+  product:
+    name: Product checks (benchmark, seven cases, security controls)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install cryptography PyMuPDF opencv-python-headless numpy Pillow
+      - name: The 30 delivery benchmark on the saved SAM 3.1 counts
+        run: python -m relayloom.ap.benchmark --counter recorded --out "$RUNNER_TEMP/benchmark"
+      - name: The seven cases with signed receipts, from the saved model outputs
+        run: python -m relayloom.ap.cases all --data "$RUNNER_TEMP/cases"
+      - name: Every security control passes and is timed
+        run: python scripts/security_report.py
+  site:
+    name: Website builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: site-src
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - name: Type check
+        run: npx tsc --noEmit
+      - name: Build
+        run: npx vite build
+# No provider key, cloud credential, inference or paid resource is used anywhere in these checks.

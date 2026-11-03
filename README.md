@@ -7,9 +7,9 @@ the books and the goods both support. Runs inside the company's own network on M
 
 The paperwork says 50. The dock got 46. Relayloom is for the receiving and accounts payable team of a
 manufacturer or distributor that buys physical goods. The example company in this repository is
-Northgate Components, with fictional suppliers and synthetic records only.
+Northgate Components, with fictional suppliers and demo records only.
 
-**Live site and proof:** https://relayloom.vercel.app. On a synthetic set of 30 deliveries built by us, paperwork only caught
+**Live site and proof:** https://relayloom.vercel.app. On a demo set of 30 deliveries built by us, paperwork only caught
 5 of 17 bad bills and paperwork plus goods caught 17 of 17 with no wrong payment ([docs/BENCHMARK.md](docs/BENCHMARK.md)).
 
 ```sh
@@ -63,11 +63,11 @@ and requests cannot change them.
 | Muse Glimmer 30B reading bills and writing disputes | Real runs on a laptop CPU: 9 Northgate bill readings, all valid, 4 min 33 s to 8 min 51 s each, and 2 dispute drafts, plus 7 readings on the first bill set ([docs/RESULTS.md](docs/RESULTS.md)). Findings in recorded mode are written by code from the evidence. |
 | SAM 3.1 counting photos | Real runs on the same CPU, 115 saved in `fixtures/recorded/sam` with the numbered overlays. 101 of the 102 counts the system uses match the delivery record. |
 | ERPNext ledger | Real, in Docker on localhost. A built in ledger with the same calls is used for rehearsal. Each run says which ran. |
-| Benchmark | Synthetic set built by us, real SAM 3.1 counts. See [docs/BENCHMARK.md](docs/BENCHMARK.md). In it the bills come from the generator and the findings are written by code. |
+| Benchmark | Demo set built by us, real SAM 3.1 counts. See [docs/BENCHMARK.md](docs/BENCHMARK.md). In it the bills come from the generator and the findings are written by code. |
 | Network boundary | **Tested in Docker on 3 November 2026, all checks pass** ([docs/boundary-result.json](docs/boundary-result.json)): the agents run on a network with no route out, direct connections fail, the gateway refuses hosts that are not in the policy and logs each refusal, and all seven cases pass inside. Verification with the laptop itself switched offline is one command, `python scripts/offline_check.py`, which writes a dated report. |
 | Phone alerts | Built: `python -m relayloom.ap --phone`. A separate read only page on your local network, behind a random token, no internet. Covered by unit tests and verified end to end in a phone sized browser. |
-| Security controls | 11 of 11 pass their checks and add about 85 ms to a case ([docs/SECURITY_CHECKS.md](docs/SECURITY_CHECKS.md)). |
-| Video evidence | Built: `python scripts/dock_watch.py clip.mp4` (or a camera number or stream address). A delivery is detected 0.25 s after the first movement at 0.35 ms of compute per frame, the steady views become photographs, and SAM 3.1 counts them. Verified on a recorded synthetic clip (28 and 18 counted, 46 of 50 billed). The clip is synthetic. |
+| Security controls | 11 of 11 pass their checks and add about 30 ms to a case ([docs/SECURITY_CHECKS.md](docs/SECURITY_CHECKS.md)). |
+| Video evidence | Built: `python scripts/dock_watch.py clip.mp4` (or a camera number or stream address). A delivery is detected 0.25 s after the first movement at 0.35 ms of compute per frame, the steady views become photographs, and SAM 3.1 counts them. Verified on a recorded demo clip (28 and 18 counted, 46 of 50 billed). The clip is demo. |
 | Sensors | Out of scope. Nothing is simulated. |
 
 Timings on the screen are real. On this laptop Muse Glimmer needs several minutes per bill and SAM 3.1 about a minute
@@ -88,7 +88,7 @@ python -m relayloom.ap.cases injection   # hidden text asking to change the bank
 python -m relayloom.ap.cases netcut      # network cut mid batch, reconnect, no duplicate
 python -m relayloom.ap.cases duplicate   # same goods billed again under a new number
 python -m relayloom.ap.cases split       # one order, two deliveries, one bill
-python -m relayloom.ap.benchmark         # the benchmark on the synthetic set
+python -m relayloom.ap.benchmark         # the benchmark on the demo set
 ```
 
 Add `--live` to run Muse Glimmer and SAM 3.1 on your machine and the ledger in ERPNext.
@@ -100,7 +100,7 @@ Add `--live` to run Muse Glimmer and SAM 3.1 on your machine and the ledger in E
 2. **SAM 3.1:** the weights are gated on Hugging Face. Request access, put a read token in `.env` as `HF_TOKEN`, and run
    `python scripts/record_sam.py`. It needs Ultralytics 8.4 or newer in the Python named by `RELAYLOOM_SAM_PYTHON`.
 3. **ERPNext:** `docker compose -f pwd.yml up -d` from `frappe/frappe_docker`, then `python scripts/setup_erpnext.py`.
-   It replaces the default password, creates an API user and seeds the synthetic records.
+   It replaces the default password, creates an API user and seeds the demo records.
 
 Keys live only in `.env`, which git ignores. The paid Meta Model API adapter in `relayloom/meta.py` is kept and stays off.
 
@@ -118,7 +118,7 @@ The site is built from `site-src` (`npm install`, `npm run data`, `npm run build
 | Where | What |
 | --- | --- |
 | `relayloom/ap/` | The product: policy, masking, schema, matcher, Investigator, ledger, receipts, gateway, agents. |
-| `fixtures/` | Synthetic bills, delivery photos and the benchmark set, plus `fixtures/recorded/` with real SAM 3.1 and Muse Glimmer outputs. |
+| `fixtures/` | Demo bills, delivery photos and the benchmark set, plus `fixtures/recorded/` with real SAM 3.1 and Muse Glimmer outputs. |
 | `docs/RESULTS.md`, `docs/BENCHMARK.md` | The evidence: timings, counts, the seven cases and the benchmark. |
 | `site-src/` and `site/` | The website: source and the built version served on Vercel. |
 | `scripts/` | Recording, exporting, fixtures and the boundary probe. |
@@ -141,7 +141,7 @@ accounts payable system is built on its approval, limit and receipt ideas.
 - [Hackathon updates by commit](docs/HACKATHON_UPDATES.md) · [Submission notes](SUBMISSION_META.md) · [Video script](docs/VIDEO_SCRIPT.md)
 - [Autonomy](docs/AUTONOMY.md) · [Product and architecture](docs/PRODUCT.md) · [Security](SECURITY.md)
 
-Use synthetic information only. This is a loopback app, not a hosting service; do not expose its port.
+Use demo information only. This is a loopback app, not a hosting service; do not expose its port.
 
 ## License and authorship
 

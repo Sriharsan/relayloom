@@ -12,7 +12,7 @@ date and timings. Numbers come from `docs/BENCHMARK.md` and
 | 0:25 | Investigation panel: the finding, click two citations (a photo, an earlier invoice) | "Every statement cites a record or a photo, and code checks each citation exists before anyone sees the finding. It recounted both photos, ignored a repeated photo, and found this supplier billed 40 and the dock counted 38 on an earlier order." |
 | 0:55 | Approvals tab: the proposal next to the policy decision, the dispute draft preview, press A | "It proposes a dispute for the four missing cartons. The policy says this needs the owner. One key approves, and the dispute goes out only after that." |
 | 1:15 | A matching delivery entered and checked with no person; the split delivery matching as a running total; the duplicate bill held | "A matching delivery is entered and read back by a separate checker with nobody involved. One order that arrived in two deliveries still matches. The same goods billed again under a new number are held." |
-| 1:40 | Benchmark page: table A against B, then the caveat | "On a synthetic set built by us, paperwork only against paperwork plus goods. Here is what each caught and missed, in our own numbers." Read the table values as shown. |
+| 1:40 | Benchmark page: table A against B, then the caveat | "On a demo set built by us, paperwork only against paperwork plus goods. Here is what each caught and missed, in our own numbers." Read the table values as shown. |
 | 2:05 | Case with hidden text: the white text revealed, the receipt line, the payment details from the ledger | "White text on a bill asked to pay a new account. It never reached the model, and payment details come only from the supplier master." |
 | 2:20 | Today screen: cut network, cases show "held, offline", reconnect, the ledger is read first, no duplicate | "Cut the network and nothing is entered or sent. Reconnect and the ledger is read first, so there is no duplicate." |
 | 2:40 | Boundary page and the verifier in the browser | "Private numbers are masked before any model sees them. Muse Glimmer and SAM 3.1 run on this machine. Every step is a signed receipt you can verify offline." |
@@ -21,7 +21,7 @@ date and timings. Numbers come from `docs/BENCHMARK.md` and
 Notes for recording:
 - Say "network isolated", never "air gapped", unless a run with the network physically disconnected is shown and dated.
 - Show the real timings. Muse Glimmer takes several minutes per bill and SAM 3.1 about a minute per photo on this CPU.
-- Video evidence is built and verified on a synthetic clip made from two photographs. Say "a dock video", show the two steady views and the 46 of 50,
+- Video evidence is built and verified on a demo clip made from two photographs. Say "a dock video", show the two steady views and the 46 of 50,
   and do not claim a real warehouse camera.
 - In the site replay the bill values come from the bill record and the dispute text comes from a template. Do not say Muse Glimmer
   wrote that text. Muse Glimmer's real readings and timings are on the Proof page; point at them if you mention the model.

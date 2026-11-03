@@ -9,7 +9,7 @@ import { Demo } from "@/pages/demo";
 
 const TITLES: Record<string, string> = {
   "/": "Relayloom. Accounts payable that checks the goods.",
-  "/proof": "Proof. Relayloom, measured on synthetic data.",
+  "/proof": "Proof. Relayloom, measured on demo data.",
   "/demo": "Demo. Replay of a Relayloom run.",
 };
 

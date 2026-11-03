@@ -11,13 +11,13 @@
    "metric": "Wrong payments made",
    "paperworkOnly": "₹ 60,035.92",
    "paperworkPlusGoods": "₹ 0.00",
-   "basis": "synthetic rupees"
+   "basis": "demo rupees"
   },
   {
    "metric": "Wrong payments avoided",
    "paperworkOnly": "₹ 4,238.90",
    "paperworkPlusGoods": "₹ 64,274.82",
-   "basis": "synthetic rupees"
+   "basis": "demo rupees"
   },
   {
    "metric": "Clean bills held by mistake",

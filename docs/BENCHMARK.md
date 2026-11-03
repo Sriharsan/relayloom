@@ -1,8 +1,8 @@
 # Benchmark
 
-**Synthetic set built by us.** Every delivery, bill, photo and earlier invoice is synthetic and rendered by `scripts/make_fixtures.py`. The known answers come from how each delivery was built. These results say how the checks behave on this set. They are not a claim about any real company or industry.
+**Demo set built by us.** Every delivery, bill, photo and earlier invoice is demo and rendered by `scripts/make_fixtures.py`. The known answers come from how each delivery was built. These results say how the checks behave on this set. They are not a claim about any real company or industry.
 
-Run on 2026-11-03 16:33 +0530. Command: `python -m relayloom.ap.benchmark`. Machine: Intel64 Family 6 Model 170 Stepping 4, GenuineIntel, CPU only. Counter: SAM 3.1 recorded counts from earlier real runs. Reader step: bills come from the generator's structured bill, not from Muse Glimmer (see docs/BENCHMARK.md header).
+Run on 2026-11-03 20:50 +0530. Command: `python -m relayloom.ap.benchmark`. Machine: Intel64 Family 6 Model 170 Stepping 4, GenuineIntel, CPU only. Counter: SAM 3.1 recorded counts from earlier real runs. Reader step: bills come from the generator's structured bill, not from Muse Glimmer (see docs/BENCHMARK.md header).
 
 ## What was compared
 
@@ -18,11 +18,11 @@ Run on 2026-11-03 16:33 +0530. Command: `python -m relayloom.ap.benchmark`. Mach
 | Bad bills in the set (should not be entered as billed) | 17 | 17 |
 | Errors caught (bad bill held) | 5 | 17 |
 | Errors missed (bad bill entered) | 12 | 0 |
-| Wrong payments avoided (Rs, synthetic) | 4,238.90 | 64,274.82 |
-| Wrong payments made (Rs, synthetic) | 60,035.92 | 0.00 |
+| Wrong payments avoided (Rs, demo) | 4,238.90 | 64,274.82 |
+| Wrong payments made (Rs, demo) | 60,035.92 | 0.00 |
 | False holds (good bill held) | 0 | 0 |
 | Good bills entered | 13 of 13 | 13 of 13 |
-| Mean processing time per delivery, this run | 0.1 s | 0.1 s |
+| Mean processing time per delivery, this run | 0.01 s | 0.01 s |
 
 SAM 3.1 counted 36 of 36 unique photos exactly right.
 

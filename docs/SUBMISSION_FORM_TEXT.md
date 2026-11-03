@@ -34,12 +34,12 @@ Relayloom is for the receiving and accounts payable team of a manufacturer or di
 5. **Keeps a file and proves it.** Each case ends with a filed case file, and every step writes a signed receipt. The site verifies all of them in the browser and breaks the chain if one
    decision is changed.
 
-On a synthetic set of 30 deliveries built by us, paperwork only caught 5 of 17 bad bills and let Rs 60,035.92 of wrong
+On a demo set of 30 deliveries built by us, paperwork only caught 5 of 17 bad bills and let Rs 60,035.92 of wrong
 payments through. Paperwork plus goods caught 17 of 17, made no wrong payment and held no clean bill.
 
 A video file or camera stream is watched too: a delivery is detected 0.25 s after the first movement, its steady views are counted by SAM 3.1, and
 the owner's phone is alerted over the local network with no internet. Every and every security control from input to boundary
-passes its check and adds about 85 ms to a case.
+passes its check and adds about 30 ms to a case.
 
 ## Theme
 
@@ -71,7 +71,7 @@ building period. No code from any earlier private project was imported.
 
 ## Scope and measured speed
 
-Bills and photographs are synthetic. Measured on a laptop CPU with no GPU: Muse Glimmer reads a bill in 4 min 33 s to 8 min 51 s and SAM 3.1
+Bills and photographs are demo. Measured on a laptop CPU with no GPU: Muse Glimmer reads a bill in 4 min 33 s to 8 min 51 s and SAM 3.1
 counts a photo in about 41 s, so bills run as a background batch, and every control, match and policy step completes in
 under a second. Real time counting on a GPU server and multi camera docks are on the roadmap.
 

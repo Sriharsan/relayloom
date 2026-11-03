@@ -47,24 +47,24 @@ The paid Meta Model API adapter in `relayloom/meta.py` is kept and stays off. No
    and what to do next. "Unclear" is a valid answer. Every reason cites a record.
 4. The policy holds the bill for the owner. After approval a dispute is drafted and filed. Nothing is entered.
 5. A dock video is detected within a quarter of a second, its steady views are counted by SAM 3.1, and the delivery enters the
-   same investigation. Verified on a recorded synthetic clip; a camera stream uses the same reader.
+   same investigation. Verified on a recorded demo clip; a camera stream uses the same reader.
 6. Hidden text in a bill that asks to change the bank account is ignored and receipted.
 7. A network cut mid batch holds the books. After reconnect nothing is entered twice.
 8. A case file is written when each case ends, with the cause, the decision and the supplier's record. Its hash is in the receipts.
    Every step writes a signed receipt, chained per case. The Proof page verifies all 90 receipts of the demo run in the browser,
    and fails exactly one when a decision is changed.
 
-Benchmark on a synthetic set built by us, 30 deliveries with known answers: paperwork only caught 5 of 17 bad bills and let
+Benchmark on a demo set built by us, 30 deliveries with known answers: paperwork only caught 5 of 17 bad bills and let
 Rs 60,035.92 of wrong payments through; paperwork plus goods caught 17 of 17, made no wrong payment and held no clean bill.
 Details and caveats: [docs/BENCHMARK.md](docs/BENCHMARK.md).
 
 ## What is real and what is labelled
 
 - Measured: SAM 3.1 counts and times, Muse Glimmer readings and times, case outcomes, signed receipts, benchmark numbers.
-- Labelled: bills, photos, companies, suppliers and money are synthetic. In the demo replay the bill values come from the bill
+- Labelled: bills, photos, companies, suppliers and money are demo. In the demo replay the bill values come from the bill
   record. Findings in the benchmark are written by code from the evidence.
 - Built and tested: alerts to a phone on the local network (read only, token link, no internet) and 11 security controls that all
-  pass and add about 85 ms to a case ([docs/SECURITY_CHECKS.md](docs/SECURITY_CHECKS.md)). The phone page was tested in a phone sized
+  pass and add about 30 ms to a case ([docs/SECURITY_CHECKS.md](docs/SECURITY_CHECKS.md)). The phone page was tested in a phone sized
   browser, not on a physical phone.
 - Tested: the agents on a Docker network with no route out, where direct connections fail and the gateway refuses unlisted hosts
   and logs them, and all seven cases pass inside ([docs/boundary-result.json](docs/boundary-result.json)).

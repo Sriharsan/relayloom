@@ -1,4 +1,4 @@
-"""Benchmark on a synthetic set built by us: about 30 deliveries with known answers, two pipelines.
+"""Benchmark on a demo set built by us: about 30 deliveries with known answers, two pipelines.
 
 python -m relayloom.ap.benchmark [--counter live|recorded] [--out docs]
 
@@ -127,7 +127,7 @@ def write_markdown(result, path: Path):
     a, b = result["pipeline_a"], result["pipeline_b"]
     lines = [
         "# Benchmark", "",
-        "**Synthetic set built by us.** Every delivery, bill, photo and earlier invoice is synthetic and rendered by "
+        "**Demo set built by us.** Every delivery, bill, photo and earlier invoice is demo and rendered by "
         "`scripts/make_fixtures.py`. The known answers come from how each delivery was built. These results say how the "
         "checks behave on this set. They are not a claim about any real company or industry.", "",
         f"Run on {result['date']}. Command: `python -m relayloom.ap.benchmark`. Machine: {result['machine']}. "
@@ -144,8 +144,8 @@ def write_markdown(result, path: Path):
         f"| Bad bills in the set (should not be entered as billed) | {a['should_hold']} | {b['should_hold']} |",
         f"| Errors caught (bad bill held) | {a['errors_caught']} | {b['errors_caught']} |",
         f"| Errors missed (bad bill entered) | {a['errors_missed']} | {b['errors_missed']} |",
-        f"| Wrong payments avoided (Rs, synthetic) | {a['wrong_payments_avoided_inr']:,.2f} | {b['wrong_payments_avoided_inr']:,.2f} |",
-        f"| Wrong payments made (Rs, synthetic) | {a['wrong_payments_made_inr']:,.2f} | {b['wrong_payments_made_inr']:,.2f} |",
+        f"| Wrong payments avoided (Rs, demo) | {a['wrong_payments_avoided_inr']:,.2f} | {b['wrong_payments_avoided_inr']:,.2f} |",
+        f"| Wrong payments made (Rs, demo) | {a['wrong_payments_made_inr']:,.2f} | {b['wrong_payments_made_inr']:,.2f} |",
         f"| False holds (good bill held) | {a['false_holds']} | {b['false_holds']} |",
         f"| Good bills entered | {a['correctly_entered']} of {a['should_enter']} | {b['correctly_entered']} of {b['should_enter']} |",
         f"| Mean processing time per delivery, this run | {a['mean_seconds_per_case']} s | {b['mean_seconds_per_case']} s |", "",

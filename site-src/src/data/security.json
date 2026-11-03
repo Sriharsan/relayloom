@@ -5,8 +5,8 @@
    "control": "Mask private numbers",
    "prevents": "A model never sees a tax id, bank account, bank code, phone or email",
    "passed": true,
-   "median_ms": 0.234,
-   "max_ms": 4.704,
+   "median_ms": 0.088,
+   "max_ms": 0.243,
    "test": "test_masking_removes_gstin_bank_ifsc_phone_and_email",
    "note": ""
   },
@@ -15,8 +15,8 @@
    "control": "Find hidden text in the PDF",
    "prevents": "White text that tries to give the model orders never reaches it",
    "passed": true,
-   "median_ms": 7.437,
-   "max_ms": 12.804,
+   "median_ms": 3.338,
+   "max_ms": 4.453,
    "test": "test_injection_is_recorded_and_payment_uses_master_data",
    "note": ""
   },
@@ -25,8 +25,8 @@
    "control": "Strict bill schema",
    "prevents": "Extra fields such as bank details, and bad values, are refused",
    "passed": true,
-   "median_ms": 0.036,
-   "max_ms": 5.125,
+   "median_ms": 0.02,
+   "max_ms": 0.126,
    "test": "test_schema_refuses_extra_keys_bank_fields_and_bad_values",
    "note": ""
   },
@@ -35,8 +35,8 @@
    "control": "Policy levels",
    "prevents": "Actions that need the owner are refused without approval; changing bank details from a bill is never allowed",
    "passed": true,
-   "median_ms": 0.004,
-   "max_ms": 0.228,
+   "median_ms": 0.002,
+   "max_ms": 0.007,
    "test": "test_policy_levels_and_refusals",
    "note": ""
   },
@@ -45,8 +45,8 @@
    "control": "Three way match",
    "prevents": "A bill for more than arrived is held, however it is worded",
    "passed": true,
-   "median_ms": 0.012,
-   "max_ms": 0.208,
+   "median_ms": 0.005,
+   "max_ms": 0.073,
    "test": "test_matcher_running_total_and_tolerances",
    "note": ""
   },
@@ -55,8 +55,8 @@
    "control": "Repeated photo detection",
    "prevents": "The same goods photographed twice are counted once",
    "passed": true,
-   "median_ms": 33.115,
-   "max_ms": 41.589,
+   "median_ms": 11.952,
+   "max_ms": 14.171,
    "test": "test_duplicate_photo_is_found_and_different_photos_are_not",
    "note": ""
   },
@@ -65,9 +65,9 @@
    "control": "Citation check",
    "prevents": "A finding that cites a record that does not exist, or a number its sources lack, is never shown",
    "passed": true,
-   "median_ms": 0.008,
-   "max_ms": 0.087,
-   "test": "test_invented_record_is_rejected",
+   "median_ms": 0.004,
+   "max_ms": 0.041,
+   "test": "test_citation_of_a_missing_record_is_rejected",
    "note": ""
   },
   {
@@ -75,8 +75,8 @@
    "control": "Ledger readback",
    "prevents": "A bill whose stored copy differs in any field is not treated as entered",
    "passed": true,
-   "median_ms": 0.003,
-   "max_ms": 0.052,
+   "median_ms": 0.002,
+   "max_ms": 0.055,
    "test": "test_readback_mismatch_refuses_entered_status",
    "note": ""
   },
@@ -85,18 +85,18 @@
    "control": "Signed receipts",
    "prevents": "Changing any recorded decision breaks the chain",
    "passed": true,
-   "median_ms": 0.915,
-   "max_ms": 4.574,
+   "median_ms": 0.246,
+   "max_ms": 1.239,
    "test": "test_receipts_verify_offline_and_detect_tampering",
-   "note": "append and sign 0.91 ms, verify three receipts 0.76 ms"
+   "note": "append and sign 0.25 ms, verify three receipts 0.41 ms"
   },
   {
    "level": "Boundary",
    "control": "Egress gateway",
    "prevents": "Only listed hosts over HTTPS, every refusal logged",
    "passed": true,
-   "median_ms": 4.976,
-   "max_ms": 24.168,
+   "median_ms": 1.619,
+   "max_ms": 24.196,
    "test": "tests/test_gateway.py",
    "note": ""
   },
@@ -105,17 +105,17 @@
    "control": "Phone alert token",
    "prevents": "No token, no alerts, and the page can change nothing",
    "passed": true,
-   "median_ms": 3.635,
-   "max_ms": 6.143,
+   "median_ms": 1.117,
+   "max_ms": 23.616,
    "test": "tests/test_alerts.py",
    "note": ""
   }
  ],
- "controls_per_case_ms": 85.0,
+ "controls_per_case_ms": 30.3,
  "sam_seconds_median": 40.6,
- "glimmer_seconds_median": 475.8,
- "ratio_to_glimmer": 5600,
+ "glimmer_seconds_median": 326.3,
+ "ratio_to_glimmer": 10760,
  "all_passed": true,
  "cost_in_money": "none: every control runs locally, with no API call",
- "ran_at": "2026-11-03 16:47 +0530"
+ "ran_at": "2026-11-03 20:51 +0530"
 }

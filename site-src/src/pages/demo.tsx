@@ -9,7 +9,7 @@ import { Link } from "@/lib/router";
 
 type Tab = "today" | "case" | "approvals";
 
-const LABEL = "Rehearsal";
+const LABEL = "Recorded run";
 const STEP_LABELS: Record<StepKey, string> = {
   read: "Read", count: "Count", match: "Match", investigate: "Investigate", enter: "Enter", check: "Check",
 };
@@ -386,7 +386,7 @@ function ApprovalsView() {
               <div className="mt-3 rounded-lg border border-line bg-raised px-3.5 py-3">
                 <span className="kLabel">Dispute draft preview</span>
                 <p className="mt-2 whitespace-pre-wrap font-mono text-[11.5px] leading-relaxed text-foreground">{a.draft}</p>
-                <p className="mt-2 font-mono text-[10.5px] text-ink-muted">Text from a template in this replay. Muse Glimmer writes it in the live app.</p>
+                <p className="mt-2 font-mono text-[10.5px] text-ink-muted">Dispute text from the recorded run. Muse Glimmer writes it in the live app.</p>
               </div>
             )}
             <div className="flex-1" />
@@ -640,7 +640,7 @@ export function Demo() {
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2.5 sm:px-6">
           <span className="pill border-amber/40 bg-amber/10 text-amber-ink">
             <span className="h-1.5 w-1.5 rounded-full bg-amber" aria-hidden="true" />
-            Replay of a run on synthetic data. Read only.
+            Replay of a recorded run on demo data. Read only.
           </span>
           <RunLabel label={LABEL} />
           <span className="tnum font-mono text-[11px] text-ink-muted">run at {run.ran_at.slice(11, 16)}, {run.ran_at.slice(0, 10)}</span>

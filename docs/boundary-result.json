@@ -1,5 +1,5 @@
 {
- "time": "2026-11-03T11:29:45+0000",
+ "time": "2026-11-03T15:21:31+0000",
  "passed": true,
  "checks": [
   {
@@ -33,7 +33,7 @@
    "detail": "2 new log lines"
   },
   {
-   "check": "five demo cases pass inside the boundary (rehearsal mode, built in ledger)",
+   "check": "all seven demo cases pass inside the boundary (recorded run, built in ledger)",
    "result": "PASS",
    "detail": ""
   }
@@ -86,6 +86,24 @@
   },
   {
    "time": "2026-11-03T11:29:45+0000",
+   "host": "huggingface.co",
+   "method": "CONNECT",
+   "decision": "blocked: host not in policy",
+   "model": "",
+   "masks": "",
+   "case": "boundary-probe"
+  },
+  {
+   "time": "2026-11-03T15:21:31+0000",
+   "host": "example.com",
+   "method": "CONNECT",
+   "decision": "blocked: host not in policy",
+   "model": "",
+   "masks": "",
+   "case": "boundary-probe"
+  },
+  {
+   "time": "2026-11-03T15:21:31+0000",
    "host": "huggingface.co",
    "method": "CONNECT",
    "decision": "blocked: host not in policy",

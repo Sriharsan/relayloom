@@ -41,7 +41,7 @@ TEST = {  # the unit test that covers the same control
     "policy": "test_policy_levels_and_refusals",
     "match": "test_matcher_running_total_and_tolerances",
     "photo": "test_duplicate_photo_is_found_and_different_photos_are_not",
-    "cite": "test_invented_record_is_rejected",
+    "cite": "test_citation_of_a_missing_record_is_rejected",
     "readback": "test_readback_mismatch_refuses_entered_status",
     "receipts": "test_receipts_verify_offline_and_detect_tampering",
     "gateway": "tests/test_gateway.py",

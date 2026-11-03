@@ -6,7 +6,7 @@ import {
 import { Pill, RunLabel, SectionHead } from "@/components/bits";
 import { verifyChain, type Verdict } from "@/lib/receipts";
 
-const LABEL = "Rehearsal";
+const LABEL = "Recorded run";
 
 function Tile({ value, label, tone = "foreground" }: { value: string; label: string; tone?: "foreground" | "green" | "amber" }) {
   const color = tone === "green" ? "text-green-ink" : tone === "amber" ? "text-amber-ink" : "text-foreground";
@@ -188,7 +188,7 @@ function Security() {
         <SectionHead
           index="Security at every level"
           title="Every control passed its check, and none slows the work"
-          note="Each control ran on the synthetic bills and photos. It passes only if it blocks what it must block and lets good input through."
+          note="Each control ran on the demo bills and photos. It passes only if it blocks what it must block and lets good input through."
         />
         <div className="grid gap-3 sm:grid-cols-3">
           <Tile value={`${passed} of ${security.rows.length}`} label="controls pass, from input to boundary" tone="green" />
@@ -226,7 +226,7 @@ function Benchmark() {
         <SectionHead
           index="04 / Benchmark"
           title="With the goods in the loop, more errors are caught and fewer clean bills are held"
-          note={`Synthetic set built by us, ${benchmark.setSize} deliveries with known answers. ${benchmark.note}`}
+          note={`Demo set built by us, ${benchmark.setSize} deliveries with known answers. ${benchmark.note}`}
         />
         <Table head={[{ t: "Metric" }, { t: "Paperwork only" }, { t: "Paperwork plus goods" }, { t: "Basis", right: true }]}>
           {benchmark.rows.map((r) => (
@@ -362,8 +362,8 @@ const LABELS = [
   { item: "SAM 3.1 counts and times", kind: "Measured", note: "real runs of the open weight model on this laptop's CPU, saved with photo hashes" },
   { item: "Muse Glimmer 30B bill readings and times", kind: "Measured", note: "real runs on the same laptop, each checked against the strict schema" },
   { item: "Case outcomes and receipts", kind: "Measured", note: "the real agents, policy, built in ledger and Checker, with signed receipts" },
-  { item: "Bill values in the replay", kind: "Synthetic", note: "taken from the bill record, not re-read by the model in that run" },
-  { item: "Delivery photos, companies, suppliers and money", kind: "Synthetic", note: "synthetic: our own drawings, fictional names, amounts in rupees" },
+  { item: "Bill values in the replay", kind: "Demo", note: "taken from the bill record, not re-read by the model in that run" },
+  { item: "Delivery photos, companies, suppliers and money", kind: "Demo", note: "our own drawings, a demo company and suppliers, amounts in rupees" },
 ];
 
 export function Proof() {
@@ -376,7 +376,7 @@ export function Proof() {
             <span className="font-mono text-[11px] text-ink-muted">/proof</span>
           </div>
           <h1 className="mt-4 max-w-[24ch] text-balance text-[30px] font-semibold leading-[1.12] tracking-[-0.02em] text-foreground sm:text-[40px]">
-            Every number on this page came from our own runs on synthetic data.
+            Every number on this page came from our own runs on demo data.
           </h1>
         </div>
       </section>
@@ -393,7 +393,7 @@ export function Proof() {
       </section>
       <section>
         <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6">
-          <SectionHead index={benchmark ? "06 / Labels" : "05 / Labels"} title="What is measured and what is synthetic" />
+          <SectionHead index={benchmark ? "06 / Labels" : "05 / Labels"} title="What is measured and what is demo" />
           <ul className="overflow-hidden rounded-xl border border-line bg-surface">
             {LABELS.map((l) => (
               <li key={l.item} className="flex flex-col gap-1 border-b border-line px-5 py-3.5 last:border-0 sm:flex-row sm:items-center sm:justify-between">

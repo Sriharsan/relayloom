@@ -17,9 +17,9 @@ export const links = {
 };
 
 export const footerNote =
-  "Synthetic data. The working system runs on the business's own machine; this site does not.";
+  "Demo data. The working system runs on the business's own machine; this site does not.";
 
-export const company = { name: "Northgate Components", note: "All data is synthetic." };
+export const company = { name: "Northgate Components", note: "The data shown is demo data." };
 
 /* ----------------------------- run data types ----------------------------- */
 
