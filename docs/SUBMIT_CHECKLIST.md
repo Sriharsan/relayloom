@@ -14,7 +14,7 @@ Wednesday evening IST.
 
 ## For you
 
-1. **Phone check (5 minutes).** On the laptop: `python -m relayloom.ap --batch --phone`. It prints a link. Open it on your phone on the same
+1. **Phone check. Done on 3 November 2026: both the USB cable link and the Wi-Fi link opened on a real phone and showed the alerts.** To repeat it: On the laptop: `python -m relayloom.ap --batch --phone`. It prints a link. Open it on your phone on the same
    Wi-Fi. When a delivery needs the owner, the alert appears on the phone within a second. Tell me if anything looks wrong.
 2. **Wi-Fi off check (12 minutes).** Optional, and the only way to say "tested fully disconnected": `python scripts/offline_check.py`, switch Wi-Fi
    off when it asks, switch it back on when it says Done.
