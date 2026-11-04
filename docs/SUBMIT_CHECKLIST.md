@@ -12,7 +12,7 @@ version pushed by 6:00 PM IST on the 4th, then freeze at 4:00 AM IST on the 5th.
 - Docker network with no route out, and a fully disconnected run on 3 November (`docs/OFFLINE_RUN.md`).
 - Phone alerts verified on a real phone (3 November), with photo upload from the phone page.
 - English, Tamil and Hindi for the phone alerts and the approval screen: `docs/LANGUAGES.md`.
-- Package `relayloom` 0.3.0: builds, passes the PyPI check, installs and runs with the network blocked (`docs/PACKAGE_CHECK.md`).
+- Package `relayloom` 0.4.0: builds, passes the PyPI check, installs and runs with the network blocked (`docs/PACKAGE_CHECK.md`).
 - Real cases from courts, audits and news with their sources: `docs/SOURCES.md`.
 
 ## For you
