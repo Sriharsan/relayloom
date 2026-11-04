@@ -39,8 +39,21 @@ class ReceiptPdfTests(unittest.TestCase):
         self.assertEqual(code, 0, text)
         self.assertIn("signatures verified", text)
         words = "".join(page.get_text() for page in fitz.open(pdf))
-        self.assertIn("Relayloom receipt", words)
-        self.assertIn("every step is signed", words)
+        self.assertIn("Delivery check receipt", words)
+        self.assertIn("Every step is signed", words)
+
+    def test_evidence_photos_are_attached_and_the_pdf_stays_readable(self):
+        import cv2
+        import numpy as np
+        photo = self.dir / "dock.jpg"
+        cv2.imwrite(str(photo), (np.random.rand(240, 320, 3) * 255).astype("uint8"))
+        pdf = self.dir / "with_photo.pdf"
+        code, text = run("receipt", str(self.receipts), "--out", str(pdf), "--evidence", str(photo))
+        self.assertEqual(code, 0, text)
+        self.assertIn("1 evidence photos", text)
+        doc = fitz.open(pdf)
+        self.assertEqual(len({img[0] for page in doc for img in page.get_images()}), 1)
+        self.assertIn("dock.jpg", "".join(page.get_text() for page in doc))
 
     def test_a_changed_receipt_is_reported_as_not_verified(self):
         self.receipts.write_text(self.receipts.read_text(encoding="utf-8").replace("46", "50", 1), encoding="utf-8")

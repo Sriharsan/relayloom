@@ -1,45 +1,32 @@
-# Demo video script (3 minutes)
+# Demo video script: 3 minutes, working product only
 
-The video shows only work built from 27 October. **You speak it, in your own voice.** The demo should be felt and delivered by a human, so the
-captioned video is only the picture. Do not upload it silent.
+Rules from the organizers (Cerebral Valley, Discord, 4 November): 3:00 or less, English, hosted and playable without logging in, real screen footage of the working product,
+**live Meta model calls visible** (a terminal log or the on-screen result of a live request that names the model), the end to end flow first, no intro and no pitch,
+and an opening line that says what existed before the event and what was built this week. An AI voice is allowed, a person is preferred.
 
-Two good ways to record:
+Total about 430 spoken words, which is 2 minutes 50 seconds at an easy pace. Practise it once with a timer. The recording rows say what is on screen.
 
-1. **Voice over the picture.** Play `relayloom-demo-picture-only.mp4`, read the lines below as it plays, and record your voice with the Windows Voice
-   Recorder or your phone. Then run `python scripts/add_voice.py your-voice.m4a`. It puts your voice on the picture and checks the three minute limit.
-2. **Record yourself live.** Open https://relayloom.vercel.app, start Xbox Game Bar (Win+G) or OBS, and follow the same scenes while you speak.
+## The script
 
-Make it yours: add one sentence of your own before the hook, about why this problem matters to you. Speak calmly, one idea at a time, and pause where
-a number appears on screen. The lines are a guide, so say them the way you would say them to a colleague.
+| Time | On screen | Say |
+| --- | --- | --- |
+| 0:00 to 0:14 | Terminal, large font, the command typed and run live | "Before this week there was only a written plan. This week I built Relayloom: agents that read a bill, count the goods with Meta's SAM 3.1, and look for damage with Muse Glimmer, before anything is paid." |
+| 0:14 to 0:52 | **Live Meta model calls.** The terminal runs `relayloom check --bill bill.pdf --photos dock/ --po po.json --agent --condition`. The log lines name Muse-Glimmer-30B and SAM 3.1. Put a small caption on screen: "live run, sped up" if you cut the wait. | "This is a live run on my machine. Muse Glimmer 30B reads the bill into a strict form. Muse Glimmer proposes the words, SAM 3.1 outlines and numbers every item, and Glimmer looks at its own picture to confirm the count. The bill says fifty. The count is forty six. The bill is held, and the reason is written in plain words." |
+| 0:52 to 1:30 | Browser: relayloom.vercel.app/try. Pick "Short delivery", then "Add photo evidence", tap items on the photo, show the verdict change, press Sign a receipt in the phone, press Save the PDF report, open the PDF. | "Anyone can try it. Enter the bill, add a photo of the goods, and tap each item. The verdict changes live. The phone signs a receipt, and the PDF report says what happened in plain words, with the photo attached. Nothing leaves the device." |
+| 1:30 to 2:00 | Browser: Demo page. "Watch it count", the green marks sweeping across a real photo. Then the Case tab, the Investigator citations, then the Proof page: change one decision, the chain breaks. | "On the demo page you watch SAM count a real photo. The Investigator cites a record for every claim. Every step is signed and chained. Change one decision, and the chain breaks." |
+| 2:00 to 2:20 | Terminal or Try page: damaged goods example, "9 of 60 damaged". | "Damaged goods are caught too. Glimmer looked at dented cans and torn sacks and found them, and it found nothing on the clean photos. Damaged units never count as received." |
+| 2:20 to 2:45 | Proof page: the 17 of 17 table, then the Real cases strip, New Jersey nine and a half million dollars. | "On thirty deliveries, paperwork alone caught five of seventeen bad bills. With the goods in the loop it caught all seventeen and paid nothing wrongly. It passes three hundred sixty nine cases on real California purchase orders. These real cases show why it matters: a supplier billed for goods that never came, for nine years." |
+| 2:45 to 2:58 | The trust line on the home page, then the PyPI page. | "No photo, no receipt, no proof, no payment. That is trust, and that is Relayloom. It is on PyPI today: pip install relayloom." |
 
-The captioned video runs 2 minutes 54 seconds. Every number comes from `docs/RESULTS.md`, `docs/BENCHMARK.md` and `docs/SECURITY_CHECKS.md`. Read them as they appear on screen.
+## Recording checklist
 
-| Scene | Time | On screen | Say |
-| --- | --- | --- | --- |
-| Two real cases | 0:00 to 0:20 | Home, the Real cases strip, the New Jersey card then the ISKCON card, each with its source line | "A supplier in New Jersey billed one customer for goods it never delivered, and inflated what it did deliver, for almost nine years. The court ordered nine and a half million dollars back. In Kolkata, police say a supplier billed ISKCON for full orders and delivered fewer books. Two crore rupees, found in an audit. That one is an allegation. These are documented cases, not our users." |
-| Hook | 0:20 to 0:25 | Home, the hero | "The paperwork says thirty. The photo counts twenty-six." |
-| Promise | 0:25 to 0:41 | Home, the hero | "I'm Sriharsan. Relayloom is autonomous accounts payable that checks the goods, not just the paperwork. Meta's Muse Glimmer reads the bill. Meta's SAM 3.1 counts what arrived. Both run on this laptop." |
-| A batch | 0:41 to 0:52 | Demo, Today | "Six bills ran by themselves. Green means entered and checked, with no person involved. Amber means someone decides." |
-| The gap | 0:52 to 1:05 | Demo, the short delivery | "The bill says fifty cartons. SAM 3.1 counted the dock photos: twenty-eight and eighteen. A repeated photo is counted once. That is forty-six." |
-| The cause | 1:05 to 1:15 | Demo, likely cause | "The Investigator names the likely cause, who is probably responsible, and how sure the records let it be." |
-| The evidence | 1:15 to 1:26 | Demo, citations lighting up | "No claim stands without its evidence. Every statement cites a record or a photo, and code checks each citation before anyone reads it." |
-| The decision | 1:26 to 1:35 | Demo, approvals | "The policy holds the bill for the owner. One key approves, and only then does a dispute go out." |
-| Proof | 1:35 to 1:50 | Proof, security controls | "Every number here came from our own runs. Eleven security controls pass their checks, and together they add about thirty milliseconds to a case." |
-| The result | 1:50 to 2:07 | Proof, benchmark | "On a demo set of thirty deliveries, paperwork alone caught five of seventeen bad bills and paid sixty thousand rupees wrongly. With the goods in the loop: seventeen of seventeen, and nothing paid wrongly." |
-| Tamper evidence | 2:07 to 2:19 | Proof, receipt verifier | "Every step is a signed receipt. Change one recorded decision and the chain breaks at that step. The audit trail is tamper-evident." |
-| Video and phone | 2:19 to 2:38 | Home, video evidence and phone alerts | "A dock video is detected a quarter of a second after the first movement. SAM 3.1 counts the steady views, and a phone on the local network gets the alert. No internet needed." |
-| Boundary | 2:38 to 2:46 | Home, Docker evidence | "Network isolated: no route out, and every refused request is logged." |
-| Close | 2:46 to 2:54 | Home, the close | "Pay for what arrived. Prove it. Relayloom, at relayloom dot vercel dot app. The code is open source." |
+1. Record the screen at 1080p. Make the terminal and browser text large. Close notifications.
+2. Live Meta model calls. Option A, recommended: on the Kaggle free GPU the notebook shows the bill read in about 24 seconds once warm and SAM counting in about a second, so the whole live call fits in the take. Option B: run it on your laptop, where the bill read takes minutes, and cut the wait with a visible "sped up" caption. Either way the log must show the model names on screen.
+3. Start Muse Glimmer first with `relayloom models serve`, and run `relayloom doctor` once so SAM is loaded. Run the command in the video from a folder with `bill.pdf`, `dock/` and `po.json`.
+4. On the phone: scan the QR code on the Try page with your phone camera, or show the page in a narrow browser window. Show the camera button for the evidence photo.
+5. The video must be unlisted on YouTube and play in a logged out private window. The submission closes Wednesday 4 November, 9:00 PM Eastern, with no grace period.
+6. Keep every sentence short. Do not read the table. Say the numbers slowly: "seventeen of seventeen", "three hundred sixty nine".
 
-Notes for recording:
-- Say "network isolated" for the Docker boundary, and "tested fully disconnected on 3 November" for the laptop run in `docs/OFFLINE_RUN.md`.
-- The dock video in the demo is a demo clip made from two photographs. Say "a dock video", show the two steady views and the 46 of 50, and do not
-  claim a warehouse camera.
-- In the replay the bill values come from the bill record and the dispute text from the recorded run. If you mention the model there, point at the
-  Muse Glimmer timings on the Proof page.
-- Findings are written by code from the evidence, with every citation checked.
-- Real timings: on this laptop's CPU Muse Glimmer reads a bill in 4 min 33 s to 8 min 51 s and SAM 3.1 counts a photo in about 41 s. Bills run as a
-  background batch.
-- The opening names two documented cases. Read the sources on screen: the New Jersey case is a sentencing announced by the U.S. Attorney's Office on 17 July 2019 (50 months, USD 9.5 million restitution); the ISKCON case is a police allegation reported on 10 November 2025 and is not a conviction. Say "allegation" for it. Both are documented cases, not Relayloom users.
-- The hero now shows a real photo of a van full of boxes with a sample bill of thirty and SAM 3.1 counting twenty-six; by eye the count is twenty-five. Say "a sample bill".
-- The picture-only video was recorded before this opening. Either speak over a fresh recording (`python scripts/record_demo_video.py`) or record the screen live from https://relayloom.vercel.app and start on the Real cases strip.
+## Do not say
+
+Do not say "real time" for the counting. Do not say the page runs the models: the page runs the rules, and the models run on a machine or a free GPU. Do not call the demo cases customers.

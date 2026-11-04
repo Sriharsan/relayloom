@@ -9,8 +9,16 @@ The paperwork says 50. The dock got 46. Relayloom is for the receiving and accou
 manufacturer or distributor that buys physical goods. The example company in this repository is
 Northgate Components, with fictional suppliers and demo records only.
 
-**Live site and proof:** https://relayloom.vercel.app. On a demo set of 30 deliveries built by us, paperwork only caught
+**No receipt, no payment.** A bill is paid only when the photo, the receipt and the verification stand together. That is trust, and that is Relayloom.
+
+**Try it live, on any device:** https://relayloom.vercel.app/try. **Live site and proof:** https://relayloom.vercel.app. On a demo set of 30 deliveries built by us, paperwork only caught
 5 of 17 bad bills and paperwork plus goods caught 17 of 17 with no wrong payment ([docs/BENCHMARK.md](docs/BENCHMARK.md)).
+
+## What existed before the event, and what was built
+
+Before the event there was a written plan (documentation commits on 26 and 27 October) and no working code. Everything else was built during the event, from 28 October: the agents, the Muse Glimmer
+and SAM 3.1 integrations, the matcher and policy, the signed receipts, the command line and package, the live Try page and this site. No code from an earlier private project was imported.
+The only models the product calls at runtime are Meta models: Muse Glimmer 30B and SAM 3.1.
 
 ## Install the command line
 
@@ -20,7 +28,7 @@ relayloom doctor                                                         # what 
 relayloom check --bill-json bill.json --po po.json --counted 46          # no models needed: HELD or clear, with signed receipts
 relayloom check --bill bill.pdf --photos dock/ --po po.json --agent      # Muse Glimmer proposes the words, SAM 3.1 counts, Glimmer looks at the overlay
 relayloom verify relayloom-out/receipts.jsonl                            # verify the receipts offline
-relayloom receipt relayloom-out/receipts.jsonl                           # a plain language PDF receipt, made offline
+relayloom receipt relayloom-out/receipts.jsonl --evidence dock.jpg       # a plain language PDF receipt with the evidence photo, made offline
 ```
 
 ```sh

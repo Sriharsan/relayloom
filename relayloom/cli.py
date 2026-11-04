@@ -308,9 +308,9 @@ def receipt_command(args) -> int:
     key_file = Path(args.key_file) if args.key_file else path.with_name("public_key.txt")
     key = args.key or (key_file.read_text(encoding="utf-8").strip() if key_file.exists() else None)
     out = Path(args.out) if args.out else path.with_name("receipt.pdf")
-    info = write_receipt_pdf(path, out, args.case, key)
+    info = write_receipt_pdf(path, out, args.case, key, args.evidence)
     state = {True: "verified", False: "NOT verified", None: "not checked (no public key found)"}[info["verified"]]
-    print(f"{out}: {info['steps']} steps, signatures {state}")
+    print(f"{out}: {info['steps']} steps, {info['photos']} evidence photos, signatures {state}")
     return 1 if info["verified"] is False else 0
 
 
@@ -454,6 +454,7 @@ def parser() -> argparse.ArgumentParser:
     r.add_argument("receipts")
     r.add_argument("--case", help="only the steps of this case")
     r.add_argument("--out", help="PDF path (default receipt.pdf next to the receipts)")
+    r.add_argument("--evidence", nargs="*", metavar="PHOTO", help="photos to attach as evidence in the PDF, like dock.jpg")
     r.add_argument("--key", help="public key (base64)")
     r.add_argument("--key-file", help="file with the public key; default public_key.txt next to the receipts")
     r.set_defaults(run=receipt_command)

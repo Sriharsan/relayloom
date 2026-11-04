@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import {
   approvals, caseById, casePhotos, counters, rupees, run, STEPS, stepView, supplierName, todayRows, type BenchCase, type StepKey,
 } from "@/data/site";
-import { Photo, Pill, RunLabel, StepPill } from "@/components/bits";
+import { Pill, RunLabel, StepPill } from "@/components/bits";
 import { FindingCard, citeId } from "@/components/finding";
 import { run as runData } from "@/data/site";
 import { Link } from "@/lib/router";
 import { downloadReceipt } from "@/lib/receiptpdf";
-import { Mascot } from "@/components/mascot";
+import { DetectReveal, RealCountPlayer } from "@/components/detect";
 
 type Tab = "today" | "case" | "approvals";
 
@@ -167,7 +167,7 @@ function CaseView({ c }: { c: BenchCase }) {
             {photos.map((p) => (
               <figure key={p.photo} id={"photo-" + p.photo} className="scroll-mt-24 rounded-lg border border-line bg-raised p-3">
                 {p.counted ? (
-                  <Photo src={p.image} alt={`${p.photo} with ${p.count} items outlined and numbered`} />
+                  <DetectReveal raw={`/img/${p.photo}.jpg`} overlay={p.image} count={p.count} alt={`${p.photo} with ${p.count} items outlined and numbered`} />
                 ) : (
                   <div className="flex aspect-[4/3] items-center justify-center rounded-lg border border-dashed border-line px-3 text-center font-mono text-[11px] text-ink-muted">
                     repeat of {p.duplicate_of}, similarity {p.similarity}
@@ -643,20 +643,6 @@ export function Demo() {
 
   return (
     <div>
-      <Mascot
-        storageKey="loom-demo"
-        message="Press Next and I will point at the evidence."
-        cta={{
-          label: "Next step",
-          click: () => Array.from(document.querySelectorAll<HTMLButtonElement>('[aria-label="Guided tour"] button')).find((b) => b.textContent?.trim() === "Next")?.click(),
-        }}
-        nudges={[
-          "Open the Case tab for the three way match: order, bill and goods.",
-          "Every claim carries a citation. Press one and the record lights up.",
-          "The Receipt chain card downloads a plain language PDF.",
-          "Break a receipt on the Proof page and watch the chain notice.",
-        ]}
-      />
       <div className="border-b border-line bg-amber/5">
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2.5 sm:px-6">
           <span className="pill border-amber/40 bg-amber/10 text-amber-ink">
@@ -674,6 +660,7 @@ export function Demo() {
             Show the guide
           </button>
         )}
+        {tab === "today" && <RealCountPlayer />}
         <div role="tablist" aria-label="Demo sections" className="mb-6 flex gap-1 border-b border-line">
           {tabs.map((t) => (
             <button

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0
+
+- `relayloom receipt` writes a structured report: a verdict box, the delivery, an items table, amounts, the steps in plain words and the proof.
+- `relayloom receipt --evidence dock.jpg` attaches your photos to the PDF, offline.
+- The live Try page at relayloom.vercel.app/try runs the same rules in the browser, with country tax, photo evidence and a signed receipt that `relayloom verify` accepts.
+
 ## 0.4.0
 
 - `relayloom receipt receipts.jsonl`: a plain language PDF receipt made offline, with a line saying whether every signature and link checked out.

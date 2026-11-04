@@ -5,7 +5,7 @@ import { agent, benchmark, confidence, fmtSeconds, glimmerSummary, links, offlin
 import { CopyBlock, Photo } from "@/components/bits";
 import { RealCases } from "@/components/realcases";
 import { Vision } from "@/components/vision";
-import { Mascot } from "@/components/mascot";
+import { TrustLine } from "@/components/trustline";
 
 
 const btn =
@@ -301,7 +301,7 @@ function Closing() {
     <section>
       <div className="mx-auto max-w-[1200px] px-4 py-24 text-center sm:px-6">
         <p className="mx-auto max-w-[18ch] text-balance text-[44px] font-bold leading-[1.02] tracking-[-0.03em] text-foreground sm:text-[76px]">
-          Pay for what arrived.
+          No receipt, no payment.
         </p>
         <p className="mt-5 text-[14px] text-ink-muted">Built by Sriharsan B S. One person, one laptop, open weights.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -318,14 +318,9 @@ function Closing() {
 export function Home() {
   return (
     <>
-      <Mascot
-        storageKey="loom-home"
-        message="Type a bill and watch it judged live."
-        cta={{ label: "Try it with your bill", href: "/try" }}
-        nudges={["The real cases are just below. Every one is linked to its source.", "The proof page lets you break a receipt chain yourself.", "Open the demo and I will walk you through a short delivery."]}
-      />
       <Hero />
       <Strip />
+      <TrustLine />
       <RealCases />
       <Looks />
       <Goods />

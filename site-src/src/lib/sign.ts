@@ -1,11 +1,11 @@
 /** Signs a live check as a receipt chain in the browser. The files verify with `relayloom verify` on any machine, offline. */
 import { canonical, verifyChain } from "@/lib/receipts";
 import type { SignedReceipt } from "@/data/site";
-import type { Delivery, Verdict } from "@/lib/matcher";
+import { amounts, country, isBlank, type Delivery, type Verdict } from "@/lib/matcher";
 
 const GENESIS = "0".repeat(64);
 const enc = (t: string) => new TextEncoder().encode(t);
-const hex = (buf: ArrayBuffer) => Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, "0")).join("");
+export const hex = (buf: ArrayBuffer) => Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, "0")).join("");
 const b64 = (buf: ArrayBuffer) => btoa(String.fromCharCode(...new Uint8Array(buf)));
 
 export const cryptoReady = () => typeof globalThis.crypto?.subtle !== "undefined";
@@ -22,21 +22,33 @@ export interface Signed {
   receipts: SignedReceipt[];
   publicKey: string;
   verified: boolean;
+  photos: { item: string; sha256: string; counted: number; damaged: number }[];
 }
 
 export async function signCheck(d: Delivery, v: Verdict, policyHash: string): Promise<Signed> {
   const subtle = globalThis.crypto.subtle;
   const pair = (await subtle.generateKey({ name: "Ed25519" }, true, ["sign", "verify"])) as CryptoKeyPair;
   const publicKey = b64(await subtle.exportKey("raw", pair.publicKey));
+  const lines = d.lines.filter((l) => !isBlank(l));
+  const { tax, total } = amounts(d);
+  const photos: Signed["photos"] = [];
+  for (const l of lines) {
+    if (!l.photo) continue;
+    const bytes = Uint8Array.from(atob(l.photo.split(",")[1] ?? ""), (c) => c.charCodeAt(0));
+    photos.push({ item: l.description || l.item_code, sha256: hex(await subtle.digest("SHA-256", bytes)), counted: l.received, damaged: l.damaged });
+  }
   const steps: { agent: string; step: string; decision: string; detail: Record<string, unknown>; input: unknown }[] = [
-    { agent: "Reader", step: "read", decision: "given as structured data", input: d, detail: { bill: { supplier_id: d.supplier, bill_no: d.bill_no, po_number: d.po_no, total_inr: d.total, tax_inr: d.tax,
-      lines: d.lines.map((l) => ({ item_code: l.item_code, description: l.description, qty: l.billed_qty, rate_inr: l.billed_rate, amount_inr: Math.round(l.billed_qty * l.billed_rate * 100) / 100 })) } } },
-    { agent: "Counter", step: "count", decision: "counted " + d.lines.map((l) => `${l.item_code} ${l.received}`).join(", "), input: d.lines.map((l) => l.received), detail: { counts: Object.fromEntries(d.lines.map((l) => [l.item_code, l.received])) } },
+    { agent: "Reader", step: "read", decision: "given as structured data", input: { ...d, lines: lines.map((l) => ({ ...l, photo: undefined, marks: undefined })) }, detail: { bill: { supplier_id: d.supplier, bill_no: d.bill_no, po_number: d.po_no, total_inr: total, tax_inr: tax, country: country(d).name,
+      lines: lines.map((l) => ({ item_code: l.item_code, description: l.description, qty: l.billed_qty, rate_inr: l.billed_rate, amount_inr: Math.round(l.billed_qty * l.billed_rate * 100) / 100 })) } } },
+    { agent: "Counter", step: "count", decision: "counted " + lines.map((l) => `${l.item_code || l.description} ${l.received}`).join(", "), input: lines.map((l) => l.received), detail: { counts: Object.fromEntries(lines.map((l) => [l.item_code || l.description, l.received])) } },
   ];
-  const damaged = d.lines.reduce((s, l) => s + l.damaged, 0);
+  const damaged = lines.reduce((s, l) => s + l.damaged, 0);
   if (damaged > 0) {
-    const arrived = d.lines.reduce((s, l) => s + l.received, 0);
-    steps.push({ agent: "Counter", step: "condition", decision: `${damaged} of ${arrived} damaged`, input: d.lines.map((l) => l.damaged), detail: { reason: `${damaged} of ${arrived} units arrived damaged, so only ${arrived - damaged} count as received.` } });
+    const arrived = lines.reduce((s, l) => s + l.received, 0);
+    steps.push({ agent: "Counter", step: "condition", decision: `${damaged} of ${arrived} damaged`, input: lines.map((l) => l.damaged), detail: { reason: `${damaged} of ${arrived} units arrived damaged, so only ${arrived - damaged} count as received.` } });
+  }
+  if (photos.length) {
+    steps.push({ agent: "Counter", step: "evidence", decision: `${photos.length} photo${photos.length > 1 ? "s" : ""} kept as evidence`, input: photos, detail: { photos: photos.map((p) => ({ item: p.item, sha256: p.sha256, counted: p.counted, damaged: p.damaged })) } });
   }
   steps.push({ agent: "Matcher", step: "match", decision: v.held ? "held" : "clear to enter", input: v, detail: { problems: v.reasons } });
 
@@ -57,7 +69,7 @@ export async function signCheck(d: Delivery, v: Verdict, policyHash: string): Pr
     prev = hash;
   }
   const verdicts = await verifyChain(receipts, publicKey);
-  return { receipts, publicKey, verified: verdicts.every((x) => x.ok) };
+  return { receipts, publicKey, verified: verdicts.every((x) => x.ok), photos };
 }
 
 export function toJsonl(receipts: SignedReceipt[]): string {

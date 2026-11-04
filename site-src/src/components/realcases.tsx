@@ -14,6 +14,9 @@ const TONE: Record<string, string> = {
 /** Real cases from courts, audits and news, each read at its source. */
 export function RealCases({ id = "cases" }: { id?: string }) {
   const ref = useRef<HTMLElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const suppress = useRef(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -36,7 +39,12 @@ export function RealCases({ id = "cases" }: { id?: string }) {
         </div>
       </div>
       <div className="mx-auto mt-8 max-w-[1200px] px-6 sm:px-10 lg:px-14">
-      <div className="fade-edges flex snap-x gap-4 overflow-x-auto py-1 pb-12 pr-16 [scrollbar-width:thin]" tabIndex={0} aria-label="Real cases">
+      <div ref={track} className="slide-track fade-edges flex snap-x gap-4 overflow-x-auto py-1 pb-12 pr-16 [scrollbar-width:thin]" tabIndex={0} aria-label="Real cases, drag or scroll sideways"
+        onPointerDown={(e) => { if (e.pointerType !== "mouse") return; drag.current = { x: e.clientX, left: track.current!.scrollLeft, moved: false }; }}
+        onPointerMove={(e) => { const g = drag.current; if (!g) return; const dx = e.clientX - g.x; if (Math.abs(dx) > 5) { g.moved = true; track.current!.classList.add("dragging"); } if (g.moved) track.current!.scrollLeft = g.left - dx; }}
+        onPointerUp={() => { const g = drag.current; drag.current = null; window.setTimeout(() => track.current?.classList.remove("dragging"), 0); if (g?.moved) suppress.current = true; }}
+        onPointerLeave={() => { drag.current = null; track.current?.classList.remove("dragging"); }}
+        onClickCapture={(e) => { if (suppress.current) { e.preventDefault(); e.stopPropagation(); suppress.current = false; } }}>
         {cases.map((c, i) => (
           <a
             key={c.id}
