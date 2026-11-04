@@ -1,0 +1,90 @@
+[
+ {
+  "language": "Hindi",
+  "file": "hindi-CAL-0991.txt",
+  "masked": [
+   "gstin",
+   "gstin",
+   "ifsc",
+   "email",
+   "phone",
+   "bank_account"
+  ],
+  "seconds": 356.4,
+  "error": "",
+  "bill": {
+   "supplier_id": "SUP-CALDER",
+   "bill_no": "CAL-0991",
+   "bill_date": "2026-11-03",
+   "po_number": "PO-2003",
+   "lines": [
+    {
+     "item_code": "CARTON-HD",
+     "description": "भारी पैकिंग गत्ते का डिब्बा",
+     "qty": 50.0,
+     "rate_inr": 118.0,
+     "amount_inr": 5900.0
+    }
+   ],
+   "tax_inr": 1062.0,
+   "total_inr": 6962.0
+  },
+  "checks": {
+   "supplier_id": true,
+   "bill_no": true,
+   "po_number": true,
+   "bill_date": true,
+   "one line": true,
+   "item_code": true,
+   "qty": true,
+   "rate": true,
+   "amount": true,
+   "tax": true,
+   "total": true
+  }
+ },
+ {
+  "language": "Tamil",
+  "file": "tamil-CAL-0992.txt",
+  "masked": [
+   "gstin",
+   "gstin",
+   "ifsc",
+   "email",
+   "phone",
+   "bank_account"
+  ],
+  "seconds": 456.3,
+  "error": "",
+  "bill": {
+   "supplier_id": "SUP-CALDER",
+   "bill_no": "CAL-0992",
+   "bill_date": "2026-11-03",
+   "po_number": "PO-2003",
+   "lines": [
+    {
+     "item_code": "CARTON-HD",
+     "description": "கனரக பேக்கிங் அட்டைப்பெட்டி",
+     "qty": 50.0,
+     "rate_inr": 118.0,
+     "amount_inr": 5900.0
+    }
+   ],
+   "tax_inr": 1062.0,
+   "total_inr": 6962.0
+  },
+  "checks": {
+   "supplier_id": true,
+   "bill_no": true,
+   "po_number": true,
+   "bill_date": true,
+   "one line": true,
+   "item_code": true,
+   "qty": true,
+   "rate": true,
+   "amount": true,
+   "tax": true,
+   "total": true
+  }
+ }
+]
