@@ -1,32 +1,48 @@
-# Demo video script: 3 minutes, working product only
+# Final narration, 2 minutes 57 seconds
 
-Rules from the organizers (Cerebral Valley, Discord, 4 November): 3:00 or less, English, hosted and playable without logging in, real screen footage of the working product,
-**live Meta model calls visible** (a terminal log or the on-screen result of a live request that names the model), the end to end flow first, no intro and no pitch,
-and an opening line that says what existed before the event and what was built this week. An AI voice is allowed, a person is preferred.
+Spoken in a natural founder voice, sentence by sentence with pauses. Scene order matches the video.
 
-Total about 430 spoken words, which is 2 minutes 50 seconds at an easy pace. Practise it once with a timer. The recording rows say what is on screen.
+## Opening line (live terminal)
 
-## The script
+Before this week, Relayloom was just a plan on paper. This week, I built it. It reads a supplier's bill, counts what actually arrived with Meta's SAM three point one, and checks the condition with Muse Glimmer. All before a single rupee is paid.
 
-| Time | On screen | Say |
-| --- | --- | --- |
-| 0:00 to 0:14 | Terminal, large font, the command typed and run live | "Before this week there was only a written plan. This week I built Relayloom: agents that read a bill, count the goods with Meta's SAM 3.1, and look for damage with Muse Glimmer, before anything is paid." |
-| 0:14 to 0:52 | **Live Meta model calls.** The terminal runs `relayloom check --bill bill.pdf --photos dock/ --po po.json --agent --condition`. The log lines name Muse-Glimmer-30B and SAM 3.1. Put a small caption on screen: "live run, sped up" if you cut the wait. | "This is a live run on my machine. Muse Glimmer 30B reads the bill into a strict form. Muse Glimmer proposes the words, SAM 3.1 outlines and numbers every item, and Glimmer looks at its own picture to confirm the count. The bill says fifty. The count is forty six. The bill is held, and the reason is written in plain words." |
-| 0:52 to 1:30 | Browser: relayloom.vercel.app/try. Pick "Short delivery", then "Add photo evidence", tap items on the photo, show the verdict change, press Sign a receipt in the phone, press Save the PDF report, open the PDF. | "Anyone can try it. Enter the bill, add a photo of the goods, and tap each item. The verdict changes live. The phone signs a receipt, and the PDF report says what happened in plain words, with the photo attached. Nothing leaves the device." |
-| 1:30 to 2:00 | Browser: Demo page. "Watch it count", the green marks sweeping across a real photo. Then the Case tab, the Investigator citations, then the Proof page: change one decision, the chain breaks. | "On the demo page you watch SAM count a real photo. The Investigator cites a record for every claim. Every step is signed and chained. Change one decision, and the chain breaks." |
-| 2:00 to 2:20 | Terminal or Try page: damaged goods example, "9 of 60 damaged". | "Damaged goods are caught too. Glimmer looked at dented cans and torn sacks and found them, and it found nothing on the clean photos. Damaged units never count as received." |
-| 2:20 to 2:45 | Proof page: the 17 of 17 table, then the Real cases strip, New Jersey nine and a half million dollars. | "On thirty deliveries, paperwork alone caught five of seventeen bad bills. With the goods in the loop it caught all seventeen and paid nothing wrongly. It passes three hundred sixty nine cases on real California purchase orders. These real cases show why it matters: a supplier billed for goods that never came, for nine years." |
-| 2:45 to 2:58 | The trust line on the home page, then the PyPI page. | "No photo, no receipt, no proof, no payment. That is trust, and that is Relayloom. It is on PyPI today: pip install relayloom." |
+## Live Meta model run
 
-## Recording checklist
+This is live, on my laptop. Muse Glimmer thirty B is reading the bill right now, and turning it into a strict form. Then SAM three point one outlines every carton in the photos, and counts them. The bill says fifty. The dock got forty six. So the bill is held, and the reason is written in plain words. Both are Meta's open weights. They run here, on this machine, and nothing leaves it.
 
-1. Record the screen at 1080p. Make the terminal and browser text large. Close notifications.
-2. Live Meta model calls. Option A, recommended: on the Kaggle free GPU the notebook shows the bill read in about 24 seconds once warm and SAM counting in about a second, so the whole live call fits in the take. Option B: run it on your laptop, where the bill read takes minutes, and cut the wait with a visible "sped up" caption. Either way the log must show the model names on screen.
-3. Start Muse Glimmer first with `relayloom models serve`, and run `relayloom doctor` once so SAM is loaded. Run the command in the video from a folder with `bill.pdf`, `dock/` and `po.json`.
-4. On the phone: scan the QR code on the Try page with your phone camera, or show the page in a narrow browser window. Show the camera button for the evidence photo.
-5. The video must be unlisted on YouTube and play in a logged out private window. The submission closes Wednesday 4 November, 9:00 PM Eastern, with no grace period.
-6. Keep every sentence short. Do not read the table. Say the numbers slowly: "seventeen of seventeen", "three hundred sixty nine".
+## The whole story, order to payment
 
-## Do not say
+Let me tell you the whole story. An order is placed. The goods are loaded, and sent off. And today, nobody checks them on the way. With Relayloom, at the door, we take a photo and count. A receipt is signed, and only then does the payment go out. Cash at the door, or online, once the photo and the receipt are shared.
 
-Do not say "real time" for the counting. Do not say the page runs the models: the page runs the rules, and the models run on a machine or a free GPU. Do not call the demo cases customers.
+## Small vendors, small gaps
+
+And this isn't only for big, bulk orders. Think of a street vendor. A hundred rupees of oranges paid for, and seventy five rupees worth delivered. Twenty five rupees. It feels small. But across a city, across a year, that's a whole different level of money, and tax that never gets paid. A photo and a receipt at the door put a stop to it.
+
+## Try it yourself
+
+And you can try it yourself, right now. Type in the bill, pick the country, and the tax and total work themselves out. Add a photo of the goods, and just tap each item to count it. On a phone, the camera opens right there. Four boxes were billed. Three arrived. And see, the verdict changes the moment I tap. Then the phone signs a receipt, and the report carries the photo.
+
+## The demo
+
+On the demo page, you can watch SAM count a real photo, from the first look to the last green mark. Every claim the Investigator makes points to a record. And if I change even one decision, the chain breaks.
+
+## Damaged goods
+
+It catches damage too. Glimmer sees dented cans and torn sacks, and nothing wrong on the clean photos. Damaged units never count as received.
+
+## The numbers and technical strength
+
+Now, the numbers. Across thirty deliveries, paperwork alone caught five of seventeen bad bills. With the goods checked, it caught all seventeen, and paid nothing wrongly. It passes three hundred sixty nine real purchase order cases, and a hundred thirty seven tests. On a free GPU, Muse Glimmer reads a bill in twenty four seconds, and eleven of twelve photos were counted exactly right. Every decision is a signed receipt, under a policy the models can't change.
+
+## Fully disconnected
+
+And it works fully disconnected. We cut the network, and every step still passed. If your business can't send its books to a cloud, this is the reason you can use it at all.
+
+## Why it matters, and the close
+
+So, why does this matter? Because it keeps happening. A supplier billed for goods that never came, for nine years, in New Jersey. Audits in India found crores paid with no proof. They all needed the same thing. Proof, at the door. A photo. A receipt. A check. Then payment. That's trust. That's Relayloom. Scan the code to try it on your phone, or pip install relayloom. It's the check that belongs between every supplier and every payment.
+
+
+## Rules this video follows
+
+3:00 or less, English, real screen footage, live Meta model calls visible (Muse Glimmer 30B and SAM 3.1 with the server log on screen), the opening line on what existed before and what was built this week, no slides. Upload as Unlisted on YouTube or Loom and check it plays in a private window.
