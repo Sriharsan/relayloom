@@ -93,7 +93,35 @@ for pid in sorted(truth)[:12]:
     print({k: v for k, v in rows[-1].items() if k != 'trace'})
 json.dump({'route': ROUTE, 'bill_read_seconds': bill_seconds, 'rows': rows}, open('/kaggle/working/gpu/agent-loop.json', 'w'), indent=1)"""
 
-CELLS = [("markdown", INTRO), ("code", GPU), ("code", INSTALL), ("code", LLAMA), ("code", MODELS), ("code", SERVER), ("code", SETUP), ("code", LOOP)]
+TUNING = """# Can Glimmer read the same bill faster? Same bill, same schema, different reasoning settings; every variant is timed and checked against the schema.
+from relayloom.ap.schema import BILL_SCHEMA, validate_bill
+from relayloom.ap.models import READER_SYSTEM, parse_json
+masked = mask(text)[0]
+variants = {
+    'low (what the product uses)': None,
+    'reasoning budget 0': {'reasoning_budget': 0},
+    'reasoning strength none': {'chat_template_kwargs': {'reasoning_strength': 'none'}},
+    'reasoning strength minimal': {'chat_template_kwargs': {'reasoning_strength': 'minimal'}},
+}
+tuning = []
+for name, extra in variants.items():
+    try:
+        reply = glimmer.chat(READER_SYSTEM, 'Bill text:\n<<<\n' + masked + '\n>>>', BILL_SCHEMA, extra=extra)
+        ok = validate_bill(parse_json(reply['content']))['total_inr'] == read['bill']['total_inr']
+        row = {'variant': name, 'seconds': reply['seconds'], 'valid_and_same_total': ok, 'completion_tokens': reply['usage'].get('completion_tokens'),
+               'reasoning_chars': reply['reasoning_chars'], 'tokens_per_second': round(reply['timings'].get('predicted_per_second', 0), 1),
+               'prompt_tokens_per_second': round(reply['timings'].get('prompt_per_second', 0), 1)}
+    except Exception as error:
+        row = {'variant': name, 'error': str(error)[:160]}
+    tuning.append(row)
+    print(row)
+json.dump(tuning, open('/kaggle/working/gpu/glimmer-tuning.json', 'w'), indent=1)"""
+
+FINAL = """# Everything in one line each, so the run log carries the result
+print('RESULT_AGENT', json.dumps({'route': ROUTE, 'bill_read_seconds': bill_seconds, 'rows': rows}))
+print('RESULT_TUNING', json.dumps(tuning))"""
+
+CELLS = [("markdown", INTRO), ("code", GPU), ("code", INSTALL), ("code", LLAMA), ("code", MODELS), ("code", SERVER), ("code", SETUP), ("code", TUNING), ("code", LOOP), ("code", FINAL)]
 
 
 def main():
