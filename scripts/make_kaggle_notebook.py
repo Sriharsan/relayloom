@@ -117,11 +117,35 @@ for name, extra in variants.items():
     print(row)
 json.dump(tuning, open('/kaggle/working/gpu/glimmer-tuning.json', 'w'), indent=1)"""
 
+TRACK = """# Count items as they cross a line in a video: SAM 3.1 follows every item, code counts each id once (relayloom/ap/crossing.py)
+import subprocess, glob
+from relayloom.ap.crossing import count_crossings
+videos = sorted(glob.glob('/kaggle/input/**/*.mp4', recursive=True)) or [str(pathlib.Path('fixtures/video/dock-delivery.mp4').resolve())]
+tracking = []
+for video in videos[:3]:
+    started = time.time()
+    done = subprocess.run([sys.executable, '-I', 'relayloom/ap/track_worker.py', '/kaggle/temp/models/sam3.1_multiplex.pt', video, 'cardboard box', '--every', '3'],
+                          capture_output=True, text=True, timeout=1500)
+    if done.returncode != 0:
+        tracking.append({'video': os.path.basename(video), 'error': done.stderr.strip()[-300:]}); print(tracking[-1]); continue
+    tracked = json.loads(done.stdout.strip().splitlines()[-1])
+    tracks = {k: [tuple(p) for p in v] for k, v in tracked['tracks'].items()}
+    best = {}
+    for axis in ('x', 'y'):
+        found = count_crossings(tracks, 0.5, axis, 'either', margin=0.02)
+        best[axis] = found['count']
+    row = {'video': os.path.basename(video), 'device': tracked['device'], 'tracked_seconds': tracked['seconds'], 'frames_tracked': tracked['frames'],
+           'clip_fps': tracked['fps'], 'tracks_seen': len(tracks), 'crossings_vertical_line': best['x'], 'crossings_horizontal_line': best['y'],
+           'wall_seconds': round(time.time() - started, 1)}
+    tracking.append(row); print(row)
+json.dump(tracking, open('/kaggle/working/gpu/tracking.json', 'w'), indent=1)"""
+
 FINAL = """# Everything in one line each, so the run log carries the result
 print('RESULT_AGENT', json.dumps({'route': ROUTE, 'bill_read_seconds': bill_seconds, 'rows': rows}))
-print('RESULT_TUNING', json.dumps(tuning))"""
+print('RESULT_TUNING', json.dumps(tuning))
+print('RESULT_TRACKING', json.dumps(tracking))"""
 
-CELLS = [("markdown", INTRO), ("code", GPU), ("code", INSTALL), ("code", LLAMA), ("code", MODELS), ("code", SERVER), ("code", SETUP), ("code", TUNING), ("code", LOOP), ("code", FINAL)]
+CELLS = [("markdown", INTRO), ("code", GPU), ("code", INSTALL), ("code", LLAMA), ("code", MODELS), ("code", SERVER), ("code", SETUP), ("code", TUNING), ("code", LOOP), ("code", TRACK), ("code", FINAL)]
 
 
 def main():
