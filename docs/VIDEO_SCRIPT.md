@@ -1,4 +1,4 @@
-# Final narration, 2 minutes 57 seconds
+# Final narration, under 3 minutes
 
 Spoken in a natural founder voice, sentence by sentence with pauses. Scene order matches the video.
 
@@ -16,7 +16,7 @@ Let me tell you the whole story. An order is placed. The goods are loaded, and s
 
 ## Small vendors, small gaps
 
-And this isn't only for big, bulk orders. Think of a street vendor. A hundred rupees of oranges paid for, and seventy five rupees worth delivered. Twenty five rupees. It feels small. But across a city, across a year, that's a whole different level of money, and tax that never gets paid. A photo and a receipt at the door put a stop to it.
+And this isn't only for big, bulk orders. Think of a street vendor, buying oranges from a supplier. He pays for a hundred rupees worth, and only seventy five rupees worth reaches his stall. The other twenty five rupees were paid for goods that never came. Across a city, across a year, that's a whole different level of money, and tax that never gets paid. A photo and a receipt at the door put a stop to it.
 
 ## Try it yourself
 
@@ -32,7 +32,7 @@ It catches damage too. Glimmer sees dented cans and torn sacks, and nothing wron
 
 ## The numbers and technical strength
 
-Now, the numbers. Across thirty deliveries, paperwork alone caught five of seventeen bad bills. With the goods checked, it caught all seventeen, and paid nothing wrongly. It passes three hundred sixty nine real purchase order cases, and a hundred thirty seven tests. On a free GPU, Muse Glimmer reads a bill in twenty four seconds, and eleven of twelve photos were counted exactly right. Every decision is a signed receipt, under a policy the models can't change.
+Across thirty deliveries, paperwork alone caught five of seventeen bad bills. With the goods checked, it caught all seventeen, and paid nothing wrongly. It passes three hundred sixty nine real purchase order cases, and a hundred thirty seven tests. On a free GPU, Muse Glimmer reads a bill in twenty four seconds, and eleven of twelve photos were counted exactly right. Every decision is a signed receipt, under a policy the models can't change.
 
 ## Fully disconnected
 
@@ -45,4 +45,4 @@ So, why does this matter? Because it keeps happening. A supplier billed for good
 
 ## Rules this video follows
 
-3:00 or less, English, real screen footage, live Meta model calls visible (Muse Glimmer 30B and SAM 3.1 with the server log on screen), the opening line on what existed before and what was built this week, no slides. Upload as Unlisted on YouTube or Loom and check it plays in a private window.
+3:00 or less, English, real screen footage, live Meta model calls visible, the opening line on what existed before and what was built this week, no slides. Upload as Unlisted and check it plays in a private window.
