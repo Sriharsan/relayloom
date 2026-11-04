@@ -65,7 +65,7 @@ class LookAgentTests(unittest.TestCase):
         found = agent.look(Path("p.jpg"), "Coolant can 5 litre", "k")
         self.assertEqual((found["count"], found["agreed"]), (18, True))
         self.assertIn("looked at the overlay", found["confirmed_by"])
-        self.assertEqual(sam.calls, ["coolant can", "can", "coolant"])
+        self.assertEqual(sam.calls, ["coolant can", "can"])  # Glimmer looks as soon as one word has found something
 
     def test_a_good_look_never_overrides_a_contradicting_count(self):
         agent, _, _ = self.agent({"box": 40, "carton": 44}, ["box", "carton"], verdict="good")
@@ -78,7 +78,7 @@ class LookAgentTests(unittest.TestCase):
                                          ["coolant can", "can", "plastic container", "coolant bottle"], verdict="good", max_calls=4)
         found = agent.look(Path("p.jpg"), "Coolant can 5 litre", "k")
         self.assertEqual((found["count"], found["agreed"]), (24, True))
-        self.assertEqual(len(sam.calls), 4)
+        self.assertEqual(len(sam.calls), 2)
         self.assertTrue([s for s in found["trace"] if s["step"] == "look"])
 
     def test_a_model_that_gives_no_json_never_crashes_the_run_and_the_bill_is_held(self):

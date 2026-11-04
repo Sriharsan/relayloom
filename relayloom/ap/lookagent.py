@@ -92,7 +92,8 @@ class LookAgent:
             queue += clean_words(self.memory[description], queue)
         agreed = None
         for _ in range(3):  # a round of SAM tries, then Glimmer looks if nothing agrees yet, then new words
-            while len(tries) < self.max_calls and queue and not agreed:
+            # once two words have run and one found something, Glimmer looks before more words are spent
+            while len(tries) < self.max_calls and queue and not agreed and not (len(tries) >= 2 and any(x["count"] and "verdict" not in x for x in tries)):
                 call_sam(queue.pop(0))
                 agreed = self.agreement(tries)
             if agreed:

@@ -161,11 +161,9 @@ json.dump(tracking, open('/kaggle/working/gpu/tracking.json', 'w'), indent=1)"""
 
 FINAL = """# Everything in one line each, so the run log carries the result
 print('RESULT_AGENT', json.dumps({'route': ROUTE, 'bill_read_seconds': bill_seconds, 'rows': rows}))
-print('RESULT_TUNING', json.dumps(tuning))
-print('RESULT_TRACKING', json.dumps(tracking))
 print('RESULT_REAL', json.dumps(real_rows))"""
 
-CELLS = [("markdown", INTRO), ("code", GPU), ("code", INSTALL), ("code", LLAMA), ("code", MODELS), ("code", SERVER), ("code", SETUP), ("code", LOOP), ("code", REALLOOP), ("code", TRACK), ("code", FINAL)]
+CELLS = [("markdown", INTRO), ("code", GPU), ("code", INSTALL), ("code", LLAMA), ("code", MODELS), ("code", SERVER), ("code", SETUP), ("code", LOOP), ("code", REALLOOP), ("code", FINAL)]
 
 
 def main():
