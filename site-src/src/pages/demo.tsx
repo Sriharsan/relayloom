@@ -6,7 +6,8 @@ import { Pill, RunLabel, StepPill } from "@/components/bits";
 import { FindingCard, citeId } from "@/components/finding";
 import { run as runData } from "@/data/site";
 import { Link } from "@/lib/router";
-import { downloadReceipt } from "@/lib/receiptpdf";
+import { buildDemoReport } from "@/lib/demoreport";
+import { makeReport, savePdf } from "@/lib/report";
 import { DetectReveal, RealCountPlayer } from "@/components/detect";
 
 type Tab = "today" | "case" | "approvals";
@@ -324,7 +325,7 @@ function CaseView({ c }: { c: BenchCase }) {
             </Card>
         )}
         <div className={c.investigation ? "" : "lg:col-span-2"}>
-        <Card paper title="Receipt chain" right={<span className="flex items-center gap-3">{runData.receipts_verified && <span className="stamp">Verified</span>}<button type="button" onClick={() => downloadReceipt(receipts, runData.receipts_verified, c.bill_no)} className="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] font-medium text-foreground transition-colors duration-150 hover:bg-raised">Download receipt (PDF)</button></span>}>
+        <Card paper title="Receipt chain" right={<span className="flex items-center gap-3">{runData.receipts_verified && <span className="stamp">Verified</span>}<button type="button" onClick={async () => savePdf(makeReport(await buildDemoReport(c, receipts, runData.receipts_verified, runData.public_key)), `relayloom-receipt-${c.bill_no}.pdf`)} className="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] font-medium text-foreground transition-colors duration-150 hover:bg-raised">Download receipt (PDF)</button></span>}>
           <ul className="max-h-[420px] overflow-y-auto px-5 py-4">
             {receipts.map((r, i) => (
               <li key={r.hash} className="relative pb-4 pl-6 last:pb-0">
