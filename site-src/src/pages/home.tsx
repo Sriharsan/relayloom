@@ -6,6 +6,7 @@ import { CopyBlock, Photo } from "@/components/bits";
 import { RealCases } from "@/components/realcases";
 import { Vision } from "@/components/vision";
 import { TrustLine } from "@/components/trustline";
+import { AirGap, FlowStory, SmallGaps } from "@/components/story";
 
 
 const btn =
@@ -320,11 +321,14 @@ export function Home() {
     <>
       <Hero />
       <Strip />
+      <FlowStory />
+      <SmallGaps />
       <TrustLine />
       <RealCases />
       <Looks />
       <Goods />
       <Arrival />
+      <AirGap />
       <RunIt />
       <Vision />
       <Closing />
