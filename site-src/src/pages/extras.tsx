@@ -32,7 +32,7 @@ export function Boundary() {
                 <g key={label}>
                   <rect x={x} y={y} width="176" height="68" rx="10" fill="var(--surface)" stroke="var(--line)" />
                   <circle cx={x + 20} cy={y + 24} r="3.5" fill={model ? "var(--amber)" : "var(--green)"} />
-                  <text x={x + 34} y={y + 28} fill="var(--foreground)" fontSize="13" fontFamily="Candara, Nunito Sans, sans-serif" fontWeight="500">{label}</text>
+                  <text x={x + 34} y={y + 28} fill="var(--foreground)" fontSize="13" fontFamily="Figtree, Inter, sans-serif" fontWeight="500">{label}</text>
                   <text x={x + 20} y={y + 50} fill="var(--ink-muted)" fontSize="10.5" fontFamily="JetBrains Mono, monospace">{model ? "open weight model" : "on machine"}</text>
                 </g>
               );

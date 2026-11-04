@@ -10,8 +10,8 @@
 @custom-variant light (&:is(.light *));
 
 @theme inline {
-  --font-sans: Inter, "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
-  --font-display: Candara, "Nunito Sans", Calibri, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: Figtree, Inter, "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-display: Figtree, Inter, "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
   --color-background: var(--background);
   --color-surface: var(--surface);
