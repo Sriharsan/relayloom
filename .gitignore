@@ -38,3 +38,5 @@ docs/video/
 *.egg-info/
 dist/
 build/
+
+!tests/data/

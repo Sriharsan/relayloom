@@ -1,0 +1,2035 @@
+{
+ "source": "State of California, Purchase Order Data 2012-2015, https://data.ca.gov/dataset/purchase-order-data",
+ "note": "Public data. The catalog entry lists no licence, so only this small cited sample is kept.",
+ "orders": [
+  [
+   {
+    "Purchase Order Number": "9507",
+    "Supplier Code": 1788842,
+    "Supplier Name": "The Human Factor",
+    "Item Name": "\"Using Your Brain to Win\" Training",
+    "Item Description": "\"Using Your Brain to Win\" Training",
+    "Quantity": 1,
+    "Unit Price": "$4,500.00 ",
+    "Total Price": "$4,500.00 ",
+    "Acquisition Type": "NON-IT Services",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "California Department of Technology"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "DOF 0047-13",
+    "Supplier Code": 1743541,
+    "Supplier Name": "Gabriel, Roeder, Smith & Company",
+    "Item Name": "Actuarial Valuation Services",
+    "Item Description": "Actuarial Valuation Services",
+    "Quantity": 1,
+    "Unit Price": "$41,850.00 ",
+    "Total Price": "$41,850.00 ",
+    "Acquisition Type": "NON-IT Services",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Finance, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "9513",
+    "Supplier Code": 1788444,
+    "Supplier Name": "Taborda Solutions Inc",
+    "Item Name": "BMC BladeLogic Network Automation SW & Support Renewal",
+    "Item Description": "BMC BladeLogic Network Automation SW & Support Renewal",
+    "Quantity": 1,
+    "Unit Price": "$36,120.00 ",
+    "Total Price": "$36,120.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "California Department of Technology"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "3171342",
+    "Supplier Code": 1058185,
+    "Supplier Name": "Carter-Kelly, Inc.",
+    "Item Name": "C.O. 7R1",
+    "Item Description": "C.O. 7R1",
+    "Quantity": 1,
+    "Unit Price": "$1,305.00 ",
+    "Total Price": "$1,305.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "General Services, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "12-3-190-086",
+    "Supplier Code": 1748932,
+    "Supplier Name": "Innovative Technologies",
+    "Item Name": "Cash Register",
+    "Item Description": "Talking Cash Register",
+    "Quantity": 1,
+    "Unit Price": "$10,518.38 ",
+    "Total Price": "$10,518.38 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "3175369",
+    "Supplier Code": 1740409,
+    "Supplier Name": "Martin Olinick",
+    "Item Name": "Contract",
+    "Item Description": "OAH SE Pro Tem Judge",
+    "Quantity": 1,
+    "Unit Price": "$75,000.00 ",
+    "Total Price": "$75,000.00 ",
+    "Acquisition Type": "NON-IT Services",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "General Services, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "REQ0012083",
+    "Supplier Code": 1148380,
+    "Supplier Name": "AT&T Mobility",
+    "Item Name": "Discount Apple iPhone 4s 8GB Black",
+    "Item Description": "Discount Apple iPhone 4s 8GB Black",
+    "Quantity": 1,
+    "Unit Price": "($450.00)",
+    "Total Price": "($450.00)",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "13-340U",
+    "Supplier Code": 1018638,
+    "Supplier Name": "CONFIDENTIAL - Information Withheld",
+    "Item Name": "Expert Witness",
+    "Item Description": "Withheld 01 \u00e2\u0080\u0093 Some or/all of the information in this contract\n  is exempt from disclosure.  If you need information, contact department.",
+    "Quantity": 1,
+    "Unit Price": "$15,000.00 ",
+    "Total Price": "$15,000.00 ",
+    "Acquisition Type": "NON-IT Services",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Justice, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "P4619AYI",
+    "Supplier Code": 1000656,
+    "Supplier Name": "Sysco",
+    "Item Name": "Food for EDrip",
+    "Item Description": "Food for EDrip",
+    "Quantity": 1,
+    "Unit Price": "$1,412.60 ",
+    "Total Price": "$1,412.60 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Conservation Corps, California"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500289328",
+    "Supplier Code": 1758151,
+    "Supplier Name": "US Foodservice",
+    "Item Name": "Green Beans",
+    "Item Description": "Green Beans",
+    "Quantity": 1,
+    "Unit Price": "$10,000.00 ",
+    "Total Price": "$10,000.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "REQ0010633",
+    "Supplier Code": 1613860,
+    "Supplier Name": "Ikon Office Solutions, Inc., A Ricoh Company",
+    "Item Name": "Image Software, CDQUERY",
+    "Item Description": "Imageing Software, CDQUERY",
+    "Quantity": 1,
+    "Unit Price": "$210.00 ",
+    "Total Price": "$210.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500160846",
+    "Supplier Code": 1752319,
+    "Supplier Name": "McKesson Medical - Surgical Minnesota Su",
+    "Item Name": "Latex Exam Gloves",
+    "Item Description": "Latex Exam Gloves",
+    "Quantity": 1,
+    "Unit Price": "$9,264.00 ",
+    "Total Price": "$9,264.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Correctional Health Care Services"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "12-G0320",
+    "Supplier Code": 2319,
+    "Supplier Name": "Burkett's Office Supplies",
+    "Item Name": "Marker",
+    "Item Description": "markers",
+    "Quantity": 1,
+    "Unit Price": "$0.74 ",
+    "Total Price": "$0.74 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Pesticide Regulation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "C1351005A",
+    "Supplier Code": 21034,
+    "Supplier Name": "Wilson, Ihrig & Associates, Inc.",
+    "Item Name": "Noise Monitoring",
+    "Item Description": "Noise Monitoring Services, required as the result of a law suit.",
+    "Quantity": 1,
+    "Unit Price": "$22,400.00 ",
+    "Total Price": "$22,400.00 ",
+    "Acquisition Type": "NON-IT Services",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Parks & Recreation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "PO742215",
+    "Supplier Code": 1459140,
+    "Supplier Name": "Fisher Scientific LLC",
+    "Item Name": "PO742215",
+    "Item Description": "US STYLE 3 PRONG POWER CORD",
+    "Quantity": 1,
+    "Unit Price": "$13.85 ",
+    "Total Price": "$13.85 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Fish and Wildlife, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "3051-016",
+    "Supplier Code": 1769927,
+    "Supplier Name": "Gartner, Inc.",
+    "Item Name": "Proprietary Research Subscription Services",
+    "Item Description": "Proprietary Research Subscription Services",
+    "Quantity": 1,
+    "Unit Price": "$77,320.00 ",
+    "Total Price": "$77,320.00 ",
+    "Acquisition Type": "IT Services",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Food and Agriculture, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "041H3053",
+    "Supplier Code": 13274,
+    "Supplier Name": "Western Blue Corporation",
+    "Item Name": "SOFTWARE",
+    "Item Description": "SOFTWARE",
+    "Quantity": 1,
+    "Unit Price": "$320.96 ",
+    "Total Price": "$320.96 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Highway Patrol, California"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "REQ0011120",
+    "Supplier Code": 1732192,
+    "Supplier Name": "CAPITOL CITY UNIFORMS & EQUIPMENT, LLC",
+    "Item Name": "Shipping and Handling",
+    "Item Description": "Shipping and Handling",
+    "Quantity": 1,
+    "Unit Price": "$15.00 ",
+    "Total Price": "$15.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "50-64-35",
+    "Supplier Code": 47190,
+    "Supplier Name": "Office Xpress Inc",
+    "Item Name": "TRAY,MESH,LETTER,BK",
+    "Item Description": "TRAY,MESH,LETTER,BK",
+    "Quantity": 1,
+    "Unit Price": "$4.72 ",
+    "Total Price": "$4.72 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Industrial Relations, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500253702",
+    "Supplier Code": 1000624,
+    "Supplier Name": "Food Service Systems Inc",
+    "Item Name": "VEGETABLES",
+    "Item Description": "ASST VEGETABLES",
+    "Quantity": 1,
+    "Unit Price": "$7,181.85 ",
+    "Total Price": "$7,181.85 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "51500000162",
+    "Supplier Code": 22123,
+    "Supplier Name": "QUALITY CONTROL SERVICES",
+    "Item Name": "absorbent",
+    "Item Description": "absorbent",
+    "Quantity": 1,
+    "Unit Price": "$14,850.01 ",
+    "Total Price": "$14,850.01 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Transportation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500197416",
+    "Supplier Code": 1065902,
+    "Supplier Name": "Prison Industry Authority",
+    "Item Name": "chairs",
+    "Item Description": "Chairs",
+    "Quantity": 1,
+    "Unit Price": "$78,200.00 ",
+    "Total Price": "$78,200.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Correctional Health Care Services"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "2328",
+    "Supplier Code": 1738091,
+    "Supplier Name": "California Chamber of Commerce",
+    "Item Name": "employment federal and state guidelines poster",
+    "Item Description": "employment federal and state guidelines poster",
+    "Quantity": 1,
+    "Unit Price": "$1,294.65 ",
+    "Total Price": "$1,294.65 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Veterans Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500161821",
+    "Supplier Code": 1221900,
+    "Supplier Name": "rdk distributing co., llc",
+    "Item Name": "fruit",
+    "Item Description": "fresh fruit and vegetables",
+    "Quantity": 1,
+    "Unit Price": "$30,547.61 ",
+    "Total Price": "$30,547.61 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "3169974",
+    "Supplier Code": 27292,
+    "Supplier Name": "All Business Machines, Inc.",
+    "Item Name": "maint. equip.",
+    "Item Description": "maint. equipment",
+    "Quantity": 1,
+    "Unit Price": "$5,160.83 ",
+    "Total Price": "$5,160.83 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "General Services, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500274064",
+    "Supplier Code": 8485,
+    "Supplier Name": "Midtown Stationers",
+    "Item Name": "paper",
+    "Item Description": "copy paper white",
+    "Quantity": 1,
+    "Unit Price": "$23,352.00 ",
+    "Total Price": "$23,352.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "1613000204",
+    "Supplier Code": 1553400,
+    "Supplier Name": "SIERRA SAFETY COMPANY",
+    "Item Name": "sign",
+    "Item Description": "sign",
+    "Quantity": 1,
+    "Unit Price": "$52,268.79 ",
+    "Total Price": "$52,268.79 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Transportation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "20A0147",
+    "Supplier Code": 1014821,
+    "Supplier Name": "GLOBAL KNOWLEDGE NETWORK INC",
+    "Item Name": "training",
+    "Item Description": "training",
+    "Quantity": 1,
+    "Unit Price": "$40,000.00 ",
+    "Total Price": "$40,000.00 ",
+    "Acquisition Type": "IT Services",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Transportation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "IP140011",
+    "Supplier Code": 1751266,
+    "Supplier Name": "Angus-Hamer Inc.",
+    "Item Name": "DTI 4400 NX 2-Way 3Y",
+    "Item Description": "DTI 4400 NX 2-Way 3Y",
+    "Quantity": 2,
+    "Unit Price": "$20,695.50 ",
+    "Total Price": "$41,391.00 ",
+    "Acquisition Type": "IT Services",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Child Support Services, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "13-D055",
+    "Supplier Code": 1752123,
+    "Supplier Name": "BYRON LING dba BRIDGE MICRO",
+    "Item Name": "Software",
+    "Item Description": "Adobe LiveCycle Designer software.",
+    "Quantity": 2,
+    "Unit Price": "$269.50 ",
+    "Total Price": "$539.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Secretary of State"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "12560223",
+    "Supplier Code": 5953,
+    "Supplier Name": "BOB HICKS TURF EQUIP. CO. INC.",
+    "Item Name": "Hub, Fan Mount",
+    "Item Description": "Hub, Fan Mount",
+    "Quantity": 3,
+    "Unit Price": "$1.40 ",
+    "Total Price": "$4.20 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "State Hospitals, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "13-G0341",
+    "Supplier Code": 4726,
+    "Supplier Name": "EXPRESS Office Products, Inc.",
+    "Item Name": "Post It 2x2",
+    "Item Description": "notes",
+    "Quantity": 4,
+    "Unit Price": "$7.91 ",
+    "Total Price": "$31.64 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Pesticide Regulation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500176328",
+    "Supplier Code": 1001584,
+    "Supplier Name": "Grainger Industrial Supply",
+    "Item Name": "Pipe, 3/4 x 10', Threaded Black",
+    "Item Description": "5E551",
+    "Quantity": 5,
+    "Unit Price": "$32.94 ",
+    "Total Price": "$164.70 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500207329",
+    "Supplier Code": 18089,
+    "Supplier Name": "C & S INDUSTRIAL SUPPLY",
+    "Item Name": "moen cart",
+    "Item Description": "moen cart",
+    "Quantity": 6,
+    "Unit Price": "$15.95 ",
+    "Total Price": "$95.70 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "12-G0314",
+    "Supplier Code": 14995,
+    "Supplier Name": "Horizon Business Solutions, Inc.",
+    "Item Name": "End Tab Folders",
+    "Item Description": "folders",
+    "Quantity": 10,
+    "Unit Price": "$28.05 ",
+    "Total Price": "$280.50 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Pesticide Regulation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "R0000351",
+    "Supplier Code": 1398400,
+    "Supplier Name": "MSC Industrial Supply Co",
+    "Item Name": "WHEELCHAIR",
+    "Item Description": "TREX 2SA TRACER 20X16\"",
+    "Quantity": 12,
+    "Unit Price": "$223.00 ",
+    "Total Price": "$2,676.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Veterans Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "CS250223",
+    "Supplier Code": 27456,
+    "Supplier Name": "ARTEXT INC",
+    "Item Name": "Sheets",
+    "Item Description": "Fitted bed sheets 80x35",
+    "Quantity": 20,
+    "Unit Price": "$63.70 ",
+    "Total Price": "$1,274.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Developmental Services, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "76WD2009",
+    "Supplier Code": 1729540,
+    "Supplier Name": "Maximum K9 Inc",
+    "Item Name": "TOY",
+    "Item Description": "TOY",
+    "Quantity": 30,
+    "Unit Price": "$7.61 ",
+    "Total Price": "$228.30 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Highway Patrol, California"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500174266",
+    "Supplier Code": 1729526,
+    "Supplier Name": "ABC Ventures LLC",
+    "Item Name": "RICE",
+    "Item Description": "RICE, BROWN MEDIUM GRAIN",
+    "Quantity": 50,
+    "Unit Price": "$24.82 ",
+    "Total Price": "$1,241.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500220257",
+    "Supplier Code": 42140,
+    "Supplier Name": "Office Pro",
+    "Item Name": "BINDER,PRESSBOARD,8-1/2\" X 11\",BLK",
+    "Item Description": "BINDER,PRESSBOARD,8-1/2\" X 11\",BLK",
+    "Quantity": 100,
+    "Unit Price": "$1.46 ",
+    "Total Price": "$146.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Water Resources, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500242375",
+    "Supplier Code": 18030,
+    "Supplier Name": "American Textile Systems",
+    "Item Name": "PILLOW CASES",
+    "Item Description": "PILLOW CASES",
+    "Quantity": 175,
+    "Unit Price": "$9.02 ",
+    "Total Price": "$1,578.50 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "CD0040712",
+    "Supplier Code": 1001584,
+    "Supplier Name": "Grainger Industrial Supply",
+    "Item Name": "Kil-Oder",
+    "Item Description": "Kil-Oder",
+    "Quantity": 360,
+    "Unit Price": "$2.82 ",
+    "Total Price": "$1,015.20 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "State Hospitals, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500167110",
+    "Supplier Code": 8801,
+    "Supplier Name": "MENDOZA DISTRIBUTING",
+    "Item Name": "Icecream Vanilla 12DZ/CS",
+    "Item Description": "Icecream Vanilla 12DZ/CS",
+    "Quantity": 1100,
+    "Unit Price": "$1.95 ",
+    "Total Price": "$2,145.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "41400000288",
+    "Supplier Code": 1000652,
+    "Supplier Name": "Sundance Corporate Supply",
+    "Item Name": "screws",
+    "Item Description": "1/2\" screws",
+    "Quantity": 4000,
+    "Unit Price": "$1.69 ",
+    "Total Price": "$6,760.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Transportation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500246035",
+    "Supplier Code": 1757013,
+    "Supplier Name": "HDR DISTRIBUTING CO.",
+    "Item Name": "VARIED PRODUCE",
+    "Item Description": "VARIED PRODUCE",
+    "Quantity": 8857,
+    "Unit Price": "$1.00 ",
+    "Total Price": "$8,857.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "3170764-1",
+    "Supplier Code": 8485,
+    "Supplier Name": "Midtown Stationers",
+    "Item Name": "100#  finch casa opaque cover white 23 x 35",
+    "Item Description": "100#  finch casa opaque cover white 23 x 35",
+    "Quantity": 1.5,
+    "Unit Price": "$327.80 ",
+    "Total Price": "$491.70 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "General Services, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "3165510",
+    "Supplier Code": 41916,
+    "Supplier Name": "Paper Distributors Inc",
+    "Item Name": "20# CF NCR Pink 8.5 x 11",
+    "Item Description": "20#  CF NCR Pink 8.5 x 11",
+    "Quantity": 1.5,
+    "Unit Price": "$19.62 ",
+    "Total Price": "$29.43 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "General Services, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "AE120059",
+    "Supplier Code": 50494,
+    "Supplier Name": "Vicom Wireless",
+    "Item Name": "Tower Riggers",
+    "Item Description": "labor fee",
+    "Quantity": 1.5,
+    "Unit Price": "$3,800.00 ",
+    "Total Price": "$5,700.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Forestry and Fire Protection, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "SN353154",
+    "Supplier Code": 1001584,
+    "Supplier Name": "Grainger Industrial Supply",
+    "Item Name": "Tongs",
+    "Item Description": "Utility tong",
+    "Quantity": 11.83,
+    "Unit Price": "$12.00 ",
+    "Total Price": "$141.96 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Developmental Services, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "1UI4F477",
+    "Supplier Code": 1790842,
+    "Supplier Name": "OCCIDENTAL FIRE COMMUNITY SERVICES",
+    "Item Name": "FIRE FIGHTERS LOCAL GOVT (X3)",
+    "Item Description": "FIRE FIGHTERS (X3) AT $30 P/HOUR EACH",
+    "Quantity": 33.5,
+    "Unit Price": "$90.00 ",
+    "Total Price": "$3,015.00 ",
+    "Acquisition Type": "NON-IT Services",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Forestry and Fire Protection, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "P1400782",
+    "Supplier Code": 1015494,
+    "Supplier Name": "MTM RECOGNITION",
+    "Item Name": "Anniversary Clock",
+    "Item Description": "Anniversary Clock",
+    "Quantity": 59.62,
+    "Unit Price": "$2.00 ",
+    "Total Price": "$119.24 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Franchise Tax Board"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "S2260007",
+    "Supplier Code": 12250,
+    "Supplier Name": "BST Services, Inc",
+    "Item Name": "Screened Top Soil Dirt",
+    "Item Description": "Screened Tip Soil Dirt",
+    "Quantity": 575.1,
+    "Unit Price": "$15.75 ",
+    "Total Price": "$9,057.83 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Parks & Recreation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500228884",
+    "Supplier Code": 35423,
+    "Supplier Name": "Cal Best Industrial Supply",
+    "Item Name": "emergency lights",
+    "Item Description": "LED lighting",
+    "Quantity": 4716.25,
+    "Unit Price": "$1.00 ",
+    "Total Price": "$4,716.25 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "GP140071",
+    "Supplier Code": 1757907,
+    "Supplier Name": "American Commodities, AWOB",
+    "Item Name": "Marks-A-Lot\u00c3\u0082\u00c2\u00ae:Permanent Marker, Large Chisel Tip, Purple, Dozen",
+    "Item Description": "Markers, Purple",
+    "Quantity": 1,
+    "Unit Price": "$7.41 ",
+    "Total Price": "$7.41 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Child Support Services, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "P1400132",
+    "Supplier Code": 8329,
+    "Supplier Name": "Merritt Business Supplies",
+    "Item Name": "The Hillman Group H Bracket Sign Holder, 17.25\u00c3\u00a2\u00c2\u0080\u00c2\u009d X 5.625\u00c3\u00a2\u00c2\u0080\u00c2\u009d",
+    "Item Description": "The Hillman Group H Bracket Sign Holder, 17.25\u00e2\u0080\u009d X 5.625\u00e2\u0080\u009d",
+    "Quantity": 50,
+    "Unit Price": "$1.70 ",
+    "Total Price": "$85.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Franchise Tax Board"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500239920",
+    "Supplier Code": 1065902,
+    "Supplier Name": "Prison Industry Authority",
+    "Item Name": "BEVERAGE CRAN/APPLE BLEND",
+    "Item Description": "1ST QUARTER FOOD ORDERS FY 2014/2015",
+    "Quantity": 319200,
+    "Unit Price": "$0.16 ",
+    "Total Price": "$51,072.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "C390425",
+    "Supplier Code": 41916,
+    "Supplier Name": "Paper Distributors Inc",
+    "Item Name": "#9 Tall Return Envelope",
+    "Item Description": "#9 Tall Return Envelope",
+    "Quantity": 300000,
+    "Unit Price": "$0.02 ",
+    "Total Price": "$4,800.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Employment Development Department"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "PO222663",
+    "Supplier Code": 1752282,
+    "Supplier Name": "Nelson & Sons, Inc",
+    "Item Name": "Fish Food",
+    "Item Description": "4.5mm Trout Flt.",
+    "Quantity": 210000,
+    "Unit Price": "$0.48 ",
+    "Total Price": "$99,750.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Fish and Wildlife, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500225173",
+    "Supplier Code": 1065902,
+    "Supplier Name": "Prison Industry Authority",
+    "Item Name": "BEVERAGE BLEND",
+    "Item Description": "4TH QUARTER FOOD ORDERS",
+    "Quantity": 159600,
+    "Unit Price": "$0.16 ",
+    "Total Price": "$25,536.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "REQ0011932",
+    "Supplier Code": 1760085,
+    "Supplier Name": "Rodea Auto Tech",
+    "Item Name": "Tire Disposal",
+    "Item Description": "Tire Disposal",
+    "Quantity": 2,
+    "Unit Price": "$2.00 ",
+    "Total Price": "$4.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0011932",
+    "Supplier Code": 1760085,
+    "Supplier Name": "Rodea Auto Tech",
+    "Item Name": "CA Tire Tax",
+    "Item Description": "CA Tire Tax",
+    "Quantity": 2,
+    "Unit Price": "$1.75 ",
+    "Total Price": "$3.50 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "S3917007",
+    "Supplier Code": 47810,
+    "Supplier Name": "CAL COAST PROMOPRODUCTS",
+    "Item Name": "Uniform",
+    "Item Description": "Uniform",
+    "Quantity": 1,
+    "Unit Price": "$1,845.00 ",
+    "Total Price": "$1,845.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Parks & Recreation, Department of"
+   },
+   {
+    "Purchase Order Number": "S3917007",
+    "Supplier Code": 47810,
+    "Supplier Name": "CAL COAST PROMOPRODUCTS",
+    "Item Name": "Uniform",
+    "Item Description": "Uniform",
+    "Quantity": 1,
+    "Unit Price": "$1,241.00 ",
+    "Total Price": "$1,241.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Parks & Recreation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "REQ0013747",
+    "Supplier Code": 1087660,
+    "Supplier Name": "Technology Integration Group",
+    "Item Name": "HP 648A Cyan Print Cartridge for LaserJet CP4025/4525",
+    "Item Description": "HP 648A Cyan Print Cartridge for LaserJet CP4025/4525",
+    "Quantity": 4,
+    "Unit Price": "$184.33 ",
+    "Total Price": "$737.32 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0013747",
+    "Supplier Code": 1087660,
+    "Supplier Name": "Technology Integration Group",
+    "Item Name": "HP 647A Black Cartridge for LaserJet CP4025/4525",
+    "Item Description": "HP 647A Black Cartridge for LaserJet CP4025/4525",
+    "Quantity": 6,
+    "Unit Price": "$103.88 ",
+    "Total Price": "$623.28 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Consumer Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "SN453168",
+    "Supplier Code": 1758151,
+    "Supplier Name": "US Foodservice",
+    "Item Name": "order# 15sofo0316",
+    "Item Description": "Invoice batching",
+    "Quantity": 1,
+    "Unit Price": "$696.71 ",
+    "Total Price": "$696.71 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Developmental Services, Department of"
+   },
+   {
+    "Purchase Order Number": "SN453168",
+    "Supplier Code": 1758151,
+    "Supplier Name": "US Foodservice",
+    "Item Name": "order #15so0305AM",
+    "Item Description": "Invoice batching",
+    "Quantity": 1,
+    "Unit Price": "$16.94 ",
+    "Total Price": "$16.94 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Developmental Services, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "REQ0014847",
+    "Supplier Code": 1087660,
+    "Supplier Name": "Technology Integration Group",
+    "Item Name": "BLACK TONER ULTRAPRECISE HIGH",
+    "Item Description": "BLACK TONER ULTRAPRECISE HIGH",
+    "Quantity": 1,
+    "Unit Price": "$93.86 ",
+    "Total Price": "$93.86 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0014847",
+    "Supplier Code": 1087660,
+    "Supplier Name": "Technology Integration Group",
+    "Item Name": "BLACK TONER CARTRIDGE FOR LJ P1505",
+    "Item Description": "BLACK TONER CARTRIDGE FOR LJ P1505",
+    "Quantity": 1,
+    "Unit Price": "$50.09 ",
+    "Total Price": "$50.09 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Consumer Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "REQ0010016",
+    "Supplier Code": 1017290,
+    "Supplier Name": "MITCHELL 1",
+    "Item Name": "Subscription Renewal, OnDemand 5 - OnDemand 5.com",
+    "Item Description": "Subscription Renewal, OnDemand 5 - OnDemand 5.com",
+    "Quantity": 7,
+    "Unit Price": "$1,297.44 ",
+    "Total Price": "$9,082.08 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010016",
+    "Supplier Code": 1017290,
+    "Supplier Name": "MITCHELL 1",
+    "Item Name": "Subscription Renewal, MedTruck.net",
+    "Item Description": "Subscription Renewal, MedTruck.net",
+    "Quantity": 7,
+    "Unit Price": "$795.60 ",
+    "Total Price": "$5,569.20 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "12-G0337",
+    "Supplier Code": 30543,
+    "Supplier Name": "OFFICE SUPPLIES CO",
+    "Item Name": "Labels",
+    "Item Description": "labels",
+    "Quantity": 2,
+    "Unit Price": "$5.38 ",
+    "Total Price": "$10.76 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Pesticide Regulation, Department of"
+   },
+   {
+    "Purchase Order Number": "12-G0337",
+    "Supplier Code": 30543,
+    "Supplier Name": "OFFICE SUPPLIES CO",
+    "Item Name": "Binder Clips",
+    "Item Description": "binder clips",
+    "Quantity": 10,
+    "Unit Price": "$0.32 ",
+    "Total Price": "$3.20 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Pesticide Regulation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "REQ0011075",
+    "Supplier Code": 13274,
+    "Supplier Name": "Western Blue Corporation",
+    "Item Name": "Magenta Toner, 15,000 Page Yield",
+    "Item Description": "Magenta Toner, 15,000 Page Yield",
+    "Quantity": 2,
+    "Unit Price": "$112.80 ",
+    "Total Price": "$225.60 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0011075",
+    "Supplier Code": 13274,
+    "Supplier Name": "Western Blue Corporation",
+    "Item Name": "Cyan Toner, 15,000 Page Yield",
+    "Item Description": "Cyan Toner, 15,000 Page Yield",
+    "Quantity": 2,
+    "Unit Price": "$112.80 ",
+    "Total Price": "$225.60 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500181229",
+    "Supplier Code": 1742963,
+    "Supplier Name": "GORILLA STATIONERS LLC",
+    "Item Name": "WASTE BASKET PLASTIC  RCP295600GY",
+    "Item Description": "WASTE BASKET PLASTIC  RCP295600GY",
+    "Quantity": 20,
+    "Unit Price": "$5.43 ",
+    "Total Price": "$108.60 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   },
+   {
+    "Purchase Order Number": "4500181229",
+    "Supplier Code": 1742963,
+    "Supplier Name": "GORILLA STATIONERS LLC",
+    "Item Name": "FOLDER MANILA STR END CUT  SMD 24100",
+    "Item Description": "FOLDER MANILA STR END CUT  SMD 24100",
+    "Quantity": 20,
+    "Unit Price": "$15.97 ",
+    "Total Price": "$319.40 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500211649",
+    "Supplier Code": 39802,
+    "Supplier Name": "ALL INDUSTRIAL ELECTRIC SUPPLY, INC",
+    "Item Name": "WESTWARD,5XB63",
+    "Item Description": "WESTWARD,5XB63",
+    "Quantity": 6,
+    "Unit Price": "$414.39 ",
+    "Total Price": "$2,486.34 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Water Resources, Department of"
+   },
+   {
+    "Purchase Order Number": "4500211649",
+    "Supplier Code": 39802,
+    "Supplier Name": "ALL INDUSTRIAL ELECTRIC SUPPLY, INC",
+    "Item Name": "GUN,HT ELITE PRO HT 46-202",
+    "Item Description": "GUN,HT ELITE PRO HT 46-202",
+    "Quantity": 3,
+    "Unit Price": "$112.78 ",
+    "Total Price": "$338.34 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Water Resources, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "ARB135269",
+    "Supplier Code": 1785149,
+    "Supplier Name": "Elk Grove Power Equipment",
+    "Item Name": "SNAPPER WOOD CHIPPER",
+    "Item Description": "CHIPPER",
+    "Quantity": 1,
+    "Unit Price": "$849.00 ",
+    "Total Price": "$849.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Air Resources Board"
+   },
+   {
+    "Purchase Order Number": "ARB135269",
+    "Supplier Code": 1785149,
+    "Supplier Name": "Elk Grove Power Equipment",
+    "Item Name": "MCLANE LAWN EDGER",
+    "Item Description": "13/14 MODEL",
+    "Quantity": 1,
+    "Unit Price": "$399.00 ",
+    "Total Price": "$399.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Air Resources Board"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "34400167",
+    "Supplier Code": 1008361,
+    "Supplier Name": "3B INDUSTRIES INC",
+    "Item Name": "Manhattan Chairs",
+    "Item Description": "Manhattan Mid Back Chair",
+    "Quantity": 7,
+    "Unit Price": "$435.00 ",
+    "Total Price": "$3,045.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Industrial Relations, Department of"
+   },
+   {
+    "Purchase Order Number": "34400167",
+    "Supplier Code": 1008361,
+    "Supplier Name": "3B INDUSTRIES INC",
+    "Item Name": "Crank Table",
+    "Item Description": "Concourse corner dual surface crank table 48W x 30D",
+    "Quantity": 1,
+    "Unit Price": "$689.00 ",
+    "Total Price": "$689.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Industrial Relations, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500274781",
+    "Supplier Code": 1739245,
+    "Supplier Name": "Pitney Bowes",
+    "Item Name": "Postage Tape Sheets",
+    "Item Description": "Postage Tape Sheets",
+    "Quantity": 10,
+    "Unit Price": "$33.14 ",
+    "Total Price": "$331.40 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Correctional Health Care Services"
+   },
+   {
+    "Purchase Order Number": "4500274781",
+    "Supplier Code": 1739245,
+    "Supplier Name": "Pitney Bowes",
+    "Item Name": "Red Ink Cartridge -DM200L",
+    "Item Description": "Red Ink Cartridge -DM200L",
+    "Quantity": 12,
+    "Unit Price": "$61.19 ",
+    "Total Price": "$734.28 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Correctional Health Care Services"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "REQ0014339",
+    "Supplier Code": 1087660,
+    "Supplier Name": "Technology Integration Group",
+    "Item Name": "HP 643A CYAN TONER",
+    "Item Description": "HP 643A CYAN TONER",
+    "Quantity": 2,
+    "Unit Price": "$180.68 ",
+    "Total Price": "$361.36 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0014339",
+    "Supplier Code": 1087660,
+    "Supplier Name": "Technology Integration Group",
+    "Item Name": "HP 643A YELLOW TONER",
+    "Item Description": "HP 643A YELLOW TONER",
+    "Quantity": 2,
+    "Unit Price": "$180.68 ",
+    "Total Price": "$361.36 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0014339",
+    "Supplier Code": 1087660,
+    "Supplier Name": "Technology Integration Group",
+    "Item Name": "HP 643A Black Toner",
+    "Item Description": "HP 643A Black Toner",
+    "Quantity": 2,
+    "Unit Price": "$127.06 ",
+    "Total Price": "$254.12 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Consumer Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500218898",
+    "Supplier Code": 1755837,
+    "Supplier Name": "PIA",
+    "Item Name": "shoe work sz 13 reg",
+    "Item Description": "shoe work sz 13 reg",
+    "Quantity": 20,
+    "Unit Price": "$33.60 ",
+    "Total Price": "$672.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   },
+   {
+    "Purchase Order Number": "4500218898",
+    "Supplier Code": 1755837,
+    "Supplier Name": "PIA",
+    "Item Name": "shoe work sz 7.5 reg",
+    "Item Description": "shoe work sz 7.5 reg",
+    "Quantity": 50,
+    "Unit Price": "$31.70 ",
+    "Total Price": "$1,585.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   },
+   {
+    "Purchase Order Number": "4500218898",
+    "Supplier Code": 1755837,
+    "Supplier Name": "PIA",
+    "Item Name": "shoe work sz 11 reg",
+    "Item Description": "shoe work sz 11 reg",
+    "Quantity": 100,
+    "Unit Price": "$31.70 ",
+    "Total Price": "$3,170.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Corrections and Rehabilitation, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500213439",
+    "Supplier Code": 1743406,
+    "Supplier Name": "Voyager Fleet Systems Inc",
+    "Item Name": "Fuel for Equip. 48S006",
+    "Item Description": "Fuel for Equip. 48S006",
+    "Quantity": 1,
+    "Unit Price": "$60.71 ",
+    "Total Price": "$60.71 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Water Resources, Department of"
+   },
+   {
+    "Purchase Order Number": "4500213439",
+    "Supplier Code": 1743406,
+    "Supplier Name": "Voyager Fleet Systems Inc",
+    "Item Name": "Fuel for Equip. 14R354",
+    "Item Description": "Fuel for Equip. 14R354",
+    "Quantity": 1,
+    "Unit Price": "$84.44 ",
+    "Total Price": "$84.44 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Water Resources, Department of"
+   },
+   {
+    "Purchase Order Number": "4500213439",
+    "Supplier Code": 1743406,
+    "Supplier Name": "Voyager Fleet Systems Inc",
+    "Item Name": "Fuel for Equip. 10R061",
+    "Item Description": "Fuel for Equip. 10R061",
+    "Quantity": 1,
+    "Unit Price": "$218.47 ",
+    "Total Price": "$218.47 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Water Resources, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "DCA0002453",
+    "Supplier Code": 19790,
+    "Supplier Name": "MMG Technology Group Inc",
+    "Item Name": "TONER,F/LJ1300 HY,BK",
+    "Item Description": "TONER,F/LJ1300 HY,BK",
+    "Quantity": 1,
+    "Unit Price": "$92.98 ",
+    "Total Price": "$92.98 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "DCA0002453",
+    "Supplier Code": 19790,
+    "Supplier Name": "MMG Technology Group Inc",
+    "Item Name": "DRUM,F/CP6015,YW",
+    "Item Description": "DRUM,F/CP6015,YW",
+    "Quantity": 1,
+    "Unit Price": "$305.17 ",
+    "Total Price": "$305.17 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "DCA0002453",
+    "Supplier Code": 19790,
+    "Supplier Name": "MMG Technology Group Inc",
+    "Item Name": "DRUM,F/CP6015,CYN",
+    "Item Description": "DRUM,F/CP6015,CYN",
+    "Quantity": 1,
+    "Unit Price": "$305.17 ",
+    "Total Price": "$305.17 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "DCA0002453",
+    "Supplier Code": 19790,
+    "Supplier Name": "MMG Technology Group Inc",
+    "Item Name": "TONER,MLT-D205L,HG YLD,BK",
+    "Item Description": "TONER,MLT-D205L,HG YLD,BK",
+    "Quantity": 1,
+    "Unit Price": "$106.95 ",
+    "Total Price": "$106.95 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "12560210",
+    "Supplier Code": 1398400,
+    "Supplier Name": "MSC Industrial Supply Co",
+    "Item Name": "Hose Clamps",
+    "Item Description": "#48",
+    "Quantity": 24,
+    "Unit Price": "$1.66 ",
+    "Total Price": "$39.84 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "State Hospitals, Department of"
+   },
+   {
+    "Purchase Order Number": "12560210",
+    "Supplier Code": 1398400,
+    "Supplier Name": "MSC Industrial Supply Co",
+    "Item Name": "Hose Clamps",
+    "Item Description": "#20",
+    "Quantity": 24,
+    "Unit Price": "$1.13 ",
+    "Total Price": "$27.12 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "State Hospitals, Department of"
+   },
+   {
+    "Purchase Order Number": "12560210",
+    "Supplier Code": 1398400,
+    "Supplier Name": "MSC Industrial Supply Co",
+    "Item Name": "Hose Clamps",
+    "Item Description": "#24",
+    "Quantity": 24,
+    "Unit Price": "$1.13 ",
+    "Total Price": "$27.12 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "State Hospitals, Department of"
+   },
+   {
+    "Purchase Order Number": "12560210",
+    "Supplier Code": 1398400,
+    "Supplier Name": "MSC Industrial Supply Co",
+    "Item Name": "Hose Clamps",
+    "Item Description": "#32",
+    "Quantity": 36,
+    "Unit Price": "$1.15 ",
+    "Total Price": "$41.40 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "State Hospitals, Department of"
+   },
+   {
+    "Purchase Order Number": "12560210",
+    "Supplier Code": 1398400,
+    "Supplier Name": "MSC Industrial Supply Co",
+    "Item Name": "Hose Clamps",
+    "Item Description": "#60",
+    "Quantity": 24,
+    "Unit Price": "$1.87 ",
+    "Total Price": "$44.88 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "State Hospitals, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "P3810BBR",
+    "Supplier Code": 1752444,
+    "Supplier Name": "GRAINGER",
+    "Item Name": "combo padlock",
+    "Item Description": "lock",
+    "Quantity": 1,
+    "Unit Price": "$27.36 ",
+    "Total Price": "$27.36 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Conservation Corps, California"
+   },
+   {
+    "Purchase Order Number": "P3810BBR",
+    "Supplier Code": 1752444,
+    "Supplier Name": "GRAINGER",
+    "Item Name": "bathroom cleaner",
+    "Item Description": "bathroom cleaner",
+    "Quantity": 1,
+    "Unit Price": "$57.44 ",
+    "Total Price": "$57.44 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Conservation Corps, California"
+   },
+   {
+    "Purchase Order Number": "P3810BBR",
+    "Supplier Code": 1752444,
+    "Supplier Name": "GRAINGER",
+    "Item Name": "toilet paper",
+    "Item Description": "toilet paper",
+    "Quantity": 7,
+    "Unit Price": "$100.31 ",
+    "Total Price": "$702.17 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Conservation Corps, California"
+   },
+   {
+    "Purchase Order Number": "P3810BBR",
+    "Supplier Code": 1752444,
+    "Supplier Name": "GRAINGER",
+    "Item Name": "bowl brush",
+    "Item Description": "bowl brush",
+    "Quantity": 2,
+    "Unit Price": "$4.32 ",
+    "Total Price": "$8.64 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Conservation Corps, California"
+   },
+   {
+    "Purchase Order Number": "P3810BBR",
+    "Supplier Code": 1752444,
+    "Supplier Name": "GRAINGER",
+    "Item Name": "canister refill",
+    "Item Description": "canister refill",
+    "Quantity": 2,
+    "Unit Price": "$74.97 ",
+    "Total Price": "$149.94 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Conservation Corps, California"
+   },
+   {
+    "Purchase Order Number": "P3810BBR",
+    "Supplier Code": 1752444,
+    "Supplier Name": "GRAINGER",
+    "Item Name": "dust mop",
+    "Item Description": "dust mop",
+    "Quantity": 5,
+    "Unit Price": "$5.80 ",
+    "Total Price": "$29.00 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Conservation Corps, California"
+   },
+   {
+    "Purchase Order Number": "P3810BBR",
+    "Supplier Code": 1752444,
+    "Supplier Name": "GRAINGER",
+    "Item Name": "spray paint",
+    "Item Description": "spray paint",
+    "Quantity": 6,
+    "Unit Price": "$10.78 ",
+    "Total Price": "$64.68 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Conservation Corps, California"
+   },
+   {
+    "Purchase Order Number": "P3810BBR",
+    "Supplier Code": 1752444,
+    "Supplier Name": "GRAINGER",
+    "Item Name": "combination padlock",
+    "Item Description": "combination padlock",
+    "Quantity": 20,
+    "Unit Price": "$11.43 ",
+    "Total Price": "$228.60 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Conservation Corps, California"
+   },
+   {
+    "Purchase Order Number": "P3810BBR",
+    "Supplier Code": 1752444,
+    "Supplier Name": "GRAINGER",
+    "Item Name": "spray paint",
+    "Item Description": "spray paint",
+    "Quantity": 6,
+    "Unit Price": "$8.51 ",
+    "Total Price": "$51.06 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Conservation Corps, California"
+   },
+   {
+    "Purchase Order Number": "P3810BBR",
+    "Supplier Code": 1752444,
+    "Supplier Name": "GRAINGER",
+    "Item Name": "ewt mop",
+    "Item Description": "wet mop",
+    "Quantity": 3,
+    "Unit Price": "$3.17 ",
+    "Total Price": "$9.51 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Conservation Corps, California"
+   },
+   {
+    "Purchase Order Number": "P3810BBR",
+    "Supplier Code": 1752444,
+    "Supplier Name": "GRAINGER",
+    "Item Name": "toilet paper",
+    "Item Description": "toilet paper",
+    "Quantity": 1,
+    "Unit Price": "$100.31 ",
+    "Total Price": "$100.31 ",
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Conservation Corps, California"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "REQ0010689",
+    "Supplier Code": 58066,
+    "Supplier Name": "Ablegov, Inc.",
+    "Item Name": "EMC VNX5300 4 Port 8G FC IO Module Pair",
+    "Item Description": "EMC VNX5300 4 Port 8G FC IO Module Pair",
+    "Quantity": 1,
+    "Unit Price": "$1,195.00 ",
+    "Total Price": "$1,195.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010689",
+    "Supplier Code": 58066,
+    "Supplier Name": "Ablegov, Inc.",
+    "Item Name": "EMC VNX5300 DPE, 15X3.5 Drives - 8X600G, 15K",
+    "Item Description": "EMC VNX5300 DPE, 15X3.5 Drives - 8X600G, 15K",
+    "Quantity": 1,
+    "Unit Price": "$10,150.00 ",
+    "Total Price": "$10,150.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010689",
+    "Supplier Code": 58066,
+    "Supplier Name": "Ablegov, Inc.",
+    "Item Name": "EMC Additional 8 G FC SFP for VNX 51/53",
+    "Item Description": "EMC Additional 8 G FC SFP for VNX 51/53",
+    "Quantity": 1,
+    "Unit Price": "$192.00 ",
+    "Total Price": "$192.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010689",
+    "Supplier Code": 58066,
+    "Supplier Name": "Ablegov, Inc.",
+    "Item Name": "EMC 1GBE DM Module 4 Port for VNX5300",
+    "Item Description": "EMC 1GBE DM Module 4 Port for VNX5300",
+    "Quantity": 2,
+    "Unit Price": "$478.00 ",
+    "Total Price": "$956.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010689",
+    "Supplier Code": 58066,
+    "Supplier Name": "Ablegov, Inc.",
+    "Item Name": "EMC Unisphere Unified & VNX OE VNX5300",
+    "Item Description": "EMC Unisphere Unified & VNX OE VNX5300",
+    "Quantity": 1,
+    "Unit Price": "$3,914.00 ",
+    "Total Price": "$3,914.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010689",
+    "Supplier Code": 58066,
+    "Supplier Name": "Ablegov, Inc.",
+    "Item Name": "EMC DSB SW GEN RCK Kit -B",
+    "Item Description": "EMC DSB SW GEN RCK Kit -B",
+    "Quantity": 2,
+    "Unit Price": "$237.00 ",
+    "Total Price": "$474.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010689",
+    "Supplier Code": 58066,
+    "Supplier Name": "Ablegov, Inc.",
+    "Item Name": "EMC Fast Implement",
+    "Item Description": "EMC Fast Implement",
+    "Quantity": 1,
+    "Unit Price": "$6,715.00 ",
+    "Total Price": "$6,715.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010689",
+    "Supplier Code": 58066,
+    "Supplier Name": "Ablegov, Inc.",
+    "Item Name": "EMC 2nd Optional SPS for VNX 51/53",
+    "Item Description": "EMC 2nd Optional SPS for VNX 51/53",
+    "Quantity": 1,
+    "Unit Price": "$235.00 ",
+    "Total Price": "$235.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010689",
+    "Supplier Code": 58066,
+    "Supplier Name": "Ablegov, Inc.",
+    "Item Name": "EMC 2 C13 PWRCORDS W/ NEMA 5-15 125V 10A",
+    "Item Description": "EMC 2 C13 PWRCORDS W/ NEMA 5-15 125V 10A",
+    "Quantity": 2,
+    "Unit Price": "$0.00 ",
+    "Total Price": "$0.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010689",
+    "Supplier Code": 58066,
+    "Supplier Name": "Ablegov, Inc.",
+    "Item Name": "EMC Rack & Stack of up to 2 DAE",
+    "Item Description": "EMC Rack & Stack of up to 2 DAE",
+    "Quantity": 1,
+    "Unit Price": "$405.00 ",
+    "Total Price": "$405.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010689",
+    "Supplier Code": 58066,
+    "Supplier Name": "Ablegov, Inc.",
+    "Item Name": "EMC VNX Solutions Video VALUEPAK",
+    "Item Description": "EMC VNX Solutions Video VALUEPAK",
+    "Quantity": 1,
+    "Unit Price": "$3,276.00 ",
+    "Total Price": "$3,276.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010689",
+    "Supplier Code": 58066,
+    "Supplier Name": "Ablegov, Inc.",
+    "Item Name": "EMC DS-300B 8G 24/24 Enterprise Switch",
+    "Item Description": "EMC DS-300B 8G 24/24 Enterprise Switch",
+    "Quantity": 2,
+    "Unit Price": "$5,981.00 ",
+    "Total Price": "$11,962.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Consumer Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "REQ0010418",
+    "Supplier Code": 49745,
+    "Supplier Name": "TonerImaging",
+    "Item Name": "AV 40 Speakers for Computer",
+    "Item Description": "AV 40 Speakers for Computer",
+    "Quantity": 1,
+    "Unit Price": "$151.00 ",
+    "Total Price": "$151.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010418",
+    "Supplier Code": 49745,
+    "Supplier Name": "TonerImaging",
+    "Item Name": "75' EVI_DS-Cable Camera Cable to Daisy Chain Cameras",
+    "Item Description": "75' EVI_DS-Cable Camera Cable to Daisy Chain Cameras",
+    "Quantity": 1,
+    "Unit Price": "$89.00 ",
+    "Total Price": "$89.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010418",
+    "Supplier Code": 49745,
+    "Supplier Name": "TonerImaging",
+    "Item Name": "8 Ch Audio Mixer",
+    "Item Description": "8 Ch Audio Mixer",
+    "Quantity": 1,
+    "Unit Price": "$210.00 ",
+    "Total Price": "$210.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010418",
+    "Supplier Code": 49745,
+    "Supplier Name": "TonerImaging",
+    "Item Name": "Protective Case for Editing Monitor with Wheels",
+    "Item Description": "Protective Case for Editing Monitor with Wheels",
+    "Quantity": 1,
+    "Unit Price": "$205.00 ",
+    "Total Price": "$205.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010418",
+    "Supplier Code": 49745,
+    "Supplier Name": "TonerImaging",
+    "Item Name": "Portable SDI Production Switcher",
+    "Item Description": "Portable SDI Production Switcher",
+    "Quantity": 1,
+    "Unit Price": "$10,997.00 ",
+    "Total Price": "$10,997.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010418",
+    "Supplier Code": 49745,
+    "Supplier Name": "TonerImaging",
+    "Item Name": "Adobe Premiere Pro Keyboard",
+    "Item Description": "Adobe Premiere Pro Keyboard",
+    "Quantity": 1,
+    "Unit Price": "$75.00 ",
+    "Total Price": "$75.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010418",
+    "Supplier Code": 49745,
+    "Supplier Name": "TonerImaging",
+    "Item Name": "Conditioned A/C Power Strip",
+    "Item Description": "Conditioned A/C Power Strip",
+    "Quantity": 2,
+    "Unit Price": "$17.00 ",
+    "Total Price": "$34.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010418",
+    "Supplier Code": 49745,
+    "Supplier Name": "TonerImaging",
+    "Item Name": "Frame/2 Panel Reflectors 42\"x42\"",
+    "Item Description": "Frame/2 Panel Reflectors 42\"x42\"",
+    "Quantity": 1,
+    "Unit Price": "$266.00 ",
+    "Total Price": "$266.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010418",
+    "Supplier Code": 49745,
+    "Supplier Name": "TonerImaging",
+    "Item Name": "Condenser Shotgun Mic",
+    "Item Description": "Condenser Shotgun Mic",
+    "Quantity": 2,
+    "Unit Price": "$290.00 ",
+    "Total Price": "$580.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010418",
+    "Supplier Code": 49745,
+    "Supplier Name": "TonerImaging",
+    "Item Name": "Deca Transparent Rain Cover",
+    "Item Description": "Deca Transparent Rain Cover",
+    "Quantity": 2,
+    "Unit Price": "$98.00 ",
+    "Total Price": "$196.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010418",
+    "Supplier Code": 49745,
+    "Supplier Name": "TonerImaging",
+    "Item Name": "50ft. 12/3 A/C Cords",
+    "Item Description": "50ft. 12/3 A/C Cords",
+    "Quantity": 2,
+    "Unit Price": "$42.00 ",
+    "Total Price": "$84.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   },
+   {
+    "Purchase Order Number": "REQ0010418",
+    "Supplier Code": 49745,
+    "Supplier Name": "TonerImaging",
+    "Item Name": "C920 HD Pro Webcam",
+    "Item Description": "C920 HD Pro Webcam",
+    "Quantity": 6,
+    "Unit Price": "$85.00 ",
+    "Total Price": "$510.00 ",
+    "Acquisition Type": "IT Goods",
+    "Fiscal Year": "2012-2013",
+    "Department Name": "Consumer Affairs, Department of"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500236642",
+    "Supplier Code": 1754462,
+    "Supplier Name": "ASHAN INC",
+    "Item Name": null,
+    "Item Description": null,
+    "Quantity": null,
+    "Unit Price": null,
+    "Total Price": null,
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Correctional Health Care Services"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500253427",
+    "Supplier Code": 1738777,
+    "Supplier Name": "WALGREENS SPECIALTY PHARMACY LLC",
+    "Item Name": null,
+    "Item Description": null,
+    "Quantity": null,
+    "Unit Price": null,
+    "Total Price": null,
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Correctional Health Care Services"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500285629",
+    "Supplier Code": 38819,
+    "Supplier Name": "Livermore Scientific, Inc.",
+    "Item Name": null,
+    "Item Description": null,
+    "Quantity": null,
+    "Unit Price": null,
+    "Total Price": null,
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Correctional Health Care Services"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500243912",
+    "Supplier Code": 1752319,
+    "Supplier Name": "McKesson Medical - Surgical Minnesota Su",
+    "Item Name": null,
+    "Item Description": null,
+    "Quantity": null,
+    "Unit Price": null,
+    "Total Price": null,
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2014-2015",
+    "Department Name": "Correctional Health Care Services"
+   }
+  ],
+  [
+   {
+    "Purchase Order Number": "4500207906",
+    "Supplier Code": 1001584,
+    "Supplier Name": "Grainger Industrial Supply",
+    "Item Name": null,
+    "Item Description": null,
+    "Quantity": null,
+    "Unit Price": null,
+    "Total Price": null,
+    "Acquisition Type": "NON-IT Goods",
+    "Fiscal Year": "2013-2014",
+    "Department Name": "Correctional Health Care Services"
+   }
+  ]
+ ]
+}
