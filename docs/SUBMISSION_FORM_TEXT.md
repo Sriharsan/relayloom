@@ -48,12 +48,12 @@ Companies pay bills for goods that never arrived, or arrived short. Paperwork ma
 | Real purchase orders | 85 real orders from the State of California open data, 369 cases with documented exception types, all pass. Found and fixed real bugs (quantities above 100,000, fractional counts, multi-line orders, unit differences, concurrent receipt writes). |
 | Package | 44 command line scenarios pass. A clean install with the network blocked passes 18 of 18 steps. 129 Python tests, plus browser tests. |
 | Real photos | Free-licence stock plus the founder's own, counted by SAM 3.1 against hand counts. Total error was 33 items at the old setting and 12 at confidence 0.5, which is now the default. |
-| Free GPU (Kaggle, two T4s) | Bill read 24 to 28 s warm, 90 s on the first call. SAM about 1 s per photo. Laptop CPU: 4.5 to 8.9 minutes. |
-| Agent loop (Kaggle GPU) | 12 of 12 photos exactly right after the loop (5 of 12 on the first word). On real photos with hand counts, 6 of 8 accepted within 3 items and 2 sent to a person. |
+| Free GPU (Kaggle, two T4s) | Bill read 24 to 28 s warm, 88 s on the first call. SAM about 1 s per photo. Laptop CPU: 4.5 to 8.9 minutes. |
+| Agent loop (Kaggle GPU) | 11 of 12 photos exactly right after the loop (5 of 12 on the first word), 1 held for a person, none wrong. On real photos with hand counts, 5 of 8 accepted within 3 items and 3 sent to a person. |
 
 ## Speed
 
-On a free Kaggle GPU (two T4s) Muse Glimmer reads a bill in about 24 s once warm (90 s on the first call) and SAM 3.1 counts a photo in about 1 s, so a delivery is checked in under a minute. On a laptop CPU the same bill takes 4.5 to 8.9 minutes and runs as a background batch. Every control, match and policy step finishes in under a second. The dock detector reacts 0.25 s after the first movement.
+On a free Kaggle GPU (two T4s) Muse Glimmer reads a bill in about 24 s once warm (88 s on the first call) and SAM 3.1 counts a photo in about 1 s, so a delivery is checked in under a minute. On a laptop CPU the same bill takes 4.5 to 8.9 minutes and runs as a background batch. Every control, match and policy step finishes in under a second. The dock detector reacts 0.25 s after the first movement.
 
 ## Theme fit: Push the Frontier
 

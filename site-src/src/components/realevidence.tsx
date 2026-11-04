@@ -79,9 +79,9 @@ export function RealEvidence() {
           <p className="kLabel">Agent loop on a free Kaggle GPU (two T4s)</p>
           <div className="mt-4 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { v: "12 of 12", l: "photos counted exactly right after the loop, against the delivery records. The first word alone was right on 5 of 12." },
-              { v: "6 of 8", l: "real photos with hand counts accepted by the loop, within 3 items. The other 2 went to a person, which is the job." },
-              { v: "24 s", l: "for Muse Glimmer to read a bill once warm (90 s on the first call). On a laptop CPU the same bill takes 4.5 to 8.9 minutes." },
+              { v: "11 of 12", l: "photos counted exactly right after the loop, against the delivery records. The twelfth was held for a person and none were wrong. The first word alone was right on 5 of 12." },
+              { v: "5 of 8", l: "real photos with hand counts accepted by the loop, within 3 items of the hand count. The other 3 went to a person, which is the job." },
+              { v: "24 s", l: "for Muse Glimmer to read a bill once warm (88 s on the first call). On a laptop CPU the same bill takes 4.5 to 8.9 minutes." },
               { v: "1 s", l: "for SAM 3.1 to count a photo once loaded. A delivery is checked in under a minute." },
             ].map((x) => (
               <div key={x.v} className="bg-background p-6">
