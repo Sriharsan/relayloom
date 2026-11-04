@@ -5,6 +5,7 @@ import {
 } from "@/data/site";
 import { Pill, RunLabel, SectionHead } from "@/components/bits";
 import { verifyChain, type Verdict } from "@/lib/receipts";
+import { AcrossSuppliers, Boundary } from "@/pages/extras";
 
 const LABEL = "Recorded run";
 
@@ -407,6 +408,8 @@ export function Proof() {
           </ul>
         </div>
       </section>
+      <Boundary />
+      <AcrossSuppliers />
     </div>
   );
 }

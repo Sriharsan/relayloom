@@ -1,0 +1,98 @@
+{
+ "photo": "REC-B01-P1.jpg",
+ "bill_line": "Coolant can 5 litre, quantity 18",
+ "hand_count": 18,
+ "recorded_at": "2026-11-03 22:31 +0530",
+ "route": "Muse Glimmer 30B Q4_K_M with mmproj, llama.cpp CPU, SAM 3.1 CPU, this laptop",
+ "count": null,
+ "agreed": false,
+ "held": true,
+ "agreed_words": [],
+ "first_try_count": 0,
+ "calls": 6,
+ "tries": [
+  {
+   "words": "coolant can",
+   "count": 0,
+   "overlay": "REC-B01-P1__coolant-can.jpg",
+   "seconds": 107.0
+  },
+  {
+   "words": "can",
+   "count": 18,
+   "overlay": "REC-B01-P1__can.jpg",
+   "seconds": 116.5
+  },
+  {
+   "words": "coolant",
+   "count": 0,
+   "overlay": "REC-B01-P1__coolant.jpg",
+   "seconds": 75.9
+  }
+ ],
+ "trace": [
+  {
+   "step": "propose",
+   "tool": "glimmer",
+   "seconds": 390.6,
+   "saw_image": false,
+   "output": {
+    "words": [
+     "coolant can",
+     "can",
+     "coolant"
+    ]
+   }
+  },
+  {
+   "step": "sam 1",
+   "tool": "sam3.1",
+   "words": "coolant can",
+   "count": 0,
+   "overlay": "REC-B01-P1__coolant-can.jpg",
+   "seconds": 107.0
+  },
+  {
+   "step": "sam 2",
+   "tool": "sam3.1",
+   "words": "can",
+   "count": 18,
+   "overlay": "REC-B01-P1__can.jpg",
+   "seconds": 116.5
+  },
+  {
+   "step": "look",
+   "tool": "glimmer",
+   "seconds": 614.6,
+   "saw_image": true,
+   "output": {
+    "verdict": "good",
+    "note": "All 18 coolant cans are numbered once with no duplicates or misses.",
+    "next_words": []
+   }
+  },
+  {
+   "step": "sam 3",
+   "tool": "sam3.1",
+   "words": "coolant",
+   "count": 0,
+   "overlay": "REC-B01-P1__coolant.jpg",
+   "seconds": 75.9
+  },
+  {
+   "step": "look",
+   "tool": "glimmer",
+   "seconds": 466.2,
+   "saw_image": true,
+   "output": {
+    "verdict": "good",
+    "note": "All 18 coolant cans are marked with a dot on each unit, matching the billed quantity.",
+    "next_words": []
+   }
+  }
+ ],
+ "seconds": 1850.0,
+ "reason": "No two counts from different words agree, so a person looks at the photo.",
+ "first_try_correct": false,
+ "agent_correct": null
+}

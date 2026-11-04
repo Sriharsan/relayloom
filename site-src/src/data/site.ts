@@ -10,6 +10,7 @@ import measured from "./measured.json";
 import securityData from "./security.json";
 import boundaryData from "./boundary.json";
 import offlineData from "./offline.json";
+import agentData from "./agent.json";
 import videoData from "./video.json";
 
 export const links = {
@@ -404,3 +405,9 @@ export const video = videoData as unknown as {
 };
 
 export const offlineRun = offlineData as unknown as { started: string; finished?: string; steps: { step: string; result: string; detail: string }[] };
+
+export const agent = agentData as unknown as {
+  photo: string; bill_line: string; hand_count: number | null; recorded_at: string; route: string; seconds: number; calls: number;
+  count: number | null; agreed: boolean; held: boolean; first_try_count: number | null; confirmed_by?: string;
+  trace: { step: string; tool: string; seconds?: number; words?: string; count?: number; overlay?: string; saw_image?: boolean; output?: { words?: string[]; verdict?: string; note?: string } }[];
+};
