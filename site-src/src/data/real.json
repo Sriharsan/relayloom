@@ -1,0 +1,436 @@
+{
+ "rows": [
+  {
+   "key": "r01",
+   "pid": "P01",
+   "image": "/img/real/r01.jpg",
+   "results": [
+    {
+     "word": "cardboard box",
+     "count": 26,
+     "seconds": 128.1,
+     "overlay": "r01__cardboard-box.jpg"
+    },
+    {
+     "word": "box",
+     "count": 27,
+     "seconds": 90.0,
+     "overlay": "r01__box.jpg"
+    }
+   ],
+   "agree": false,
+   "hand_count": 25,
+   "hand_by": "assistant, by eye, far boxes included",
+   "first_word_error": 1,
+   "best_error": 1
+  },
+  {
+   "key": "r02",
+   "pid": "P02",
+   "image": "/img/real/r02.jpg",
+   "results": [
+    {
+     "word": "box",
+     "count": 3,
+     "seconds": 90.5,
+     "overlay": "r02__box.jpg"
+    },
+    {
+     "word": "lidded box",
+     "count": 3,
+     "seconds": 75.2,
+     "overlay": "r02__lidded-box.jpg"
+    }
+   ],
+   "agree": true,
+   "hand_count": 3,
+   "hand_by": "assistant, by eye",
+   "first_word_error": 0,
+   "best_error": 0
+  },
+  {
+   "key": "r03",
+   "pid": "P03",
+   "image": "/img/real/r03.jpg",
+   "results": [
+    {
+     "word": "cardboard box",
+     "count": 20,
+     "seconds": 73.3,
+     "overlay": "r03__cardboard-box.jpg"
+    },
+    {
+     "word": "box",
+     "count": 20,
+     "seconds": 69.5,
+     "overlay": "r03__box.jpg"
+    }
+   ],
+   "agree": true,
+   "hand_count": 16,
+   "hand_by": "assistant, by eye",
+   "first_word_error": 4,
+   "best_error": 4
+  },
+  {
+   "key": "r04",
+   "pid": "P06",
+   "image": "/img/real/r04.jpg",
+   "results": [
+    {
+     "word": "cardboard box",
+     "count": 19,
+     "seconds": 69.5,
+     "overlay": "r04__cardboard-box.jpg"
+    },
+    {
+     "word": "box",
+     "count": 18,
+     "seconds": 117.2,
+     "overlay": "r04__box.jpg"
+    }
+   ],
+   "agree": false,
+   "hand_count": 17,
+   "hand_by": "assistant, by eye: 4 in front, about 13 on the racks behind",
+   "first_word_error": 2,
+   "best_error": 1
+  },
+  {
+   "key": "r05",
+   "pid": "P07",
+   "image": "/img/real/r05.jpg",
+   "results": [
+    {
+     "word": "can",
+     "count": 70,
+     "seconds": 88.4,
+     "overlay": "r05__can.jpg"
+    },
+    {
+     "word": "tin",
+     "count": 72,
+     "seconds": 94.8,
+     "overlay": "r05__tin.jpg"
+    }
+   ],
+   "agree": false,
+   "hand_count": 65,
+   "hand_by": "builder, by eye, far items included",
+   "first_word_error": 5,
+   "best_error": 5
+  },
+  {
+   "key": "r06",
+   "pid": "P10",
+   "image": "/img/real/r06.jpg",
+   "results": [
+    {
+     "word": "sack",
+     "count": 63,
+     "seconds": 81.0,
+     "overlay": "r06__sack.jpg"
+    },
+    {
+     "word": "bag",
+     "count": 61,
+     "seconds": 159.8,
+     "overlay": "r06__bag.jpg"
+    }
+   ],
+   "agree": false,
+   "hand_count": 55,
+   "hand_by": "builder, by eye, far items included",
+   "first_word_error": 8,
+   "best_error": 6
+  },
+  {
+   "key": "r07",
+   "pid": "P11",
+   "image": "/img/real/r07.jpg",
+   "results": [
+    {
+     "word": "sack",
+     "count": 57,
+     "seconds": 54.6,
+     "overlay": "r07__sack.jpg"
+    },
+    {
+     "word": "bag",
+     "count": 54,
+     "seconds": 29.7,
+     "overlay": "r07__bag.jpg"
+    }
+   ],
+   "agree": false,
+   "hand_count": 50,
+   "hand_by": "builder, by eye",
+   "first_word_error": 7,
+   "best_error": 4
+  },
+  {
+   "key": "r08",
+   "pid": "P12",
+   "image": "/img/real/r08.jpg",
+   "results": [
+    {
+     "word": "can",
+     "count": 26,
+     "seconds": 43.8,
+     "overlay": "r08__can.jpg"
+    },
+    {
+     "word": "tin",
+     "count": 27,
+     "seconds": 67.4,
+     "overlay": "r08__tin.jpg"
+    }
+   ],
+   "agree": false,
+   "hand_count": 20,
+   "hand_by": "assistant, by eye",
+   "first_word_error": 6,
+   "best_error": 6
+  },
+  {
+   "key": "r09",
+   "pid": "P08",
+   "image": "/img/real/r09.jpg",
+   "results": [
+    {
+     "word": "can",
+     "count": 0,
+     "seconds": 84.2,
+     "overlay": "r09__can.jpg"
+    },
+    {
+     "word": "tin",
+     "count": 0,
+     "seconds": 49.8,
+     "overlay": "r09__tin.jpg"
+    }
+   ],
+   "agree": true,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r10",
+   "pid": "P09",
+   "image": "/img/real/r10.jpg",
+   "results": [
+    {
+     "word": "pallet",
+     "count": 21,
+     "seconds": 36.0,
+     "overlay": "r10__pallet.jpg"
+    },
+    {
+     "word": "box",
+     "count": 38,
+     "seconds": 49.2,
+     "overlay": "r10__box.jpg"
+    }
+   ],
+   "agree": false,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r11",
+   "pid": "P13",
+   "image": "/img/real/r11.jpg",
+   "results": [
+    {
+     "word": "can",
+     "count": 72,
+     "seconds": 31.5,
+     "overlay": "r11__can.jpg"
+    },
+    {
+     "word": "tin",
+     "count": 79,
+     "seconds": 31.8,
+     "overlay": "r11__tin.jpg"
+    }
+   ],
+   "agree": false,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r12",
+   "pid": "P14",
+   "image": "/img/real/r12.jpg",
+   "results": [
+    {
+     "word": "cardboard box",
+     "count": 18,
+     "seconds": 35.1,
+     "overlay": "r12__cardboard-box.jpg"
+    },
+    {
+     "word": "box",
+     "count": 18,
+     "seconds": 34.5,
+     "overlay": "r12__box.jpg"
+    }
+   ],
+   "agree": true,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r13",
+   "pid": "P15",
+   "image": "/img/real/r13.jpg",
+   "results": [
+    {
+     "word": "gas cylinder",
+     "count": 11,
+     "seconds": 32.7,
+     "overlay": "r13__gas-cylinder.jpg"
+    },
+    {
+     "word": "cylinder",
+     "count": 8,
+     "seconds": 35.2,
+     "overlay": "r13__cylinder.jpg"
+    }
+   ],
+   "agree": false,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r14",
+   "pid": "P16",
+   "image": "/img/real/r14.jpg",
+   "results": [
+    {
+     "word": "bale",
+     "count": 0,
+     "seconds": 35.6,
+     "overlay": "r14__bale.jpg"
+    },
+    {
+     "word": "bundle",
+     "count": 0,
+     "seconds": 33.0,
+     "overlay": "r14__bundle.jpg"
+    }
+   ],
+   "agree": true,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r15",
+   "pid": "P17",
+   "image": "/img/real/r15.jpg",
+   "results": [
+    {
+     "word": "bale",
+     "count": 0,
+     "seconds": 33.7,
+     "overlay": "r15__bale.jpg"
+    },
+    {
+     "word": "bundle",
+     "count": 0,
+     "seconds": 34.8,
+     "overlay": "r15__bundle.jpg"
+    }
+   ],
+   "agree": true,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r16",
+   "pid": "P18",
+   "image": "/img/real/r16.jpg",
+   "results": [
+    {
+     "word": "bundle",
+     "count": 0,
+     "seconds": 33.2,
+     "overlay": "r16__bundle.jpg"
+    },
+    {
+     "word": "bag",
+     "count": 17,
+     "seconds": 33.4,
+     "overlay": "r16__bag.jpg"
+    }
+   ],
+   "agree": false,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r17",
+   "pid": "P19",
+   "image": "/img/real/r17.jpg",
+   "results": [
+    {
+     "word": "cardboard box",
+     "count": 11,
+     "seconds": 30.1,
+     "overlay": "r17__cardboard-box.jpg"
+    },
+    {
+     "word": "box",
+     "count": 11,
+     "seconds": 30.7,
+     "overlay": "r17__box.jpg"
+    }
+   ],
+   "agree": true,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r18",
+   "pid": "P20",
+   "image": "/img/real/r18.jpg",
+   "results": [
+    {
+     "word": "pallet",
+     "count": 9,
+     "seconds": 41.6,
+     "overlay": "r18__pallet.jpg"
+    },
+    {
+     "word": "box",
+     "count": 24,
+     "seconds": 49.9,
+     "overlay": "r18__box.jpg"
+    }
+   ],
+   "agree": false,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  }
+ ]
+}

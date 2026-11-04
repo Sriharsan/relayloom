@@ -159,8 +159,9 @@ class SamCounter:
     """
 
     def __init__(self, python: str = "", weights: str = "", route: str = "", live: bool = False,
-                 cache: Path = RECORDED / "sam", persistent: bool = False):
+                 cache: Path = RECORDED / "sam", persistent: bool = False, conf: float | None = None):
         self.python, self.weights, self.route, self.live, self.cache = python, weights, route, live, Path(cache)
+        self.conf = conf  # the lowest mask score SAM keeps; None means the worker's default of 0.4
         self.persistent, self._proc, self._lock = persistent, None, __import__("threading").Lock()
 
     def _worker(self):
@@ -170,7 +171,7 @@ class SamCounter:
         self.cache.mkdir(parents=True, exist_ok=True)
         worker = getattr(self, "worker_script", None) or Path(__file__).with_name("sam_worker.py")
         self._proc = subprocess.Popen([self.python, "-I", str(worker), "--serve", str(self.weights)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                      stderr=open(self.cache / "sam-worker.log", "a"), text=True, env={**os.environ, "YOLO_OFFLINE": "1"})
+                                      stderr=open(self.cache / "sam-worker.log", "a"), text=True, env=self._env())
         ready = self._proc.stdout.readline()
         if not ready:
             raise RuntimeError("SAM worker did not start; see " + str(self.cache / "sam-worker.log"))
@@ -184,7 +185,11 @@ class SamCounter:
         self._proc = None
 
     def path(self, key: str, prompt: str) -> Path:
-        return self.cache / f"{key}__{slug(prompt)}.json"
+        tag = f"@{self.conf}" if self.conf else ""  # a different confidence is a different result
+        return self.cache / f"{key}__{slug(prompt)}{tag}.json"
+
+    def _env(self) -> dict:
+        return {**os.environ, "YOLO_OFFLINE": "1", **({"SAM_CONF": str(self.conf)} if self.conf else {})}
 
     def count(self, photo: Path, prompt: str, key: str) -> dict:
         photo = Path(photo)
@@ -199,7 +204,7 @@ class SamCounter:
         if not self.live:
             raise FileNotFoundError(f"no recorded SAM count for {key} with prompt {prompt!r}")
         self.cache.mkdir(parents=True, exist_ok=True)
-        overlay = self.cache / f"{key}__{slug(prompt)}.jpg"
+        overlay = self.cache / f"{key}__{slug(prompt)}{f'@{self.conf}' if self.conf else ''}.jpg"
         started = time.perf_counter()
         if self.persistent:
             with self._lock:
@@ -219,7 +224,7 @@ class SamCounter:
             return result
         worker = Path(__file__).with_name("sam_worker.py")
         done = subprocess.run([self.python, "-I", str(worker), str(self.weights), str(photo), prompt, str(overlay)],
-                              capture_output=True, text=True, timeout=1800, env={**os.environ, "YOLO_OFFLINE": "1"})
+                              capture_output=True, text=True, timeout=1800, env=self._env())
         if done.returncode != 0:
             raise RuntimeError("SAM worker failed: " + done.stderr.strip()[-400:])
         result = json.loads(done.stdout.strip().splitlines()[-1])

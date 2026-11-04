@@ -40,7 +40,7 @@ class CliTests(unittest.TestCase):
     def run_check(self, counted):
         argv = ["check", "--bill-json", str(self.dir / "bill.json"), "--po", str(self.dir / "po.json"), "--photos", str(self.dir / "dock"),
                 "--words", "cardboard box", "--out", str(self.dir / "out")]
-        with mock.patch.object(cli, "build_sam", lambda: FakeSam(counted)), contextlib.redirect_stdout(io.StringIO()) as out:
+        with mock.patch.object(cli, "build_sam", lambda **kw: FakeSam(counted)), contextlib.redirect_stdout(io.StringIO()) as out:
             code = cli.main(argv)
         return code, out.getvalue()
 

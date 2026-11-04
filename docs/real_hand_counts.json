@@ -1,0 +1,10 @@
+{
+ "P01": {"count": 25, "by": "assistant, by eye, far boxes included"},
+ "P02": {"count": 3, "by": "assistant, by eye"},
+ "P03": {"count": 16, "by": "assistant, by eye"},
+ "P06": {"count": 17, "by": "assistant, by eye: 4 in front, about 13 on the racks behind"},
+ "P07": {"count": 65, "by": "builder, by eye, far items included"},
+ "P10": {"count": 55, "by": "builder, by eye, far items included"},
+ "P11": {"count": 50, "by": "builder, by eye"},
+ "P12": {"count": 20, "by": "assistant, by eye"}
+}

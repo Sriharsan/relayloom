@@ -75,13 +75,16 @@ def load_json(path: str, what: str) -> dict:
         raise UserError(f"{what} is not valid JSON: {error}") from error
 
 
-def build_sam(live: bool = True):
+DEFAULT_CONFIDENCE = 0.5  # on the builder's real test photos 0.5 cut the total counting error from 33 to 12; see docs/CONFIDENCE.md
+
+
+def build_sam(live: bool = True, conf: float = DEFAULT_CONFIDENCE):
     from .ap.models import SamCounter
     python = os.environ.get("RELAYLOOM_SAM_PYTHON", sys.executable)
     weights = os.environ.get("RELAYLOOM_SAM_WEIGHTS", str(MODELS / SAM_FILE))
     if live and not Path(weights).exists():
         raise UserError(f"SAM 3.1 weights not found at {weights}. Run: relayloom models pull   (or use --counted N to skip counting)")
-    return SamCounter(python, weights, "SAM 3.1 on this machine", live=live, cache=HOME / "sam-cache", persistent=True)
+    return SamCounter(python, weights, "SAM 3.1 on this machine", live=live, cache=HOME / "sam-cache", persistent=True, conf=conf)
 
 
 def glimmer_url() -> str:
@@ -189,7 +192,7 @@ def check(args) -> int:
         if not args.photos:
             raise UserError("give --photos, or --counted N (or CODE=N for each line) when the goods were counted another way")
         photos = expand_photos(args.photos)
-        sam = build_sam()
+        sam = build_sam(conf=args.confidence)
         model, route, input_hash = "SAM 3.1", "this machine", sha256([p.name for p in photos])
         if args.agent:
             from .ap.lookagent import LookAgent
@@ -391,6 +394,7 @@ def parser() -> argparse.ArgumentParser:
     c.add_argument("--photos", nargs="+", help="photos, or folders of photos, of the delivery")
     c.add_argument("--counts-file", help="a JSON file of counts, {\"CODE\": N, ...}, for purchase orders with many lines")
     c.add_argument("--counted", nargs="+", metavar="N|CODE=N", help="items already counted instead of photos: N for the line being counted, or CODE=N for each line")
+    c.add_argument("--confidence", type=float, default=DEFAULT_CONFIDENCE, help="the lowest SAM mask score kept, 0.3 to 0.9 (default 0.5; lower finds more, higher is stricter)")
     c.add_argument("--item", help="the purchase order line the photos count (default: the first line)")
     c.add_argument("--words", nargs="*", help="words for SAM to look for (the agent proposes them when omitted)")
     c.add_argument("--agent", action="store_true", help="let Muse Glimmer choose the words and look at its own counts")

@@ -11,6 +11,8 @@ import securityData from "./security.json";
 import boundaryData from "./boundary.json";
 import offlineData from "./offline.json";
 import agentData from "./agent.json";
+import realData from "./real.json";
+import confidenceData from "./confidence.json";
 import videoData from "./video.json";
 
 export const links = {
@@ -410,4 +412,13 @@ export const agent = agentData as unknown as {
   photo: string; bill_line: string; hand_count: number | null; recorded_at: string; route: string; seconds: number; calls: number;
   count: number | null; agreed: boolean; held: boolean; first_try_count: number | null; confirmed_by?: string;
   trace: { step: string; tool: string; seconds?: number; words?: string; count?: number; overlay?: string; saw_image?: boolean; output?: { words?: string[]; verdict?: string; note?: string } }[];
+};
+
+export const real = realData as unknown as {
+  rows: { key: string; pid: string; image: string; agree: boolean; hand_count: number | null; hand_by: string | null; first_word_error: number | null; best_error: number | null;
+          results: { word: string; count: number; seconds: number; overlay: string }[] }[];
+};
+export const confidence = confidenceData as unknown as {
+  real: { threshold: number; total_abs_error: number; exact: number; within_10_percent: number; photos: number }[];
+  rendered: { threshold: number; total_abs_error: number; exact: number; within_10_percent: number; photos: number }[];
 };

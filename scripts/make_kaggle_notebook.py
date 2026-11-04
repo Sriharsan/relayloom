@@ -106,7 +106,7 @@ variants = {
 tuning = []
 for name, extra in variants.items():
     try:
-        reply = glimmer.chat(READER_SYSTEM, 'Bill text:\n<<<\n' + masked + '\n>>>', BILL_SCHEMA, extra=extra)
+        reply = glimmer.chat(READER_SYSTEM, 'Bill text:' + chr(10) + '<<<' + chr(10) + masked + chr(10) + '>>>', BILL_SCHEMA, extra=extra)
         ok = validate_bill(parse_json(reply['content']))['total_inr'] == read['bill']['total_inr']
         row = {'variant': name, 'seconds': reply['seconds'], 'valid_and_same_total': ok, 'completion_tokens': reply['usage'].get('completion_tokens'),
                'reasoning_chars': reply['reasoning_chars'], 'tokens_per_second': round(reply['timings'].get('predicted_per_second', 0), 1),

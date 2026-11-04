@@ -1,13 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/lib/router";
-import { agent, benchmark, caseById, casePhotos, fmtSeconds, glimmerSummary, links, offlineRun, samSummary, video } from "@/data/site";
+import { agent, benchmark, confidence, fmtSeconds, glimmerSummary, links, offlineRun, real, samSummary, video } from "@/data/site";
 import { CopyBlock, Photo } from "@/components/bits";
 
-const SHORT = caseById("short")!;
-const BILL_QTY = SHORT.bill!.lines[0]!.qty;
-const GOODS = SHORT.counter.total;
-const GAP = BILL_QTY - GOODS;
-const PHOTOS = casePhotos(SHORT).filter((p) => p.counted);
 
 const btn =
   "inline-flex h-12 items-center gap-2 rounded-full bg-foreground px-6 text-sm font-medium text-background transition-opacity duration-150 hover:opacity-90";
@@ -20,7 +15,9 @@ const wrongPaid = bench("Money paid wrongly")?.paperworkPlusGoods;
 
 /* ------------------------------------------------------------------ hero */
 function Hero() {
-  const lead = PHOTOS[0];
+  const lead = real.rows.find((r) => r.pid === "P01")!;
+  const overlay = lead.results[0];
+  const BILLED = 30; // a sample bill written for this real photo
   return (
     <section className="relative border-b border-line">
       <div className="blueprint absolute inset-0" aria-hidden="true" />
@@ -47,19 +44,17 @@ function Hero() {
             </div>
           </div>
           <div className="relative pb-6">
-            {lead && (
-              <div className="overflow-hidden rounded-[28px] border border-line bg-raised shadow-2xl shadow-black/30">
-                <Photo src={lead.image} alt={`Delivery photo with ${lead.count} items outlined and numbered`} aspect="16 / 9" />
-              </div>
-            )}
+            <div className="overflow-hidden rounded-[28px] border border-line bg-raised shadow-2xl shadow-black/30">
+              <Photo src={`/img/real/overlay/${overlay.overlay}`} alt="A van full of boxes, each box outlined and numbered by SAM 3.1" aspect="3 / 2" />
+            </div>
             <div className="absolute -top-5 left-4 rotate-[-2deg] rounded-xl border border-line bg-background px-4 py-3 shadow-xl sm:left-8">
-              <p className="font-mono text-[10.5px] uppercase tracking-wider text-ink-muted">The paperwork says</p>
-              <p className="tnum font-mono text-[40px] leading-none text-foreground">{BILL_QTY}</p>
+              <p className="font-mono text-[10.5px] uppercase tracking-wider text-ink-muted">A sample bill says</p>
+              <p className="tnum font-mono text-[40px] leading-none text-foreground">{BILLED}</p>
             </div>
             <div className="absolute -bottom-5 right-4 rotate-[1.5deg] rounded-xl border border-amber/50 bg-background px-4 py-3 shadow-xl sm:right-8">
-              <p className="font-mono text-[10.5px] uppercase tracking-wider text-amber-ink">The dock counted</p>
-              <p className="tnum font-mono text-[40px] leading-none text-amber-ink">{GOODS}</p>
-              <p className="mt-1 text-[12px] text-ink-muted">short by {GAP}, held for a person</p>
+              <p className="font-mono text-[10.5px] uppercase tracking-wider text-amber-ink">SAM 3.1 counted</p>
+              <p className="tnum font-mono text-[40px] leading-none text-amber-ink">{overlay.count}</p>
+              <p className="mt-1 text-[12px] text-ink-muted">by eye: {lead.hand_count}. Short by {BILLED - overlay.count}, held for a person</p>
             </div>
           </div>
         </div>
@@ -167,27 +162,48 @@ function Looks() {
 
 /* -------------------------------------------------------- 2. real goods strip */
 function Goods() {
-  const frames = [...PHOTOS, ...video.frames.map((f) => ({ photo: f.id, count: f.count, image: `/img/${f.overlay}` }))];
+  const rows = [...real.rows].sort((a, b) => Number(b.hand_count !== null) - Number(a.hand_count !== null));
+  const at = (t: number) => confidence.real.find((r) => r.threshold === t)!;
   return (
     <section id="goods" className="border-b border-line">
       <div className="mx-auto max-w-[1200px] px-4 pt-20 sm:px-6">
         <p className="kLabel">02 / The goods</p>
         <div className="mt-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <h2 className="max-w-[18ch] text-balance text-[38px] font-bold leading-[1.04] tracking-[-0.02em] text-foreground sm:text-[52px]">
-            Every photo, every count, every miss.
+            Real photos expose what clean ones hide.
           </h2>
-          <p className="max-w-[40ch] text-[14.5px] leading-relaxed text-ink-muted">
-            Items outlined and numbered by SAM 3.1. Scroll the dock. Counts are checked against the hand count of each photo, and misses stay on the page.
+          <p className="max-w-[44ch] text-[14.5px] leading-relaxed text-ink-muted">
+            Test photos provided by the builder, a mix of free-licence stock and their own. SAM 3.1 outlines and numbers every item. Hand counts include the far items,
+            and every miss stays on the page.
           </p>
         </div>
+        <div className="mt-8 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-3">
+          <div className="bg-background p-6">
+            <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">Lowest score kept 0.4</p>
+            <p className="tnum mt-3 font-mono text-[44px] leading-none text-amber-ink">{at(0.4).total_abs_error}<span className="ml-2 text-[14px] text-ink-muted">items wrong in all</span></p>
+          </div>
+          <div className="bg-background p-6">
+            <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">Lowest score kept 0.5</p>
+            <p className="tnum mt-3 font-mono text-[44px] leading-none text-green-ink">{at(0.5).total_abs_error}<span className="ml-2 text-[14px] text-ink-muted">items wrong in all</span></p>
+          </div>
+          <div className="bg-background p-6">
+            <p className="text-[13.5px] leading-relaxed text-ink-muted">
+              On {at(0.4).photos} hand-counted photos the first setting over-counted clutter. Real photos moved the default from 0.4 to 0.5. On clean rendered photos 0.4 is still best, so it is a setting.
+            </p>
+          </div>
+        </div>
       </div>
-      <div className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-14 sm:px-6 [scrollbar-width:thin]" tabIndex={0} aria-label="Delivery photos with counts">
-        {frames.map((f, i) => (
-          <figure key={f.photo + i} className={`relative shrink-0 snap-start overflow-hidden rounded-2xl border border-line bg-raised ${i % 3 === 1 ? "w-[300px]" : "w-[420px]"} max-w-[86vw]`}>
-            <Photo src={f.image} alt={`${f.photo} with ${f.count} items outlined and numbered`} aspect={i % 3 === 1 ? "3 / 4" : "4 / 3"} />
-            <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/70 to-transparent p-4">
-              <span className="font-mono text-[11px] text-white/80">{f.photo}</span>
-              <span className="tnum font-mono text-[44px] leading-none text-white">{f.count}</span>
+      <div className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-14 sm:px-6 [scrollbar-width:thin]" tabIndex={0} aria-label="Test photos with counts">
+        {rows.map((r, i) => (
+          <figure key={r.key} className={`relative shrink-0 snap-start overflow-hidden rounded-2xl border border-line bg-raised ${i % 3 === 1 ? "w-[300px]" : "w-[420px]"} max-w-[86vw]`}>
+            <Photo src={`/img/real/overlay/${r.results[0].overlay}`} alt={`${r.pid} with ${r.results[0].count} items outlined and numbered`} aspect={i % 3 === 1 ? "3 / 4" : "4 / 3"} />
+            <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/75 to-transparent p-4">
+              <span className="font-mono text-[11px] text-white/85">
+                {r.pid} {r.results[0].word}
+                <br />
+                {r.hand_count !== null ? `by eye ${r.hand_count}` : "no hand count"}
+              </span>
+              <span className="tnum font-mono text-[44px] leading-none text-white">{r.results[0].count}</span>
             </figcaption>
           </figure>
         ))}
