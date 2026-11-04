@@ -155,6 +155,8 @@ class Handler(BaseHTTPRequestHandler):
                 if (folder / name).is_file():
                     return self.file(folder / name)
             return self.json(404, {"error": "not found"})
+        if url.path == "/strings.json":
+            return self.file(Path(__file__).with_name("strings.json"))
         name = "index.html" if url.path in ("/", "") else Path(url.path).name
         return self.file(WEB / name)
 
@@ -220,7 +222,7 @@ def main():
     if args.phone:
         from .alerts import AlertHub, PhoneInbox, PhoneServer, announce
         hub = AlertHub()
-        bench.notify = lambda kind, title, body, case: hub.publish(kind, title, body, case)
+        bench.notify = lambda kind, title, body, case, key="", params=None: hub.publish(kind, title, body, case, key, params)
         inbox = PhoneInbox(Path(args.data) / "phone", hub, bench.counter if args.counter == "live" else None)
         phone = PhoneServer(("0.0.0.0", args.phone_port), hub, photo_handler=inbox)
         phone.start()

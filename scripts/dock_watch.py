@@ -20,6 +20,7 @@ import time
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from relayloom.ap import i18n  # noqa: E402
 from relayloom.ap.alerts import AlertHub, PhoneServer, announce  # noqa: E402
 from relayloom.ap.video import DockWatcher, save_frames  # noqa: E402
 
@@ -39,15 +40,15 @@ def main():
     folder = ROOT / "data" / "dock" / time.strftime("watch-%Y%m%d-%H%M%S")
 
     def detected(info):
-        message = f"Movement at {info['detected_at_s']} s, {info['detection_lag_s']} s after it began."
-        hub.publish("detected", "Delivery detected on the dock", message, "dock")
-        print("ALERT  delivery detected.", message, flush=True)
+        made = i18n.alert("detected", "a.dock_detected", at=info["detected_at_s"], lag=info["detection_lag_s"])
+        hub.publish("detected", made["title"], made["body"], "dock", "a.dock_detected", made["params"])
+        print("ALERT  delivery detected.", made["body"], flush=True)
 
     def finished(event):
         paths = save_frames(event, folder, "DOCK")
-        message = f"{len(paths)} steady views saved from {event['started_s']} s to {event['ended_s']} s."
-        hub.publish("delivery", "Delivery complete", message, "dock")
-        print("ALERT  delivery complete.", message, "Frames:", folder, flush=True)
+        made = i18n.alert("delivery", "a.dock_complete", n=len(paths), start=event["started_s"], end=event["ended_s"])
+        hub.publish("delivery", made["title"], made["body"], "dock", "a.dock_complete", made["params"])
+        print("ALERT  delivery complete.", made["body"], "Frames:", folder, flush=True)
         if item:
             from relayloom.ap.app import load_env
             from relayloom.ap.models import SamCounter
@@ -60,7 +61,8 @@ def main():
             total = 0
             for path in paths:
                 total += sam.count(path, prompt, path.stem)["count"]
-            hub.publish("counted", f"Counted {total} {prompt}s on the dock", "Match it against the bill before paying.", "dock")
+            made = i18n.alert("counted", "a.dock_counted", total=total, word=prompt)
+            hub.publish("counted", made["title"], made["body"], "dock", "a.dock_counted", made["params"])
             print(f"ALERT  counted {total} ({prompt}) across {len(paths)} views.", flush=True)
 
     watcher = DockWatcher()

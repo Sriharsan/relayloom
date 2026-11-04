@@ -13,6 +13,7 @@ import re
 import threading
 import time
 
+from . import i18n
 from .casefile import build_casefile, supplier_file, supplier_patterns, write_casefile
 from .diagnosis import diagnose
 from .ledger import LedgerOffline
@@ -137,10 +138,12 @@ class Workbench:
         with self.lock:
             return self.locks.setdefault(key, threading.Lock())
 
-    def alert(self, case: Case, kind: str, title: str, body: str):
+    def alert(self, case: Case, kind: str, key: str, **params):
+        """Raise an alert. The words live in strings.json so the phone can show them in English, Tamil or Hindi."""
         if self.notify:
             try:
-                self.notify(kind, title, body, case.id)
+                made = i18n.alert(kind, key, **params)
+                self.notify(kind, made["title"], made["body"], case.id, key, made["params"])
             except Exception:  # an alert that cannot be sent never stops the case
                 pass
 
@@ -182,7 +185,7 @@ class Workbench:
                               "action": "ignored: bank details come only from the ledger supplier master"}
             self.receipt(case, "Reader", "injection_check", "attempt_recorded",
                          detail={"hidden_white_text": bool(hidden), "lines": masked_lines})
-            self.alert(case, "injection", f"{case.bill_no}: hidden text tried to change the bank account", "Ignored. Payment details come only from the supplier master.")
+            self.alert(case, "injection", "a.injection", bill=case.bill_no)
         result = self.reader.read_bill(case.masked_text, key=case.bill_no)
         case.bill = result["bill"]
         case.reader = {"model": result["model"], "route": result["route"], "seconds": result["seconds"],
@@ -263,8 +266,9 @@ class Workbench:
         self.mark(case, "enter", "held", None, "needs the owner")
         self.receipt(case, "Matcher", "propose", f"held for owner: {case.proposal['action']}", detail=case.proposal)
         cause = (case.diagnosis or {}).get("label")
-        self.alert(case, "needs_owner", f"{case.bill_no} needs you",
-                   (f"{cause}. " if cause else "") + case.proposal["reason"])
+        cause_code = (case.diagnosis or {}).get("cause")
+        self.alert(case, "needs_owner", "a.needs_owner", bill=case.bill_no, cause=cause or "", cause_key=f"d.{cause_code}" if cause_code else "",
+                   reason=case.proposal["reason"])
         if case.proposal["action"] == "send_dispute" and self.goods:
             self.draft_dispute(case)
 
@@ -351,7 +355,7 @@ class Workbench:
         seconds = round(time.perf_counter() - started, 2)
         if differences:
             case.state, case.status = "readback_failed", "Readback failed: not treated as entered"
-            self.alert(case, "readback", f"{case.bill_no} readback failed", "; ".join(differences))
+            self.alert(case, "readback", "a.readback", bill=case.bill_no, differences="; ".join(differences))
             self.mark(case, "check", "failed", seconds, "; ".join(differences))
             self.receipt(case, "Checker", "check", "readback failed", ledger_readback=sha256(stored or {}),
                          detail={"differences": differences})
@@ -372,7 +376,7 @@ class Workbench:
         # change_books_while_offline is "never": the action is queued, not attempted.
         case.queued_action = action
         case.state, case.status = "held_offline", "Held, offline"
-        self.alert(case, "offline", f"{case.bill_no} held, offline", "The network is down. Nothing was entered or sent.")
+        self.alert(case, "offline", "a.offline", bill=case.bill_no)
         self.mark(case, action if action in STEPS else "enter", "held", None, "offline")
         self.receipt(case, "Clerk", action, "held offline; nothing entered or sent",
                      detail={"policy": "change_books_while_offline is never allowed"})

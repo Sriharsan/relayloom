@@ -1,0 +1,819 @@
+{
+ "languages": {
+  "en": "English",
+  "ta": "தமிழ்",
+  "hi": "हिन्दी"
+ },
+ "strings": {
+  "p.title": {
+   "en": "Relayloom alerts",
+   "ta": "Relayloom அறிவிப்புகள்",
+   "hi": "Relayloom सूचनाएँ",
+   "checked": false
+  },
+  "p.connecting": {
+   "en": "Connecting",
+   "ta": "இணைக்கப்படுகிறது",
+   "hi": "जुड़ रहा है",
+   "checked": false
+  },
+  "p.waiting": {
+   "en": "Connected, waiting for deliveries",
+   "ta": "இணைக்கப்பட்டது, சரக்கு வருகைக்காகக் காத்திருக்கிறது",
+   "hi": "जुड़ गया, माल आने की प्रतीक्षा है",
+   "checked": false
+  },
+  "p.reconnecting": {
+   "en": "Reconnecting",
+   "ta": "மீண்டும் இணைக்கப்படுகிறது",
+   "hi": "फिर से जुड़ रहा है",
+   "checked": false
+  },
+  "p.invalid": {
+   "en": "This link is not valid. Open the link from the laptop again.",
+   "ta": "இந்த இணைப்பு செல்லாது. மடிக்கணினியிலிருந்து இணைப்பை மீண்டும் திறக்கவும்.",
+   "hi": "यह लिंक मान्य नहीं है। लैपटॉप से लिंक फिर से खोलें।",
+   "checked": false
+  },
+  "p.empty": {
+   "en": "No alerts yet. This page lights up when a delivery needs you.",
+   "ta": "இன்னும் அறிவிப்புகள் இல்லை. ஒரு சரக்கு வருகைக்கு உங்கள் முடிவு தேவைப்படும்போது இந்தப் பக்கத்தில் தெரியும்.",
+   "hi": "अभी कोई सूचना नहीं है। जब किसी माल पर आपके निर्णय की ज़रूरत होगी, तब यह पेज यहाँ दिखाएगा।",
+   "checked": false
+  },
+  "p.allow": {
+   "en": "Allow notifications on this phone",
+   "ta": "இந்த தொலைபேசியில் அறிவிப்புகளை அனுமதிக்கவும்",
+   "hi": "इस फ़ोन पर सूचनाओं की अनुमति दें",
+   "checked": false
+  },
+  "p.count_title": {
+   "en": "Count a delivery",
+   "ta": "சரக்கை எண்ணவும்",
+   "hi": "माल गिनें",
+   "checked": false
+  },
+  "p.count_hint": {
+   "en": "Take a photo of the goods. The laptop counts them and the result appears below.",
+   "ta": "சரக்கின் புகைப்படம் எடுக்கவும். மடிக்கணினி அவற்றை எண்ணும்; முடிவு கீழே தெரியும்.",
+   "hi": "माल की फ़ोटो लें। लैपटॉप उन्हें गिनेगा और नतीजा नीचे दिखेगा।",
+   "checked": false
+  },
+  "p.word_label": {
+   "en": "What to count (a word such as box)",
+   "ta": "எதை எண்ண வேண்டும் (எ.கா. box)",
+   "hi": "क्या गिनना है (जैसे box)",
+   "checked": false
+  },
+  "p.take": {
+   "en": "Take dock photo",
+   "ta": "புகைப்படம் எடுக்கவும்",
+   "hi": "फ़ोटो लें",
+   "checked": false
+  },
+  "p.sending": {
+   "en": "Sending {kb} KB to the laptop",
+   "ta": "{kb} KB மடிக்கணினிக்கு அனுப்பப்படுகிறது",
+   "hi": "{kb} KB लैपटॉप को भेजा जा रहा है",
+   "checked": false
+  },
+  "p.received": {
+   "en": "Received. Counting on the laptop.",
+   "ta": "பெறப்பட்டது. மடிக்கணினியில் எண்ணப்படுகிறது.",
+   "hi": "मिल गया। लैपटॉप पर गिनती हो रही है।",
+   "checked": false
+  },
+  "p.not_accepted": {
+   "en": "Not accepted",
+   "ta": "ஏற்கப்படவில்லை",
+   "hi": "स्वीकार नहीं किया गया",
+   "checked": false
+  },
+  "p.unreachable": {
+   "en": "Could not reach the laptop",
+   "ta": "மடிக்கணினியை அடைய முடியவில்லை",
+   "hi": "लैपटॉप तक नहीं पहुँचा जा सका",
+   "checked": false
+  },
+  "p.language": {
+   "en": "Language",
+   "ta": "மொழி",
+   "hi": "भाषा",
+   "checked": false
+  },
+  "a.needs_owner.title": {
+   "en": "{bill} needs you",
+   "ta": "{bill}: உங்கள் முடிவு தேவை",
+   "hi": "{bill}: आपके निर्णय की ज़रूरत है",
+   "checked": false
+  },
+  "a.needs_owner.body": {
+   "en": "{cause}. {reason}",
+   "ta": "{cause}. {reason}",
+   "hi": "{cause}. {reason}",
+   "checked": false
+  },
+  "a.injection.title": {
+   "en": "{bill}: hidden text tried to change the bank account",
+   "ta": "{bill}: மறைக்கப்பட்ட உரை வங்கிக் கணக்கை மாற்ற முயன்றது",
+   "hi": "{bill}: छिपे हुए टेक्स्ट ने बैंक खाता बदलने की कोशिश की",
+   "checked": false
+  },
+  "a.injection.body": {
+   "en": "Ignored. Payment details come only from the supplier master.",
+   "ta": "புறக்கணிக்கப்பட்டது. பணம் செலுத்தும் விவரங்கள் சப்ளையரின் முதன்மைப் பதிவிலிருந்து மட்டுமே எடுக்கப்படும்.",
+   "hi": "अनदेखा किया गया। भुगतान का विवरण केवल सप्लायर के मास्टर रिकॉर्ड से लिया जाता है।",
+   "checked": false
+  },
+  "a.readback.title": {
+   "en": "{bill} readback failed",
+   "ta": "{bill}: பதிவை மீண்டும் சரிபார்த்தல் தோல்வியடைந்தது",
+   "hi": "{bill}: बही में दर्ज बिल की दोबारा जाँच विफल रही",
+   "checked": false
+  },
+  "a.readback.body": {
+   "en": "{differences}",
+   "ta": "{differences}",
+   "hi": "{differences}",
+   "checked": false
+  },
+  "a.offline.title": {
+   "en": "{bill} held, offline",
+   "ta": "{bill}: நிறுத்தி வைக்கப்பட்டது, இணையம் இல்லை",
+   "hi": "{bill}: रोका गया, नेटवर्क बंद है",
+   "checked": false
+  },
+  "a.offline.body": {
+   "en": "The network is down. Nothing was entered or sent.",
+   "ta": "நெட்வொர்க் துண்டிக்கப்பட்டுள்ளது. எதுவும் பதிவு செய்யப்படவில்லை, அனுப்பப்படவும் இல்லை.",
+   "hi": "नेटवर्क बंद है। कुछ भी दर्ज या भेजा नहीं गया।",
+   "checked": false
+  },
+  "a.photo_received.title": {
+   "en": "Dock photo received",
+   "ta": "புகைப்படம் பெறப்பட்டது",
+   "hi": "फ़ोटो मिल गई",
+   "checked": false
+  },
+  "a.photo_received.body": {
+   "en": "{name}, {kb} KB. Counting {word}.",
+   "ta": "{name}, {kb} KB. {word} எண்ணப்படுகிறது.",
+   "hi": "{name}, {kb} KB। {word} गिना जा रहा है।",
+   "checked": false
+  },
+  "a.photo_saved.title": {
+   "en": "Photo saved, not counted",
+   "ta": "புகைப்படம் சேமிக்கப்பட்டது, எண்ணப்படவில்லை",
+   "hi": "फ़ोटो सहेजी गई, गिनती नहीं हुई",
+   "checked": false
+  },
+  "a.photo_saved.body": {
+   "en": "Start the app with --counter live to count photos.",
+   "ta": "புகைப்படங்களை எண்ண, செயலியை --counter live உடன் தொடங்கவும்.",
+   "hi": "फ़ोटो गिनने के लिए ऐप को --counter live के साथ शुरू करें।",
+   "checked": false
+  },
+  "a.counted.title": {
+   "en": "Counted {n} {word}",
+   "ta": "{n} {word} எண்ணப்பட்டது",
+   "hi": "{n} {word} गिने गए",
+   "checked": false
+  },
+  "a.counted.body": {
+   "en": "{name} in {s} s on this laptop.",
+   "ta": "{name}: இந்த மடிக்கணினியில் {s} வினாடிகளில்.",
+   "hi": "{name}: इस लैपटॉप पर {s} सेकंड में।",
+   "checked": false
+  },
+  "a.count_failed.title": {
+   "en": "Count failed",
+   "ta": "எண்ணுதல் தோல்வியடைந்தது",
+   "hi": "गिनती विफल रही",
+   "checked": false
+  },
+  "a.count_failed.body": {
+   "en": "{name}: {error}",
+   "ta": "{name}: {error}",
+   "hi": "{name}: {error}",
+   "checked": false
+  },
+  "a.dock_detected.title": {
+   "en": "Delivery detected on the dock",
+   "ta": "சரக்கு வருகை கண்டறியப்பட்டது",
+   "hi": "माल की आमद का पता चला",
+   "checked": false
+  },
+  "a.dock_detected.body": {
+   "en": "Movement at {at} s, {lag} s after it began.",
+   "ta": "{at} வினாடியில் அசைவு, தொடங்கிய {lag} வினாடிக்குப் பிறகு.",
+   "hi": "{at} सेकंड पर हलचल, शुरू होने के {lag} सेकंड बाद।",
+   "checked": false
+  },
+  "a.dock_complete.title": {
+   "en": "Delivery complete",
+   "ta": "சரக்கு வருகை முடிந்தது",
+   "hi": "माल की आमद पूरी हुई",
+   "checked": false
+  },
+  "a.dock_complete.body": {
+   "en": "{n} steady views saved from {start} s to {end} s.",
+   "ta": "{start} முதல் {end} வினாடி வரை {n} நிலையான காட்சிகள் சேமிக்கப்பட்டன.",
+   "hi": "{start} से {end} सेकंड तक {n} स्थिर दृश्य सहेजे गए।",
+   "checked": false
+  },
+  "a.dock_counted.title": {
+   "en": "Counted {total} {word} on the dock",
+   "ta": "{total} {word} எண்ணப்பட்டது",
+   "hi": "{total} {word} गिने गए",
+   "checked": false
+  },
+  "a.dock_counted.body": {
+   "en": "Match it against the bill before paying.",
+   "ta": "பணம் செலுத்தும் முன் பில்லுடன் ஒப்பிடவும்.",
+   "hi": "भुगतान से पहले इसे बिल से मिलाएँ।",
+   "checked": false
+  },
+  "d.short_delivery": {
+   "en": "Short delivery",
+   "ta": "குறைவான சரக்கு வருகை",
+   "hi": "कम माल आया",
+   "checked": false
+  },
+  "d.duplicate_bill": {
+   "en": "Duplicate bill",
+   "ta": "நகல் பில்",
+   "hi": "दोहराया हुआ बिल",
+   "checked": false
+  },
+  "d.price_above_order": {
+   "en": "Price above the order",
+   "ta": "ஆர்டரை விட அதிக விலை",
+   "hi": "ऑर्डर से ऊँची कीमत",
+   "checked": false
+  },
+  "d.count_unreliable": {
+   "en": "The two counts disagree",
+   "ta": "இரண்டு எண்ணிக்கைகளும் ஒத்துப்போகவில்லை",
+   "hi": "दोनों गिनतियाँ मेल नहीं खातीं",
+   "checked": false
+  },
+  "d.unclear": {
+   "en": "Unclear",
+   "ta": "தெளிவில்லை",
+   "hi": "स्पष्ट नहीं",
+   "checked": false
+  },
+  "u.skip": {
+   "en": "Skip to content",
+   "ta": "உள்ளடக்கத்திற்குச் செல்லவும்",
+   "hi": "सामग्री पर जाएँ",
+   "checked": false
+  },
+  "u.sub": {
+   "en": "Autonomous accounts payable that checks the goods, not just the paperwork",
+   "ta": "காகிதங்களை மட்டுமல்ல, சரக்கையும் சரிபார்க்கும் தானியங்கி செலுத்த வேண்டிய கணக்குகள்",
+   "hi": "ऑटोमैटिक भुगतान-लेखा, जो सिर्फ़ कागज़ नहीं, माल भी जाँचता है",
+   "checked": false
+  },
+  "u.nav.today": {
+   "en": "Today",
+   "ta": "இன்று",
+   "hi": "आज",
+   "checked": false
+  },
+  "u.nav.approvals": {
+   "en": "Approvals",
+   "ta": "ஒப்புதல்கள்",
+   "hi": "मंज़ूरियाँ",
+   "checked": false
+  },
+  "u.nav.boundary": {
+   "en": "Boundary",
+   "ta": "எல்லை",
+   "hi": "सीमा",
+   "checked": false
+  },
+  "u.nav.benchmark": {
+   "en": "Benchmark",
+   "ta": "ஒப்பீட்டுச் சோதனை",
+   "hi": "बेंचमार्क",
+   "checked": false
+  },
+  "u.net.cut": {
+   "en": "Cut network",
+   "ta": "நெட்வொர்க்கைத் துண்டிக்கவும்",
+   "hi": "नेटवर्क काटें",
+   "checked": false
+  },
+  "u.net.reconnect": {
+   "en": "Reconnect",
+   "ta": "மீண்டும் இணைக்கவும்",
+   "hi": "फिर से जोड़ें",
+   "checked": false
+  },
+  "u.net.on": {
+   "en": "Network on",
+   "ta": "நெட்வொர்க் இயக்கத்தில்",
+   "hi": "नेटवर्क चालू",
+   "checked": false
+  },
+  "u.net.off": {
+   "en": "Network cut",
+   "ta": "நெட்வொர்க் துண்டிக்கப்பட்டது",
+   "hi": "नेटवर्क कटा है",
+   "checked": false
+  },
+  "u.theme.light": {
+   "en": "Light",
+   "ta": "ஒளி",
+   "hi": "हल्का",
+   "checked": false
+  },
+  "u.theme.dark": {
+   "en": "Dark",
+   "ta": "இருள்",
+   "hi": "गहरा",
+   "checked": false
+  },
+  "u.today.title": {
+   "en": "Today",
+   "ta": "இன்று",
+   "hi": "आज",
+   "checked": false
+  },
+  "u.today.hint": {
+   "en": "Agents read the bill, look at what actually arrived, investigate any gap with evidence, and pay only what the books and the goods both support.",
+   "ta": "முகவர்கள் பில்லைப் படிக்கின்றன, உண்மையில் வந்த சரக்கைப் பார்க்கின்றன, ஏதேனும் இடைவெளி இருந்தால் ஆதாரத்துடன் விசாரிக்கின்றன, கணக்குகளும் சரக்கும் இரண்டும் ஆதரிப்பதற்கு மட்டுமே பணம் செலுத்துகின்றன.",
+   "hi": "एजेंट बिल पढ़ते हैं, देखते हैं कि असल में क्या आया, किसी भी अंतर की जाँच सबूत के साथ करते हैं, और सिर्फ़ उतना भुगतान करते हैं जितना बही और माल दोनों से साबित हो।",
+   "checked": false
+  },
+  "u.start": {
+   "en": "Run today's bills",
+   "ta": "இன்றைய பில்களை இயக்கவும்",
+   "hi": "आज के बिल चलाएँ",
+   "checked": false
+  },
+  "u.th.bill": {
+   "en": "Bill",
+   "ta": "பில்",
+   "hi": "बिल",
+   "checked": false
+  },
+  "u.th.supplier": {
+   "en": "Supplier",
+   "ta": "சப்ளையர்",
+   "hi": "सप्लायर",
+   "checked": false
+  },
+  "u.th.read": {
+   "en": "Read",
+   "ta": "படித்தல்",
+   "hi": "पढ़ना",
+   "checked": false
+  },
+  "u.th.count": {
+   "en": "Count",
+   "ta": "எண்ணுதல்",
+   "hi": "गिनती",
+   "checked": false
+  },
+  "u.th.match": {
+   "en": "Match",
+   "ta": "பொருத்தம்",
+   "hi": "मिलान",
+   "checked": false
+  },
+  "u.th.investigate": {
+   "en": "Investigate",
+   "ta": "விசாரணை",
+   "hi": "जाँच",
+   "checked": false
+  },
+  "u.th.enter": {
+   "en": "Enter",
+   "ta": "பதிவு",
+   "hi": "दर्ज करना",
+   "checked": false
+  },
+  "u.th.check": {
+   "en": "Check",
+   "ta": "சரிபார்ப்பு",
+   "hi": "पुनः जाँच",
+   "checked": false
+  },
+  "u.th.status": {
+   "en": "Status",
+   "ta": "நிலை",
+   "hi": "स्थिति",
+   "checked": false
+  },
+  "u.rows.empty": {
+   "en": "No bills yet. Run today's bills to start the agents.",
+   "ta": "இன்னும் பில்கள் இல்லை. முகவர்களைத் தொடங்க இன்றைய பில்களை இயக்கவும்.",
+   "hi": "अभी कोई बिल नहीं है। एजेंट शुरू करने के लिए आज के बिल चलाएँ।",
+   "checked": false
+  },
+  "u.tile.entered": {
+   "en": "Entered and checked",
+   "ta": "பதிவு செய்து சரிபார்க்கப்பட்டது",
+   "hi": "दर्ज और जाँचे गए",
+   "checked": false
+  },
+  "u.tile.held": {
+   "en": "Held for the owner",
+   "ta": "உரிமையாளருக்காக நிறுத்தப்பட்டது",
+   "hi": "मालिक के लिए रोके गए",
+   "checked": false
+  },
+  "u.tile.offline": {
+   "en": "Held, offline",
+   "ta": "நிறுத்தப்பட்டது, இணையம் இல்லை",
+   "hi": "रोके गए, ऑफ़लाइन",
+   "checked": false
+  },
+  "u.tile.disputes": {
+   "en": "Disputes sent",
+   "ta": "அனுப்பப்பட்ட புகார்கள்",
+   "hi": "भेजे गए विवाद",
+   "checked": false
+  },
+  "u.auto.alone": {
+   "en": "Runs alone",
+   "ta": "தானாகவே நடக்கும்",
+   "hi": "अपने आप चलता है",
+   "checked": false
+  },
+  "u.auto.approval": {
+   "en": "Waits for the owner",
+   "ta": "உரிமையாளருக்காகக் காத்திருக்கும்",
+   "hi": "मालिक की प्रतीक्षा करता है",
+   "checked": false
+  },
+  "u.auto.never": {
+   "en": "Never",
+   "ta": "ஒருபோதும் இல்லை",
+   "hi": "कभी नहीं",
+   "checked": false
+  },
+  "u.auto.limit": {
+   "en": "Owner limit {amount}",
+   "ta": "உரிமையாளர் வரம்பு {amount}",
+   "hi": "मालिक की सीमा {amount}",
+   "checked": false
+  },
+  "u.step.waiting": {
+   "en": "Waiting",
+   "ta": "காத்திருக்கிறது",
+   "hi": "प्रतीक्षा",
+   "checked": false
+  },
+  "u.step.running": {
+   "en": "Working",
+   "ta": "நடைபெறுகிறது",
+   "hi": "चल रहा है",
+   "checked": false
+  },
+  "u.step.done": {
+   "en": "Done",
+   "ta": "முடிந்தது",
+   "hi": "पूरा",
+   "checked": false
+  },
+  "u.step.held": {
+   "en": "Held",
+   "ta": "நிறுத்தப்பட்டது",
+   "hi": "रोका गया",
+   "checked": false
+  },
+  "u.step.failed": {
+   "en": "Failed",
+   "ta": "தோல்வி",
+   "hi": "विफल",
+   "checked": false
+  },
+  "u.step.skipped": {
+   "en": "Skipped",
+   "ta": "தவிர்க்கப்பட்டது",
+   "hi": "छोड़ा गया",
+   "checked": false
+  },
+  "u.state.queued": {
+   "en": "Queued",
+   "ta": "வரிசையில்",
+   "hi": "कतार में",
+   "checked": false
+  },
+  "u.state.matched": {
+   "en": "Matched",
+   "ta": "பொருந்தியது",
+   "hi": "मिलान हुआ",
+   "checked": false
+  },
+  "u.state.entered_checked": {
+   "en": "Entered and checked",
+   "ta": "பதிவு செய்து சரிபார்க்கப்பட்டது",
+   "hi": "दर्ज और जाँचा गया",
+   "checked": false
+  },
+  "u.state.held_for_owner": {
+   "en": "Needs you",
+   "ta": "உங்கள் முடிவு தேவை",
+   "hi": "आपकी ज़रूरत है",
+   "checked": false
+  },
+  "u.state.held_offline": {
+   "en": "Held, offline",
+   "ta": "நிறுத்தப்பட்டது, இணையம் இல்லை",
+   "hi": "रोका गया, ऑफ़लाइन",
+   "checked": false
+  },
+  "u.state.approved": {
+   "en": "Approved",
+   "ta": "அங்கீகரிக்கப்பட்டது",
+   "hi": "मंज़ूर",
+   "checked": false
+  },
+  "u.state.dispute_sent": {
+   "en": "Dispute sent",
+   "ta": "புகார் அனுப்பப்பட்டது",
+   "hi": "विवाद भेजा गया",
+   "checked": false
+  },
+  "u.state.closed_by_owner": {
+   "en": "Closed by owner",
+   "ta": "உரிமையாளர் மூடினார்",
+   "hi": "मालिक ने बंद किया",
+   "checked": false
+  },
+  "u.state.readback_failed": {
+   "en": "Readback failed",
+   "ta": "மறுசரிபார்ப்பு தோல்வி",
+   "hi": "दोबारा जाँच विफल",
+   "checked": false
+  },
+  "u.state.failed": {
+   "en": "Stopped",
+   "ta": "நின்றது",
+   "hi": "रुका",
+   "checked": false
+  },
+  "u.action.send_dispute": {
+   "en": "send a dispute to the supplier",
+   "ta": "சப்ளையருக்குப் புகார் அனுப்பவும்",
+   "hi": "सप्लायर को विवाद भेजें",
+   "checked": false
+  },
+  "u.action.enter_bill": {
+   "en": "enter the bill",
+   "ta": "பில்லைப் பதிவு செய்யவும்",
+   "hi": "बिल दर्ज करें",
+   "checked": false
+  },
+  "u.action.reject_duplicate": {
+   "en": "reject the duplicate bill",
+   "ta": "நகல் பில்லை நிராகரிக்கவும்",
+   "hi": "दोहराया हुआ बिल अस्वीकार करें",
+   "checked": false
+  },
+  "u.action.hold_for_recount": {
+   "en": "hold for a person to recount",
+   "ta": "ஒருவர் மீண்டும் எண்ணும் வரை நிறுத்தி வைக்கவும்",
+   "hi": "किसी व्यक्ति के दोबारा गिनने तक रोकें",
+   "checked": false
+  },
+  "u.action.enter_bill_for_received_quantity": {
+   "en": "enter the bill for the received quantity",
+   "ta": "பெறப்பட்ட அளவுக்கு பில்லைப் பதிவு செய்யவும்",
+   "hi": "प्राप्त मात्रा के लिए बिल दर्ज करें",
+   "checked": false
+  },
+  "u.level.run_alone": {
+   "en": "runs alone",
+   "ta": "தானாகவே நடக்கும்",
+   "hi": "अपने आप चलता है",
+   "checked": false
+  },
+  "u.level.run_with_approval": {
+   "en": "waits for the owner",
+   "ta": "உரிமையாளருக்காகக் காத்திருக்கும்",
+   "hi": "मालिक की प्रतीक्षा करता है",
+   "checked": false
+  },
+  "u.level.never": {
+   "en": "never",
+   "ta": "ஒருபோதும் இல்லை",
+   "hi": "कभी नहीं",
+   "checked": false
+  },
+  "u.appr.title": {
+   "en": "Approvals",
+   "ta": "ஒப்புதல்கள்",
+   "hi": "मंज़ूरियाँ",
+   "checked": false
+  },
+  "u.appr.keys": {
+   "en": "Keys: {j} {k} move, {a} approve, {r} reject",
+   "ta": "விசைகள்: {j} {k} நகர்த்த, {a} அங்கீகரிக்க, {r} நிராகரிக்க",
+   "hi": "कुंजियाँ: {j} {k} आगे-पीछे, {a} मंज़ूर करें, {r} अस्वीकार करें",
+   "checked": false
+  },
+  "u.appr.empty": {
+   "en": "Nothing needs you right now.",
+   "ta": "இப்போது உங்கள் முடிவு தேவைப்படுவது எதுவும் இல்லை.",
+   "hi": "अभी किसी चीज़ पर आपके निर्णय की ज़रूरत नहीं है।",
+   "checked": false
+  },
+  "u.appr.proposes": {
+   "en": "Agent proposes: {action}. Nothing has been entered.",
+   "ta": "முகவர் பரிந்துரைப்பது: {action}. எதுவும் பதிவு செய்யப்படவில்லை.",
+   "hi": "एजेंट का सुझाव: {action}। कुछ भी दर्ज नहीं किया गया है।",
+   "checked": false
+  },
+  "u.appr.statements": {
+   "en": "{n} statements, each citing a record or photo.",
+   "ta": "{n} கூற்றுகள், ஒவ்வொன்றும் ஒரு பதிவு அல்லது புகைப்படத்தை ஆதாரமாகக் காட்டுகிறது.",
+   "hi": "{n} कथन, हर एक किसी रिकॉर्ड या फ़ोटो का हवाला देता है।",
+   "checked": false
+  },
+  "u.appr.open_inv": {
+   "en": "Open the investigation",
+   "ta": "விசாரணையைத் திறக்கவும்",
+   "hi": "जाँच खोलें",
+   "checked": false
+  },
+  "u.btn.approve": {
+   "en": "Approve (a)",
+   "ta": "அங்கீகரிக்கவும் (a)",
+   "hi": "मंज़ूर करें (a)",
+   "checked": false
+  },
+  "u.btn.reject": {
+   "en": "Reject (r)",
+   "ta": "நிராகரிக்கவும் (r)",
+   "hi": "अस्वीकार करें (r)",
+   "checked": false
+  },
+  "u.btn.open_case": {
+   "en": "Open case",
+   "ta": "வழக்கைத் திறக்கவும்",
+   "hi": "केस खोलें",
+   "checked": false
+  },
+  "u.btn.back": {
+   "en": "Back to today",
+   "ta": "இன்றைக்குத் திரும்பவும்",
+   "hi": "आज पर वापस",
+   "checked": false
+  },
+  "u.case.investigation": {
+   "en": "Investigation",
+   "ta": "விசாரணை",
+   "hi": "जाँच",
+   "checked": false
+  },
+  "u.case.proposes": {
+   "en": "The agent proposes",
+   "ta": "முகவரின் பரிந்துரை",
+   "hi": "एजेंट का सुझाव",
+   "checked": false
+  },
+  "u.case.policy_says": {
+   "en": "The policy says",
+   "ta": "கொள்கை கூறுவது",
+   "hi": "नीति के अनुसार",
+   "checked": false
+  },
+  "u.case.bill_seen": {
+   "en": "The bill, as the model saw it",
+   "ta": "மாடல் பார்த்த பில்",
+   "hi": "बिल, जैसा मॉडल ने देखा",
+   "checked": false
+  },
+  "u.case.dock": {
+   "en": "The dock",
+   "ta": "சரக்கு இறக்குமிடம்",
+   "hi": "माल उतरने की जगह",
+   "checked": false
+  },
+  "u.case.match": {
+   "en": "Three way match, as a running total on the order",
+   "ta": "மூன்று வழி பொருத்தம், ஆர்டரின் தொடர் கூட்டுத்தொகையாக",
+   "hi": "तीन-तरफ़ा मिलान, ऑर्डर पर चलते कुल योग के रूप में",
+   "checked": false
+  },
+  "u.case.readback": {
+   "en": "Ledger readback",
+   "ta": "கணக்கேட்டுப் பதிவின் மறுசரிபார்ப்பு",
+   "hi": "बही में दर्ज की दोबारा जाँच",
+   "checked": false
+  },
+  "u.case.dispute": {
+   "en": "Dispute to the supplier",
+   "ta": "சப்ளையருக்கான புகார்",
+   "hi": "सप्लायर को विवाद",
+   "checked": false
+  },
+  "u.case.receipts": {
+   "en": "Receipts",
+   "ta": "ரசீதுகள்",
+   "hi": "रसीदें",
+   "checked": false
+  },
+  "s.queued": {
+   "en": "Queued",
+   "ta": "வரிசையில்",
+   "hi": "कतार में",
+   "checked": false
+  },
+  "s.reading_the_bill": {
+   "en": "Reading the bill",
+   "ta": "பில் படிக்கப்படுகிறது",
+   "hi": "बिल पढ़ा जा रहा है",
+   "checked": false
+  },
+  "s.counting_the_delivery": {
+   "en": "Counting the delivery",
+   "ta": "சரக்கு எண்ணப்படுகிறது",
+   "hi": "माल की गिनती हो रही है",
+   "checked": false
+  },
+  "s.matching": {
+   "en": "Matching",
+   "ta": "பொருத்திப் பார்க்கப்படுகிறது",
+   "hi": "मिलान हो रहा है",
+   "checked": false
+  },
+  "s.waiting_for_the_owner": {
+   "en": "Waiting for the owner",
+   "ta": "உரிமையாளருக்காகக் காத்திருக்கிறது",
+   "hi": "मालिक की प्रतीक्षा है",
+   "checked": false
+  },
+  "s.investigating": {
+   "en": "Investigating",
+   "ta": "விசாரிக்கப்படுகிறது",
+   "hi": "जाँच हो रही है",
+   "checked": false
+  },
+  "s.entering_the_bill": {
+   "en": "Entering the bill",
+   "ta": "பில் பதிவு செய்யப்படுகிறது",
+   "hi": "बिल दर्ज हो रहा है",
+   "checked": false
+  },
+  "s.checking_the_ledger": {
+   "en": "Checking the ledger",
+   "ta": "கணக்கேடு சரிபார்க்கப்படுகிறது",
+   "hi": "बही की जाँच हो रही है",
+   "checked": false
+  },
+  "s.readback_failed_not_treated_as_entered": {
+   "en": "Readback failed: not treated as entered",
+   "ta": "மறுசரிபார்ப்பு தோல்வி: பதிவு செய்ததாகக் கருதப்படவில்லை",
+   "hi": "दोबारा जाँच विफल: दर्ज नहीं माना गया",
+   "checked": false
+  },
+  "s.entered_and_checked": {
+   "en": "Entered and checked",
+   "ta": "பதிவு செய்து சரிபார்க்கப்பட்டது",
+   "hi": "दर्ज और जाँचा गया",
+   "checked": false
+  },
+  "s.held_offline": {
+   "en": "Held, offline",
+   "ta": "நிறுத்தப்பட்டது, இணையம் இல்லை",
+   "hi": "रोका गया, ऑफ़लाइन",
+   "checked": false
+  },
+  "s.rejected_by_the_owner_nothing_entered_or_sent": {
+   "en": "Rejected by the owner: nothing entered or sent",
+   "ta": "உரிமையாளர் நிராகரித்தார்: எதுவும் பதிவு செய்யப்படவில்லை, அனுப்பப்படவும் இல்லை",
+   "hi": "मालिक ने अस्वीकार किया: कुछ भी दर्ज या भेजा नहीं गया",
+   "checked": false
+  },
+  "s.duplicate_bill_rejected_nothing_entered": {
+   "en": "Duplicate bill rejected: nothing entered",
+   "ta": "நகல் பில் நிராகரிக்கப்பட்டது: எதுவும் பதிவு செய்யப்படவில்லை",
+   "hi": "दोहराया हुआ बिल अस्वीकार: कुछ भी दर्ज नहीं हुआ",
+   "checked": false
+  },
+  "s.sending_the_dispute": {
+   "en": "Sending the dispute",
+   "ta": "புகார் அனுப்பப்படுகிறது",
+   "hi": "विवाद भेजा जा रहा है",
+   "checked": false
+  },
+  "s.dispute_sent_to_the_supplier_bill_not_entered": {
+   "en": "Dispute sent to the supplier; bill not entered",
+   "ta": "சப்ளையருக்குப் புகார் அனுப்பப்பட்டது; பில் பதிவு செய்யப்படவில்லை",
+   "hi": "सप्लायर को विवाद भेजा गया; बिल दर्ज नहीं हुआ",
+   "checked": false
+  },
+  "u.details_english": {
+   "en": "Details below come from the bill, the model and the matcher and stay in English.",
+   "ta": "கீழுள்ள விவரங்கள் பில், மாடல் மற்றும் பொருத்தும் நிரலிலிருந்து வருகின்றன; அவை ஆங்கிலத்திலேயே இருக்கும்.",
+   "hi": "नीचे का विवरण बिल, मॉडल और मिलान प्रोग्राम से आता है और अंग्रेज़ी में ही रहता है।",
+   "checked": false
+  }
+ }
+}

@@ -3,15 +3,45 @@
 
 const $ = (id) => document.getElementById(id);
 const STEPS = ["read", "count", "match", "investigate", "enter", "check"];
-const STEP_LABEL = { waiting: "Waiting", running: "Working", done: "Done", held: "Held", failed: "Failed", skipped: "Skipped" };
-const STATE_PILL = {
-  queued: ["Queued", "p-muted"], matched: ["Matched", "p-muted"], entered_checked: ["Entered and checked", "p-ok"],
-  held_for_owner: ["Needs you", "p-needs"], held_offline: ["Held, offline", "p-off"], approved: ["Approved", "p-muted"],
-  dispute_sent: ["Dispute sent", "p-ok"], closed_by_owner: ["Closed by owner", "p-muted"],
-  readback_failed: ["Readback failed", "p-bad"], failed: ["Stopped", "p-bad"],
-};
-const ACTION_LABEL = { send_dispute: "send a dispute to the supplier", enter_bill: "enter the bill", reject_duplicate: "reject the duplicate bill",
-  hold_for_recount: "hold for a person to recount", enter_bill_for_received_quantity: "enter the bill for the received quantity" };
+const STATE_CLASS = { queued: "p-muted", matched: "p-muted", entered_checked: "p-ok", held_for_owner: "p-needs", held_offline: "p-off", approved: "p-muted",
+  dispute_sent: "p-ok", closed_by_owner: "p-muted", readback_failed: "p-bad", failed: "p-bad" };
+// English, Tamil and Hindi. The words are in /strings.json, shared with the phone page. Text made by the model or taken from the bill stays as it is.
+let STR = { languages: { en: "English" }, strings: {} };
+let lang = "en";
+const REVIEW = location.search.includes("review=1");
+function t(key, params = {}) {
+  const entry = STR.strings[key];
+  if (!entry) return key;
+  const values = {};
+  for (const [k, v] of Object.entries(params)) values[k] = v;
+  return (entry[lang] || entry.en).replace(/\{(\w+)\}/g, (m, n) => (n in values ? values[n] : m));
+}
+const tx = (key, fallback) => (STR.strings[key] ? t(key) : fallback);
+function mark(el, key) { el.classList.toggle("unchecked", REVIEW && !!STR.strings[key] && !STR.strings[key].checked); }
+function applyStatic() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i]").forEach((el) => { el.textContent = t(el.dataset.i); mark(el, el.dataset.i); });
+  $("apprHint").innerHTML = esc(t("u.appr.keys", { j: "\u0001j", k: "\u0001k", a: "\u0001a", r: "\u0001r" })).replace(/\u0001(\w)/g, "<kbd>$1</kbd>");
+  document.title = "Relayloom";
+}
+async function loadStrings() {
+  try { STR = await (await fetch("/strings.json")).json(); } catch (error) { /* English only */ }
+  let saved = "";
+  try { saved = localStorage.getItem("relayloom-lang") || ""; } catch (error) { /* storage may be blocked */ }
+  const guess = (navigator.language || "en").slice(0, 2);
+  lang = STR.languages[saved] ? saved : STR.languages[guess] ? guess : "en";
+  const select = $("lang");
+  select.innerHTML = Object.entries(STR.languages).map(([code, name]) => `<option value="${code}">${esc(name)}</option>`).join("");
+  select.value = lang;
+  select.addEventListener("change", () => {
+    lang = select.value;
+    try { localStorage.setItem("relayloom-lang", lang); } catch (error) { /* ignore */ }
+    applyStatic();
+    if (state) { $("caseBody").dataset.key = ""; render(); }
+  });
+  applyStatic();
+}
+
 let state = null;
 let selected = 0;
 let current = "today";
@@ -25,7 +55,9 @@ function esc(value) {
 }
 const rupees = (n) => n == null ? "" : "Rs " + Number(n).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const secs = (s) => s == null ? "" : s < 1 ? `${Math.round(s * 1000)} ms` : s < 120 ? `${Number(s).toFixed(1)} s` : `${(s / 60).toFixed(1)} min`;
-const pill = (stateName) => { const [label, cls] = STATE_PILL[stateName] || [stateName, "p-muted"]; return `<span class="pill ${cls}">${esc(label)}</span>`; };
+const pill = (stateName) => `<span class="pill ${STATE_CLASS[stateName] || "p-muted"}">${esc(tx("u.state." + stateName, stateName))}</span>`;
+const statusText = (s) => tx("s." + String(s).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, ""), s);
+const actionLabel = (action) => tx("u.action." + action, action);
 const allPhotos = (c) => (c.counter.events || []).flatMap((e) => e.photos);
 const firstPhoto = (c) => { const p = allPhotos(c).find((x) => x.counted); return p ? (p.overlay || p.photo + ".jpg") : ""; };
 
@@ -47,16 +79,16 @@ async function refresh() {
 function render() {
   const { run, counts, cases, online } = state;
   $("runbar").innerHTML = `Mode <b>${esc(run.mode)}</b> · Reader <b>${esc(run.reader)}</b> · Counter <b>${esc(run.counter)}</b> · Ledger <b>${esc(run.ledger)}</b> · Policy <b>${esc(run.policy_hash.slice(0, 12))}</b>`;
-  $("net").textContent = online ? "Network on" : "Network cut";
+  $("net").textContent = t(online ? "u.net.on" : "u.net.off");
   $("net").className = "net " + (online ? "on" : "off");
-  $("netToggle").textContent = online ? "Cut network" : "Reconnect";
+  $("netToggle").textContent = t(online ? "u.net.cut" : "u.net.reconnect");
   const waiting = cases.filter((c) => c.state === "held_for_owner").length;
   $("approvalCount").hidden = !waiting;
   $("approvalCount").textContent = waiting;
   $("start").disabled = cases.length >= state.total_cases;
   $("tiles").innerHTML = [
-    ["Entered and checked", counts.entered_checked, "ok"], ["Held for the owner", counts.held_for_owner, "needs"],
-    ["Held, offline", counts.held_offline, "off"], ["Disputes sent", counts.disputes_sent, ""],
+    [t("u.tile.entered"), counts.entered_checked, "ok"], [t("u.tile.held"), counts.held_for_owner, "needs"],
+    [t("u.tile.offline"), counts.held_offline, "off"], [t("u.tile.disputes"), counts.disputes_sent, ""],
   ].map(([label, value, cls]) => `<div class="tile ${cls}"><b>${value}</b><span>${label}</span></div>`).join("");
   renderRows(cases);
   renderAutonomy();
@@ -67,7 +99,7 @@ function render() {
 }
 
 function stepCell(step) {
-  return `<span class="step s-${step.state}"><i>${STEP_LABEL[step.state] || step.state}</i><small>${esc(secs(step.seconds))}</small></span>`;
+  return `<span class="step s-${step.state}"><i>${esc(tx("u.step." + step.state, step.state))}</i><small>${esc(secs(step.seconds))}</small></span>`;
 }
 
 function renderRows(cases) {
@@ -76,16 +108,16 @@ function renderRows(cases) {
     <td><a href="#case/${esc(c.id)}">${esc(c.bill_no)}</a><br><small class="meta">${esc(c.id)}</small></td>
     <td>${esc(c.supplier_id)}</td>
     ${STEPS.map((s) => `<td data-label="${s}">${stepCell(c.steps[s])}</td>`).join("")}
-    <td class="status">${pill(c.state)}<br><small class="meta">${esc(c.status)}</small></td></tr>`).join("");
+    <td class="status">${pill(c.state)}<br><small class="meta">${esc(statusText(c.status))}</small></td></tr>`).join("");
 }
 
 function renderAutonomy() {
   const ops = state.policy.operations;
   const group = (level) => Object.keys(ops).filter((k) => ops[k] === level).map((k) => `<li>${esc(k.replaceAll("_", " "))}</li>`).join("");
   $("autonomy").innerHTML = `
-    <div class="lvl alone"><h2>Runs alone</h2><ul>${group("run_alone")}</ul></div>
-    <div class="lvl approval"><h2>Waits for the owner</h2><ul>${group("run_with_approval")}</ul><p class="meta">Owner limit ${rupees(state.policy.limits.owner_amount_limit_inr)}</p></div>
-    <div class="lvl never"><h2>Never</h2><ul>${group("never")}</ul></div>`;
+    <div class="lvl alone"><h2>${esc(t("u.auto.alone"))}</h2><ul>${group("run_alone")}</ul></div>
+    <div class="lvl approval"><h2>${esc(t("u.auto.approval"))}</h2><ul>${group("run_with_approval")}</ul><p class="meta">${esc(t("u.auto.limit", { amount: rupees(state.policy.limits.owner_amount_limit_inr) }))}</p></div>
+    <div class="lvl never"><h2>${esc(t("u.auto.never"))}</h2><ul>${group("never")}</ul></div>`;
 }
 
 function maskedText(text) {
@@ -113,7 +145,7 @@ function citeChip(id) { return `<button type="button" class="cite" data-cite="${
 
 function investigation(c) {
   const inv = c.investigation;
-  if (!inv) return `<div class="card"><h2>Investigation</h2><p class="meta">${c.match && c.match.matched ? "Nothing to investigate: the goods and the paperwork agree." : "Not started."}</p></div>`;
+  if (!inv) return `<div class="card"><h2>${esc(t("u.case.investigation"))}</h2><p class="meta">${c.match && c.match.matched ? "Nothing to investigate: the goods and the paperwork agree." : "Not started."}</p></div>`;
   const f = inv.finding;
   const by = f.written_by === "model" ? `Written by ${esc(f.model.split("/").pop())}, ${esc(f.route)}, ${secs(f.seconds)}.` : "Written by code from the evidence. Every citation was checked by code.";
   let detail = "";
@@ -122,12 +154,12 @@ function investigation(c) {
     const img = item.kind === "photo" ? `<img src="/media/${esc(item.overlay || item.photo + ".jpg")}" alt="${esc(item.photo)}" class="evimg">` : "";
     detail = `<div class="evidence" role="region" aria-live="polite"><b>${esc(item.id)}</b><p>${esc(item.text)}</p>${img}</div>`;
   }
-  const level = c.proposal ? c.proposal.policy_level.replaceAll("_", " ") : "";
-  return `<div class="card inv"><h2>Investigation</h2>
+  const level = c.proposal ? tx("u.level." + c.proposal.policy_level, c.proposal.policy_level.replaceAll("_", " ")) : "";
+  return `<div class="card inv"><h2>${esc(t("u.case.investigation"))}</h2>
     <p class="meta">${by} ${f.verified ? "All citations are real records." : "Citations failed the check."}</p>
     <ol class="finding">${f.statements.map((s) => `<li>${esc(s.text)} <span class="cites">${s.cites.map(citeChip).join(" ")}</span></li>`).join("")}</ol>${detail}
-    ${c.proposal ? `<div class="proposal"><div><span class="meta">The agent proposes</span><br><b>${esc(ACTION_LABEL[c.proposal.action] || c.proposal.action)}</b><br><span class="issue">${esc(c.proposal.reason)}</span></div>
-      <div><span class="meta">The policy says</span><br><span class="pill ${c.proposal.policy_level === "run_alone" ? "p-ok" : "p-needs"}">${esc(level)}</span>${c.decision ? `<br><span class="meta">Owner: ${esc(c.decision.decision)} at ${esc(c.decision.at)}</span>` : ""}</div></div>` : ""}</div>`;
+    ${c.proposal ? `<div class="proposal"><div><span class="meta">${esc(t("u.case.proposes"))}</span><br><b>${esc(actionLabel(c.proposal.action))}</b><br><span class="issue">${esc(c.proposal.reason)}</span></div>
+      <div><span class="meta">${esc(t("u.case.policy_says"))}</span><br><span class="pill ${c.proposal.policy_level === "run_alone" ? "p-ok" : "p-needs"}">${esc(level)}</span>${c.decision ? `<br><span class="meta">Owner: ${esc(c.decision.decision)} at ${esc(c.decision.at)}</span>` : ""}</div></div>` : ""}</div>`;
 }
 
 async function loadReceipts(id) {
@@ -156,33 +188,33 @@ function renderCase() {
     : "<p class='meta'>Nothing entered, so nothing to read back.</p>";
   const injection = c.injection ? `<div class="card warn"><h2>Hidden instruction found and ignored</h2><p>${c.injection.hidden_text ? "White text the owner cannot see on the printed bill" : "Instruction text in the bill"}:</p>
       <p class="billtext">${maskedText(c.injection.lines.join("\n"))}</p><p class="meta">${esc(c.injection.action)}. Recorded in the receipts.</p></div>` : "";
-  const dispute = c.dispute ? `<div class="card"><h2>Dispute to the supplier</h2><p class="draft">${esc(c.dispute.text)}</p>
+  const dispute = c.dispute ? `<div class="card"><h2>${esc(t("u.case.dispute"))}</h2><p class="draft">${esc(c.dispute.text)}</p>
       <p class="meta">Text by ${esc(c.dispute.model)} (${esc(c.dispute.route)}, ${secs(c.dispute.seconds)}). ${c.dispute.sent ? `Sent through the supplier portal, form filled by ${esc(c.dispute.form_filled_by)}, reference ${esc(c.dispute.portal_ref)}.` : "Not sent. Sending needs the owner's approval."}</p>
       ${c.dispute.screenshot ? `<img src="/media/${esc(c.dispute.screenshot)}" alt="The supplier portal form filled with the dispute" style="max-width:100%;border-radius:8px">` : ""}</div>` : "";
   $("caseBody").innerHTML = `${injection}${investigation(c)}
-    <div class="grid2"><div class="card"><h2>The bill, as the model saw it</h2><pre class="billtext">${maskedText(c.masked_text || "Not read yet.")}</pre>
+    <div class="grid2"><div class="card"><h2>${esc(t("u.case.bill_seen"))}</h2><pre class="billtext">${maskedText(c.masked_text || "Not read yet.")}</pre>
       <p class="meta">Reader: ${reader}. ${c.masks.length} private numbers masked.</p></div>
-    <div class="card photo"><h2>The dock</h2>${gallery(c)}<p class="meta">Counter: ${counter}.</p></div></div>
-    <div class="card"><h2>Three way match, as a running total on the order</h2>${matchTable(c.match)}</div>
-    <div class="card"><h2>Ledger readback</h2>${readback}</div>
-    ${dispute}<div class="card"><h2>Receipts</h2><div id="receiptBox"><p class="meta">Loading receipts.</p></div></div>`;
+    <div class="card photo"><h2>${esc(t("u.case.dock"))}</h2>${gallery(c)}<p class="meta">Counter: ${counter}.</p></div></div>
+    <div class="card"><h2>${esc(t("u.case.match"))}</h2>${matchTable(c.match)}</div>
+    <div class="card"><h2>${esc(t("u.case.readback"))}</h2>${readback}</div>
+    ${dispute}<div class="card"><h2>${esc(t("u.case.receipts"))}</h2><div id="receiptBox"><p class="meta">Loading receipts.</p></div></div>`;
   loadReceipts(c.id);
 }
 
 function renderQueue() {
   const items = state.cases.filter((c) => c.state === "held_for_owner");
-  if (!items.length) { $("queue").innerHTML = "<p class='meta'>Nothing needs you right now.</p>"; return; }
+  if (!items.length) { $("queue").innerHTML = `<p class='meta'>${esc(t("u.appr.empty"))}</p>`; return; }
   selected = Math.min(selected, items.length - 1);
   $("queue").innerHTML = items.map((c, i) => `<article class="qitem ${i === selected ? "sel" : ""}" data-case="${esc(c.id)}" aria-label="${esc(c.bill_no)}">
     <img src="/media/${esc(firstPhoto(c))}" alt="Delivery photo, counted">
     <div><h2>${esc(c.bill_no)} · ${esc(c.supplier_id)} · ${rupees(c.bill && c.bill.total_inr)}</h2>
       <p class="issue">${esc(c.proposal.reason)}</p>
-      ${c.investigation ? `<p class="meta">${c.investigation.finding.statements.length} statements, each citing a record or photo. <a href="#case/${esc(c.id)}">Open the investigation</a></p>` : ""}
-      <p>Agent proposes: <b>${esc(ACTION_LABEL[c.proposal.action] || c.proposal.action)}</b>. Nothing has been entered.</p>
+      ${c.investigation ? `<p class="meta">${esc(t("u.appr.statements", { n: c.investigation.finding.statements.length }))} <a href="#case/${esc(c.id)}">${esc(t("u.appr.open_inv"))}</a></p>` : ""}
+      <p>${esc(t("u.appr.proposes", { action: actionLabel(c.proposal.action) }))}</p>
       ${c.dispute ? `<p class="draft">${esc(c.dispute.text)}</p><p class="meta">Draft by ${esc(c.dispute.model)}, ${esc(c.dispute.route)}</p>` : ""}
-      <div class="qactions"><button type="button" class="approve" data-act="approve" data-case="${esc(c.id)}">Approve (a)</button>
-      <button type="button" class="reject" data-act="reject" data-case="${esc(c.id)}">Reject (r)</button>
-      <a class="link ghost" href="#case/${esc(c.id)}">Open case</a></div></div></article>`).join("");
+      <div class="qactions"><button type="button" class="approve" data-act="approve" data-case="${esc(c.id)}">${esc(t("u.btn.approve"))}</button>
+      <button type="button" class="reject" data-act="reject" data-case="${esc(c.id)}">${esc(t("u.btn.reject"))}</button>
+      <a class="link ghost" href="#case/${esc(c.id)}">${esc(t("u.btn.open_case"))}</a></div></div></article>`).join("");
 }
 
 function renderBoundary() {
@@ -260,11 +292,14 @@ $("netToggle").addEventListener("click", async () => { await post("/api/network"
 $("theme").addEventListener("click", () => {
   const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
   document.documentElement.dataset.theme = next;
-  $("theme").textContent = next === "dark" ? "Light" : "Dark";
+  $("theme").textContent = t(next === "dark" ? "u.theme.light" : "u.theme.dark");
   try { localStorage.setItem("relayloom-theme", next); } catch (error) { /* storage may be blocked */ }
 });
-try { const saved = localStorage.getItem("relayloom-theme"); if (saved) { document.documentElement.dataset.theme = saved; $("theme").textContent = saved === "dark" ? "Light" : "Dark"; } } catch (error) { /* ignore */ }
+try { const saved = localStorage.getItem("relayloom-theme"); if (saved) { document.documentElement.dataset.theme = saved; } } catch (error) { /* ignore */ }
 window.addEventListener("hashchange", route);
-route();
-refresh();
-setInterval(refresh, 1000);
+loadStrings().then(() => {
+  $("theme").textContent = t(document.documentElement.dataset.theme === "dark" ? "u.theme.light" : "u.theme.dark");
+  route();
+  refresh();
+  setInterval(refresh, 1000);
+});

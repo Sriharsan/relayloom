@@ -16,16 +16,19 @@ import threading
 import time
 from urllib.parse import parse_qs, urlsplit
 
+from . import i18n
+from .phone_page import page
+
 
 class AlertHub:
     def __init__(self):
         self.items: list[dict] = []
         self.changed = threading.Condition()
 
-    def publish(self, kind: str, title: str, body: str, case: str = "") -> dict:
+    def publish(self, kind: str, title: str, body: str, case: str = "", key: str = "", params: dict | None = None) -> dict:
         with self.changed:
             item = {"id": len(self.items) + 1, "time": time.strftime("%H:%M:%S"), "kind": kind, "title": title,
-                    "body": body, "case": case}
+                    "body": body, "case": case, "key": key, "params": params or {}}
             self.items.append(item)
             self.changed.notify_all()
             return item
@@ -81,51 +84,7 @@ def announce(server: "PhoneServer") -> None:
             print("  (the QR code could not be drawn in this window, use the link above)", flush=True)
 
 
-PAGE = """<!doctype html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><title>Relayloom alerts</title>
-<style>
-:root{color-scheme:dark}*{box-sizing:border-box}
-body{margin:0;background:#0b0d10;color:#e7eaee;font:16px/1.45 Candara,Calibri,"Segoe UI",system-ui,sans-serif}
-header{position:sticky;top:0;background:#0b0d10;border-bottom:1px solid #23282f;padding:14px 16px}
-h1{margin:0;font-size:17px}#state{margin:2px 0 0;font-size:13px;color:#8a939e}
-main{padding:12px 16px 40px;display:grid;gap:10px}
-.empty{color:#8a939e;font-size:14px;padding:24px 0}
-.card{background:#12151a;border:1px solid #23282f;border-radius:12px;padding:14px}
-.card.needs_owner{border-color:#f5b54480}.card.injection,.card.readback{border-color:#ff6b6b80}
-.card b{display:block;font-size:16px}.card span{display:block;margin-top:4px;color:#b8c0c9;font-size:14px}
-.card small{display:block;margin-top:8px;color:#8a939e;font:12px ui-monospace,monospace}
-button{min-height:44px;margin-top:6px;background:#12151a;color:#e7eaee;border:1px solid #2f353d;border-radius:8px;padding:0 14px;font:inherit}
-</style></head><body>
-<header><h1>Relayloom alerts</h1><p id="state">Connecting</p></header>
-<section class="card" style="margin:12px 16px 0"><b>Count a delivery</b>
-<span>Take a photo of the goods. The laptop counts them and the result appears below.</span>
-<input id="word" value="box" aria-label="What to count" style="width:100%;min-height:44px;margin-top:8px;background:#0b0d10;color:#e7eaee;border:1px solid #2f353d;border-radius:8px;padding:0 12px;font:inherit">
-<input id="shot" type="file" accept="image/*" capture="environment" style="display:none">
-<button id="take" type="button">Take dock photo</button><small id="up"></small></section>
-<main id="list"><p class="empty" id="empty">No alerts yet. This page lights up when a delivery needs you.</p></main>
-<script>
-var token=new URLSearchParams(location.search).get("t")||"",last=0,list=document.getElementById("list"),state=document.getElementById("state");
-function add(a){var d=document.createElement("div");d.className="card "+a.kind;
- var b=document.createElement("b");b.textContent=a.title;var s=document.createElement("span");s.textContent=a.body;
- var m=document.createElement("small");m.textContent=a.time+(a.case?" · "+a.case:"");d.append(b,s,m);
- var e=document.getElementById("empty");if(e)e.remove();list.prepend(d);
- if(navigator.vibrate)navigator.vibrate([120,60,120]);
- if(window.Notification&&Notification.permission==="granted")new Notification(a.title,{body:a.body});}
-function poll(){fetch("alerts?t="+encodeURIComponent(token)+"&after="+last).then(function(r){
- if(r.status===403){state.textContent="This link is not valid. Open the link from the laptop again.";return null}
- return r.json()}).then(function(j){if(!j)return;state.textContent="Connected, waiting for deliveries";
- j.forEach(function(a){last=Math.max(last,a.id);add(a)});poll()}).catch(function(){
- state.textContent="Reconnecting";setTimeout(poll,2000)})}
-if(window.Notification&&Notification.permission==="default"){var n=document.createElement("button");
- n.textContent="Allow notifications on this phone";n.onclick=function(){Notification.requestPermission();n.remove()};
- document.querySelector("header").append(n)}
-document.getElementById("take").onclick=function(){document.getElementById("shot").click()};
-document.getElementById("shot").onchange=function(){var f=this.files[0],up=document.getElementById("up");if(!f)return;
- up.textContent="Sending "+Math.round(f.size/1024)+" KB to the laptop";
- fetch("photo?t="+encodeURIComponent(token)+"&word="+encodeURIComponent(document.getElementById("word").value),{method:"POST",headers:{"Content-Type":f.type||"image/jpeg"},body:f})
- .then(function(r){return r.json().then(function(j){up.textContent=r.ok?"Received. Counting on the laptop.":(j.error||"Not accepted")})}).catch(function(){up.textContent="Could not reach the laptop"});this.value=""};
-poll();
-</script></body></html>"""
+
 
 
 IMAGE_TYPES = {"image/jpeg": bytes([0xFF, 0xD8, 0xFF]), "image/png": bytes([0x89]) + b"PNG", "image/webp": b"RIFF"}
@@ -144,8 +103,11 @@ class PhoneHandler(BaseHTTPRequestHandler):
         self.send_header("Cache-Control", "no-store")
         self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'")
-        self.end_headers()
-        self.wfile.write(body)
+        try:
+            self.end_headers()
+            self.wfile.write(body)
+        except (ConnectionError, OSError):  # the phone went away while waiting; nothing to report
+            self.close_connection = True
 
     def do_GET(self):
         url = urlsplit(self.path)
@@ -154,7 +116,7 @@ class PhoneHandler(BaseHTTPRequestHandler):
         if not hmac.compare_digest(given.encode(), self.server.token.encode()):
             return self.reply(403, "text/plain; charset=utf-8", b"forbidden")
         if url.path == "/":
-            return self.reply(200, "text/html; charset=utf-8", PAGE.encode())
+            return self.reply(200, "text/html; charset=utf-8", page().encode())
         if url.path == "/alerts":
             try:
                 last = int((query.get("after") or ["0"])[0])
@@ -243,20 +205,24 @@ class PhoneInbox:
         name = time.strftime("dock-%Y%m%d-%H%M%S") + f"-{secrets.token_hex(2)}" + {"image/jpeg": ".jpg", "image/png": ".png", "image/webp": ".webp"}[kind]
         path = self.folder / name
         path.write_bytes(body)
-        self.hub.publish("photo", "Dock photo received", f"{name}, {len(body) // 1024} KB. Counting {word}.", "phone")
+        self.say("photo", "a.photo_received", name=name, kb=len(body) // 1024, word=word)
         if self.counter is None:
-            self.hub.publish("photo", "Photo saved, not counted", "Start the app with --counter live to count photos.", "phone")
+            self.say("photo", "a.photo_saved")
         else:
             thread = threading.Thread(target=self.count, args=(path, word), daemon=True, name="phone-count")
             thread.start()
             self.threads.append(thread)
         return {"received": name, "word": word, "counting": self.counter is not None}
 
+    def say(self, kind: str, key: str, **params):
+        made = i18n.alert(kind, key, **params)
+        self.hub.publish(kind, made["title"], made["body"], "phone", key, made["params"])
+
     def count(self, path, word: str):
         try:
             started = time.perf_counter()
             result = self.counter.count(path, word, path.stem)
             seconds = round(time.perf_counter() - started, 1)
-            self.hub.publish("counted", f"Counted {result['count']} {word}", f"{path.name} in {seconds} s on this laptop.", "phone")
+            self.say("counted", "a.counted", n=result["count"], word=word, name=path.name, s=seconds)
         except Exception as error:  # a failed count is an alert, never a silent miss
-            self.hub.publish("readback", "Count failed", f"{path.name}: {str(error)[:120]}", "phone")
+            self.say("readback", "a.count_failed", name=path.name, error=str(error)[:120])

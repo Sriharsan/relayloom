@@ -7,16 +7,17 @@
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main" data-i="u.skip">Skip to content</a>
 <header class="top">
-  <div class="brand"><span class="mark" aria-hidden="true"></span><span>Relayloom</span><span class="sub">Autonomous accounts payable that checks the goods, not just the paperwork</span></div>
+  <div class="brand"><span class="mark" aria-hidden="true"></span><span>Relayloom</span><span class="sub" data-i="u.sub">Autonomous accounts payable that checks the goods, not just the paperwork</span></div>
   <nav aria-label="Screens">
-    <a href="#today" data-tab="today">Today</a>
-    <a href="#approvals" data-tab="approvals">Approvals <span class="badge" id="approvalCount" hidden></span></a>
-    <a href="#boundary" data-tab="boundary">Boundary</a>
-    <a href="#benchmark" data-tab="benchmark">Benchmark</a>
+    <a href="#today" data-tab="today" data-i="u.nav.today">Today</a>
+    <a href="#approvals" data-tab="approvals"><span data-i="u.nav.approvals">Approvals</span> <span class="badge" id="approvalCount" hidden></span></a>
+    <a href="#boundary" data-tab="boundary" data-i="u.nav.boundary">Boundary</a>
+    <a href="#benchmark" data-tab="benchmark" data-i="u.nav.benchmark">Benchmark</a>
   </nav>
   <div class="tools">
+    <label class="langpick"><span class="sr" data-i="p.language">Language</span><select id="lang" aria-label="Language"></select></label>
     <span class="net" id="net" role="status"></span>
     <button type="button" class="ghost" id="netToggle">Cut network</button>
     <button type="button" class="ghost" id="theme" aria-label="Switch colour theme">Light</button>
@@ -26,25 +27,26 @@
 <main id="main" tabindex="-1">
   <section id="today" class="screen" aria-labelledby="todayTitle">
     <div class="head">
-      <div><h1 id="todayTitle">Today</h1><p class="hint">Agents read the bill, look at what actually arrived, investigate any gap with evidence, and pay only what the books and the goods both support.</p></div>
-      <button type="button" class="primary" id="start">Run today's bills</button>
+      <div><h1 id="todayTitle" data-i="u.today.title">Today</h1><p class="hint" data-i="u.today.hint">Agents read the bill, look at what actually arrived, investigate any gap with evidence, and pay only what the books and the goods both support.</p></div>
+      <button type="button" class="primary" id="start" data-i="u.start">Run today's bills</button>
     </div>
     <div class="tiles" id="tiles"></div>
     <div class="table-wrap">
       <table class="batch" aria-label="Bills in this batch">
-        <thead><tr><th scope="col">Bill</th><th scope="col">Supplier</th><th scope="col">Read</th><th scope="col">Count</th>
-          <th scope="col">Match</th><th scope="col">Investigate</th><th scope="col">Enter</th><th scope="col">Check</th><th scope="col">Status</th></tr></thead>
-        <tbody id="rows"><tr><td colspan="9" class="empty">No bills yet. Run today's bills to start the agents.</td></tr></tbody>
+        <thead><tr><th scope="col" data-i="u.th.bill">Bill</th><th scope="col" data-i="u.th.supplier">Supplier</th><th scope="col" data-i="u.th.read">Read</th><th scope="col" data-i="u.th.count">Count</th>
+          <th scope="col" data-i="u.th.match">Match</th><th scope="col" data-i="u.th.investigate">Investigate</th><th scope="col" data-i="u.th.enter">Enter</th><th scope="col" data-i="u.th.check">Check</th><th scope="col" data-i="u.th.status">Status</th></tr></thead>
+        <tbody id="rows"><tr><td colspan="9" class="empty" data-i="u.rows.empty">No bills yet. Run today's bills to start the agents.</td></tr></tbody>
       </table>
     </div>
     <div class="autonomy" id="autonomy"></div>
   </section>
   <section id="case" class="screen" aria-labelledby="caseTitle" hidden>
-    <div class="head"><h1 id="caseTitle">Case</h1><a href="#today" class="ghost link">Back to today</a></div>
+    <div class="head"><h1 id="caseTitle">Case</h1><a href="#today" class="ghost link" data-i="u.btn.back">Back to today</a></div>
     <div id="caseBody"></div>
   </section>
   <section id="approvals" class="screen" aria-labelledby="approvalsTitle" hidden>
-    <div class="head"><h1 id="approvalsTitle">Approvals</h1><p class="hint">Keys: <kbd>j</kbd> <kbd>k</kbd> move, <kbd>a</kbd> approve, <kbd>r</kbd> reject</p></div>
+    <div class="head"><h1 id="approvalsTitle" data-i="u.appr.title">Approvals</h1><p class="hint" id="apprHint"></p></div>
+    <p class="meta" data-i="u.details_english"></p>
     <div id="queue"></div>
   </section>
   <section id="benchmark" class="screen" aria-labelledby="benchmarkTitle" hidden>

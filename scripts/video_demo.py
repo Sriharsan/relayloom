@@ -118,7 +118,7 @@ def case():
         ledger = LocalLedger(root / "l.sqlite3")
         ledger.seed(data["suppliers"], data["purchase_orders"], data["history_invoices"])
         bench = Workbench(policy, ledger, ledger, chain, Reader(), counter(live=False), Network(ledger), F, data, portal=Portal())
-        bench.notify = lambda kind, title, body, case_id: hub.publish(kind, title, body, case_id)
+        bench.notify = lambda kind, title, body, case_id, key="", params=None: hub.publish(kind, title, body, case_id, key, params)
         bench.receiving.add_event({"id": EVENT_ID, "po_number": PO, "item_code": "CARTON-HD", "date": "2026-11-03",
                                    "photos": [{"id": f["id"], "file": f["file"]} for f in event["frames"]], "note": "Key frames from a dock video"})
         started = time.perf_counter()

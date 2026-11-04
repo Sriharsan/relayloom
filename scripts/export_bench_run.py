@@ -76,7 +76,7 @@ def main():
                           FIXTURES, DATA, portal=BenchPortal())
         hub = AlertHub()
         bench.casefile_dir = root / "casefiles"
-        bench.notify = lambda kind, title, body, case: hub.publish(kind, title, body, case)
+        bench.notify = lambda kind, title, body, case, key="", params=None: hub.publish(kind, title, body, case, key, params)
         records = [c for c in DATA["cases"] if c["case"] in DEMO]
         started = time.time()
         cases = bench.run_batch(records)
@@ -88,7 +88,7 @@ def main():
         cut_bench = Workbench(policy, ledger, ledger, chain, RecordReader(), SamOrRecordCounter(), Network(ledger),
                               FIXTURES, DATA, portal=BenchPortal())
         cut_bench.casefile_dir = root / "casefiles"
-        cut_bench.notify = lambda kind, title, body, case: hub.publish(kind, title, body, case)
+        cut_bench.notify = lambda kind, title, body, case, key="", params=None: hub.publish(kind, title, body, case, key, params)
         cut_bench.after_create = lambda case: cut_bench.network.cut() if cut_bench.network.online else None
         cut_bench.pool._max_workers = 1
         cut_records = [c for c in DATA["cases"] if c["case"].startswith("netcut")]
