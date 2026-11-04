@@ -61,19 +61,19 @@ export function SmallGaps() {
           <p className="kLabel">Not only for bulk orders</p>
           <h2 className="mt-5 max-w-[16ch] text-balance text-[38px] font-bold leading-[1.04] tracking-[-0.03em] text-foreground sm:text-[56px]">A small gap, repeated, is a large loss.</h2>
           <p className="mt-6 max-w-[48ch] text-[17px] leading-relaxed text-ink-muted">
-            A street vendor pays for a hundred rupees of oranges and gets seventy five rupees worth. Twenty five rupees feels small. Counted across a city and a year, it is a different level of money, and of tax that never gets paid.
-            A photo and a receipt at the door close it.
+            A street vendor buys oranges from a supplier and pays for a hundred rupees worth. Only seventy five rupees worth reaches the stall. The other twenty five rupees were paid for goods that never came, and the supplier keeps them.
+            Counted across a city and a year, it is a different level of money, and of tax that never gets paid. A photo and a receipt at the door close it.
           </p>
         </div>
         <div className="rounded-3xl border border-line bg-background p-6 sm:p-8">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">Billed</p>
+              <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">Paid for</p>
               <p className="tnum font-mono text-[44px] leading-none text-foreground">Rs 100</p>
               <div className="mt-3 h-3 rounded bg-green/80" />
             </div>
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">Arrived</p>
+              <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">Reached the stall</p>
               <p className="tnum font-mono text-[44px] leading-none text-amber-ink">Rs 75</p>
               <div className="mt-3 h-3 rounded bg-amber/80" style={{ width: "75%" }} />
             </div>
@@ -83,7 +83,7 @@ export function SmallGaps() {
             <input type="range" min="100" max="100000" step="100" value={per} onChange={(e) => setPer(Number(e.target.value))} className="mt-3 w-full accent-[var(--green)]" aria-label="Deliveries with this gap, a day" />
           </label>
           <div className="mt-6 rounded-2xl border border-amber/50 bg-amber/5 p-5">
-            <p className="text-[13px] text-ink-muted">Rs 25 a delivery, over a year</p>
+            <p className="text-[13px] text-ink-muted">Rs 25 paid for goods that never came, on every delivery, over a year</p>
             <p className="tnum mt-1 font-mono text-[40px] leading-none text-amber-ink">Rs {inr(year)}</p>
           </div>
           <p className="mt-4 text-[12.5px] text-ink-muted">An illustration with round numbers, not a measured figure.</p>
