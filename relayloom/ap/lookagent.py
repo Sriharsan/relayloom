@@ -86,7 +86,7 @@ class LookAgent:
             while len(tries) < self.max_calls and queue and not agreed:
                 call_sam(queue.pop(0))
                 agreed = self.agreement(tries)
-            if agreed or len(tries) >= self.max_calls:
+            if agreed:
                 break
             positive = [x for x in tries if x["count"] and "verdict" not in x]  # a word that finds nothing is a miss, not a disagreement
             if not positive:
@@ -102,7 +102,7 @@ class LookAgent:
                 agreed = {"count": last["count"], "tries": [last], "how": "Glimmer looked at the overlay and found every item numbered once"}
                 break
             queue = clean_words(seen["next_words"], [x["words"] for x in tries])
-            if not queue:
+            if not queue or len(tries) >= self.max_calls:  # the SAM budget is spent, but Glimmer always gets to look before the agent gives up
                 break
         first = tries[0]["count"] if tries else None
         return {"count": agreed["count"] if agreed else None, "agreed": bool(agreed), "held": not agreed,

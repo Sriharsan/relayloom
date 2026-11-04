@@ -117,9 +117,28 @@ for name, extra in variants.items():
     print(row)
 json.dump(tuning, open('/kaggle/working/gpu/glimmer-tuning.json', 'w'), indent=1)"""
 
+REALLOOP = """# The same agent on the builder's real test photos (hand counted), at the default confidence 0.5: first word against the agent
+sam.close()
+sam_real = SamCounter(sys.executable, '/kaggle/temp/models/sam3.1_multiplex.pt', ROUTE, live=True, cache=pathlib.Path('/kaggle/working/gpu/sam-real'), persistent=True, conf=0.5)
+real_agent = LookAgent(glimmer, sam_real)
+words_meta = json.load(open('fixtures/real/words.json')); hand = json.load(open('docs/real_hand_counts.json'))
+real_rows = []
+for key, meta in words_meta.items():
+    pid = 'P%02d' % (meta['source_index'] + 1)
+    if pid not in hand:
+        continue
+    found = real_agent.look(pathlib.Path('fixtures/real') / (key + '.jpg'), meta['words'][0] + ' in the delivery photo', key)
+    real_rows.append({'photo': pid, 'hand_count': hand[pid]['count'], 'first_try': found['first_try_count'], 'count': found['count'], 'agreed': found['agreed'],
+                      'confirmed_by': found.get('confirmed_by', ''), 'calls': found['calls'], 'seconds': found['seconds'], 'tries': found['tries']})
+    print({k: v for k, v in real_rows[-1].items() if k != 'tries'})
+json.dump(real_rows, open('/kaggle/working/gpu/agent-real.json', 'w'), indent=1)
+sam_real.close()"""
+
 TRACK = """# Count items as they cross a line in a video: SAM 3.1 follows every item, code counts each id once (relayloom/ap/crossing.py)
 import subprocess, glob
 from relayloom.ap.crossing import count_crossings
+server.terminate(); server.wait(30); time.sleep(5)  # Glimmer holds 17 GB of the two GPUs; video tracking needs the memory
+os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 videos = sorted(glob.glob('/kaggle/input/**/*.mp4', recursive=True)) or [str(pathlib.Path('fixtures/video/dock-delivery.mp4').resolve())]
 tracking = []
 for video in videos[:3]:
@@ -143,9 +162,10 @@ json.dump(tracking, open('/kaggle/working/gpu/tracking.json', 'w'), indent=1)"""
 FINAL = """# Everything in one line each, so the run log carries the result
 print('RESULT_AGENT', json.dumps({'route': ROUTE, 'bill_read_seconds': bill_seconds, 'rows': rows}))
 print('RESULT_TUNING', json.dumps(tuning))
-print('RESULT_TRACKING', json.dumps(tracking))"""
+print('RESULT_TRACKING', json.dumps(tracking))
+print('RESULT_REAL', json.dumps(real_rows))"""
 
-CELLS = [("markdown", INTRO), ("code", GPU), ("code", INSTALL), ("code", LLAMA), ("code", MODELS), ("code", SERVER), ("code", SETUP), ("code", TUNING), ("code", LOOP), ("code", TRACK), ("code", FINAL)]
+CELLS = [("markdown", INTRO), ("code", GPU), ("code", INSTALL), ("code", LLAMA), ("code", MODELS), ("code", SERVER), ("code", SETUP), ("code", TUNING), ("code", LOOP), ("code", REALLOOP), ("code", TRACK), ("code", FINAL)]
 
 
 def main():

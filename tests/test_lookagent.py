@@ -72,6 +72,15 @@ class LookAgentTests(unittest.TestCase):
         found = agent.look(Path("p.jpg"), "50 cartons", "k")
         self.assertTrue(found["held"])
 
+    def test_glimmer_still_looks_when_the_words_use_up_the_sam_budget(self):
+        # four proposed words, only the second finds anything: the real run on the GPU spent all four SAM calls and never looked
+        agent, sam, glimmer = self.agent({"coolant can": 0, "can": 24, "plastic container": 0, "coolant bottle": 0},
+                                         ["coolant can", "can", "plastic container", "coolant bottle"], verdict="good", max_calls=4)
+        found = agent.look(Path("p.jpg"), "Coolant can 5 litre", "k")
+        self.assertEqual((found["count"], found["agreed"]), (24, True))
+        self.assertEqual(len(sam.calls), 4)
+        self.assertTrue([s for s in found["trace"] if s["step"] == "look"])
+
     def test_the_model_cannot_set_the_number_and_zero_never_agrees(self):
         agent, _, _ = self.agent({"box": 0, "carton": 0}, ["box", "carton"])
         self.assertTrue(agent.look(Path("p.jpg"), "x", "k")["held"])
