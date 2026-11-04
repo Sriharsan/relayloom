@@ -32,7 +32,7 @@ def main():
     glimmer = GlimmerClient(os.environ.get("GLIMMER_URL", "http://127.0.0.1:8084/v1"), ROUTE, timeout=1800)
     sam = SamCounter(os.environ.get("RELAYLOOM_SAM_PYTHON", str(MODELS / "venv-sam" / "Scripts" / "python.exe")),
                      str(MODELS / "facebook_sam3.1" / "sam3.1_multiplex.pt"), "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
-                     live=True, cache=out / "sam")
+                     live=True, cache=out / "sam", persistent=True)
     started = time.strftime("%Y-%m-%d %H:%M %z")
     found = LookAgent(glimmer, sam).look(photo, line, photo.stem)
     record = {"photo": photo.name, "bill_line": line, "hand_count": truth, "recorded_at": started, "route": ROUTE, **found}

@@ -37,6 +37,9 @@ def match(po: dict, bill: dict, received: dict[str, int] | None, billed_before: 
                 row["issues"].append(f"rate {line['rate_inr']:.2f}, PO rate {item['rate_inr']:.2f}")
             if abs(line["qty"] * line["rate_inr"] - line["amount_inr"]) > limits["total_tolerance_inr"]:
                 row["issues"].append("line amount is not qty times rate")
+            ordered_value = item["qty"] * item["rate_inr"]
+            if line["qty"] > 0 and line["qty"] != item["qty"] and abs(line["amount_inr"] - ordered_value) <= max(limits["total_tolerance_inr"], ordered_value * 0.005):
+                row["issues"].append(f"billed {line['qty']:g} at {line['rate_inr']:.2f} is worth the same as ordered {item['qty']:g} at {item['rate_inr']:.2f}: check the unit of measure")
             if got is not None and line["qty"] + before > got + qty_tol:
                 row["issues"].append(f"billed {line['qty']:g} with {before:g} already billed, received {got:g}")
         rows.append(row)

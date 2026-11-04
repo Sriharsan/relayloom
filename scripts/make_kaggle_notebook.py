@@ -72,7 +72,7 @@ from relayloom.ap.models import GlimmerClient, SamCounter
 from relayloom.ap.lookagent import LookAgent
 ROUTE = 'Muse Glimmer 30B Q4_K_M and SAM 3.1, Kaggle GPU T4 x2'
 glimmer = GlimmerClient('http://127.0.0.1:8084/v1', ROUTE, timeout=900)
-sam = SamCounter(sys.executable, '/kaggle/temp/models/sam3.1_multiplex.pt', ROUTE, live=True, cache=pathlib.Path('/kaggle/working/gpu/sam'))
+sam = SamCounter(sys.executable, '/kaggle/temp/models/sam3.1_multiplex.pt', ROUTE, live=True, cache=pathlib.Path('/kaggle/working/gpu/sam'), persistent=True)
 os.makedirs('/kaggle/working/gpu', exist_ok=True)
 from relayloom.ap.masking import mask
 text = open('fixtures/bills/ARD-5101.txt', encoding='utf-8').read()

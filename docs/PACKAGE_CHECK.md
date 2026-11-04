@@ -1,6 +1,6 @@
 # Package check
 
-Run 2026-11-04 11:50 +0530 by `python scripts/package_check.py`, in 150 s.
+Run 2026-11-04 12:22 +0530 by `python scripts/package_check.py`, in 89 s.
 A clean virtual environment, installed from a wheelhouse with no package index, with every non-local connection refused.
 
 | Step | Result | Detail |
@@ -18,8 +18,10 @@ A clean virtual environment, installed from a wheelhouse with no package index, 
 | --json prints a result a script can read | PASS |  |
 | verify says the chain is intact, with the network blocked | PASS | 6 receipts: chain verified |
 | an edited receipt breaks the chain (exit code 1) | PASS |  |
-| a missing file gives a short message, not a traceback | PASS | relayloom: bill not found: C:\Users\bssri\AppData\Local\Temp\relayloom-pkg-qowxrete\nope.json |
+| a missing file gives a short message, not a traceback | PASS | relayloom: bill not found: C:\Users\bssri\AppData\Local\Temp\relayloom-pkg-7qqybnp6\nope.json |
 | photos that are not there give a clear message | PASS |  |
+| doctor --report prints a block that is safe to paste (no home folder, no secrets) | PASS |  |
+| update-check is the only online command, and with the network blocked it says so cleanly | PASS | I (<urlopen error DNS blocked by the package check: pypi.org>). relayloom never goes online unless you run this command. |
 | models pull needs your own token and says so | PASS |  |
 
 All steps passed.

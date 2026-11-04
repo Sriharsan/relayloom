@@ -35,7 +35,7 @@ BILL_SCHEMA = {
 TOP = set(BILL_SCHEMA["properties"])
 LINE = set(BILL_SCHEMA["properties"]["lines"]["items"]["properties"])
 FORBIDDEN = re.compile(r"bank|account|ifsc|iban|swift|upi", re.I)
-CODE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9/_.-]{0,39}$")
+CODE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9/_.# -]{0,39}$")  # real invoice numbers have slashes and spaces; nothing that can carry an instruction
 DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
@@ -43,7 +43,7 @@ class Invalid(ValueError):
     pass
 
 
-def _number(value, name, low=0, high=10_000_000):
+def _number(value, name, low=0, high=1_000_000_000):  # real purchase orders reach hundreds of thousands of units and millions in value
     if isinstance(value, bool) or not isinstance(value, (int, float)) or not low <= value <= high:
         raise Invalid(f"{name} must be a number from {low} to {high}")
     return round(float(value), 2)
@@ -75,7 +75,7 @@ def validate_bill(data) -> dict:
         if FORBIDDEN.search(line["description"]):
             raise Invalid(f"line {index} description mentions payment details")
         clean_lines.append({"item_code": line["item_code"], "description": line["description"],
-                            "qty": _number(line["qty"], "qty", 0, 100_000),
+                            "qty": _number(line["qty"], "qty", 0, 10_000_000),
                             "rate_inr": _number(line["rate_inr"], "rate_inr"),
                             "amount_inr": _number(line["amount_inr"], "amount_inr")})
     return {"supplier_id": data["supplier_id"], "bill_no": data["bill_no"], "bill_date": data["bill_date"],

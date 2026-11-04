@@ -1,0 +1,16 @@
+name: Feedback or a real delivery that should work
+description: A kind of bill, purchase order or delivery you need that Relayloom does not handle yet.
+labels: [feedback]
+body:
+  - type: textarea
+    id: case
+    attributes:
+      label: Describe the delivery or bill (change the names and numbers)
+      description: What was ordered, what arrived, what the bill said, and what you wanted Relayloom to do.
+    validations:
+      required: true
+  - type: dropdown
+    id: size
+    attributes:
+      label: How big is the problem for you?
+      options: [A small annoyance, Slows my team down, Blocks me from using it]

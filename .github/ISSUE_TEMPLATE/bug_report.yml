@@ -1,0 +1,21 @@
+name: Something did not work
+description: A command failed, gave a wrong answer, or was confusing.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Please do not paste real bills, photos, bank details or tokens. A short description and the report block from `relayloom doctor --report` is enough.
+  - type: textarea
+    id: what
+    attributes:
+      label: What did you run, and what happened?
+      description: The command, what you expected, what you got.
+    validations:
+      required: true
+  - type: textarea
+    id: report
+    attributes:
+      label: Output of `relayloom doctor --report`
+      render: text
+    validations:
+      required: true

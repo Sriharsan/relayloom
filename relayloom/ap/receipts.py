@@ -2,8 +2,10 @@
 from __future__ import annotations
 
 import base64
+import contextlib
 import hashlib
 import json
+import os
 from pathlib import Path
 import threading
 import time
@@ -44,19 +46,52 @@ class Signer:
         from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
         from cryptography.hazmat.primitives import serialization
         key_path = Path(key_path)
-        if key_path.exists():
-            self._key = Ed25519PrivateKey.from_private_bytes(key_path.read_bytes())
-        else:
-            key_path.parent.mkdir(parents=True, exist_ok=True)
-            self._key = Ed25519PrivateKey.generate()
-            raw = self._key.private_bytes(serialization.Encoding.Raw, serialization.PrivateFormat.Raw,
-                                          serialization.NoEncryption())
-            key_path.write_bytes(raw)
+        key_path.parent.mkdir(parents=True, exist_ok=True)
+        generated = Ed25519PrivateKey.generate()
+        raw = generated.private_bytes(serialization.Encoding.Raw, serialization.PrivateFormat.Raw, serialization.NoEncryption())
+        try:  # exclusive create: when several processes start at once, exactly one key is written and all of them use it
+            with open(key_path, "xb") as handle:
+                handle.write(raw)
+            with contextlib.suppress(OSError):
+                os.chmod(key_path, 0o600)  # the private key is for this person only
+            self._key = generated
+        except FileExistsError:
+            for _ in range(200):
+                data = key_path.read_bytes()
+                if len(data) == 32:
+                    break
+                time.sleep(0.01)
+            self._key = Ed25519PrivateKey.from_private_bytes(data)
         self.public_key = _b64(self._key.public_key().public_bytes(serialization.Encoding.Raw,
                                                                     serialization.PublicFormat.Raw))
 
     def sign(self, data: bytes) -> str:
         return _b64(self._key.sign(data))
+
+
+@contextlib.contextmanager
+def _locked(path: Path):
+    """A lock file so two processes writing the same receipt file cannot interleave or fork the chain."""
+    lock = Path(str(path) + ".lock")
+    started = time.time()
+    while True:
+        try:
+            os.close(os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY))
+            break
+        except FileExistsError:
+            try:
+                if time.time() - lock.stat().st_mtime > 30:  # left behind by a process that died
+                    lock.unlink(missing_ok=True)
+                    continue
+            except FileNotFoundError:
+                continue
+            if time.time() - started > 10:
+                raise TimeoutError("the receipt file is locked by another process")
+            time.sleep(0.01)
+    try:
+        yield
+    finally:
+        lock.unlink(missing_ok=True)
 
 
 class ReceiptChain:
@@ -76,7 +111,9 @@ class ReceiptChain:
     def append(self, case: str, agent: str, step: str, decision: str, *, input_hash: str = "",
                model: str = "", route: str = "", response_id: str = "", approver: str = "",
                ledger_readback: str = "", detail: dict | None = None) -> dict:
-        with self.lock:
+        with self.lock, _locked(self.path):
+            if not self.path.exists() or self.path.stat().st_size != getattr(self, "_size", -1):  # another process may have written
+                self.heads = {r["body"]["case"]: (r["body"]["seq"], r["hash"]) for r in self.read()}
             seq, prev = self.heads.get(case, (0, GENESIS))
             body = {"case": case, "seq": seq + 1, "prev": prev, "time": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
                     "agent": agent, "step": step, "policy_hash": self.policy_hash, "input_hash": input_hash,
@@ -87,6 +124,7 @@ class ReceiptChain:
             with self.path.open("a", encoding="utf-8") as handle:
                 handle.write(json.dumps(receipt, ensure_ascii=False) + "\n")
             self.heads[case] = (body["seq"], receipt["hash"])
+            self._size = self.path.stat().st_size
             return receipt
 
     def read(self, case: str | None = None) -> list[dict]:

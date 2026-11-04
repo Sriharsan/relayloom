@@ -83,6 +83,16 @@ export function Developers() {
           </p>
         </div>
       </section>
+      <section>
+        <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6">
+          <p className="kLabel">Feedback</p>
+          <p className="mt-3 max-w-[60ch] text-[15px] leading-relaxed text-ink-muted">
+            Something failed, or a delivery you need is not handled yet? Run <span className="font-mono text-foreground">relayloom doctor --report</span> and{" "}
+            <a href="https://github.com/Sriharsan/relayloom/issues/new/choose" className="text-foreground underline underline-offset-4" target="_blank" rel="noreferrer">open an issue</a>.
+            Nothing is sent anywhere unless you send it, and no bill, photo or token is in the report.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

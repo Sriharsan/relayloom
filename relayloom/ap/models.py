@@ -157,8 +157,29 @@ class SamCounter:
     """
 
     def __init__(self, python: str = "", weights: str = "", route: str = "", live: bool = False,
-                 cache: Path = RECORDED / "sam"):
+                 cache: Path = RECORDED / "sam", persistent: bool = False):
         self.python, self.weights, self.route, self.live, self.cache = python, weights, route, live, Path(cache)
+        self.persistent, self._proc, self._lock = persistent, None, __import__("threading").Lock()
+
+    def _worker(self):
+        """A long lived SAM process: the weights load once, and a photo's features are reused for its next word."""
+        if self._proc and self._proc.poll() is None:
+            return self._proc
+        self.cache.mkdir(parents=True, exist_ok=True)
+        worker = getattr(self, "worker_script", None) or Path(__file__).with_name("sam_worker.py")
+        self._proc = subprocess.Popen([self.python, "-I", str(worker), "--serve", str(self.weights)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                      stderr=open(self.cache / "sam-worker.log", "a"), text=True, env={**os.environ, "YOLO_OFFLINE": "1"})
+        ready = self._proc.stdout.readline()
+        if not ready:
+            raise RuntimeError("SAM worker did not start; see " + str(self.cache / "sam-worker.log"))
+        self.load_seconds = json.loads(ready).get("load_seconds")
+        return self._proc
+
+    def close(self):
+        if self._proc and self._proc.poll() is None:
+            self._proc.stdin.close()
+            self._proc.wait(10)
+        self._proc = None
 
     def path(self, key: str, prompt: str) -> Path:
         return self.cache / f"{key}__{slug(prompt)}.json"
@@ -177,8 +198,24 @@ class SamCounter:
             raise FileNotFoundError(f"no recorded SAM count for {key} with prompt {prompt!r}")
         self.cache.mkdir(parents=True, exist_ok=True)
         overlay = self.cache / f"{key}__{slug(prompt)}.jpg"
-        worker = Path(__file__).with_name("sam_worker.py")
         started = time.perf_counter()
+        if self.persistent:
+            with self._lock:
+                process = self._worker()
+                process.stdin.write(json.dumps({"photo": str(photo), "prompt": prompt, "overlay": str(overlay)}) + chr(10))
+                process.stdin.flush()
+                line = process.stdout.readline()
+            if not line:
+                self._proc = None
+                raise RuntimeError("SAM worker stopped; see " + str(self.cache / "sam-worker.log"))
+            result = json.loads(line)
+            if "error" in result:
+                raise RuntimeError("SAM worker failed: " + result["error"])
+            result.update({"wall_seconds": round(time.perf_counter() - started, 1), "route": self.route, "overlay": overlay.name, "model": "SAM 3.1",
+                           "recorded": False})
+            saved_path.write_text(json.dumps({"recorded_at": time.strftime("%Y-%m-%d %H:%M %z"), "photo_sha256": sha, "result": result}, indent=1), encoding="utf-8")
+            return result
+        worker = Path(__file__).with_name("sam_worker.py")
         done = subprocess.run([self.python, "-I", str(worker), str(self.weights), str(photo), prompt, str(overlay)],
                               capture_output=True, text=True, timeout=1800, env={**os.environ, "YOLO_OFFLINE": "1"})
         if done.returncode != 0:

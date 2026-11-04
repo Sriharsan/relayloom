@@ -81,7 +81,7 @@ def build_sam(live: bool = True):
     weights = os.environ.get("RELAYLOOM_SAM_WEIGHTS", str(MODELS / SAM_FILE))
     if live and not Path(weights).exists():
         raise UserError(f"SAM 3.1 weights not found at {weights}. Run: relayloom models pull   (or use --counted N to skip counting)")
-    return SamCounter(python, weights, "SAM 3.1 on this machine", live=live, cache=HOME / "sam-cache")
+    return SamCounter(python, weights, "SAM 3.1 on this machine", live=live, cache=HOME / "sam-cache", persistent=True)
 
 
 def glimmer_url() -> str:
@@ -101,6 +101,45 @@ def glimmer_is_up() -> bool:
         return False
 
 
+def validate_po(po) -> None:
+    if not isinstance(po, dict) or not isinstance(po.get("items"), list) or not po["items"]:
+        raise UserError("the purchase order must be a JSON object with an items list")
+    for number, line in enumerate(po["items"], start=1):
+        for key in ("item_code", "description", "qty", "rate_inr"):
+            if not isinstance(line, dict) or line.get(key) in (None, ""):
+                raise UserError(f"purchase order line {number} has no {key}")
+        if not isinstance(line["qty"], (int, float)) or isinstance(line["qty"], bool) or line["qty"] <= 0:
+            raise UserError(f"purchase order line {number} needs a quantity above zero")
+        if not isinstance(line["rate_inr"], (int, float)) or isinstance(line["rate_inr"], bool) or line["rate_inr"] < 0:
+            raise UserError(f"purchase order line {number} needs a price of zero or more")
+    for key in ("po_number", "supplier_id"):
+        if not isinstance(po.get(key), str) or not po[key]:
+            raise UserError(f"the purchase order has no {key}")
+    po.setdefault("tax_rate", 0)
+
+
+def parse_counts(tokens: list[str], codes: list[str], first: str) -> dict:
+    """--counted 46 means the line being counted; --counted CODE=46 CODE2=8 gives each line its own count."""
+    given: dict = {}
+    for token in tokens:
+        code, sep, number = token.partition("=")
+        if not sep:
+            code, number = first, token
+        if code not in codes:
+            raise UserError(f"{code} is not on the purchase order (lines: {', '.join(codes)})")
+        try:
+            value = float(number)
+        except ValueError as error:
+            raise UserError(f"a count must be a number, not {number!r}") from error
+        if value != value or value in (float("inf"), float("-inf")):
+            raise UserError("a count must be a finite number")
+        value = int(value) if value == int(value) else value  # whole items stay whole; weights and hours may have decimals
+        if value < 0:
+            raise UserError("a count cannot be negative")
+        given[code] = value
+    return given
+
+
 def check(args) -> int:
     from .ap.matcher import match
     from .ap.masking import mask
@@ -111,8 +150,7 @@ def check(args) -> int:
     quiet = args.json
     policy = load_policy()
     po = load_json(args.po, "purchase order")
-    if not po.get("items"):
-        raise UserError("the purchase order needs an items list")
+    validate_po(po)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     case = args.case or Path(args.bill or args.bill_json).stem
@@ -135,16 +173,21 @@ def check(args) -> int:
         chain.append(case, "Reader", "read", "extracted", input_hash=sha256(masked.encode()), model=read["model"],
                      route=read["route"], response_id=read["response_id"], detail={"bill": bill, "seconds": read["seconds"]})
 
-    item = po["items"][0]
+    codes = [i["item_code"] for i in po["items"]]
+    item = next((i for i in po["items"] if i["item_code"] == args.item), None) if args.item else po["items"][0]
+    if item is None:
+        raise UserError(f"--item {args.item} is not on the purchase order (lines: {', '.join(codes)})")
+    given = parse_counts(args.counted, codes, item["item_code"]) if args.counted else {}
+    if args.counts_file:
+        from_file = load_json(args.counts_file, "counts file")
+        if not isinstance(from_file, dict):
+            raise UserError("the counts file must be a JSON object like {\"CODE\": 12}")
+        given.update(parse_counts([f"{k}={v}" for k, v in from_file.items()], codes, item["item_code"]))
     total, rows, counted_held = 0, [], False
-    if args.counted is not None:
-        total = args.counted
-        rows = [{"photo": "(count given with --counted)", "count": total}]
-        input_hash = sha256({"counted": total})
-        route, model = "given by the person", "none"
-    else:
+    model, route, input_hash = "none", "given by the person", sha256({"counted": given})
+    if item["item_code"] not in given:
         if not args.photos:
-            raise UserError("give --photos, or --counted N when the goods were counted another way")
+            raise UserError("give --photos, or --counted N (or CODE=N for each line) when the goods were counted another way")
         photos = expand_photos(args.photos)
         sam = build_sam()
         model, route, input_hash = "SAM 3.1", "this machine", sha256([p.name for p in photos])
@@ -169,19 +212,34 @@ def check(args) -> int:
                 result = sam.count(photo, words[0], photo.stem)
                 rows.append({"photo": photo.name, "count": result["count"], "words": words[0], "seconds": result.get("infer_seconds")})
                 total += result["count"]
-    chain.append(case, "Counter", "count", f"counted {total}", input_hash=input_hash, model=model, route=route,
-                 detail={"photos": rows, "total": total})
+        given[item["item_code"]] = total
+    else:
+        total = given[item["item_code"]]
+        rows = [{"photo": "(count given with --counted)", "count": total}]
+    missing = [c for c in codes if c not in given]
+    if missing:
+        raise UserError(f"the purchase order has {len(codes)} lines; give a count for each with --counted CODE=N. Missing: {', '.join(missing)}")
+    if hasattr(locals().get("sam"), "close"):
+        sam.close()
+    chain.append(case, "Counter", "count", "counted " + ", ".join(f"{c} {n}" for c, n in given.items()), input_hash=input_hash, model=model, route=route,
+                 detail={"photos": rows, "counts": given})
 
-    result = match(po, bill, {item["item_code"]: total}, {}, policy.limits)
-    state = "held" if (not result["matched"] or counted_held) else "clear to enter"
+    result = match(po, bill, given, {}, policy.limits)
+    needs_approval = bool(result.get("over_limit"))  # the policy lets a person, not the agent, approve a bill over the amount limit
+    state = "held" if (not result["matched"] or counted_held or needs_approval) else "clear to enter"
+    if needs_approval:
+        result["problems"].append(f"total {bill['total_inr']:.2f} is over the owner approval limit of {policy.limits['owner_amount_limit_inr']:g}, so a person approves it")
     chain.append(case, "Matcher", "match", state, input_hash=sha256(result), detail={"problems": result["problems"]})
     receipts = out / "receipts.jsonl"
     if args.json:
-        print(json.dumps({"bill_no": bill["bill_no"], "billed": bill["lines"][0]["qty"], "counted": total, "state": state,
+        print(json.dumps({"bill_no": bill["bill_no"], "billed": bill["lines"][0]["qty"], "counted": total, "counts": given, "state": state,
                           "problems": result["problems"], "counted_held": counted_held, "receipts": str(receipts),
                           "public_key": chain.signer.public_key}, indent=1))
     else:
-        print(f"\nBill {bill['bill_no']}: billed {bill['lines'][0]['qty']:g}, counted {total}. Result: {state.upper()}")
+        shown = ", ".join(f"{c} {n}" for c, n in given.items())
+        billed = ", ".join("{} {:g}".format(l["item_code"], l["qty"]) for l in bill["lines"])
+        print()
+        print(f"Bill {bill['bill_no']}: billed {billed}; counted {shown}. Result: {state.upper()}")
         for problem in result["problems"]:
             print("  -", problem)
         if counted_held:
@@ -195,7 +253,13 @@ def verify_command(args) -> int:
     path = Path(args.receipts)
     if not path.exists():
         raise UserError(f"receipt file not found: {path}")
-    receipts = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    try:
+        receipts = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    except ValueError as error:
+        raise UserError(f"{path.name} is not a receipt file (a line is not valid JSON: {error})") from error
+    if not receipts:
+        print("0 receipts: nothing to verify")
+        return 1
     key_file = Path(args.key_file) if args.key_file else path.with_name("public_key.txt")
     if not args.key and not key_file.exists():
         raise UserError(f"no public key: pass --key, or keep public_key.txt next to {path.name}")
@@ -241,7 +305,36 @@ def doctor(args) -> int:
     core = all(level == "ok" for level, what, *_ in rows if what.startswith(("Python", "cryptography", "fitz", "cv2", "numpy")))
     print("\n" + ("Everything is ready for relayloom check --agent." if ready else
                   "Core is ready: relayloom verify and relayloom check --counted work now." if core else "Install the missing core pieces first."))
+    if getattr(args, "report", False):
+        home = str(Path.home())
+        print()
+        print("--- paste this into a bug report (no bills, photos, keys or tokens are included) ---")
+        print(f"relayloom {__version__}  python {sys.version.split()[0]}  {sys.platform}")
+        for level, what, detail, fix in rows:
+            print(f"{level:8} {what}" + (f"  {detail.replace(home, '~')}" if detail and level != 'ok' else ""))
+        print("--- end ---")
+        print("Report it at https://github.com/Sriharsan/relayloom/issues/new/choose")
     return 0 if core else 1
+
+
+def update_check(args) -> int:
+    """The one command that goes online, and only when asked: is there a newer release on PyPI?"""
+    try:
+        data = json.loads(urllib.request.urlopen("https://pypi.org/pypi/relayloom/json", timeout=8).read())
+    except urllib.error.HTTPError as error:
+        if error.code == 404:
+            raise UserError("no relayloom release was found on PyPI yet") from error
+        raise UserError(f"PyPI answered with an error ({error.code})") from error
+    except (OSError, ValueError, urllib.error.URLError) as error:
+        raise UserError(f"could not reach PyPI ({error}). relayloom never goes online unless you run this command.") from error
+    latest = data["info"]["version"]
+    def key(v):
+        return [int(x) if x.isdigit() else 0 for x in v.split(".")]
+    if key(latest) > key(__version__):
+        print(f"relayloom {latest} is available (you have {__version__}). Upgrade with: python -m pip install -U relayloom")
+    else:
+        print(f"relayloom {__version__} is the latest release.")
+    return 0
 
 
 def serve(args) -> int:
@@ -296,7 +389,9 @@ def parser() -> argparse.ArgumentParser:
     source.add_argument("--bill-json", help="the bill already as structured JSON")
     c.add_argument("--po", required=True, help="purchase order JSON")
     c.add_argument("--photos", nargs="+", help="photos, or folders of photos, of the delivery")
-    c.add_argument("--counted", type=int, help="the number of items already counted, instead of photos")
+    c.add_argument("--counts-file", help="a JSON file of counts, {\"CODE\": N, ...}, for purchase orders with many lines")
+    c.add_argument("--counted", nargs="+", metavar="N|CODE=N", help="items already counted instead of photos: N for the line being counted, or CODE=N for each line")
+    c.add_argument("--item", help="the purchase order line the photos count (default: the first line)")
     c.add_argument("--words", nargs="*", help="words for SAM to look for (the agent proposes them when omitted)")
     c.add_argument("--agent", action="store_true", help="let Muse Glimmer choose the words and look at its own counts")
     c.add_argument("--case", help="case name for the receipts")
@@ -309,7 +404,10 @@ def parser() -> argparse.ArgumentParser:
     v.add_argument("--key-file", help="file with the public key; default public_key.txt next to the receipts")
     v.set_defaults(run=verify_command)
     d = sub.add_parser("doctor", help="say what is ready on this machine and what is missing")
+    d.add_argument("--report", action="store_true", help="print a block to paste into a bug report")
     d.set_defaults(run=doctor)
+    u = sub.add_parser("update-check", help="ask PyPI whether a newer release exists (the only command that goes online)")
+    u.set_defaults(run=update_check)
     s = sub.add_parser("serve", help="start the demo app on this machine (extra arguments go to the app)")
     s.add_argument("rest", nargs=argparse.REMAINDER)
     s.set_defaults(run=serve)

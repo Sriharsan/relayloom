@@ -43,6 +43,10 @@ jobs:
         run: python -m relayloom.ap.cases all --data "$RUNNER_TEMP/cases"
       - name: Every security control passes and is timed
         run: python scripts/security_report.py
+      - name: Forty command line scenarios
+        run: python scripts/package_scenarios.py
+      - name: Real California purchase orders with the documented exception types
+        run: python scripts/real_world_check.py
   package:
     name: Package, offline install (${{ matrix.os }})
     strategy:

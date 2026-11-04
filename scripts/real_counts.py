@@ -19,7 +19,7 @@ def main():
     words = json.loads((ROOT / "fixtures" / "real" / "words.json").read_text(encoding="utf-8"))
     sam = SamCounter(os.environ.get("RELAYLOOM_SAM_PYTHON", str(MODELS / "venv-sam" / "Scripts" / "python.exe")),
                      str(MODELS / "facebook_sam3.1" / "sam3.1_multiplex.pt"), "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
-                     live=True, cache=ROOT / "fixtures" / "recorded" / "real")
+                     live=True, cache=ROOT / "fixtures" / "recorded" / "real", persistent=True)
     for key, meta in words.items():
         for word in meta["words"]:
             result = sam.count(ROOT / "fixtures" / "real" / f"{key}.jpg", word, key)

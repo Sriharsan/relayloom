@@ -168,9 +168,11 @@ class PhoneHandler(BaseHTTPRequestHandler):
         url = urlsplit(self.path)
         query = parse_qs(url.query)
         if url.path != "/photo" or not hmac.compare_digest((query.get("t") or [""])[0].encode(), self.server.token.encode()):
+            self.drain()
             return self.reply(405 if url.path != "/photo" else 403, "text/plain; charset=utf-8", b"read only" if url.path != "/photo" else b"forbidden")
         handler = self.server.photo_handler
         if handler is None:
+            self.drain()
             return self.json_reply(404, {"error": "This laptop is not taking photos"})
         kind = (self.headers.get("Content-Type") or "").split(";")[0].strip().lower()
         try:
@@ -185,6 +187,18 @@ class PhoneHandler(BaseHTTPRequestHandler):
             return self.json_reply(415, {"error": "Only JPEG, PNG or WebP photos are accepted"})
         word = (query.get("word") or ["box"])[0]
         self.json_reply(202, handler(body, kind, word))
+
+    def drain(self):
+        """Read (and drop) a small refused body, so the client sees the answer instead of a reset connection."""
+        try:
+            remaining = min(int(self.headers.get("Content-Length") or 0), 1048576)
+        except ValueError:
+            return
+        while remaining > 0:
+            chunk = self.rfile.read(min(remaining, 65536))
+            if not chunk:
+                break
+            remaining -= len(chunk)
 
     def json_reply(self, status: int, value: dict):
         self.reply(status, "application/json", json.dumps(value).encode())

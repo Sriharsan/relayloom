@@ -60,7 +60,7 @@ class CliTests(unittest.TestCase):
     def test_an_edited_receipt_breaks_the_chain(self):
         self.run_check(46)
         path = self.dir / "out" / "receipts.jsonl"
-        text = path.read_text(encoding="utf-8").replace("counted 46", "counted 50")
+        text = path.read_text(encoding="utf-8").replace("CARTON-HD 46", "CARTON-HD 50")
         path.write_text(text, encoding="utf-8")
         with contextlib.redirect_stdout(io.StringIO()) as verified:
             self.assertEqual(cli.main(["verify", str(path)]), 1)
