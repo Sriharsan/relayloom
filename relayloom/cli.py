@@ -135,7 +135,11 @@ def verify_command(args) -> int:
 
 
 def serve(args) -> int:
-    from .ap.app import main as app_main
+    from .ap.app import FIXTURES, main as app_main
+    if not (Path(FIXTURES) / "data.json").exists():
+        print("relayloom serve runs the demo app, which needs the repository's demo data.")
+        print("Clone https://github.com/Sriharsan/relayloom and run it from there, or use relayloom check on your own files.")
+        return 2
     sys.argv = ["relayloom serve"] + args.rest
     app_main()
     return 0
