@@ -1,0 +1,20 @@
+{
+ "en": {
+  "title": "CAL-0990 needs you",
+  "body": "Short delivery. 4 billed but not received",
+  "state": "Needs you",
+  "action": "send a dispute to the supplier"
+ },
+ "ta": {
+  "title": "CAL-0990: உங்கள் முடிவு தேவை",
+  "body": "குறைவான சரக்கு வருகை. 4 billed but not received",
+  "state": "உங்கள் முடிவு தேவை",
+  "action": "சப்ளையருக்குப் புகார் அனுப்பவும்"
+ },
+ "hi": {
+  "title": "CAL-0990: आपके निर्णय की ज़रूरत है",
+  "body": "कम माल आया. 4 billed but not received",
+  "state": "आपकी ज़रूरत है",
+  "action": "सप्लायर को विवाद भेजें"
+ }
+}

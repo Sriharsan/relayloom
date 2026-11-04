@@ -158,3 +158,40 @@
   .bot, .bot-scan, .bot-tick, .bot-link, .bot-sweep, .bot-stamp, .bot-ink, .flow-line, .ring-pulse, .chain-block { animation: none !important; }
   .reveal-card { opacity: 1; animation: none !important; }
 }
+
+/* ---- play: Loom runs in, the crew jumps, runs and can be dragged ---- */
+@keyframes loomrun { from { transform: translateX(-140px); } to { transform: translateX(calc(100vw - 170px)); } }
+@keyframes legs { 0%, 100% { transform: rotate(-24deg); } 50% { transform: rotate(24deg); } }
+@keyframes wave { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-22deg); } }
+@keyframes hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-26px) rotate(-6deg); } 70% { transform: translateY(-8px) rotate(5deg); } }
+@keyframes crewjump { 0% { transform: translateY(0) scale(1); } 20% { transform: translateY(-34px) scale(1.12) rotate(-8deg); } 40% { transform: translateY(0) scale(1); } 60% { transform: translateY(-20px) rotate(8deg); } 80% { transform: translateY(0) rotate(-4deg); } 100% { transform: translateY(0); } }
+@keyframes crewrun { 0% { transform: translateX(0); } 22% { transform: translateX(var(--run, 220px)) scaleX(1); } 25% { transform: translateX(var(--run, 220px)) scaleX(-1); } 50% { transform: translateX(0) scaleX(-1); } 53% { transform: translateX(0) scaleX(1); } 62% { transform: translateY(-30px); } 74% { transform: translateY(0); } 84% { transform: translateY(-18px); } 100% { transform: translateY(0); } }
+@keyframes shout { from { opacity: 0; transform: translateY(6px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.loom-runner { left: 0; animation: loomrun 6s cubic-bezier(0.35, 0.1, 0.4, 1) both; }
+.loom-runner.loom-arrived { animation: none; transform: translateX(calc(100vw - 170px)); }
+.loom-run { animation: bob 0.3s ease-in-out infinite; }
+.loom-leg { transform-box: fill-box; transform-origin: 50% 0; animation: legs 0.3s linear infinite; }
+.loom-leg-b { animation-direction: reverse; }
+.loom-runner.loom-arrived .loom-leg { animation: none; }
+.loom-wave { transform-box: fill-box; transform-origin: 0 100%; animation: wave 0.9s ease-in-out infinite; }
+.loom-hop { animation: hop 0.7s ease-out; }
+.loom-bubble { animation: shout 400ms 100ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
+.crew-act { animation: crewjump 1.6s ease-in-out; }
+.crew-run { animation: crewrun 4s ease-in-out both; }
+.crew-shout { animation: shout 300ms ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .loom-runner { animation: none; transform: translateX(calc(100vw - 170px)); }
+  .loom-run, .loom-leg, .loom-wave, .loom-hop, .crew-act, .crew-run { animation: none !important; }
+}
+
+
+/* ---- serious documents: bills and receipts keep a classic paper look ---- */
+.paper { background: color-mix(in srgb, var(--surface) 86%, #f1e4bd 14%); border: 1px solid color-mix(in srgb, var(--line) 70%, #b9a97a 30%); border-radius: 6px; box-shadow: 0 10px 28px -20px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden; }
+.paper > div:first-child { border-bottom: 3px double color-mix(in srgb, var(--line) 60%, #b9a97a 40%); background: transparent; }
+.paper .kLabel { font-family: Georgia, "Times New Roman", serif; font-size: 12px; letter-spacing: 0.22em; color: var(--foreground); }
+.paper dt { font-family: Georgia, "Times New Roman", serif; }
+.paper::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: radial-gradient(circle at 5px 8px, var(--background) 3px, transparent 3.5px) 0 0 / 14px 8px repeat-x; }
+.stamp { display: inline-block; transform: rotate(-6deg); border: 2px solid var(--green-ink); color: var(--green-ink); border-radius: 4px; padding: 1px 8px; font-family: Georgia, "Times New Roman", serif; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.9; }
+@keyframes cloud { from { transform: translateX(-30vw); } to { transform: translateX(110vw); } }
+.cloud { position: absolute; color: var(--ink-muted); opacity: 0.3; animation: cloud 38s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .cloud { animation: none; } }

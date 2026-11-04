@@ -1,3 +1,5 @@
+import { useState } from "react";
+import langs from "@/data/langs.json";
 import { Link } from "@/lib/router";
 import { CopyBlock, Pill, SectionHead } from "@/components/bits";
 import { links, run } from "@/data/site";
@@ -14,6 +16,72 @@ const COMMANDS = [
   { cmd: "relayloom serve --batch --phone", what: "Starts the app on 127.0.0.1 and phone alerts on your local network, with a QR code for the phone." },
   { cmd: "relayloom models pull", what: "Downloads SAM 3.1 and Muse Glimmer with your own Hugging Face token. After this the checks run with the network off." },
 ];
+
+const LANG_TABS: [keyof typeof langs, string][] = [["en", "English"], ["ta", "தமிழ்"], ["hi", "हिन्दी"]];
+
+function LanguagesBlock() {
+  const [lang, setLang] = useState<keyof typeof langs>("en");
+  const x = langs[lang];
+  return (
+    <section className="border-b border-line">
+      <div className="mx-auto grid max-w-[1200px] items-center gap-12 px-6 py-20 sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:px-14">
+        <div>
+          <p className="kLabel">Languages</p>
+          <h2 className="mt-4 max-w-[16ch] text-balance text-[36px] font-bold leading-[1.05] tracking-[-0.025em] text-foreground sm:text-[48px]">The alert speaks the owner's language.</h2>
+          <p className="mt-5 max-w-[46ch] text-[16px] leading-relaxed text-ink-muted">
+            Phone alerts and the approval screen come in English, Tamil and Hindi, and the picker remembers the choice. All 135 strings sit in
+            <span className="font-mono text-foreground"> docs/LANGUAGES.md</span>, Tamil and Hindi beside the English. Muse Glimmer read a Hindi and a Tamil supplier bill with every field correct.
+          </p>
+        </div>
+        <div className="mx-auto w-full max-w-[420px]">
+          <div role="tablist" aria-label="Alert language" className="mb-4 flex gap-2">
+            {LANG_TABS.map(([k, label]) => (
+              <button key={k} role="tab" aria-selected={lang === k} onClick={() => setLang(k)}
+                className={`h-9 rounded-full border px-4 text-[13px] transition-colors duration-150 ${lang === k ? "border-foreground bg-foreground text-background" : "border-line text-ink-muted hover:text-foreground"}`}>{label}</button>
+            ))}
+          </div>
+          <div className="rounded-[28px] border border-line bg-surface p-3 shadow-2xl shadow-black/20">
+            <div className="rounded-[20px] border border-line bg-background p-5">
+              <p className="font-mono text-[10.5px] uppercase tracking-wider text-ink-muted">Relayloom · now</p>
+              <p className="mt-2 text-[18px] font-semibold leading-snug text-foreground">{x.title}</p>
+              <p className="mt-2 text-[14.5px] leading-relaxed text-ink-muted">{x.body}</p>
+              <p className="mt-4 inline-flex rounded-full border border-amber/50 px-3 py-1 text-[12.5px] text-amber-ink">{x.state}</p>
+              <p className="mt-4 rounded-xl bg-foreground px-4 py-3 text-center text-[14px] font-medium text-background">{x.action}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeedbackBlock() {
+  return (
+    <section>
+      <div className="mx-auto grid max-w-[1200px] gap-12 px-6 py-20 sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:px-14">
+        <div>
+          <p className="kLabel">Feedback</p>
+          <h2 className="mt-4 max-w-[16ch] text-balance text-[36px] font-bold leading-[1.05] tracking-[-0.025em] text-foreground sm:text-[48px]">A delivery we do not handle yet? Tell us.</h2>
+          <p className="mt-5 max-w-[46ch] text-[16px] leading-relaxed text-ink-muted">
+            One command writes a report you can read before you send anything. Nothing leaves your machine unless you post it.
+          </p>
+          <a href="https://github.com/Sriharsan/relayloom/issues/new/choose" target="_blank" rel="noreferrer"
+            className="mt-7 inline-flex h-12 items-center rounded-full bg-foreground px-6 text-sm font-medium text-background transition-opacity duration-150 hover:opacity-90">Open an issue</a>
+        </div>
+        <div className="overflow-hidden rounded-2xl border border-line bg-surface">
+          <div className="flex items-center gap-2 border-b border-line px-4 py-3" aria-hidden="true">
+            <span className="h-2.5 w-2.5 rounded-full bg-red/70" /><span className="h-2.5 w-2.5 rounded-full bg-amber/70" /><span className="h-2.5 w-2.5 rounded-full bg-green/70" />
+          </div>
+          <pre className="overflow-x-auto p-5 font-mono text-[13px] leading-relaxed text-foreground">{"$ relayloom doctor --report\nok      Python 3.13\nok      signed receipts\nto do   SAM 3.1 weights\nreport written: relayloom-report.txt"}</pre>
+          <div className="grid gap-px border-t border-line bg-line sm:grid-cols-2">
+            <div className="bg-surface p-5"><p className="kLabel text-green-ink">In the report</p><p className="mt-2 text-[14px] leading-relaxed text-ink-muted">Versions, what is installed, the exact command that failed.</p></div>
+            <div className="bg-surface p-5"><p className="kLabel text-amber-ink">Never in it</p><p className="mt-2 text-[14px] leading-relaxed text-ink-muted">Bills, photos, bank details and tokens.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export function Developers() {
   const operations = Object.entries(policy.operations as Record<string, { level: string }>);
@@ -78,7 +146,7 @@ export function Developers() {
       <section className="border-b border-line">
         <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
           <SectionHead index="Receipts" title="The receipt format" note="Each receipt is signed with Ed25519 and chained to the one before it. Change any field and the chain breaks." />
-          <pre className="overflow-x-auto rounded-xl border border-line bg-surface p-5 font-mono text-[12px] leading-relaxed text-foreground">
+          <pre className="paper overflow-x-auto p-5 pb-8 font-mono text-[12px] leading-relaxed text-foreground">
             {JSON.stringify({ body: sample.body, hash: sample.hash, sig: sample.sig }, null, 2).slice(0, 1800)}
           </pre>
           <p className="mt-4 text-[13.5px] text-ink-muted">
@@ -87,26 +155,8 @@ export function Developers() {
           </p>
         </div>
       </section>
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6">
-          <p className="kLabel">Languages</p>
-          <p className="mt-3 max-w-[62ch] text-[15px] leading-relaxed text-ink-muted">
-            Phone alerts and the approval screen come in English, Tamil and Hindi, with a language picker that remembers your choice. All 135 strings are listed in
-            <span className="font-mono text-foreground"> docs/LANGUAGES.md</span> with the Tamil and Hindi next to the English.
-            Muse Glimmer read a Hindi and a Tamil supplier bill with every field correct. Text made by the model or taken from the bill stays as written.
-          </p>
-        </div>
-      </section>
-      <section>
-        <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6">
-          <p className="kLabel">Feedback</p>
-          <p className="mt-3 max-w-[60ch] text-[15px] leading-relaxed text-ink-muted">
-            Something failed, or a delivery you need is not handled yet? Run <span className="font-mono text-foreground">relayloom doctor --report</span> and{" "}
-            <a href="https://github.com/Sriharsan/relayloom/issues/new/choose" className="text-foreground underline underline-offset-4" target="_blank" rel="noreferrer">open an issue</a>.
-            Nothing is sent anywhere unless you send it, and no bill, photo or token is in the report.
-          </p>
-        </div>
-      </section>
+      <LanguagesBlock />
+      <FeedbackBlock />
     </div>
   );
 }

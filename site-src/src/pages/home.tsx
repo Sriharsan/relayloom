@@ -5,6 +5,7 @@ import { agent, benchmark, confidence, fmtSeconds, glimmerSummary, links, offlin
 import { CopyBlock, Photo } from "@/components/bits";
 import { RealCases } from "@/components/realcases";
 import { Vision } from "@/components/vision";
+import { Mascot } from "@/components/mascot";
 
 
 const btn =
@@ -315,6 +316,12 @@ function Closing() {
 export function Home() {
   return (
     <>
+      <Mascot
+        storageKey="loom-home"
+        message="Come and watch the crew count a delivery."
+        cta={{ label: "Meet the crew", target: "crew" }}
+        nudges={["The real cases are just below. Every one is linked to its source.", "The proof page lets you break a receipt chain yourself.", "Open the demo and I will walk you through a short delivery."]}
+      />
       <Hero />
       <Strip />
       <RealCases />

@@ -7,6 +7,7 @@ import { FindingCard, citeId } from "@/components/finding";
 import { run as runData } from "@/data/site";
 import { Link } from "@/lib/router";
 import { downloadReceipt } from "@/lib/receiptpdf";
+import { Mascot } from "@/components/mascot";
 
 type Tab = "today" | "case" | "approvals";
 
@@ -32,9 +33,9 @@ function scrollToCite(cite: string) {
   }, 1400);
 }
 
-function Card({ title, right, children }: { title: string; right?: React.ReactNode; children: React.ReactNode }) {
+function Card({ title, right, children, paper }: { title: string; right?: React.ReactNode; children: React.ReactNode; paper?: boolean }) {
   return (
-    <div className="rounded-xl border border-line bg-surface">
+    <div className={paper ? "paper" : "rounded-xl border border-line bg-surface"}>
       <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-3">
         <span className="kLabel">{title}</span>
         {right}
@@ -214,7 +215,7 @@ function CaseView({ c }: { c: BenchCase }) {
             <p className="border-t border-line px-5 py-3 font-mono text-[11.5px] text-ink-muted">{c.match.rows.flatMap((r) => r.issues).join(". ")}</p>
           )}
         </Card>
-        <Card title="Bill" right={<RunLabel label={LABEL} />}>
+        <Card paper title="Bill" right={<RunLabel label={LABEL} />}>
           <dl className="px-5 py-4 text-[13.5px]">
             {[
               ["Supplier", supplierName(c.supplier_id)],
@@ -323,7 +324,7 @@ function CaseView({ c }: { c: BenchCase }) {
             </Card>
         )}
         <div className={c.investigation ? "" : "lg:col-span-2"}>
-        <Card title="Receipt chain" right={<button type="button" onClick={() => downloadReceipt(receipts, runData.receipts_verified, c.bill_no)} className="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] font-medium text-foreground transition-colors duration-150 hover:bg-raised">Download receipt (PDF)</button>}>
+        <Card paper title="Receipt chain" right={<span className="flex items-center gap-3">{runData.receipts_verified && <span className="stamp">Verified</span>}<button type="button" onClick={() => downloadReceipt(receipts, runData.receipts_verified, c.bill_no)} className="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] font-medium text-foreground transition-colors duration-150 hover:bg-raised">Download receipt (PDF)</button></span>}>
           <ul className="max-h-[420px] overflow-y-auto px-5 py-4">
             {receipts.map((r, i) => (
               <li key={r.hash} className="relative pb-4 pl-6 last:pb-0">
@@ -642,6 +643,20 @@ export function Demo() {
 
   return (
     <div>
+      <Mascot
+        storageKey="loom-demo"
+        message="Press Next and I will point at the evidence."
+        cta={{
+          label: "Next step",
+          click: () => Array.from(document.querySelectorAll<HTMLButtonElement>('[aria-label="Guided tour"] button')).find((b) => b.textContent?.trim() === "Next")?.click(),
+        }}
+        nudges={[
+          "Open the Case tab for the three way match: order, bill and goods.",
+          "Every claim carries a citation. Press one and the record lights up.",
+          "The Receipt chain card downloads a plain language PDF.",
+          "Break a receipt on the Proof page and watch the chain notice.",
+        ]}
+      />
       <div className="border-b border-line bg-amber/5">
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2.5 sm:px-6">
           <span className="pill border-amber/40 bg-amber/10 text-amber-ink">

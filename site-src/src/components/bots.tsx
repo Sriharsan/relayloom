@@ -1,4 +1,6 @@
-/** The crew: five small agents, each with its own signature move, looping while the page is open. */
+import { useRef, useState } from "react";
+
+/** The crew: five small agents. Press one to see its signature move, drag it around, or let them all run. */
 const BODY = "var(--surface)";
 const LINE = "var(--line)";
 
@@ -89,23 +91,64 @@ export function Clerk() {
 }
 
 export const CREW = [
-  { name: "Reader", Bot: Reader, line: "Reads every bill into a strict form." },
-  { name: "Counter", Bot: Counter, line: "Counts the goods in the photo." },
-  { name: "Matcher", Bot: Matcher, line: "Sets order, bill and goods side by side." },
-  { name: "Investigator", Bot: Investigator, line: "Follows the evidence and cites every claim." },
-  { name: "Clerk", Bot: Clerk, line: "Enters the bill and signs the receipt." },
+  { name: "Reader", Bot: Reader, line: "Reads every bill into a strict form.", shout: "Page one, line by line!" },
+  { name: "Counter", Bot: Counter, line: "Counts the goods in the photo.", shout: "Twenty four, and every one numbered!" },
+  { name: "Matcher", Bot: Matcher, line: "Sets order, bill and goods side by side.", shout: "Order, bill, goods. Do they agree?" },
+  { name: "Investigator", Bot: Investigator, line: "Follows the evidence and cites every claim.", shout: "Show me the record behind that." },
+  { name: "Clerk", Bot: Clerk, line: "Enters the bill and signs the receipt.", shout: "Signed. Nobody changes this quietly." },
 ];
 
-export function Crew() {
+function CrewMember({ i, running, name, Bot, line, shout }: { i: number; running: boolean; name: string; Bot: () => React.ReactElement; line: string; shout: string }) {
+  const [act, setAct] = useState(false);
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  const [drag, setDrag] = useState(false);
+  const start = useRef<{ x: number; y: number } | null>(null);
+  const moved = useRef(false);
+
+  const play = () => {
+    setAct(true);
+    window.setTimeout(() => setAct(false), 2200);
+  };
   return (
-    <ul className="grid grid-cols-2 gap-x-4 gap-y-8 text-ink-muted sm:grid-cols-3 lg:grid-cols-5">
-      {CREW.map(({ name, Bot, line }) => (
-        <li key={name} className="flex flex-col items-start">
-          <Bot />
-          <p className="mt-2 text-[16px] font-semibold text-foreground">{name}</p>
-          <p className="mt-1 max-w-[22ch] text-[13.5px] leading-snug">{line}</p>
-        </li>
-      ))}
-    </ul>
+    <li className="relative flex flex-col items-start">
+      {act && (
+        <p className="crew-shout absolute -top-9 left-2 z-10 whitespace-nowrap rounded-full border border-line bg-background px-3 py-1.5 text-[12.5px] text-foreground shadow-lg">{shout}</p>
+      )}
+      <button
+        type="button"
+        aria-label={`${name}: press for its signature move, or drag it`}
+        className={`touch-none select-none ${running ? "crew-run" : ""} ${act ? "crew-act" : ""} ${drag ? "cursor-grabbing" : "cursor-grab"}`}
+        style={{ transform: `translate(${pos.x}px, ${pos.y}px)`, transition: drag ? "none" : "transform 520ms cubic-bezier(0.3, 1.5, 0.5, 1)", animationDelay: `${i * 140}ms` }}
+        onPointerDown={(e) => { (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); start.current = { x: e.clientX - pos.x, y: e.clientY - pos.y }; moved.current = false; setDrag(true); }}
+        onPointerMove={(e) => { if (!start.current) return; const nx = e.clientX - start.current.x, ny = e.clientY - start.current.y; if (Math.abs(nx) + Math.abs(ny) > 6) moved.current = true; setPos({ x: nx, y: ny }); }}
+        onPointerUp={() => { start.current = null; setDrag(false); setPos({ x: 0, y: 0 }); if (!moved.current) play(); }}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); play(); } }}
+      >
+        <Bot />
+      </button>
+      <p className="mt-2 text-[16px] font-semibold text-foreground">{name}</p>
+      <p className="mt-1 max-w-[22ch] text-[13.5px] leading-snug text-ink-muted">{line}</p>
+    </li>
+  );
+}
+
+export function Crew() {
+  const [running, setRunning] = useState(false);
+  const [round, setRound] = useState(0);
+  const run = () => {
+    setRunning(false);
+    window.setTimeout(() => { setRound((n) => n + 1); setRunning(true); }, 30);
+    window.setTimeout(() => setRunning(false), 4200);
+  };
+  return (
+    <div id="crew" className="scroll-mt-24 text-ink-muted">
+      <div className="flex flex-wrap items-center gap-3">
+        <button type="button" onClick={run} className="inline-flex h-10 items-center rounded-full bg-foreground px-5 text-[13px] font-medium text-background">Let them run</button>
+        <span className="text-[13.5px]">Press a bot for its signature move. Drag one anywhere and let go.</span>
+      </div>
+      <ul key={round} className="mt-12 grid grid-cols-2 gap-x-4 gap-y-12 sm:grid-cols-3 lg:grid-cols-5">
+        {CREW.map((c, i) => <CrewMember key={c.name} i={i} running={running} {...c} />)}
+      </ul>
+    </div>
   );
 }
