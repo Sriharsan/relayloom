@@ -7,7 +7,8 @@
   "size": [
    803,
    532
-  ]
+  ],
+  "source_index": 0
  },
  "r02": {
   "words": [
@@ -17,7 +18,8 @@
   "size": [
    787,
    575
-  ]
+  ],
+  "source_index": 1
  },
  "r03": {
   "words": [
@@ -27,7 +29,8 @@
   "size": [
    1000,
    662
-  ]
+  ],
+  "source_index": 2
  },
  "r04": {
   "words": [
@@ -37,7 +40,8 @@
   "size": [
    746,
    576
-  ]
+  ],
+  "source_index": 5
  },
  "r05": {
   "words": [
@@ -47,7 +51,8 @@
   "size": [
    867,
    573
-  ]
+  ],
+  "source_index": 6
  },
  "r06": {
   "words": [
@@ -57,7 +62,8 @@
   "size": [
    777,
    575
-  ]
+  ],
+  "source_index": 9
  },
  "r07": {
   "words": [
@@ -67,7 +73,8 @@
   "size": [
    867,
    577
-  ]
+  ],
+  "source_index": 10
  },
  "r08": {
   "words": [
@@ -77,6 +84,117 @@
   "size": [
    875,
    577
-  ]
+  ],
+  "source_index": 11
+ },
+ "r09": {
+  "words": [
+   "can",
+   "tin"
+  ],
+  "size": [
+   638,
+   472
+  ],
+  "source_index": 7
+ },
+ "r10": {
+  "words": [
+   "pallet",
+   "box"
+  ],
+  "size": [
+   1000,
+   658
+  ],
+  "source_index": 8
+ },
+ "r11": {
+  "words": [
+   "can",
+   "tin"
+  ],
+  "size": [
+   870,
+   580
+  ],
+  "source_index": 12
+ },
+ "r12": {
+  "words": [
+   "cardboard box",
+   "box"
+  ],
+  "size": [
+   790,
+   521
+  ],
+  "source_index": 13
+ },
+ "r13": {
+  "words": [
+   "gas cylinder",
+   "cylinder"
+  ],
+  "size": [
+   795,
+   517
+  ],
+  "source_index": 14
+ },
+ "r14": {
+  "words": [
+   "bale",
+   "bundle"
+  ],
+  "size": [
+   523,
+   717
+  ],
+  "source_index": 15
+ },
+ "r15": {
+  "words": [
+   "bale",
+   "bundle"
+  ],
+  "size": [
+   790,
+   522
+  ],
+  "source_index": 16
+ },
+ "r16": {
+  "words": [
+   "bundle",
+   "bag"
+  ],
+  "size": [
+   795,
+   527
+  ],
+  "source_index": 17
+ },
+ "r17": {
+  "words": [
+   "cardboard box",
+   "box"
+  ],
+  "size": [
+   883,
+   807
+  ],
+  "source_index": 18
+ },
+ "r18": {
+  "words": [
+   "pallet",
+   "box"
+  ],
+  "size": [
+   538,
+   812
+  ],
+  "source_index": 19
  }
 }

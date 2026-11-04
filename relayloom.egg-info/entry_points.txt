@@ -1,0 +1,2 @@
+[console_scripts]
+relayloom = relayloom.cli:main

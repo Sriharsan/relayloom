@@ -43,6 +43,22 @@ jobs:
         run: python -m relayloom.ap.cases all --data "$RUNNER_TEMP/cases"
       - name: Every security control passes and is timed
         run: python scripts/security_report.py
+  package:
+    name: Package, offline install (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install build twine
+      - name: Build, install into a clean environment with the network blocked, and run the commands
+        run: python scripts/package_check.py
   site:
     name: Website builds
     runs-on: ubuntu-latest

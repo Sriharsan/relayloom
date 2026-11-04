@@ -1,0 +1,21 @@
+{
+ "recorded_at": "2026-11-04 11:44 +0530",
+ "photo_sha256": "0769c3ff2f397acdd99cc9fc2bee305c58bd1c1cc02e3d413729d32607513bf9",
+ "result": {
+  "count": 0,
+  "prompt": "can",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 84.2,
+  "scores": [],
+  "image_size": [
+   638,
+   472
+  ],
+  "wall_seconds": 99.8,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "r09__can.jpg",
+  "recorded": false
+ }
+}

@@ -1,3 +1,3 @@
-"""Relayloom's local, revision-aware workroom controller."""
+"""Relayloom: accounts payable that checks the goods, not just the paperwork."""
 
-__version__ = "0.1.0"
+__version__ = "0.3.0"

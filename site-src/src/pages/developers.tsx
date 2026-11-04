@@ -7,6 +7,8 @@ const LEVEL_TONE: Record<string, "green" | "amber" | "red"> = { run_alone: "gree
 const LEVEL_LABEL: Record<string, string> = { run_alone: "runs alone", run_with_approval: "needs approval", never: "never" };
 
 const COMMANDS = [
+  { cmd: "relayloom doctor", what: "Says what is ready on this machine and the one command that fixes what is missing. It makes no network calls." },
+  { cmd: "relayloom check --bill-json bill.json --po po.json --counted 46", what: "Needs no models: give the count, get HELD or clear, and signed receipts. Add --json for scripts." },
   { cmd: "relayloom check --bill bill.pdf --photos dock/ --po po.json --agent", what: "Reads the bill with Muse Glimmer, counts the photos with SAM 3.1, matches against the order, and writes signed receipts. Exit code 0 is clear to enter, 3 is held." },
   { cmd: "relayloom verify relayloom-out/receipts.jsonl", what: "Checks every signature, hash and chain link with no network. Exit code 0 is a clean chain, 1 is broken." },
   { cmd: "relayloom serve --batch --phone", what: "Starts the app on 127.0.0.1 and phone alerts on your local network, with a QR code for the phone." },
@@ -40,7 +42,7 @@ export function Developers() {
 
       <section className="border-b border-line">
         <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6">
-          <SectionHead index="Commands" title="Four commands" note="Each one runs on this machine. None sends a bill, a photo or a number anywhere." />
+          <SectionHead index="Commands" title="Six commands" note="Each one runs on this machine. None sends a bill, a photo or a number anywhere." />
           <div className="grid gap-3 md:grid-cols-2">
             {COMMANDS.map((c) => (
               <div key={c.cmd} className="rounded-xl border border-line bg-surface p-5">

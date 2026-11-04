@@ -71,10 +71,39 @@ class CliTests(unittest.TestCase):
             cli.expand_photos([str(self.dir / "nothing.jpg")])
         self.assertIn("not found", str(stopped.exception))
 
-    def test_models_pull_needs_the_users_own_token_and_prints_nothing_secret(self):
-        with mock.patch.dict("os.environ", {"HF_TOKEN": ""}), contextlib.redirect_stdout(io.StringIO()) as out:
+    def test_models_pull_needs_the_users_own_token_and_says_so_on_stderr(self):
+        with mock.patch.dict("os.environ", {"HF_TOKEN": ""}), contextlib.redirect_stderr(io.StringIO()) as err:
             self.assertEqual(cli.main(["models", "pull"]), 2)
-        self.assertIn("HF_TOKEN", out.getvalue())
+        self.assertIn("HF_TOKEN", err.getvalue())
+
+    def test_counted_skips_the_photos_and_json_prints_a_result_for_scripts(self):
+        argv = ["check", "--bill-json", str(self.dir / "bill.json"), "--po", str(self.dir / "po.json"), "--counted", "46", "--json",
+                "--out", str(self.dir / "o2")]
+        with contextlib.redirect_stdout(io.StringIO()) as out:
+            self.assertEqual(cli.main(argv), 3)
+        result = json.loads(out.getvalue())
+        self.assertEqual((result["state"], result["counted"], result["billed"]), ("held", 46, 50))
+
+    def test_a_bad_purchase_order_and_a_missing_bill_are_short_messages_not_tracebacks(self):
+        (self.dir / "bad.json").write_text("{not json", encoding="utf-8")
+        with contextlib.redirect_stderr(io.StringIO()) as err:
+            code = cli.main(["check", "--bill-json", str(self.dir / "bill.json"), "--po", str(self.dir / "bad.json"), "--counted", "1"])
+        self.assertEqual(code, 2)
+        self.assertIn("not valid JSON", err.getvalue())
+        with contextlib.redirect_stderr(io.StringIO()) as err:
+            self.assertEqual(cli.main(["check", "--bill", str(self.dir / "none.pdf"), "--po", str(self.dir / "po.json"), "--counted", "1"]), 2)
+        self.assertIn("not found", err.getvalue())
+
+    def test_doctor_names_the_command_that_fixes_what_is_missing(self):
+        with mock.patch.object(cli, "MODELS", self.dir / "nomodels"), mock.patch.dict("os.environ", {"RELAYLOOM_SAM_WEIGHTS": ""}),                 contextlib.redirect_stdout(io.StringIO()) as out:
+            code = cli.main(["doctor"])
+        self.assertEqual(code, 0)
+        self.assertIn("relayloom models pull", out.getvalue())
+
+    def test_version_flag(self):
+        with contextlib.redirect_stdout(io.StringIO()) as out, self.assertRaises(SystemExit):
+            cli.main(["--version"])
+        self.assertIn("relayloom 0.", out.getvalue())
 
 
 if __name__ == "__main__":

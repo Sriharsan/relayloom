@@ -1,0 +1,21 @@
+{
+ "recorded_at": "2026-11-04 11:53 +0530",
+ "photo_sha256": "959950e710927dfe163acdb300206fd2b875997c7189cd84f783c95a8a44c154",
+ "result": {
+  "count": 0,
+  "prompt": "bale",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 33.7,
+  "scores": [],
+  "image_size": [
+   790,
+   522
+  ],
+  "wall_seconds": 41.3,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "r15__bale.jpg",
+  "recorded": false
+ }
+}

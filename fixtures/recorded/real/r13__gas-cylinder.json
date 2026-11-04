@@ -1,0 +1,33 @@
+{
+ "recorded_at": "2026-11-04 11:50 +0530",
+ "photo_sha256": "87d0e5f9fefad7e2c54334e2c6e623121a6d76628a4f4fb1041dc04ef2699525",
+ "result": {
+  "count": 11,
+  "prompt": "gas cylinder",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 32.7,
+  "scores": [
+   0.961,
+   0.916,
+   0.907,
+   0.901,
+   0.842,
+   0.841,
+   0.828,
+   0.47,
+   0.464,
+   0.432,
+   0.406
+  ],
+  "image_size": [
+   795,
+   517
+  ],
+  "wall_seconds": 41.1,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "r13__gas-cylinder.jpg",
+  "recorded": false
+ }
+}
