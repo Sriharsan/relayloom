@@ -172,4 +172,4 @@ Use demo information only. This is a loopback app, not a hosting service; do not
 
 ## License and authorship
 
-MIT. Original work by Sriharsan B S. No customers, pilots, revenue or funding are claimed.
+MIT. Original work by Sriharsan B S.
