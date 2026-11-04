@@ -1,0 +1,21 @@
+{
+ "recorded_at": "2026-11-04 17:02 +0530",
+ "photo_sha256": "0769c3ff2f397acdd99cc9fc2bee305c58bd1c1cc02e3d413729d32607513bf9",
+ "result": {
+  "count": 0,
+  "prompt": "tuna",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 3.1,
+  "scores": [],
+  "image_size": [
+   638,
+   472
+  ],
+  "wall_seconds": 3.2,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r09__tuna@0.3.jpg",
+  "recorded": false
+ }
+}

@@ -318,6 +318,12 @@
    "image": "/img/real/r14.jpg",
    "results": [
     {
+     "word": "sack",
+     "count": 5,
+     "seconds": 0,
+     "overlay": "r14__sack.jpg"
+    },
+    {
      "word": "bale",
      "count": 0,
      "seconds": 35.6,
@@ -342,6 +348,12 @@
    "image": "/img/real/r15.jpg",
    "results": [
     {
+     "word": "white bale",
+     "count": 22,
+     "seconds": 0,
+     "overlay": "r15__white-bale.jpg"
+    },
+    {
      "word": "bale",
      "count": 0,
      "seconds": 33.7,
@@ -365,6 +377,12 @@
    "pid": "P18",
    "image": "/img/real/r16.jpg",
    "results": [
+    {
+     "word": "bag",
+     "count": 16,
+     "seconds": 0,
+     "overlay": "r16__bag.jpg"
+    },
     {
      "word": "bundle",
      "count": 0,

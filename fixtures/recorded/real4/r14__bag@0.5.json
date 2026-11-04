@@ -1,0 +1,21 @@
+{
+ "recorded_at": "2026-11-04 17:01 +0530",
+ "photo_sha256": "8b55ee736865aecf3a42ec5fe69fa0bf99d0073519216c23ae06b7c25ce11f8c",
+ "result": {
+  "count": 0,
+  "prompt": "bag",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 17.8,
+  "scores": [],
+  "image_size": [
+   523,
+   717
+  ],
+  "wall_seconds": 17.8,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r14__bag@0.5.jpg",
+  "recorded": false
+ }
+}

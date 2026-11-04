@@ -45,13 +45,13 @@ export function SectionHead({ index, title, note }: { index: string; title: stri
 }
 
 /** A real delivery photo or SAM 3.1 overlay. Draws a quiet empty state if the file is missing. */
-export function Photo({ src, alt, aspect = "4 / 3" }: { src: string | null; alt: string; aspect?: string }) {
+export function Photo({ src, alt, aspect = "4 / 3", fit = "cover" }: { src: string | null; alt: string; aspect?: string; fit?: "cover" | "contain" }) {
   if (!src) {
     return <div className="rounded-lg border border-dashed border-line bg-raised/60" style={{ aspectRatio: aspect }} role="img" aria-label={alt} />;
   }
   return (
     <div className="overflow-hidden rounded-lg border border-line bg-raised" style={{ aspectRatio: aspect }}>
-      <img src={src} alt={alt} loading="lazy" className="h-full w-full object-cover" />
+      <img src={src} alt={alt} loading="lazy" className={`h-full w-full ${fit === "contain" ? "object-contain" : "object-cover"}`} />
     </div>
   );
 }

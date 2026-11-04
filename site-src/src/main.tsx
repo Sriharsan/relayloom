@@ -10,7 +10,7 @@ import { Developers } from "@/pages/developers";
 
 const TITLES: Record<string, string> = {
   "/": "Relayloom. Accounts payable that checks the goods.",
-  "/proof": "Proof. Relayloom, measured on demo data.",
+  "/proof": "Proof. Relayloom, measured on a demo run.",
   "/demo": "Demo. Replay of a Relayloom run.",
   "/developers": "Developers. Install and run Relayloom.",
 };

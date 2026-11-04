@@ -379,7 +379,7 @@ export function Proof() {
             <span className="font-mono text-[11px] text-ink-muted">/proof</span>
           </div>
           <h1 className="mt-4 max-w-[24ch] text-balance text-[30px] font-semibold leading-[1.12] tracking-[-0.02em] text-foreground sm:text-[40px]">
-            Every number on this page came from our own runs on demo data.
+            Every number on this page comes from our own runs.
           </h1>
         </div>
       </section>

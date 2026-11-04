@@ -1,0 +1,21 @@
+{
+ "recorded_at": "2026-11-04 16:57 +0530",
+ "photo_sha256": "4896f40c4bfcaf71f281b27d87de6524c4ff7dbfc14a18575ab3090131f658bc",
+ "result": {
+  "count": 0,
+  "prompt": "sack",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 1.7,
+  "scores": [],
+  "image_size": [
+   538,
+   812
+  ],
+  "wall_seconds": 1.7,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r18__sack@0.5.jpg",
+  "recorded": false
+ }
+}

@@ -1,6 +1,6 @@
 # Tested fully disconnected
 
-Started 2026-11-03 21:51 +0530, finished 2026-11-03 21:56 +0530. Machine: SRIHARSAN, Windows 11. Demo data only.
+Started 2026-11-03 21:51 +0530, finished 2026-11-03 21:56 +0530. Machine: SRIHARSAN, Windows 11. Demo run.
 
 | Step | Result | Detail |
 | --- | --- | --- |

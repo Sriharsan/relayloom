@@ -20,7 +20,9 @@ const KIND_LABEL: Record<string, string> = {
 function scrollToCite(cite: string) {
   const el = document.getElementById(citeId(cite)) ?? (cite.startsWith("PHOTO:") ? document.getElementById("photo-" + cite.slice(6)) : null);
   if (!el) return;
-  el.scrollIntoView({ block: "center", behavior: "smooth" });
+  const bar = document.querySelector('[aria-label="Guided tour"]');
+  const clear = bar ? bar.getBoundingClientRect().bottom : 120;
+  window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - clear - 24), behavior: "smooth" });
   el.style.outline = "2px solid var(--amber)";
   el.style.outlineOffset = "2px";
   window.setTimeout(() => {
@@ -600,7 +602,10 @@ export function Demo() {
       const el = g.target ? document.getElementById(g.target) : null;
       if (el) {
         el.classList.add("guide-ring");
-        el.scrollIntoView({ block: "center", behavior: "smooth" });
+        // start the whole box just below the sticky header and the guide bar, never underneath them
+        const bar = document.querySelector('[aria-label="Guided tour"]');
+        const clear = bar ? bar.getBoundingClientRect().bottom : 140;
+        window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - clear - 16), behavior: "smooth" });
       }
     }, 140);
     return () => window.clearTimeout(timer);
@@ -640,7 +645,7 @@ export function Demo() {
         <div className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2.5 sm:px-6">
           <span className="pill border-amber/40 bg-amber/10 text-amber-ink">
             <span className="h-1.5 w-1.5 rounded-full bg-amber" aria-hidden="true" />
-            Replay of a recorded run on demo data. Read only.
+            Replay of a recorded demo run.
           </span>
           <RunLabel label={LABEL} />
           <span className="tnum font-mono text-[11px] text-ink-muted">run at {run.ran_at.slice(11, 16)}, {run.ran_at.slice(0, 10)}</span>

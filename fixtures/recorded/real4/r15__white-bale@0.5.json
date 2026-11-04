@@ -1,0 +1,44 @@
+{
+ "recorded_at": "2026-11-04 17:01 +0530",
+ "photo_sha256": "959950e710927dfe163acdb300206fd2b875997c7189cd84f783c95a8a44c154",
+ "result": {
+  "count": 22,
+  "prompt": "white bale",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 1.7,
+  "scores": [
+   0.936,
+   0.931,
+   0.931,
+   0.924,
+   0.918,
+   0.913,
+   0.913,
+   0.91,
+   0.903,
+   0.902,
+   0.892,
+   0.847,
+   0.845,
+   0.821,
+   0.814,
+   0.788,
+   0.788,
+   0.725,
+   0.718,
+   0.549,
+   0.523,
+   0.505
+  ],
+  "image_size": [
+   790,
+   522
+  ],
+  "wall_seconds": 1.9,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r15__white-bale@0.5.jpg",
+  "recorded": false
+ }
+}

@@ -1,6 +1,6 @@
 # Security controls: what each one costs
 
-Every control below was run on the demo data by `python scripts/security_report.py`. A control passes only if it
+Every control below was run in a demo run by `python scripts/security_report.py`. A control passes only if it
 blocks what it must block and lets the good input through. Times are medians on this laptop. Each control runs locally, so
 none costs any money, and none needs the network.
 

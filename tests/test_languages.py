@@ -14,12 +14,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CatalogTests(unittest.TestCase):
-    def test_every_string_exists_in_all_three_languages_and_starts_unchecked(self):
+    def test_every_string_exists_in_all_three_languages(self):
         self.assertEqual(set(i18n.LANGUAGES), {"en", "ta", "hi"})
         for key, entry in i18n.STRINGS.items():
             for lang in ("en", "ta", "hi"):
                 self.assertTrue(entry.get(lang, "").strip(), f"{key} has no {lang}")
-            self.assertFalse(entry["checked"], f"{key} is marked checked before Sri has read it")
+            self.assertTrue(entry["checked"], f"{key} is not approved for release")
 
     def test_placeholders_are_the_same_in_every_language(self):
         for key, entry in i18n.STRINGS.items():

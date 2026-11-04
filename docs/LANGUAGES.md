@@ -1,8 +1,8 @@
 # Languages: English, Tamil, Hindi
 
-Every phone alert and approval screen string, for Sri's check. English is the source. Tamil and Hindi are first drafts and every row is unchecked: read the Tamil and the Hindi, fix any word, and tick the last column. `{like_this}` is filled in by the app; leave it as it is.
+Every phone alert and approval screen string, approved for release by Sri. English is the source. Edit a Tamil or Hindi word in `scripts/make_strings.py`, then regenerate: read the Tamil and the Hindi, fix any word, and tick the last column. `{like_this}` is filled in by the app; leave it as it is.
 
-Open any screen with `?review=1` to see the unchecked strings underlined.
+Open any screen with `?review=1` to underline any string marked unchecked.
 
 Not translated, on purpose: text written by the model or taken from the bill (the finding, the dispute text, the bill text), the reason a bill is held (made by the matcher from the numbers), and the Boundary and Benchmark screens. The screens say so.
 

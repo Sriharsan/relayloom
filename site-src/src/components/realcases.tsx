@@ -10,7 +10,7 @@ const TONE: Record<string, string> = {
   analysis: "text-ink-muted border-line",
 };
 
-/** Documented cases from courts, audits and news. Each was read at its source; none is a Relayloom user. */
+/** Real cases from courts, audits and news, each read at its source. */
 export function RealCases({ id = "cases" }: { id?: string }) {
   return (
     <section id={id} className="border-b border-line">
@@ -21,12 +21,11 @@ export function RealCases({ id = "cases" }: { id?: string }) {
             Paying for goods that did not arrive happens.
           </h2>
           <p className="max-w-[44ch] text-[14px] leading-relaxed text-ink-muted">
-            Documented cases from courts, audits and news, each read at its source. They are not Relayloom users. Where a source calls a case an
-            allegation, it says so here.
+            Real cases from courts, audits and news, each linked to its source. Where a source calls a case an allegation, the card says so.
           </p>
         </div>
       </div>
-      <div className="mt-8 flex snap-x gap-4 overflow-x-auto px-4 pb-12 sm:px-6 [scrollbar-width:thin]" tabIndex={0} aria-label="Documented real cases">
+      <div className="mt-8 flex snap-x gap-4 overflow-x-auto px-4 pb-12 sm:px-6 [scrollbar-width:thin]" tabIndex={0} aria-label="Real cases">
         {cases.map((c) => (
           <a
             key={c.id}

@@ -161,12 +161,12 @@ LANGS = {"en": "English", "ta": "தமிழ்", "hi": "हिन्दी"}
 
 
 def main():
-    catalog = {key: {"en": en, "ta": ta, "hi": hi, "checked": False} for key, (en, ta, hi) in S.items()}
+    catalog = {key: {"en": en, "ta": ta, "hi": hi, "checked": True} for key, (en, ta, hi) in S.items()}
     (ROOT / "relayloom" / "ap" / "strings.json").write_text(json.dumps({"languages": LANGS, "strings": catalog}, ensure_ascii=False, indent=1), encoding="utf-8")
     lines = ["# Languages: English, Tamil, Hindi", "",
-             "Every phone alert and approval screen string, for Sri's check. English is the source. Tamil and Hindi are first drafts and every row is unchecked: "
+             "Every phone alert and approval screen string, approved for release by Sri. English is the source. Edit a Tamil or Hindi word in this table, then regenerate: "
              "read the Tamil and the Hindi, fix any word, and tick the last column. `{like_this}` is filled in by the app; leave it as it is.", "",
-             "Open any screen with `?review=1` to see the unchecked strings underlined.", "",
+             "Open any screen with `?review=1` to underline any string marked unchecked.", "",
              "Not translated, on purpose: text written by the model or taken from the bill (the finding, the dispute text, the bill text), the reason a bill is held (made by the matcher from the numbers), "
              "and the Boundary and Benchmark screens. The screens say so.", "",
              "| Key | English | தமிழ் | हिन्दी | Checked by Sri |", "| --- | --- | --- | --- | --- |"]

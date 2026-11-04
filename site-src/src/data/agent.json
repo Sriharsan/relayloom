@@ -1,46 +1,42 @@
 {
- "photo": "REC-B01-P1.jpg",
- "bill_line": "Coolant can 5 litre, quantity 18",
- "hand_count": 18,
- "recorded_at": "2026-11-03 22:31 +0530",
- "route": "Muse Glimmer 30B Q4_K_M with mmproj, llama.cpp CPU, SAM 3.1 CPU, this laptop",
- "count": null,
- "agreed": false,
- "held": true,
- "agreed_words": [],
+ "photo": "REC-H05-P1.jpg",
+ "bill_line": "Coolant can 5 litre, quantity 24",
+ "hand_count": 24,
+ "recorded_at": "2026-11-04 Kaggle GPU run",
+ "route": "Muse Glimmer 30B Q4_K_M with mmproj on a Kaggle GPU (T4 x2), SAM 3.1",
+ "count": 24,
+ "agreed": true,
+ "held": false,
+ "agreed_words": [
+  "can"
+ ],
  "first_try_count": 0,
- "calls": 6,
+ "calls": 5,
  "tries": [
   {
    "words": "coolant can",
-   "count": 0,
-   "overlay": "REC-B01-P1__coolant-can.jpg",
-   "seconds": 107.0
+   "count": 0
   },
   {
    "words": "can",
-   "count": 18,
-   "overlay": "REC-B01-P1__can.jpg",
-   "seconds": 116.5
+   "count": 24
   },
   {
-   "words": "coolant",
-   "count": 0,
-   "overlay": "REC-B01-P1__coolant.jpg",
-   "seconds": 75.9
+   "words": "container",
+   "count": 0
   }
  ],
  "trace": [
   {
    "step": "propose",
    "tool": "glimmer",
-   "seconds": 390.6,
+   "seconds": 16.1,
    "saw_image": false,
    "output": {
     "words": [
      "coolant can",
      "can",
-     "coolant"
+     "container"
     ]
    }
   },
@@ -49,50 +45,39 @@
    "tool": "sam3.1",
    "words": "coolant can",
    "count": 0,
-   "overlay": "REC-B01-P1__coolant-can.jpg",
-   "seconds": 107.0
+   "overlay": "REC-H05-P1__coolant-can.jpg",
+   "seconds": 0.8
   },
   {
    "step": "sam 2",
    "tool": "sam3.1",
    "words": "can",
-   "count": 18,
-   "overlay": "REC-B01-P1__can.jpg",
-   "seconds": 116.5
-  },
-  {
-   "step": "look",
-   "tool": "glimmer",
-   "seconds": 614.6,
-   "saw_image": true,
-   "output": {
-    "verdict": "good",
-    "note": "All 18 coolant cans are numbered once with no duplicates or misses.",
-    "next_words": []
-   }
+   "count": 24,
+   "overlay": "REC-H05-P1__can.jpg",
+   "seconds": 0.1
   },
   {
    "step": "sam 3",
    "tool": "sam3.1",
-   "words": "coolant",
+   "words": "container",
    "count": 0,
-   "overlay": "REC-B01-P1__coolant.jpg",
-   "seconds": 75.9
+   "overlay": "REC-H05-P1__container.jpg",
+   "seconds": 0.1
   },
   {
    "step": "look",
    "tool": "glimmer",
-   "seconds": 466.2,
+   "seconds": 25.8,
    "saw_image": true,
    "output": {
     "verdict": "good",
-    "note": "All 18 coolant cans are marked with a dot on each unit, matching the billed quantity.",
+    "note": "All 24 cans are individually masked with unique numbers and no overlaps.",
     "next_words": []
    }
   }
  ],
- "seconds": 1850.0,
- "reason": "No two counts from different words agree, so a person looks at the photo.",
+ "seconds": 27.0,
+ "reason": "",
  "first_try_correct": false,
- "agent_correct": null
+ "agent_correct": true
 }

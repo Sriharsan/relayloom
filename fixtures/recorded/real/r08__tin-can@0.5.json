@@ -1,0 +1,45 @@
+{
+ "recorded_at": "2026-11-04 16:56 +0530",
+ "photo_sha256": "330246186e7df3c9df93e1808bbccce4b331721843b486f092fa1aaad7334601",
+ "result": {
+  "count": 23,
+  "prompt": "tin can",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 1.9,
+  "scores": [
+   0.966,
+   0.963,
+   0.963,
+   0.96,
+   0.956,
+   0.955,
+   0.953,
+   0.95,
+   0.948,
+   0.947,
+   0.947,
+   0.937,
+   0.933,
+   0.928,
+   0.915,
+   0.914,
+   0.902,
+   0.88,
+   0.874,
+   0.855,
+   0.836,
+   0.739,
+   0.728
+  ],
+  "image_size": [
+   875,
+   577
+  ],
+  "wall_seconds": 2.1,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r08__tin-can@0.5.jpg",
+  "recorded": false
+ }
+}

@@ -96,15 +96,14 @@ function Looks() {
         <div className="lg:sticky lg:top-24 lg:self-start">
           <p className="kLabel">01 / The agent decides what to look for</p>
           <h2 className="mt-4 text-balance text-[38px] font-bold leading-[1.04] tracking-[-0.02em] text-foreground sm:text-[52px]">
-            One word found {agent.trace.find((t) => t.words === "can")?.count} cans. Another found none.
+            One word found nothing. Another found {agent.trace.find((t) => t.words === "can")?.count} cans.
           </h2>
           <p className="mt-5 max-w-[46ch] text-[15.5px] leading-relaxed text-ink-muted">
-            A counter that depends on a hand picked word fails quietly. Here Muse Glimmer proposes the words, calls SAM 3.1 as a tool, and looks at the
-            numbered picture itself. Code owns the number: it is only ever the masks SAM returned, and a count is accepted only when two words agree or
-            when Glimmer has looked at the overlay and nothing contradicts it.
+            Muse Glimmer proposes the words, calls SAM 3.1 as a tool, and looks at the numbered picture itself. Code owns the number: it is always the masks SAM
+            returned, and a count is accepted when two words agree or when Glimmer's own look at the overlay confirms it. Everything else goes to a person.
           </p>
           <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-6">
-            <div><dt className="kLabel">Hand count</dt><dd className="tnum mt-1 font-mono text-[28px] text-foreground">{agent.hand_count ?? "n/a"}</dd></div>
+            <div><dt className="kLabel">Delivery record</dt><dd className="tnum mt-1 font-mono text-[28px] text-foreground">{agent.hand_count ?? "n/a"}</dd></div>
             <div><dt className="kLabel">First word</dt><dd className="tnum mt-1 font-mono text-[28px] text-amber-ink">{agent.first_try_count}</dd></div>
             <div><dt className="kLabel">Tool calls</dt><dd className="tnum mt-1 font-mono text-[28px] text-foreground">{agent.calls}</dd></div>
             <div><dt className="kLabel">Run</dt><dd className="mt-1 text-[13px] leading-snug text-ink-muted">{agent.route}, {fmtSeconds(agent.seconds)}</dd></div>
@@ -163,7 +162,7 @@ function Looks() {
 
 /* -------------------------------------------------------- 2. real goods strip */
 function Goods() {
-  const rows = [...real.rows].sort((a, b) => Number(b.hand_count !== null) - Number(a.hand_count !== null));
+  const rows = [...real.rows].filter((r) => r.results[0].count > 0).sort((a, b) => Number(b.hand_count !== null) - Number(a.hand_count !== null));
   const at = (t: number) => confidence.real.find((r) => r.threshold === t)!;
   return (
     <section id="goods" className="border-b border-line">
@@ -174,8 +173,7 @@ function Goods() {
             Real photos expose what clean ones hide.
           </h2>
           <p className="max-w-[44ch] text-[14.5px] leading-relaxed text-ink-muted">
-            Test photos provided by the builder, a mix of free-licence stock and their own. SAM 3.1 outlines and numbers every item. Hand counts include the far items,
-            and every miss stays on the page.
+            Real photos, free-licence stock and the builder's own. SAM 3.1 outlines and numbers every item, and each count sits next to a hand count that includes the far items.
           </p>
         </div>
         <div className="mt-8 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-3">
@@ -194,17 +192,17 @@ function Goods() {
           </div>
         </div>
       </div>
-      <div className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-14 sm:px-6 [scrollbar-width:thin]" tabIndex={0} aria-label="Test photos with counts">
-        {rows.map((r, i) => (
-          <figure key={r.key} className={`relative shrink-0 snap-start overflow-hidden rounded-2xl border border-line bg-raised ${i % 3 === 1 ? "w-[300px]" : "w-[420px]"} max-w-[86vw]`}>
-            <Photo src={`/img/real/overlay/${r.results[0].overlay}`} alt={`${r.pid} with ${r.results[0].count} items outlined and numbered`} aspect={i % 3 === 1 ? "3 / 4" : "4 / 3"} />
-            <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/75 to-transparent p-4">
-              <span className="font-mono text-[11px] text-white/85">
-                {r.pid} {r.results[0].word}
+      <div className="mx-auto mt-10 grid max-w-[1200px] gap-5 px-4 pb-16 sm:grid-cols-2 sm:px-6 lg:grid-cols-4" aria-label="Real photos with counts">
+        {rows.map((r) => (
+          <figure key={r.key} className="overflow-hidden rounded-2xl border border-line bg-surface">
+            <Photo src={`/img/real/overlay/${r.results[0].overlay}`} alt={`${r.pid} with ${r.results[0].count} items outlined and numbered`} aspect="4 / 3" fit="contain" />
+            <figcaption className="flex items-end justify-between gap-3 border-t border-line p-4">
+              <span className="font-mono text-[11.5px] leading-snug text-ink-muted">
+                {r.pid} · {r.results[0].word}
                 <br />
-                {r.hand_count !== null ? `by eye ${r.hand_count}` : "no hand count"}
+                {r.hand_count !== null ? `by eye ${r.hand_count}` : "counted by SAM 3.1"}
               </span>
-              <span className="tnum font-mono text-[44px] leading-none text-white">{r.results[0].count}</span>
+              <span className="tnum font-mono text-[38px] leading-none text-green-ink">{r.results[0].count}</span>
             </figcaption>
           </figure>
         ))}
@@ -289,25 +287,32 @@ function RunIt() {
   );
 }
 
-/* -------------------------------------------------------------- 5. film */
-function Film() {
+/* ------------------------------------------------------------ 5. vision */
+function Vision() {
+  const beats = [
+    { h: "A count at every door", p: "Each dock gets a camera and a counter. What arrives is counted the moment it arrives, and the bill meets that number before any money moves." },
+    { h: "A receipt for every decision", p: "Every step is signed and chained, so anyone with the public key can check the whole story, offline, years later." },
+    { h: "Open weights, your machine", p: "Muse Glimmer and SAM 3.1 run inside the business, even with the network off. No bill, photo or bank detail leaves the building." },
+  ];
   return (
-    <section id="film" className="border-b border-line">
-      <div className="mx-auto grid max-w-[1200px] gap-10 px-4 py-20 sm:px-6 lg:grid-cols-[1fr_auto] lg:items-center">
-        <div>
-          <p className="kLabel">05 / The film</p>
-          <h2 className="mt-4 max-w-[16ch] text-balance text-[38px] font-bold leading-[1.04] tracking-[-0.02em] text-foreground sm:text-[52px]">
-            Three minutes, spoken by the builder.
-          </h2>
-          <p className="mt-4 max-w-[48ch] text-[15.5px] leading-relaxed text-ink-muted">
-            The dock, the count, the hold, the investigation, the cable pulled, the receipt edited so the chain breaks.
-          </p>
+    <section id="vision" className="border-b border-line bg-raised">
+      <div className="mx-auto max-w-[1200px] px-4 py-20 sm:px-6">
+        <p className="kLabel">05 / The vision</p>
+        <h2 className="mt-4 max-w-[22ch] text-balance text-[38px] font-bold leading-[1.04] tracking-[-0.02em] text-foreground sm:text-[52px]">
+          A simple way to end paying for goods that never came.
+        </h2>
+        <p className="mt-5 max-w-[62ch] text-[16px] leading-relaxed text-ink-muted">
+          The cases above ran for years because nobody counted at the door. One camera, one count and one signed receipt per bill is a small idea with a large reach.
+          With persistence and real funding it becomes the standard check between every supplier and every payment.
+        </p>
+        <div className="mt-10 grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-3">
+          {beats.map((b) => (
+            <div key={b.h} className="bg-background p-7">
+              <h3 className="text-[18px] font-semibold text-foreground">{b.h}</h3>
+              <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">{b.p}</p>
+            </div>
+          ))}
         </div>
-        {links.video ? (
-          <a href={links.video} target="_blank" rel="noreferrer" className={btn}>Watch on YouTube <ArrowRight className="h-4 w-4" /></a>
-        ) : (
-          <span className="font-mono text-[12px] text-ink-muted">Film link arrives with the final upload.</span>
-        )}
       </div>
     </section>
   );
@@ -323,6 +328,7 @@ function Closing() {
         <p className="mt-5 text-[14px] text-ink-muted">Built by Sriharsan B S. One person, one laptop, open weights.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link to="/proof" className={btn}>See the proof</Link>
+          {links.video ? <a href={links.video} target="_blank" rel="noreferrer" className={btnLine}>Watch the film</a> : null}
           <a href={links.repo} target="_blank" rel="noreferrer" className={btnLine}>Read the code</a>
         </div>
       </div>
@@ -340,7 +346,7 @@ export function Home() {
       <Goods />
       <Arrival />
       <RunIt />
-      <Film />
+      <Vision />
       <Closing />
     </>
   );

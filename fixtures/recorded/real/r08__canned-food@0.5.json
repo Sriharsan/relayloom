@@ -1,0 +1,45 @@
+{
+ "recorded_at": "2026-11-04 16:56 +0530",
+ "photo_sha256": "330246186e7df3c9df93e1808bbccce4b331721843b486f092fa1aaad7334601",
+ "result": {
+  "count": 23,
+  "prompt": "canned food",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 2.0,
+  "scores": [
+   0.967,
+   0.966,
+   0.96,
+   0.958,
+   0.954,
+   0.953,
+   0.952,
+   0.948,
+   0.946,
+   0.945,
+   0.943,
+   0.936,
+   0.933,
+   0.925,
+   0.918,
+   0.903,
+   0.899,
+   0.868,
+   0.866,
+   0.853,
+   0.826,
+   0.754,
+   0.731
+  ],
+  "image_size": [
+   875,
+   577
+  ],
+  "wall_seconds": 2.3,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r08__canned-food@0.5.jpg",
+  "recorded": false
+ }
+}

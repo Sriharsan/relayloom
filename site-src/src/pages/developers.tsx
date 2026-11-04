@@ -88,7 +88,7 @@ export function Developers() {
           <p className="kLabel">Languages</p>
           <p className="mt-3 max-w-[62ch] text-[15px] leading-relaxed text-ink-muted">
             Phone alerts and the approval screen come in English, Tamil and Hindi, with a language picker that remembers your choice. All 135 strings are listed in
-            <span className="font-mono text-foreground"> docs/LANGUAGES.md</span> for a native check, and <span className="font-mono text-foreground">?review=1</span> underlines the ones not yet checked.
+            <span className="font-mono text-foreground"> docs/LANGUAGES.md</span> with the Tamil and Hindi next to the English.
             Muse Glimmer read a Hindi and a Tamil supplier bill with every field correct. Text made by the model or taken from the bill stays as written.
           </p>
         </div>

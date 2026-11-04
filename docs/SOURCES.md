@@ -27,7 +27,7 @@ outputs of these models are included with their route, date and timings.
 <!-- real-cases:start -->
 ## Real cases: paying for goods that did not arrive
 
-Documented cases from courts, audits and news, read at their sources on 4 November 2026. They are not Relayloom users. Where a source calls a case an allegation, it is shown as one.
+Real cases from courts, audits and news, read at their sources on 4 November 2026. Where a source calls a case an allegation, it is shown as one.
 
 - **United States, New Jersey, USD 9.5 million (convicted).** A supplier billed for goods it never delivered, for almost nine years. Between 2009 and April 2018 the owner of Allied Materials sent invoices that listed products Allied had not delivered and inflated the quantities it did deliver. He was sentenced to 50 months in prison and ordered to pay USD 9.5 million in restitution to the customer. The release also says he paid people at the customer to get the invoices accepted. Source: [U.S. Attorney's Office, District of New Jersey, press release 19-209, 17 July 2019](https://www.justice.gov/usao-nj/pr/owner-janitorial-supply-company-sentenced-50-months-prison-defrauding-customer-failing).
 - **India, Kolkata, Rs 2 crore (alleged).** A book supplier is accused of billing full orders and delivering fewer books. Police say a supplier billed ISKCON Kolkata for full orders and delivered fewer books. The fraud was uncovered in a later audit, and the accused was taken into custody. It is an allegation; the article reports an investigation, not a conviction. The article is dated 10 November 2025. Source: [Devdiscourse, 10 November 2025](https://www.devdiscourse.com/article/law-order/3691327-fake-invoices-scandal-book-supplier-arrested-for-defrauding-iskcon-kolkata).

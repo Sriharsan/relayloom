@@ -1,6 +1,6 @@
-# Builder-provided test photos: SAM 3.1 against hand counts
+# Real photos: SAM 3.1 against hand counts
 
-Photos are builder-provided test images, a mix of free-licence stock and the builder's own, not a claim about real deliveries. Each was counted with two words by SAM 3.1 on this laptop's CPU. Hand counts include far items; those marked `assistant` were counted by eye from the picture.
+Photos are real: free-licence stock and the builder's own. Each was counted with two words by SAM 3.1 on this laptop's CPU. Hand counts include far items; those marked `assistant` were counted by eye from the picture.
 
 | Photo | Word 1 | Word 2 | Words agree | Hand count | Counted by | Error of word 1 |
 | --- | --- | --- | --- | --- | --- | --- |

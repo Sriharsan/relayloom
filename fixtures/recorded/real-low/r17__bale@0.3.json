@@ -1,0 +1,21 @@
+{
+ "recorded_at": "2026-11-04 16:58 +0530",
+ "photo_sha256": "649410df8565fa43bafc7b31532f880a8b50efb2ed4ee7381b7e2f5a76a46dcb",
+ "result": {
+  "count": 0,
+  "prompt": "bale",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 34.0,
+  "scores": [],
+  "image_size": [
+   883,
+   807
+  ],
+  "wall_seconds": 39.6,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r17__bale@0.3.jpg",
+  "recorded": false
+ }
+}

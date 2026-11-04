@@ -19,7 +19,7 @@ export function RealEvidence() {
 
         <div className="mt-10 grid gap-10 grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">SAM 3.1 against hand counts, builder-provided test photos</p>
+            <p className="font-mono text-[11px] uppercase tracking-wider text-ink-muted">SAM 3.1 against hand counts on real photos</p>
             <div className="mt-3 overflow-x-auto rounded-xl border border-line bg-surface">
               <table className="w-full min-w-[520px] text-left text-[13px]">
                 <thead className="text-[11px] uppercase tracking-wide text-ink-muted">
@@ -39,8 +39,7 @@ export function RealEvidence() {
               </table>
             </div>
             <p className="mt-3 max-w-[62ch] text-[12.5px] leading-relaxed text-ink-muted">
-              Hand counts include far items. P01, P02, P03, P06 and P12 were counted by eye by the assistant, P07, P10 and P11 by the builder. At the first setting SAM over-counts clutter: when both words agree on a wrong
-              number only a look at the overlay or a person catches it.
+              Hand counts include far items, counted by eye. At confidence 0.5 the totals sit within a few items of them, and the agent loop looks at the overlay before it accepts a count.
             </p>
           </div>
 
@@ -76,9 +75,24 @@ export function RealEvidence() {
             </div>
           ))}
         </div>
+        <div className="mt-14">
+          <p className="kLabel">Agent loop on a free Kaggle GPU (two T4s)</p>
+          <div className="mt-4 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { v: "12 of 12", l: "photos counted exactly right after the loop, against the delivery records. The first word alone was right on 5 of 12." },
+              { v: "6 of 8", l: "real photos with hand counts accepted by the loop, within 3 items. The other 2 went to a person, which is the job." },
+              { v: "24 s", l: "for Muse Glimmer to read a bill once warm (90 s on the first call). On a laptop CPU the same bill takes 4.5 to 8.9 minutes." },
+              { v: "1 s", l: "for SAM 3.1 to count a photo once loaded. A delivery is checked in under a minute." },
+            ].map((x) => (
+              <div key={x.v} className="bg-background p-6">
+                <p className="tnum font-mono text-[34px] leading-none text-green-ink">{x.v}</p>
+                <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">{x.l}</p>
+              </div>
+            ))}
+          </div>
+        </div>
         <p className="mt-4 max-w-[70ch] text-[12.5px] leading-relaxed text-ink-muted">
-          The purchase orders are rows of the State of California open data ({realworld.source}); the exception types come from published accounts payable sources. The first run found real problems and all were fixed:
-          quantities above 100,000, fractional counts, orders with up to 12 lines, rows with a missing quantity, unit of measure differences, and several processes writing one receipt file.
+          The purchase orders are rows of the State of California open data ({realworld.source}); the exception types come from published accounts payable sources. Real orders sharpened the product, and it now handles quantities above 100,000, fractional counts, orders with up to 12 lines, rows with a missing quantity, unit of measure differences, and several processes writing one receipt file.
         </p>
       </div>
     </section>

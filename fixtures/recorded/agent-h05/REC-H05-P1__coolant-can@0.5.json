@@ -1,0 +1,21 @@
+{
+ "recorded_at": "2026-11-04 16:58 +0530",
+ "photo_sha256": "9790cdf32e2d4de54d98b0abe462f17e98d18201e97a3513692ca021ec9b8423",
+ "result": {
+  "count": 0,
+  "prompt": "coolant can",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 36.1,
+  "scores": [],
+  "image_size": [
+   632,
+   562
+  ],
+  "wall_seconds": 42.9,
+  "route": "SAM 3.1 CPU",
+  "overlay": "REC-H05-P1__coolant-can@0.5.jpg",
+  "recorded": false
+ }
+}
