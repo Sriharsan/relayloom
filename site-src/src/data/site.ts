@@ -12,6 +12,7 @@ import boundaryData from "./boundary.json";
 import offlineData from "./offline.json";
 import agentData from "./agent.json";
 import realData from "./real.json";
+import casesData from "./cases.json";
 import confidenceData from "./confidence.json";
 import videoData from "./video.json";
 
@@ -422,3 +423,5 @@ export const confidence = confidenceData as unknown as {
   real: { threshold: number; total_abs_error: number; exact: number; within_10_percent: number; photos: number }[];
   rendered: { threshold: number; total_abs_error: number; exact: number; within_10_percent: number; photos: number }[];
 };
+
+export const cases = (casesData as unknown as { cases: { id: string; kind: string; status: string; place: string; figure: string; short: string; title: string; text: string; source: string; date: string; url: string }[] }).cases;

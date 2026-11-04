@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "@/lib/router";
 import { agent, benchmark, confidence, fmtSeconds, glimmerSummary, links, offlineRun, real, samSummary, video } from "@/data/site";
 import { CopyBlock, Photo } from "@/components/bits";
+import { RealCases } from "@/components/realcases";
 
 
 const btn =
@@ -334,6 +335,7 @@ export function Home() {
     <>
       <Hero />
       <Strip />
+      <RealCases />
       <Looks />
       <Goods />
       <Arrival />

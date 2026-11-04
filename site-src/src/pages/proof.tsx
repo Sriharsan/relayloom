@@ -6,6 +6,7 @@ import {
 import { Pill, RunLabel, SectionHead } from "@/components/bits";
 import { verifyChain, type Verdict } from "@/lib/receipts";
 import { AcrossSuppliers, Boundary } from "@/pages/extras";
+import { RealCases } from "@/components/realcases";
 
 const LABEL = "Recorded run";
 
@@ -408,6 +409,7 @@ export function Proof() {
           </ul>
         </div>
       </section>
+      <RealCases id="real-cases" />
       <Boundary />
       <AcrossSuppliers />
     </div>

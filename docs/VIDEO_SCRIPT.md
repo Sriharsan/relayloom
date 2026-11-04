@@ -16,9 +16,9 @@ The captioned video runs 2 minutes 54 seconds. Every number comes from `docs/RES
 
 | Scene | Time | On screen | Say |
 | --- | --- | --- | --- |
-| Hook | 0:01 to 0:06 | Home, the hero | "The paperwork says fifty. The dock got forty-six." |
-| Promise | 0:06 to 0:23 | Home, the hero | "I'm Sriharsan. Relayloom is autonomous accounts payable that checks the goods, not just the paperwork. Meta's Muse Glimmer reads the bill. Meta's SAM 3.1 counts what actually arrived. Both run on this laptop." |
-| Why it matters | 0:23 to 0:41 | Who we are, why we matter, why you need us, then the three sources | "Paying for goods that never arrived is an improper payment in U.S. law, and auditors keep finding invoices approved with no proof of receipt. Matching paperwork only proves the documents agree with each other." |
+| Two real cases | 0:00 to 0:20 | Home, the Real cases strip, the New Jersey card then the ISKCON card, each with its source line | "A supplier in New Jersey billed one customer for goods it never delivered, and inflated what it did deliver, for almost nine years. The court ordered nine and a half million dollars back. In Kolkata, police say a supplier billed ISKCON for full orders and delivered fewer books. Two crore rupees, found in an audit. That one is an allegation. These are documented cases, not our users." |
+| Hook | 0:20 to 0:25 | Home, the hero | "The paperwork says thirty. The photo counts twenty-six." |
+| Promise | 0:25 to 0:41 | Home, the hero | "I'm Sriharsan. Relayloom is autonomous accounts payable that checks the goods, not just the paperwork. Meta's Muse Glimmer reads the bill. Meta's SAM 3.1 counts what arrived. Both run on this laptop." |
 | A batch | 0:41 to 0:52 | Demo, Today | "Six bills ran by themselves. Green means entered and checked, with no person involved. Amber means someone decides." |
 | The gap | 0:52 to 1:05 | Demo, the short delivery | "The bill says fifty cartons. SAM 3.1 counted the dock photos: twenty-eight and eighteen. A repeated photo is counted once. That is forty-six." |
 | The cause | 1:05 to 1:15 | Demo, likely cause | "The Investigator names the likely cause, who is probably responsible, and how sure the records let it be." |
@@ -40,3 +40,6 @@ Notes for recording:
 - Findings are written by code from the evidence, with every citation checked.
 - Real timings: on this laptop's CPU Muse Glimmer reads a bill in 4 min 33 s to 8 min 51 s and SAM 3.1 counts a photo in about 41 s. Bills run as a
   background batch.
+- The opening names two documented cases. Read the sources on screen: the New Jersey case is a sentencing announced by the U.S. Attorney's Office on 17 July 2019 (50 months, USD 9.5 million restitution); the ISKCON case is a police allegation reported on 10 November 2025 and is not a conviction. Say "allegation" for it. Both are documented cases, not Relayloom users.
+- The hero now shows a real photo of a van full of boxes with a sample bill of thirty and SAM 3.1 counting twenty-six; by eye the count is twenty-five. Say "a sample bill".
+- The picture-only video was recorded before this opening. Either speak over a fresh recording (`python scripts/record_demo_video.py`) or record the screen live from https://relayloom.vercel.app and start on the Real cases strip.
