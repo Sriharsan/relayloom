@@ -15,7 +15,7 @@ Northgate Components, with fictional suppliers and demo records only.
 ## Install the command line
 
 ```sh
-python -m pip install git+https://github.com/Sriharsan/relayloom.git     # a PyPI release of the same package follows
+python -m pip install relayloom                                         # from PyPI: https://pypi.org/project/relayloom/
 relayloom doctor                                                         # what is ready on this machine, and the command that fixes the rest
 relayloom check --bill-json bill.json --po po.json --counted 46          # no models needed: HELD or clear, with signed receipts
 relayloom check --bill bill.pdf --photos dock/ --po po.json --agent      # Muse Glimmer proposes the words, SAM 3.1 counts, Glimmer looks at the overlay
