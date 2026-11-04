@@ -34,3 +34,7 @@ Thumbs.db
 
 # Recorded demo video (large, uploaded to a video host)
 docs/video/
+
+*.egg-info/
+dist/
+build/
