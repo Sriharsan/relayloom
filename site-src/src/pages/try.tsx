@@ -73,12 +73,16 @@ export function Try() {
               <button type="button" onClick={() => load(blankDelivery())} className="h-10 rounded-full border border-line px-4 text-[13px] text-ink-muted transition-colors duration-150 hover:text-foreground">Start a new case</button>
             </div>
           </div>
-          <div className="flex items-center gap-4 rounded-2xl border border-line bg-surface p-4">
-            <Qr text={SITE} size={116} />
-            <div className="max-w-[18ch]">
-              <p className="text-[14px] font-semibold text-foreground">Open it on your phone</p>
-              <p className="mt-1 text-[12.5px] leading-snug text-ink-muted">Scan, then use the camera for the evidence photo.</p>
+          <div className="rounded-2xl border border-line bg-surface p-4">
+            <div className="flex items-center gap-4">
+              <Qr text={SITE} size={116} />
+              <div className="max-w-[18ch]">
+                <p className="text-[14px] font-semibold text-foreground">Open it on your phone</p>
+                <p className="mt-1 text-[12.5px] leading-snug text-ink-muted">Scan, then use the camera for the evidence photo.</p>
+              </div>
             </div>
+            <p className="mt-4 text-[12.5px] text-ink-muted">Or on your own machine:</p>
+            <div className="mt-1.5"><CopyBlock command="pip install relayloom" /></div>
           </div>
         </div>
       </section>
