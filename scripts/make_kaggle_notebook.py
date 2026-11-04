@@ -20,10 +20,16 @@ INSTALL = """!pip -q install ultralytics huggingface_hub segno cryptography PyMu
 !rm -rf relayloom && git clone -q https://github.com/Sriharsan/relayloom.git && cd relayloom && git log --format='%h %an %s' -1"""
 
 LLAMA = """# llama.cpp prebuilt for Ubuntu with CUDA 12.8 (release b12098), so nothing is compiled
+import glob, os, tarfile, urllib.request
 TAG = 'b12098'
 BASE = f'https://github.com/ggml-org/llama.cpp/releases/download/{TAG}/'
-!mkdir -p /kaggle/working/llama && cd /kaggle/working/llama && wget -q {BASE}llama-{TAG}-bin-ubuntu-cuda-12.8-x64.tar.gz {BASE}cudart-llama-{TAG}-bin-ubuntu-cuda-12.8-x64.tar.gz && for f in *.tar.gz; do tar xzf $f; done
-!find /kaggle/working/llama -name llama-server | head -2"""
+os.makedirs('/kaggle/working/llama', exist_ok=True)
+for name in (f'llama-{TAG}-bin-ubuntu-cuda-12.8-x64.tar.gz', f'cudart-llama-{TAG}-bin-ubuntu-cuda-12.8-x64.tar.gz'):
+    path = '/kaggle/working/llama/' + name
+    urllib.request.urlretrieve(BASE + name, path)
+    print(name, os.path.getsize(path), 'bytes')
+    tarfile.open(path).extractall('/kaggle/working/llama')
+print(glob.glob('/kaggle/working/llama/**/llama-server*', recursive=True)[:5])"""
 
 MODELS = """import os
 from kaggle_secrets import UserSecretsClient
@@ -37,7 +43,9 @@ print(sorted(os.listdir('/kaggle/temp/models')))"""
 
 SERVER = """import glob, subprocess, time, urllib.request
 binary = glob.glob('/kaggle/working/llama/**/llama-server', recursive=True)[0]
-os.environ['LD_LIBRARY_PATH'] = os.path.dirname(binary) + ':' + os.environ.get('LD_LIBRARY_PATH', '')
+libdirs = sorted({os.path.dirname(f) for f in glob.glob('/kaggle/working/llama/**/*.so*', recursive=True)})
+os.environ['LD_LIBRARY_PATH'] = ':'.join(libdirs) + ':' + os.environ.get('LD_LIBRARY_PATH', '')
+print('library folders:', libdirs)
 server = subprocess.Popen([binary, '-m', '/kaggle/temp/models/Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf',
     '--mmproj', '/kaggle/temp/models/mmproj-Muse-Glimmer-30B-Q4_K_M.gguf', '--host', '127.0.0.1', '--port', '8084', '--jinja', '-c', '8192', '-np', '1',
     '-ngl', '99', '--split-mode', 'layer', '--reasoning-budget', '1024', '--chat-template-kwargs', '{"reasoning_strength":"low"}'],
@@ -50,9 +58,14 @@ for _ in range(120):
     except Exception:
         time.sleep(5)
 print('Glimmer up after', round(time.time() - started), 's')
-print(open('/kaggle/working/llama.log').read()[-900:])"""
+log = open('/kaggle/working/llama.log').read()
+print([l for l in log.splitlines() if any(k in l.lower() for k in ('cuda', 'offload', 'gpu', 'device', 'backend'))][:15])
+used = sum(int(x) for x in os.popen('nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits').read().split())
+print('GPU memory used (MiB):', used)
+assert used > 8000, 'Glimmer is not running on the GPU, stopping before any timing is recorded'"""
 
 SETUP = """import json, sys, time, pathlib
+print(os.popen('nvidia-smi --query-gpu=memory.used --format=csv').read())
 os.chdir('/kaggle/working/relayloom'); sys.path.insert(0, '.')
 from relayloom.ap.models import GlimmerClient, SamCounter
 from relayloom.ap.lookagent import LookAgent
@@ -71,7 +84,7 @@ truth = {p['id']: p for e in photos['receiving_events'] for p in e['photos']}
 agent = LookAgent(glimmer, sam)
 rows = []
 for pid in sorted(truth)[:12]:
-    path = pathlib.Path('fixtures/photos') / truth[pid]['file']
+    path = pathlib.Path('fixtures') / truth[pid]['file']
     event = next(e for e in photos['receiving_events'] if any(p['id'] == pid for p in e['photos']))
     item = photos['items'][event['item_code']]
     found = agent.look(path, item['name'], pid)

@@ -1,0 +1,82 @@
+{
+ "r01": {
+  "words": [
+   "cardboard box",
+   "box"
+  ],
+  "size": [
+   803,
+   532
+  ]
+ },
+ "r02": {
+  "words": [
+   "box",
+   "lidded box"
+  ],
+  "size": [
+   787,
+   575
+  ]
+ },
+ "r03": {
+  "words": [
+   "cardboard box",
+   "box"
+  ],
+  "size": [
+   1000,
+   662
+  ]
+ },
+ "r04": {
+  "words": [
+   "cardboard box",
+   "box"
+  ],
+  "size": [
+   746,
+   576
+  ]
+ },
+ "r05": {
+  "words": [
+   "can",
+   "tin"
+  ],
+  "size": [
+   867,
+   573
+  ]
+ },
+ "r06": {
+  "words": [
+   "sack",
+   "bag"
+  ],
+  "size": [
+   777,
+   575
+  ]
+ },
+ "r07": {
+  "words": [
+   "sack",
+   "bag"
+  ],
+  "size": [
+   867,
+   577
+  ]
+ },
+ "r08": {
+  "words": [
+   "can",
+   "tin"
+  ],
+  "size": [
+   875,
+   577
+  ]
+ }
+}
