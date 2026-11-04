@@ -10,7 +10,8 @@
 @custom-variant light (&:is(.light *));
 
 @theme inline {
-  --font-sans: Candara, "Nunito Sans", Calibri, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: Inter, "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-display: Candara, "Nunito Sans", Calibri, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
   --color-background: var(--background);
   --color-surface: var(--surface);
@@ -73,6 +74,7 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
+  h1, h2, h3, .font-display { font-family: var(--font-display); }
   ::selection { background: color-mix(in oklab, var(--amber) 30%, transparent); color: var(--foreground); }
   :focus-visible { outline: 2px solid var(--foreground); outline-offset: 2px; border-radius: 2px; }
   button, a { touch-action: manipulation; }

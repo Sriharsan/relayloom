@@ -16,19 +16,19 @@ CELLS = [
              "!rm -rf relayloom && git clone -q https://github.com/Sriharsan/relayloom.git && cd relayloom && git log --format='%h %an %s' -1"),
     ("code", "# Build llama.cpp with CUDA for the Kaggle T4 (architecture 75). About ten minutes, once.\n"
              "!git clone -q --depth 1 https://github.com/ggml-org/llama.cpp.git\n"
-             "!cd llama.cpp && cmake -B build -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES=75 -DLLAMA_CURL=OFF -DCMAKE_BUILD_TYPE=Release > /dev/null && cmake --build build --target llama-server -j 4 2>&1 | tail -2"),
+             "!cd llama.cpp && cmake -B build -DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES=75 -DCUDAToolkit_ROOT=/usr/local/cuda -DCMAKE_LIBRARY_PATH=/usr/local/cuda/lib64/stubs -DLLAMA_CURL=OFF -DCMAKE_BUILD_TYPE=Release 2>&1 | tail -5 && cmake --build build --target llama-server -j 4 2>&1 | tail -3"),
     ("code", "import os\n"
              "from kaggle_secrets import UserSecretsClient\n"
              "os.environ['HF_TOKEN'] = UserSecretsClient().get_secret('HF_TOKEN')  # your own token, from Kaggle secrets; never printed\n"
              "from huggingface_hub import hf_hub_download\n"
-             "os.makedirs('/kaggle/working/models', exist_ok=True)\n"
-             "hf_hub_download('facebook/sam3.1', 'sam3.1_multiplex.pt', local_dir='/kaggle/working/models', token=os.environ['HF_TOKEN'])\n"
+             "os.makedirs('/kaggle/temp/models', exist_ok=True)\n"
+             "hf_hub_download('facebook/sam3.1', 'sam3.1_multiplex.pt', local_dir='/kaggle/temp/models', token=os.environ['HF_TOKEN'])\n"
              "for name in ('Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf', 'mmproj-Muse-Glimmer-30B-Q4_K_M.gguf'):\n"
-             "    hf_hub_download('meta-models/Muse-Glimmer-30B-GGUF', name, local_dir='/kaggle/working/models', token=os.environ['HF_TOKEN'])\n"
-             "print(sorted(os.listdir('/kaggle/working/models')))"),
+             "    hf_hub_download('meta-models/Muse-Glimmer-30B-GGUF', name, local_dir='/kaggle/temp/models', token=os.environ['HF_TOKEN'])\n"
+             "print(sorted(os.listdir('/kaggle/temp/models')))"),
     ("code", "import subprocess, time, urllib.request\n"
-             "server = subprocess.Popen(['/kaggle/working/llama.cpp/build/bin/llama-server', '-m', '/kaggle/working/models/Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf',\n"
-             "    '--mmproj', '/kaggle/working/models/mmproj-Muse-Glimmer-30B-Q4_K_M.gguf', '--host', '127.0.0.1', '--port', '8084', '--jinja', '-c', '8192', '-np', '1',\n"
+             "server = subprocess.Popen(['/kaggle/working/llama.cpp/build/bin/llama-server', '-m', '/kaggle/temp/models/Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf',\n"
+             "    '--mmproj', '/kaggle/temp/models/mmproj-Muse-Glimmer-30B-Q4_K_M.gguf', '--host', '127.0.0.1', '--port', '8084', '--jinja', '-c', '8192', '-np', '1',\n"
              "    '-ngl', '99', '--split-mode', 'layer', '--reasoning-budget', '1024', '--chat-template-kwargs', '{\"reasoning_strength\":\"low\"}'],\n"
              "    stdout=open('/kaggle/working/llama.log', 'w'), stderr=subprocess.STDOUT)\n"
              "for _ in range(180):\n"
@@ -38,12 +38,12 @@ CELLS = [
              "print('Glimmer is up on both GPUs')"),
     ("code", "import json, sys, time\n"
              "os.chdir('/kaggle/working/relayloom'); sys.path.insert(0, '.')\n"
-             "os.environ['RELAYLOOM_MODELS'] = '/kaggle/working/models'\n"
+             "os.environ['RELAYLOOM_MODELS'] = '/kaggle/temp/models'\n"
              "from relayloom.ap.models import GlimmerClient, SamCounter\n"
              "from relayloom.ap.lookagent import LookAgent\n"
              "ROUTE = 'Muse Glimmer 30B Q4_K_M and SAM 3.1, Kaggle GPU T4 x2'\n"
              "glimmer = GlimmerClient('http://127.0.0.1:8084/v1', ROUTE, timeout=900)\n"
-             "sam = SamCounter(sys.executable, '/kaggle/working/models/sam3.1_multiplex.pt', ROUTE, live=True, cache=__import__('pathlib').Path('/kaggle/working/gpu/sam'))\n"
+             "sam = SamCounter(sys.executable, '/kaggle/temp/models/sam3.1_multiplex.pt', ROUTE, live=True, cache=__import__('pathlib').Path('/kaggle/working/gpu/sam'))\n"
              "os.makedirs('/kaggle/working/gpu', exist_ok=True)\n"
              "# 1. Glimmer reads one bill, timed\n"
              "from relayloom.ap.masking import mask\n"
