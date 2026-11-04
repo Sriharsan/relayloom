@@ -47,7 +47,8 @@ export function FlowStory() {
   );
 }
 
-const inr = (n: number) => (n >= 10000000 ? `${(n / 10000000).toFixed(2)} crore` : n >= 100000 ? `${(n / 100000).toFixed(2)} lakh` : n.toLocaleString("en-IN"));
+const grouped = (n: number) => n.toLocaleString("en-IN");
+const inWords = (n: number) => (n >= 10000000 ? `about ${(n / 10000000).toFixed(1)} crore rupees` : n >= 100000 ? `about ${(n / 100000).toFixed(1)} lakh rupees` : `${grouped(n)} rupees`);
 
 /** Small gaps, repeated. An illustration with the vendor's own numbers, not a measured figure. */
 export function SmallGaps() {
@@ -78,15 +79,17 @@ export function SmallGaps() {
               <div className="mt-3 h-3 rounded bg-amber/80" style={{ width: "75%" }} />
             </div>
           </div>
-          <label className="mt-8 block">
-            <span className="flex items-baseline justify-between text-[14px] text-ink-muted"><span>Deliveries with this gap, a day</span><span className="tnum font-mono text-[18px] text-foreground">{per.toLocaleString("en-IN")}</span></span>
-            <input type="range" min="100" max="100000" step="100" value={per} onChange={(e) => setPer(Number(e.target.value))} className="mt-3 w-full accent-[var(--green)]" aria-label="Deliveries with this gap, a day" />
+          <p className="mt-4 text-[14px] text-ink-muted">Rs 25 of every Rs 100 paid for goods that never came.</p>
+          <label className="mt-6 block">
+            <span className="flex items-baseline justify-between text-[14px] text-ink-muted"><span>Deliveries with this gap, every day</span><span className="tnum font-mono text-[18px] text-foreground">{grouped(per)}</span></span>
+            <input type="range" min="100" max="10000" step="100" value={per} onChange={(e) => setPer(Number(e.target.value))} className="mt-3 w-full accent-[var(--green)]" aria-label="Deliveries with this gap, every day" />
           </label>
           <div className="mt-6 rounded-2xl border border-amber/50 bg-amber/5 p-5">
-            <p className="text-[13px] text-ink-muted">Rs 25 paid for goods that never came, on every delivery, over a year</p>
-            <p className="tnum mt-1 font-mono text-[40px] leading-none text-amber-ink">Rs {inr(year)}</p>
+            <p className="tnum font-mono text-[13px] text-ink-muted">Rs 25 x {grouped(per)} deliveries a day x 365 days</p>
+            <p className="tnum mt-2 font-mono text-[34px] leading-none text-amber-ink sm:text-[40px]">Rs {grouped(year)}</p>
+            <p className="mt-2 text-[14px] text-foreground">{inWords(year)} in a year</p>
           </div>
-          <p className="mt-4 text-[12.5px] text-ink-muted">An illustration with round numbers, not a measured figure.</p>
+          <p className="mt-4 text-[12.5px] text-ink-muted">An illustration. The Rs 25 gap and the number of deliveries are assumptions, not measured data.</p>
         </div>
       </div>
     </section>
