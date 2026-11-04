@@ -20,6 +20,7 @@ relayloom doctor                                                         # what 
 relayloom check --bill-json bill.json --po po.json --counted 46          # no models needed: HELD or clear, with signed receipts
 relayloom check --bill bill.pdf --photos dock/ --po po.json --agent      # Muse Glimmer proposes the words, SAM 3.1 counts, Glimmer looks at the overlay
 relayloom verify relayloom-out/receipts.jsonl                            # verify the receipts offline
+relayloom receipt relayloom-out/receipts.jsonl                           # a plain language PDF receipt, made offline
 ```
 
 ```sh
@@ -82,7 +83,7 @@ and requests cannot change them.
 | Video evidence | Built: `python scripts/dock_watch.py clip.mp4` (or a camera number or stream address). A delivery is detected 0.25 s after the first movement at 0.35 ms of compute per frame, the steady views become photographs, and SAM 3.1 counts them. Verified on a recorded demo clip (28 and 18 counted, 46 of 50 billed). The clip is demo. |
 | Photos | Real photos, free-licence stock and the builder's own. 18 photos counted by SAM 3.1 with two words each, 8 with hand counts: at the old setting the total error was 33 items and at 0.5 it was 12 ([docs/REAL_GOODS.md](docs/REAL_GOODS.md), [docs/CONFIDENCE.md](docs/CONFIDENCE.md)). The default confidence is 0.5 because of this. |
 | Real orders | 85 real purchase orders from the State of California open data, 369 cases with the exception types published accounts payable sources describe, all pass ([docs/REAL_WORLD_CHECK.md](docs/REAL_WORLD_CHECK.md)). Running it found and fixed real problems: quantities above 100,000, fractional counts, multi-line orders, unit of measure differences, concurrent receipt writes. |
-| Package | `relayloom` 0.3.0 builds, passes the PyPI check, and installs and runs in a clean environment with the network blocked, 18 of 18 steps ([docs/PACKAGE_CHECK.md](docs/PACKAGE_CHECK.md)), plus 44 command line scenarios ([docs/PACKAGE_SCENARIOS.md](docs/PACKAGE_SCENARIOS.md)). |
+| Package | `relayloom` 0.4.0 builds, passes the PyPI check, and installs and runs in a clean environment with the network blocked, 18 of 18 steps ([docs/PACKAGE_CHECK.md](docs/PACKAGE_CHECK.md)), plus 44 command line scenarios ([docs/PACKAGE_SCENARIOS.md](docs/PACKAGE_SCENARIOS.md)). |
 | Languages | Phone alerts and the approval screen in English, Tamil and Hindi, 135 strings, every one listed in [docs/LANGUAGES.md](docs/LANGUAGES.md). A Hindi and a Tamil bill were read by Muse Glimmer with every field correct ([docs/LANGUAGE_BILL_RESULT.md](docs/LANGUAGE_BILL_RESULT.md)). |
 | Real cases | Real cases from courts, audits and news, each linked to its source ([docs/SOURCES.md](docs/SOURCES.md)). |
 | Sensors | Photos and camera video in, every item counted by SAM 3.1. |
