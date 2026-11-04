@@ -1,0 +1,21 @@
+{
+ "recorded_at": "2026-11-04 11:54 +0530",
+ "photo_sha256": "985e84dde28aa2c476daf3b8fd34aef6539e32cb0a32529971906f179c0ec086",
+ "result": {
+  "count": 0,
+  "prompt": "bundle",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 33.2,
+  "scores": [],
+  "image_size": [
+   795,
+   527
+  ],
+  "wall_seconds": 41.6,
+  "route": "SAM 3.1 (sam3.1_multiplex.pt), Ultralytics, CPU, this laptop",
+  "overlay": "r16__bundle.jpg",
+  "recorded": false
+ }
+}

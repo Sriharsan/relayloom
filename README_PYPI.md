@@ -32,6 +32,7 @@ Exit code `0` means clear to enter, `3` means held, `2` means it could not run. 
 
 ```bash
 python -m pip install "relayloom[models]"
+python -m pip install git+https://github.com/ultralytics/CLIP.git   # text prompts for SAM 3.1 (a Git-only dependency, so it is not bundled)
 export HF_TOKEN=...            # your own Hugging Face read token (SAM 3.1 needs the access request)
 relayloom models pull          # one time; after this everything runs offline
 relayloom models serve         # Muse Glimmer on 127.0.0.1, in another terminal

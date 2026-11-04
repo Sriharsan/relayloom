@@ -227,6 +227,8 @@ def doctor(args) -> int:
         have = (MODELS / name).exists()
         row("ok" if have else "todo", f"Muse Glimmer file {name}", str(MODELS / name), "" if have else "relayloom models pull")
     row("ok" if module_ok("ultralytics") else "todo", "ultralytics (runs SAM 3.1)", "", "" if module_ok("ultralytics") else "python -m pip install 'relayloom[models]'")
+    row("ok" if module_ok("clip") else "todo", "clip (Ultralytics CLIP, used by SAM 3.1 text prompts)", "",
+        "" if module_ok("clip") else "python -m pip install git+https://github.com/ultralytics/CLIP.git")
     binary = shutil.which("llama-server") or os.environ.get("RELAYLOOM_LLAMA", "")
     row("ok" if binary else "todo", "llama-server (llama.cpp)", binary or "not on PATH", "" if binary else "install llama.cpp, or set RELAYLOOM_LLAMA")
     up = glimmer_is_up()

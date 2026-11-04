@@ -17,6 +17,7 @@ GPU = """!nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv
 !df -h /kaggle/working /kaggle/temp | cat"""
 
 INSTALL = """!pip -q install ultralytics huggingface_hub segno cryptography PyMuPDF
+!pip -q install git+https://github.com/ultralytics/CLIP.git
 !rm -rf relayloom && git clone -q https://github.com/Sriharsan/relayloom.git && cd relayloom && git log --format='%h %an %s' -1"""
 
 LLAMA = """# llama.cpp prebuilt for Ubuntu with CUDA 12.8 (release b12098), so nothing is compiled
