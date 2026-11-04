@@ -12,9 +12,19 @@ Northgate Components, with fictional suppliers and demo records only.
 **Live site and proof:** https://relayloom.vercel.app. On a demo set of 30 deliveries built by us, paperwork only caught
 5 of 17 bad bills and paperwork plus goods caught 17 of 17 with no wrong payment ([docs/BENCHMARK.md](docs/BENCHMARK.md)).
 
+## Install the command line
+
+```sh
+python -m pip install git+https://github.com/Sriharsan/relayloom.git     # a PyPI release of the same package follows
+relayloom doctor                                                         # what is ready on this machine, and the command that fixes the rest
+relayloom check --bill-json bill.json --po po.json --counted 46          # no models needed: HELD or clear, with signed receipts
+relayloom check --bill bill.pdf --photos dock/ --po po.json --agent      # Muse Glimmer proposes the words, SAM 3.1 counts, Glimmer looks at the overlay
+relayloom verify relayloom-out/receipts.jsonl                            # verify the receipts offline
+```
+
 ```sh
 pip install -r requirements-ap.txt
-python -m pytest -q                                   # 68 tests
+python -m pytest -q                                   # 127 tests
 python -m relayloom.ap.benchmark --counter recorded   # the benchmark on saved SAM 3.1 counts, a few seconds
 python scripts/export_bench_run.py out.json           # the seven cases on the real agents, with signed receipts
 python -m relayloom.ap --batch                        # the app on http://127.0.0.1:8800 (replays the saved readings)
@@ -70,6 +80,11 @@ and requests cannot change them.
 | Phone alerts | Built: `python -m relayloom.ap --phone`. A separate read only page on your local network, behind a random token, no internet. Covered by unit tests and verified end to end in a phone sized browser. |
 | Security controls | 11 of 11 pass their checks and add about 30 ms to a case ([docs/SECURITY_CHECKS.md](docs/SECURITY_CHECKS.md)). |
 | Video evidence | Built: `python scripts/dock_watch.py clip.mp4` (or a camera number or stream address). A delivery is detected 0.25 s after the first movement at 0.35 ms of compute per frame, the steady views become photographs, and SAM 3.1 counts them. Verified on a recorded demo clip (28 and 18 counted, 46 of 50 billed). The clip is demo. |
+| Real photos | Builder-provided test photos, a mix of free-licence stock and the builder's own, not a claim about real deliveries. 18 photos counted by SAM 3.1 with two words each, 8 with hand counts: at the old setting the total error was 33 items and at 0.5 it was 12 ([docs/REAL_GOODS.md](docs/REAL_GOODS.md), [docs/CONFIDENCE.md](docs/CONFIDENCE.md)). The default confidence is 0.5 because of this. |
+| Real orders | 85 real purchase orders from the State of California open data, 369 cases with the exception types published accounts payable sources describe, all pass ([docs/REAL_WORLD_CHECK.md](docs/REAL_WORLD_CHECK.md)). Running it found and fixed real problems: quantities above 100,000, fractional counts, multi-line orders, unit of measure differences, concurrent receipt writes. |
+| Package | `relayloom` 0.3.0 builds, passes the PyPI check, and installs and runs in a clean environment with the network blocked, 18 of 18 steps ([docs/PACKAGE_CHECK.md](docs/PACKAGE_CHECK.md)), plus 44 command line scenarios ([docs/PACKAGE_SCENARIOS.md](docs/PACKAGE_SCENARIOS.md)). Not yet published to PyPI. |
+| Languages | Phone alerts and the approval screen in English, Tamil and Hindi, 135 strings, every one listed for a native check in [docs/LANGUAGES.md](docs/LANGUAGES.md). A Hindi and a Tamil bill were read by Muse Glimmer with every field correct ([docs/LANGUAGE_BILL_RESULT.md](docs/LANGUAGE_BILL_RESULT.md)). |
+| Real cases | Eleven documented cases from courts, audits and news, each read at its source, not Relayloom users ([docs/SOURCES.md](docs/SOURCES.md)). |
 | Sensors | Out of scope. Nothing is simulated. |
 
 Timings on the screen are real. On this laptop Muse Glimmer needs several minutes per bill and SAM 3.1 about a minute
@@ -109,7 +124,7 @@ Keys live only in `.env`, which git ignores. The paid Meta Model API adapter in 
 ## Tests
 
 ```sh
-python -m pytest -q                                   # 68 Python tests
+python -m pytest -q                                   # 127 Python tests
 node --test tests/ui.test.cjs tests/verify.test.cjs   # 14 Node tests
 ```
 

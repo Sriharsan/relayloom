@@ -74,6 +74,32 @@ the video script, the submission notes and the README. Every commit below is ins
 
 The commit that adds this table also updates the README, submission notes, results and the wording of the demo data labels.
 
+## Updates from 3 to 4 November (IST, after the fully disconnected run)
+
+| Commit | Time | What |
+| --- | --- | --- |
+| `fda0920` | 03 Nov 10:43 PM IST | Agent loop, phone photo capture, relayloom CLI and package, cross-supplier patterns, threat model, Developers page |
+| `b103b38` | 03 Nov 10:50 PM IST | Line-crossing counter and video tracking worker, recorded-mode wording |
+| `4e606b2` | 03 Nov 10:57 PM IST | Make the gateway log test wait for the log lines on slow runners |
+| `2da4a28` | 03 Nov 11:04 PM IST | Look agent: a zero is a miss, a single count confirmed by Glimmer's look is accepted unless contradicted; Kaggle GPU notebook |
+| `f8f09ce` | 04 Nov 10:12 AM IST | Headings in Candara, body in Inter; notebook models on the larger disk, CUDA stub path |
+| `880ef87` | 04 Nov 10:18 AM IST | serve says when the demo data is not installed |
+| `1757191` | 04 Nov 10:34 AM IST | New home: agent trace, goods strip, arrival timeline, run it, film; Boundary and supplier ranking move to Proof; prebuilt CUDA llama.cpp notebook |
+| `b7d5583` | 04 Nov 11:00 AM IST | Whole site in Figtree, the free font Lyzr lists beside Aeonik |
+| `27098f0` | 04 Nov 11:34 AM IST | Real goods test set, counts and manifest tooling; notebook fixes for GPU libraries and photo paths |
+| `4bcbc28` | 04 Nov 11:53 AM IST | Package polish: classifiers, typed marker, doctor, --counted, --json, clear errors, PyPI readme, offline package check in CI |
+| `84f3a48` | 04 Nov 11:54 AM IST | Do not track build artifacts |
+| `d860b1f` | 04 Nov 11:54 AM IST | SAM 3.1 needs the Ultralytics CLIP package: install it in the notebook, check it in doctor, document it |
+| `bf863dd` | 04 Nov 12:23 PM IST | Package hardening from real data: real California purchase orders (369 cases), 44 scenarios, multi-line orders, decimal counts, unit of measure hint, approval limit, process-safe receipts, persistent SAM worker, bug report flow |
+| `cf89849` | 04 Nov 12:24 PM IST | Notebook: persistent SAM, Glimmer speed variants, machine readable results |
+| `12a9af8` | 04 Nov 12:40 PM IST | Real photo accuracy table, SAM confidence setting (default 0.5) from real data, home page with real photos, notebook fix |
+| `f22cdc8` | 04 Nov 03:04 PM IST | Real cases from courts, audits and news with their sources, on Home and Proof; film opens with the New Jersey and ISKCON cases |
+| `7dab034` | 04 Nov 03:05 PM IST | Track the cited California purchase order sample used by the real world check |
+| `6761b93` | 04 Nov 03:26 PM IST | English, Tamil and Hindi for the phone alerts and the approval screen; every string listed for Sri's check; Hindi and Tamil bill test fixtures |
+| `38375b9` | 04 Nov 03:30 PM IST | Hindi and Tamil bills through Muse Glimmer: 11 of 11 fields each |
+| `e553c89` | 04 Nov 03:33 PM IST | Notebook: tracking cell |
+| `9f128d5` | 04 Nov 03:48 PM IST | Proof: tested on real data (photos against hand counts, confidence sweep, 369 real-order cases, scenarios, offline install, Hindi and Tamil bills); current app screenshots; secret scan and clean clone clean |
+
 ## Scope
 
 - The paid Meta Model API adapter stays switched off. The project runs Meta open weights.
