@@ -59,9 +59,18 @@ class LookAgent:
         started = time.perf_counter()
 
         def call_glimmer(step, system, user, schema, image=None):
-            reply = self.glimmer.chat(system, user, schema, max_tokens=512, images=[image] if image else None)
-            data = parse_json(reply["content"])
-            trace.append({"step": step, "tool": "glimmer", "seconds": reply["seconds"], "saw_image": bool(image), "output": data})
+            seconds, data = 0.0, None
+            for room in (768, 2048):  # a model that spends its tokens thinking gets one retry with more room
+                reply = self.glimmer.chat(system, user, schema, max_tokens=room, images=[image] if image else None)
+                seconds += reply["seconds"]
+                try:
+                    data = parse_json(reply["content"])
+                    break
+                except ValueError:
+                    continue
+            if data is None:  # still no answer: say so, never guess and never crash; the bill is held for a person
+                data = {"verdict": "unreadable", "note": "Glimmer gave no answer", "next_words": [], "words": []}
+            trace.append({"step": step, "tool": "glimmer", "seconds": round(seconds, 1), "saw_image": bool(image), "output": data})
             return data
 
         def call_sam(word):
@@ -77,7 +86,7 @@ class LookAgent:
         queue = clean_words(seed_words)
         if len(queue) < 2:  # the agent proposes the rest of the words, once per bill line
             if description not in self.memory:
-                self.memory[description] = clean_words(call_glimmer("propose", PROPOSE_SYSTEM, "Bill line: " + description, PROPOSE_SCHEMA)["words"])
+                self.memory[description] = clean_words(call_glimmer("propose", PROPOSE_SYSTEM, "Bill line: " + description, PROPOSE_SCHEMA).get("words", []))
             else:
                 trace.append({"step": "propose", "tool": "memory", "output": {"words": self.memory[description]}})
             queue += clean_words(self.memory[description], queue)
@@ -101,7 +110,7 @@ class LookAgent:
             if seen["verdict"] == "good" and image and not rivals:
                 agreed = {"count": last["count"], "tries": [last], "how": "Glimmer looked at the overlay and found every item numbered once"}
                 break
-            queue = clean_words(seen["next_words"], [x["words"] for x in tries])
+            queue = clean_words(seen.get("next_words", []), [x["words"] for x in tries])
             if not queue or len(tries) >= self.max_calls:  # the SAM budget is spent, but Glimmer always gets to look before the agent gives up
                 break
         first = tries[0]["count"] if tries else None

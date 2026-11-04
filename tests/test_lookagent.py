@@ -81,6 +81,19 @@ class LookAgentTests(unittest.TestCase):
         self.assertEqual(len(sam.calls), 4)
         self.assertTrue([s for s in found["trace"] if s["step"] == "look"])
 
+    def test_a_model_that_gives_no_json_never_crashes_the_run_and_the_bill_is_held(self):
+        class Silent(FakeGlimmer):
+            def chat(self, system, user, schema=None, max_tokens=0, images=None):
+                self.seen_images.append(images)
+                if "words list" in system:
+                    return {"content": json.dumps({"words": self.propose}), "seconds": 1.0}
+                return {"content": "", "seconds": 1.0}  # the answer ran out of tokens while thinking
+
+        sam = FakeSam({"can": 24, "coolant can": 0}, self.tmp.name)
+        found = LookAgent(Silent(["coolant can", "can"]), sam).look(Path("p.jpg"), "Coolant can", "k")
+        self.assertTrue(found["held"])
+        self.assertTrue([x for x in found["trace"] if x["step"] == "look" and x["output"]["verdict"] == "unreadable"])
+
     def test_the_model_cannot_set_the_number_and_zero_never_agrees(self):
         agent, _, _ = self.agent({"box": 0, "carton": 0}, ["box", "carton"])
         self.assertTrue(agent.look(Path("p.jpg"), "x", "k")["held"])

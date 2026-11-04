@@ -165,7 +165,7 @@ print('RESULT_TUNING', json.dumps(tuning))
 print('RESULT_TRACKING', json.dumps(tracking))
 print('RESULT_REAL', json.dumps(real_rows))"""
 
-CELLS = [("markdown", INTRO), ("code", GPU), ("code", INSTALL), ("code", LLAMA), ("code", MODELS), ("code", SERVER), ("code", SETUP), ("code", TUNING), ("code", LOOP), ("code", REALLOOP), ("code", TRACK), ("code", FINAL)]
+CELLS = [("markdown", INTRO), ("code", GPU), ("code", INSTALL), ("code", LLAMA), ("code", MODELS), ("code", SERVER), ("code", SETUP), ("code", LOOP), ("code", REALLOOP), ("code", TRACK), ("code", FINAL)]
 
 
 def main():
