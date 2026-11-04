@@ -2,6 +2,7 @@
 
 Usage: python scripts/package_scenarios.py [--md docs/PACKAGE_SCENARIOS.md]
 """
+import json
 from pathlib import Path
 import re
 import sys
@@ -33,6 +34,12 @@ def main():
         lines += [f"| {g} | {n} | {e} | {r} | {ms} ms |" for g, n, e, r, ms in rows]
         lines += ["", f"{sum(r[3] == 'PASS' for r in rows)} of {len(rows)} passed in {round(time.time() - started, 1)} s."]
         Path(args[args.index("--md") + 1]).write_text("\n".join(lines) + "\n", encoding="utf-8")
+        groups = {}
+        for g, n, e, res, ms in rows:
+            groups.setdefault(g, [0, 0])[0] += 1
+            groups[g][1] += res == "PASS"
+        (ROOT / "site-src" / "src" / "data" / "scenarios.json").write_text(json.dumps({"total": len(rows), "passed": sum(x[3] == "PASS" for x in rows),
+            "groups": [{"group": g, "cases": n, "passed": ok} for g, (n, ok) in groups.items()]}, indent=1), encoding="utf-8")
     print(f"\n{sum(r[3] == 'PASS' for r in rows)} of {len(rows)} passed")
     return 0 if passed else 1
 

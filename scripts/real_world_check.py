@@ -196,6 +196,9 @@ def main():
         if failed:
             lines += ["## Cases that failed", ""] + [f"- {r[0]} | {r[1]}: wanted exit {r[2]}, got {r[3]}. {r[5]}" for r in failed]
         Path(args[args.index("--md") + 1]).write_text("\n".join(lines) + "\n", encoding="utf-8")
+        (ROOT / "site-src" / "src" / "data" / "realworld.json").write_text(json.dumps({"orders": len(data), "cases": len(rows), "passed": passed,
+            "kinds": [{"kind": k, "cases": n, "passed": ok} for k, (n, ok) in sorted(kinds.items())], "source": "State of California, Purchase Order Data 2012-2015",
+            "url": "https://data.ca.gov/dataset/purchase-order-data"}, indent=1), encoding="utf-8")
     return 0 if passed == len(rows) else 1
 
 

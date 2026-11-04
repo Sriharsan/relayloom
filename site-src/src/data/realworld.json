@@ -1,0 +1,49 @@
+{
+ "orders": 85,
+ "cases": 369,
+ "passed": 369,
+ "kinds": [
+  {
+   "kind": "billed above received",
+   "cases": 80,
+   "passed": 80
+  },
+  {
+   "kind": "exact delivery",
+   "cases": 79,
+   "passed": 79
+  },
+  {
+   "kind": "exact delivery, above the approval limit",
+   "cases": 1,
+   "passed": 1
+  },
+  {
+   "kind": "partial shipment",
+   "cases": 39,
+   "passed": 39
+  },
+  {
+   "kind": "price above the order",
+   "cases": 75,
+   "passed": 75
+  },
+  {
+   "kind": "row with a missing quantity or price",
+   "cases": 5,
+   "passed": 5
+  },
+  {
+   "kind": "unit of measure",
+   "cases": 10,
+   "passed": 10
+  },
+  {
+   "kind": "wrong order number",
+   "cases": 80,
+   "passed": 80
+  }
+ ],
+ "source": "State of California, Purchase Order Data 2012-2015",
+ "url": "https://data.ca.gov/dataset/purchase-order-data"
+}

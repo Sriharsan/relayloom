@@ -1,6 +1,6 @@
 # Real world check
 
-Run 2026-11-04 12:15 +0530 by `python scripts/real_world_check.py`. 85 real purchase orders from the State of California
+Run 2026-11-04 15:45 +0530 by `python scripts/real_world_check.py`. 85 real purchase orders from the State of California
 open data (items, quantities, prices, suppliers and order numbers are rows of the public dataset), each run through `relayloom check` and `relayloom verify`
 with the exception types published accounts payable sources describe.
 

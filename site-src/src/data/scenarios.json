@@ -1,0 +1,31 @@
+{
+ "total": 44,
+ "passed": 44,
+ "groups": [
+  {
+   "group": "typical",
+   "cases": 10,
+   "passed": 10
+  },
+  {
+   "group": "varied",
+   "cases": 11,
+   "passed": 11
+  },
+  {
+   "group": "extreme",
+   "cases": 14,
+   "passed": 14
+  },
+  {
+   "group": "repeated",
+   "cases": 3,
+   "passed": 3
+  },
+  {
+   "group": "receipts",
+   "cases": 6,
+   "passed": 6
+  }
+ ]
+}
