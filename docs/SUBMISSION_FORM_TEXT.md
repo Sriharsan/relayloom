@@ -15,7 +15,7 @@ Deadline: 4 Nov 2026 9:00 PM ET (5 Nov 7:30 AM IST). Make no commits after you s
 | Live site | https://relayloom.vercel.app |
 | Demo video | **YOU**: YouTube Unlisted link, 3 minutes or less |
 | X post | **YOU**: link to your post (text in the last section) |
-| Package | `python -m pip install git+https://github.com/Sriharsan/relayloom.git` (PyPI only if you publish it, see the checklist) |
+| Package | `python -m pip install relayloom` (PyPI only if you publish it, see the checklist) |
 | Meta models used | Muse Glimmer 30B (Q4_K_M, llama.cpp), SAM 3.1 (Ultralytics). Both open weights, run locally. No paid API. |
 
 ## One line
@@ -78,7 +78,7 @@ All of it, from 28 October 2026 (commit history in `docs/HACKATHON_UPDATES.md`).
 ## Run it
 
 ```
-python -m pip install git+https://github.com/Sriharsan/relayloom.git
+python -m pip install relayloom
 relayloom doctor
 relayloom check --bill-json bill.json --po po.json --counted 46
 relayloom verify relayloom-out/receipts.jsonl

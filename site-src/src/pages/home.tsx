@@ -258,7 +258,7 @@ function Arrival() {
 /* -------------------------------------------------------------- 4. run it */
 function RunIt() {
   const lines: { cmd: string; out: string }[] = [
-    { cmd: "pip install git+https://github.com/Sriharsan/relayloom.git", out: "installs the package and the relayloom command" },
+    { cmd: "pip install relayloom", out: "installs the package and the relayloom command" },
     { cmd: "relayloom models pull", out: "downloads Muse Glimmer and SAM 3.1 with your own token, once" },
     { cmd: "relayloom check --bill bill.pdf --photos dock/ --po po.json --agent", out: "exit 0 is clear to enter, exit 3 is held" },
     { cmd: "relayloom verify relayloom-out/receipts.jsonl", out: "chain verified with the network off, or BROKEN" },
