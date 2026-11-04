@@ -1,0 +1,77 @@
+{
+ "route": "Muse Glimmer 30B on a Kaggle GPU (two T4s), notebook version 10",
+ "rows": [
+  {
+   "key": "r22",
+   "what": "Dented cans",
+   "damaged": 45,
+   "visible": 60,
+   "kind": "mixed",
+   "note": "Large stack of pet food cans is heavily crushed and dented with torn labels, several cans are visibly deformed.",
+   "seconds": 24.9
+  },
+  {
+   "key": "r23",
+   "what": "Sacks",
+   "damaged": 1,
+   "visible": 9,
+   "kind": "torn",
+   "note": "Several plastic sacks are stacked against a wall with one sack visibly torn open and spilling contents.",
+   "seconds": 20.6
+  },
+  {
+   "key": "r19",
+   "what": "Crushed boxes",
+   "damaged": 1,
+   "visible": 3,
+   "kind": "crushed",
+   "note": "One large box is crushed and torn on the top and side; the other items are wrapped.",
+   "seconds": 25.1
+  },
+  {
+   "key": "r20",
+   "what": "Crushed boxes",
+   "damaged": 3,
+   "visible": 3,
+   "kind": "mixed",
+   "note": "Three stacked cardboard boxes are crushed and torn with large sections of the flaps ripped and collapsed.",
+   "seconds": 15.7
+  },
+  {
+   "key": "r21",
+   "what": "Taped boxes",
+   "damaged": 3,
+   "visible": 3,
+   "kind": "mixed",
+   "note": "Three medium boxes are crushed and torn, one heavily taped together.",
+   "seconds": 20.2
+  },
+  {
+   "key": "r05",
+   "what": "Round tins",
+   "damaged": 0,
+   "visible": 80,
+   "kind": "none",
+   "note": "Cans are neatly stacked in rows and appear intact with no visible dents, crushing, tears or staining.",
+   "seconds": 22.7
+  },
+  {
+   "key": "r01",
+   "what": "Boxes in a van",
+   "damaged": 0,
+   "visible": 24,
+   "kind": "none",
+   "note": "Multiple cardboard boxes are stacked in the van and appear intact with no visible dents, crushing, tears or wet staining.",
+   "seconds": 21.6
+  },
+  {
+   "key": "r06",
+   "what": "Sacks close up",
+   "damaged": 0,
+   "visible": 30,
+   "kind": "none",
+   "note": "The stacked sacks appear intact with no visible tears, crushing, wetting or staining.",
+   "seconds": 15.9
+  }
+ ]
+}

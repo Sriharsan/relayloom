@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/lib/router";
+import condition from "@/data/condition.json";
 import { agent, benchmark, confidence, fmtSeconds, glimmerSummary, links, offlineRun, real, samSummary, video } from "@/data/site";
 import { CopyBlock, Photo } from "@/components/bits";
 import { RealCases } from "@/components/realcases";
@@ -160,7 +161,9 @@ function Looks() {
 }
 
 /* -------------------------------------------------------- 2. real goods strip */
+const CONDITION_KEY: Record<string, string> = { P01: "r01", P07: "r05", P10: "r06" };
 function Goods() {
+  const seen = (r: { key: string; pid: string }) => condition.rows.find((c) => c.key === r.key || c.key === CONDITION_KEY[r.pid]);
   const rows = [...real.rows].filter((r) => r.results[0].count > 0 && (r as { show?: boolean }).show !== false).sort((a, b) => Number(b.hand_count !== null) - Number(a.hand_count !== null));
   const at = (t: number) => confidence.real.find((r) => r.threshold === t)!;
   return (
@@ -203,6 +206,11 @@ function Goods() {
               </span>
               <span className="tnum font-mono text-[38px] leading-none text-green-ink">{r.results[0].count}</span>
             </figcaption>
+            {seen(r) && (
+              <p className={`border-t border-line px-4 py-2.5 text-[12px] leading-snug ${seen(r)!.damaged ? "bg-amber/10 text-amber-ink" : "text-green-ink"}`}>
+                {seen(r)!.damaged ? `Glimmer sees damage: ${seen(r)!.damaged} of ${seen(r)!.visible} ${seen(r)!.kind === "mixed" ? "crushed or torn" : seen(r)!.kind}` : "Glimmer sees the goods intact"}
+              </p>
+            )}
           </figure>
         ))}
       </div>

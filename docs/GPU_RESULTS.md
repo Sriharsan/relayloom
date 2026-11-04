@@ -11,3 +11,16 @@ Muse Glimmer 30B Q4_K_M (llama.cpp CUDA) and SAM 3.1, from commit 5e11db6. The n
 | Laptop CPU for comparison | a bill takes 4.5 to 8.9 minutes |
 
 A delivery is checked in under a minute once the models are loaded. Cold start is about 90 s. A count is accepted only when two words agree or Glimmer's own look at the overlay confirms it, and everything else goes to a person.
+
+## Condition check (notebook version 10)
+
+Muse Glimmer looks at each photo for dented, crushed or torn goods, about 15 to 25 s a photo. SAM 3.1 cannot judge condition from words (it finds "dented cans" on clean cans too), so the look is Glimmer's and SAM keeps the count.
+
+| Photo | Glimmer's look |
+| --- | --- |
+| Dented cans | 45 of 60 damaged |
+| Sacks | 1 of 9 torn |
+| Crushed boxes (three photos) | 1 of 3, 3 of 3, 3 of 3 damaged |
+| Three clean control photos (tins, boxes in a van, sacks) | 0 damaged on each |
+
+Damaged units never count as received: `relayloom check --agent --condition` holds the bill and says why in plain words.

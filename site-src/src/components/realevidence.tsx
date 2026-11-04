@@ -1,4 +1,5 @@
 import { confidence, real } from "@/data/site";
+import condition from "@/data/condition.json";
 import realworld from "@/data/realworld.json";
 import scenarios from "@/data/scenarios.json";
 import packagecheck from "@/data/packagecheck.json";
@@ -89,6 +90,26 @@ export function RealEvidence() {
                 <p className="mt-3 text-[13px] leading-relaxed text-ink-muted">{x.l}</p>
               </div>
             ))}
+          </div>
+        </div>
+        <div className="mt-14">
+          <p className="kLabel">Condition of the goods, seen by Muse Glimmer</p>
+          <p className="mt-3 max-w-[62ch] text-[14px] leading-relaxed text-ink-muted">
+            Counting and condition are two jobs. SAM 3.1 counts, and Muse Glimmer looks at the photo for dents, tears and crushing. Damaged units never count as received, the bill is held, and the reason is written in plain words.
+          </p>
+          <div className="mt-5 overflow-x-auto rounded-xl border border-line bg-surface">
+            <table className="w-full min-w-[640px] text-left text-[13px]">
+              <thead className="text-[11px] uppercase tracking-wide text-ink-muted"><tr><th className="px-4 py-3">Photo</th><th className="px-4 py-3">Damaged</th><th className="px-4 py-3">What Glimmer wrote</th></tr></thead>
+              <tbody>
+                {condition.rows.map((c) => (
+                  <tr key={c.key} className="border-t border-line align-top">
+                    <td className="px-4 py-2.5">{c.what}</td>
+                    <td className={`tnum px-4 py-2.5 font-mono ${c.damaged ? "text-amber-ink" : "text-green-ink"}`}>{c.damaged} of {c.visible}</td>
+                    <td className="px-4 py-2.5 text-ink-muted">{c.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
         <p className="mt-4 max-w-[70ch] text-[12.5px] leading-relaxed text-ink-muted">
