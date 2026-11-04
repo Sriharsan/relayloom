@@ -34,6 +34,14 @@ PROPOSE_SCHEMA = {"type": "object", "additionalProperties": False, "required": [
 LOOK_SCHEMA = {"type": "object", "additionalProperties": False, "required": ["verdict", "note", "next_words"],
                "properties": {"verdict": {"type": "string", "enum": ["good", "missed", "double", "wrong_object"]},
                               "note": {"type": "string"}, "next_words": {"type": "array", "items": {"type": "string"}}}}
+CONDITION_SYSTEM = (
+    "You see a delivery photo. Look at the physical condition of the goods only: dented or crushed cans, torn or split sacks, crushed or torn boxes, wet or stained "
+    "packaging. Count the units you can clearly see, and how many of them are visibly damaged. Return JSON with visible_units, damaged_units (never more than "
+    "visible_units), kind (dented, crushed, torn, wet, mixed or none) and note (one short sentence about what you see). Say none when you see no damage."
+)
+CONDITION_SCHEMA = {"type": "object", "additionalProperties": False, "required": ["visible_units", "damaged_units", "kind", "note"],
+                    "properties": {"visible_units": {"type": "integer", "minimum": 0}, "damaged_units": {"type": "integer", "minimum": 0},
+                                   "kind": {"type": "string", "enum": ["dented", "crushed", "torn", "wet", "mixed", "none"]}, "note": {"type": "string"}}}
 WORD = re.compile(r"^[a-z][a-z \-]{1,30}$")
 
 
@@ -121,6 +129,23 @@ class LookAgent:
                 "first_try_count": first, "calls": len(trace), "tries": tries, "trace": trace,
                 "seconds": round(time.perf_counter() - started, 1),
                 "reason": "" if agreed else "No two counts from different words agree, so a person looks at the photo."}
+
+    def condition(self, photo: Path, counted: int | None = None) -> dict:
+        """Glimmer looks at the photo for dents, tears and crushing. SAM cannot judge condition from words, so this is Glimmer's own look.
+        Code caps the damaged number at what was counted and never lets a damage claim raise a count."""
+        started = time.perf_counter()
+        try:
+            reply = self.glimmer.chat(CONDITION_SYSTEM, "Judge the condition of the goods in this photo.", CONDITION_SCHEMA, max_tokens=768, images=[Path(photo)])
+            seen = parse_json(reply["content"])
+            seconds = reply["seconds"]
+        except (ValueError, KeyError):
+            return {"damaged": 0, "kind": "none", "note": "Glimmer gave no answer", "visible": 0, "held": True, "seconds": round(time.perf_counter() - started, 1)}
+        visible = max(0, int(seen.get("visible_units", 0)))
+        damaged = max(0, min(int(seen.get("damaged_units", 0)), visible))
+        if counted is not None:
+            damaged = min(damaged, counted)
+        return {"damaged": damaged, "kind": seen.get("kind", "none") if damaged else "none", "note": str(seen.get("note", ""))[:200], "visible": visible,
+                "held": False, "seconds": round(seconds, 1)}
 
     @staticmethod
     def agreement(tries):

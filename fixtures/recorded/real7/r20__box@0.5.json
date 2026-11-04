@@ -1,0 +1,26 @@
+{
+ "recorded_at": "2026-11-04 18:06 +0530",
+ "photo_sha256": "03cb4d2b6c32a996f4e51db054940ed263d127712e589c31585159574416d61e",
+ "result": {
+  "count": 4,
+  "prompt": "box",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 1.6,
+  "scores": [
+   0.921,
+   0.882,
+   0.844,
+   0.73
+  ],
+  "image_size": [
+   293,
+   392
+  ],
+  "wall_seconds": 1.7,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r20__box@0.5.jpg",
+  "recorded": false
+ }
+}

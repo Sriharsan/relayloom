@@ -1,0 +1,26 @@
+{
+ "recorded_at": "2026-11-04 18:06 +0530",
+ "photo_sha256": "4db8d4ea5857a83e7247be648d26b6ae113d9e7573245ac90daa74474a3ea781",
+ "result": {
+  "count": 4,
+  "prompt": "cardboard box",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 41.0,
+  "scores": [
+   0.92,
+   0.856,
+   0.684,
+   0.609
+  ],
+  "image_size": [
+   296,
+   397
+  ],
+  "wall_seconds": 51.2,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r19__cardboard-box@0.5.jpg",
+  "recorded": false
+ }
+}

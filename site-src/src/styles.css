@@ -126,3 +126,35 @@
 
 /* the element the guided tour is pointing at */
 .guide-ring { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 10px; }
+
+
+/* ---- live parts: mini bots, loops, reveals. They stop for people who ask for less motion. ---- */
+.serif-italic { font-family: "Instrument Serif", "Times New Roman", serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes scan { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(20px); opacity: 0; } }
+@keyframes tick { 0%, 100% { opacity: 0.25; transform: scale(1); } 50% { opacity: 1; transform: scale(1.35); } }
+@keyframes link { 0% { stroke-dashoffset: 14; } 100% { stroke-dashoffset: 0; } }
+@keyframes sweep { 0%, 100% { transform: translateX(-10px); } 50% { transform: translateX(14px); } }
+@keyframes stamp { 0%, 55%, 100% { transform: translateY(0); } 65%, 80% { transform: translateY(10px); } }
+@keyframes ink { 0%, 62% { opacity: 0; } 70%, 92% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes flow { to { stroke-dashoffset: -24; } }
+@keyframes slidein { from { opacity: 0; transform: translateX(56px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes pulsering { 0% { transform: scale(0.6); opacity: 0.8; } 100% { transform: scale(2.2); opacity: 0; } }
+@keyframes chain { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.bot { animation: bob 2.6s ease-in-out infinite; }
+.bot-scan { animation: scan 2.2s ease-in-out infinite; }
+.bot-tick { transform-box: fill-box; transform-origin: center; animation: tick 1.6s ease-in-out infinite; }
+.bot-link { stroke-dasharray: 4 3; animation: link 1s linear infinite; }
+.bot-sweep { animation: sweep 2.8s ease-in-out infinite; }
+.bot-stamp { animation: stamp 2.4s ease-in-out infinite; }
+.bot-ink { animation: ink 2.4s ease-in-out infinite; }
+.flow-line { stroke-dasharray: 6 6; animation: flow 1.2s linear infinite; }
+.reveal-card { opacity: 0; }
+.in-view .reveal-card { animation: slidein 700ms cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+.fade-edges { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 72px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 72px), transparent 100%); }
+.ring-pulse { transform-box: fill-box; transform-origin: center; animation: pulsering 2s ease-out infinite; }
+.chain-block { animation: chain 2.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .bot, .bot-scan, .bot-tick, .bot-link, .bot-sweep, .bot-stamp, .bot-ink, .flow-line, .ring-pulse, .chain-block { animation: none !important; }
+  .reveal-card { opacity: 1; animation: none !important; }
+}

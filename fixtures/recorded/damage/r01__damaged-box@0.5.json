@@ -1,0 +1,47 @@
+{
+ "recorded_at": "2026-11-04 18:15 +0530",
+ "photo_sha256": "2a917c4acf1780ddcac5e1c734a874624422bd233adb446dca2d158527e306ae",
+ "result": {
+  "count": 25,
+  "prompt": "damaged box",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 18.4,
+  "scores": [
+   0.828,
+   0.823,
+   0.814,
+   0.811,
+   0.81,
+   0.809,
+   0.805,
+   0.794,
+   0.792,
+   0.792,
+   0.791,
+   0.782,
+   0.778,
+   0.775,
+   0.762,
+   0.762,
+   0.752,
+   0.745,
+   0.745,
+   0.725,
+   0.703,
+   0.675,
+   0.675,
+   0.651,
+   0.63
+  ],
+  "image_size": [
+   803,
+   532
+  ],
+  "wall_seconds": 18.6,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r01__damaged-box@0.5.jpg",
+  "recorded": false
+ }
+}

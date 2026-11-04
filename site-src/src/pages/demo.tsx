@@ -6,6 +6,7 @@ import { Photo, Pill, RunLabel, StepPill } from "@/components/bits";
 import { FindingCard, citeId } from "@/components/finding";
 import { run as runData } from "@/data/site";
 import { Link } from "@/lib/router";
+import { downloadReceipt } from "@/lib/receiptpdf";
 
 type Tab = "today" | "case" | "approvals";
 
@@ -322,7 +323,7 @@ function CaseView({ c }: { c: BenchCase }) {
             </Card>
         )}
         <div className={c.investigation ? "" : "lg:col-span-2"}>
-        <Card title="Receipt chain" right={<span className="font-mono text-[11px] text-ink-muted">signed, verified in your browser on Proof</span>}>
+        <Card title="Receipt chain" right={<button type="button" onClick={() => downloadReceipt(receipts, runData.receipts_verified, c.bill_no)} className="inline-flex h-8 items-center rounded-full border border-line px-3 text-[12px] font-medium text-foreground transition-colors duration-150 hover:bg-raised">Download receipt (PDF)</button>}>
           <ul className="max-h-[420px] overflow-y-auto px-5 py-4">
             {receipts.map((r, i) => (
               <li key={r.hash} className="relative pb-4 pl-6 last:pb-0">

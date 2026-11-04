@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { cases } from "@/data/site";
 
@@ -12,9 +13,18 @@ const TONE: Record<string, string> = {
 
 /** Real cases from courts, audits and news, each read at its source. */
 export function RealCases({ id = "cases" }: { id?: string }) {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) { el.classList.add("in-view"); return; }
+    const seen = new IntersectionObserver(([e]) => { if (e?.isIntersecting) { el.classList.add("in-view"); seen.disconnect(); } }, { threshold: 0.15 });
+    seen.observe(el);
+    return () => seen.disconnect();
+  }, []);
   return (
-    <section id={id} className="border-b border-line">
-      <div className="mx-auto max-w-[1200px] px-4 pt-16 sm:px-6">
+    <section id={id} ref={ref} className="border-b border-line">
+      <div className="mx-auto max-w-[1200px] px-6 pt-16 sm:px-10 lg:px-14">
         <p className="kLabel">Real cases</p>
         <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <h2 className="max-w-[20ch] text-balance text-[34px] font-bold leading-[1.05] tracking-[-0.02em] text-foreground sm:text-[46px]">
@@ -25,14 +35,16 @@ export function RealCases({ id = "cases" }: { id?: string }) {
           </p>
         </div>
       </div>
-      <div className="mt-8 flex snap-x gap-4 overflow-x-auto px-4 pb-12 sm:px-6 [scrollbar-width:thin]" tabIndex={0} aria-label="Real cases">
-        {cases.map((c) => (
+      <div className="mx-auto mt-8 max-w-[1200px] px-6 sm:px-10 lg:px-14">
+      <div className="fade-edges flex snap-x gap-4 overflow-x-auto py-1 pb-12 pr-16 [scrollbar-width:thin]" tabIndex={0} aria-label="Real cases">
+        {cases.map((c, i) => (
           <a
             key={c.id}
+            style={{ animationDelay: `${i * 90}ms` }}
             href={c.url}
             target="_blank"
             rel="noreferrer noopener"
-            className="group flex w-[310px] max-w-[84vw] shrink-0 snap-start flex-col justify-between rounded-2xl border border-line bg-surface p-5 transition-colors duration-150 hover:bg-raised"
+            className="reveal-card group flex w-[310px] max-w-[84vw] shrink-0 snap-start flex-col justify-between rounded-2xl border border-line bg-surface p-5 transition-colors duration-150 hover:bg-raised"
           >
             <div>
               <span className={`inline-block rounded-full border px-2.5 py-0.5 font-mono text-[10.5px] uppercase tracking-wider ${TONE[c.status] ?? "text-ink-muted border-line"}`}>{c.status}</span>
@@ -47,6 +59,7 @@ export function RealCases({ id = "cases" }: { id?: string }) {
             </p>
           </a>
         ))}
+      </div>
       </div>
     </section>
   );

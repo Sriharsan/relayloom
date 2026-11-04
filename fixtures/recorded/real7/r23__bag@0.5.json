@@ -1,0 +1,33 @@
+{
+ "recorded_at": "2026-11-04 18:07 +0530",
+ "photo_sha256": "9acd018aa33ef2881e5f3242a52867238d201c370f7dc5009cfb5e04d0d44a44",
+ "result": {
+  "count": 11,
+  "prompt": "bag",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 1.8,
+  "scores": [
+   0.938,
+   0.926,
+   0.919,
+   0.916,
+   0.914,
+   0.9,
+   0.88,
+   0.857,
+   0.842,
+   0.731,
+   0.692
+  ],
+  "image_size": [
+   367,
+   552
+  ],
+  "wall_seconds": 1.9,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r23__bag@0.5.jpg",
+  "recorded": false
+ }
+}

@@ -1,0 +1,21 @@
+{
+ "recorded_at": "2026-11-04 18:14 +0530",
+ "photo_sha256": "5c85cc82648a5ebcb198c3f63d84e5ba236de1edd6c6a69bedaaeeaed96b556d",
+ "result": {
+  "count": 0,
+  "prompt": "crushed can",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 1.7,
+  "scores": [],
+  "image_size": [
+   493,
+   608
+  ],
+  "wall_seconds": 1.7,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r22__crushed-can@0.5.jpg",
+  "recorded": false
+ }
+}

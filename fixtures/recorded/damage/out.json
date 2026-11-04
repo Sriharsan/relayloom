@@ -1,0 +1,83 @@
+{
+ "r19": [
+  [
+   "damaged box",
+   3,
+   "r19__damaged-box@0.5.jpg"
+  ],
+  [
+   "crushed box",
+   3,
+   "r19__crushed-box@0.5.jpg"
+  ]
+ ],
+ "r20": [
+  [
+   "damaged box",
+   3,
+   "r20__damaged-box@0.5.jpg"
+  ],
+  [
+   "crushed box",
+   3,
+   "r20__crushed-box@0.5.jpg"
+  ]
+ ],
+ "r21": [
+  [
+   "damaged box",
+   3,
+   "r21__damaged-box@0.5.jpg"
+  ],
+  [
+   "crushed box",
+   3,
+   "r21__crushed-box@0.5.jpg"
+  ]
+ ],
+ "r22": [
+  [
+   "dented can",
+   55,
+   "r22__dented-can@0.5.jpg"
+  ],
+  [
+   "crushed can",
+   0,
+   "r22__crushed-can@0.5.jpg"
+  ]
+ ],
+ "r23": [
+  [
+   "torn sack",
+   0,
+   "r23__torn-sack@0.5.jpg"
+  ],
+  [
+   "damaged sack",
+   9,
+   "r23__damaged-sack@0.5.jpg"
+  ]
+ ],
+ "r05": [
+  [
+   "dented can",
+   52,
+   "r05__dented-can@0.5.jpg"
+  ]
+ ],
+ "r01": [
+  [
+   "damaged box",
+   25,
+   "r01__damaged-box@0.5.jpg"
+  ]
+ ],
+ "r06": [
+  [
+   "torn sack",
+   0,
+   "r06__torn-sack@0.5.jpg"
+  ]
+ ]
+}

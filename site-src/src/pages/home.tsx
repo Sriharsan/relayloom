@@ -3,6 +3,7 @@ import { Link } from "@/lib/router";
 import { agent, benchmark, confidence, fmtSeconds, glimmerSummary, links, offlineRun, real, samSummary, video } from "@/data/site";
 import { CopyBlock, Photo } from "@/components/bits";
 import { RealCases } from "@/components/realcases";
+import { Vision } from "@/components/vision";
 
 
 const btn =
@@ -22,41 +23,39 @@ function Hero() {
   return (
     <section className="relative border-b border-line">
       <div className="blueprint absolute inset-0" aria-hidden="true" />
-      <div className="relative mx-auto max-w-[1200px] px-4 pb-14 pt-14 sm:px-6 md:pt-24">
-        <p className="kLabel">Autonomous accounts payable</p>
-        <h1 className="mt-5 max-w-[11ch] text-balance text-[56px] font-bold leading-[0.95] tracking-[-0.035em] text-foreground sm:text-[88px] lg:text-[124px]">
-          Pay for what arrived.
-          <span className="block text-green-ink">Prove it.</span>
-        </h1>
-        <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,420px)_1fr] lg:items-end">
-          <div>
-            <p className="max-w-[44ch] text-[17px] leading-relaxed text-ink-muted">
-              Agents read the bill, count the goods in the photo, and hold any payment the goods do not support. Meta open weight models, on the
-              company's own machine.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link to="/proof" className={btn}>
-                See the proof <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link to="/developers" className={btnLine}>Run it yourself</Link>
-              {links.video && (
-                <a href={links.video} target="_blank" rel="noreferrer" className={btnLine}>Watch the film</a>
-              )}
-            </div>
+      <div className="relative mx-auto grid max-w-[1200px] items-center gap-12 px-6 pb-20 pt-16 sm:px-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:px-14 lg:pt-24">
+        <div>
+          <p className="kLabel">A real problem, in India, the United States and likely your city</p>
+          <h1 className="mt-6 text-balance text-[54px] font-bold leading-[0.96] tracking-[-0.035em] text-foreground sm:text-[84px]">
+            Pay for what arrived.
+            <span className="block text-green-ink">Prove it.</span>
+          </h1>
+          <p className="mt-8 max-w-[46ch] text-[18px] leading-relaxed text-ink-muted">
+            Courts and auditors keep finding bills paid for goods that never came, for years at a time, because nobody counted at the door.
+            Relayloom counts at the door. Agents read the bill, count the goods in the photo, and hold any payment the goods do not support.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link to="/proof" className={btn}>
+              See the proof <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link to="/developers" className={btnLine}>Run it yourself</Link>
+            {links.video && (
+              <a href={links.video} target="_blank" rel="noreferrer" className={btnLine}>Watch the film</a>
+            )}
           </div>
-          <div className="relative pb-6">
-            <div className="overflow-hidden rounded-[28px] border border-line bg-raised shadow-2xl shadow-black/30">
-              <Photo src={`/img/real/overlay/${overlay.overlay}`} alt="A van full of boxes, each box outlined and numbered by SAM 3.1" aspect="3 / 2" />
-            </div>
-            <div className="absolute -top-5 left-4 rotate-[-2deg] rounded-xl border border-line bg-background px-4 py-3 shadow-xl sm:left-8">
-              <p className="font-mono text-[10.5px] uppercase tracking-wider text-ink-muted">A sample bill says</p>
-              <p className="tnum font-mono text-[40px] leading-none text-foreground">{BILLED}</p>
-            </div>
-            <div className="absolute -bottom-5 right-4 rotate-[1.5deg] rounded-xl border border-amber/50 bg-background px-4 py-3 shadow-xl sm:right-8">
-              <p className="font-mono text-[10.5px] uppercase tracking-wider text-amber-ink">SAM 3.1 counted</p>
-              <p className="tnum font-mono text-[40px] leading-none text-amber-ink">{overlay.count}</p>
-              <p className="mt-1 text-[12px] text-ink-muted">by eye: {lead.hand_count}. Short by {BILLED - overlay.count}, held for a person</p>
-            </div>
+        </div>
+        <div className="relative pb-6 pt-5">
+          <div className="overflow-hidden rounded-[28px] border border-line bg-raised shadow-2xl shadow-black/30">
+            <Photo src={`/img/real/overlay/${overlay.overlay}`} alt="A van full of boxes, each box outlined and numbered by SAM 3.1" aspect="3 / 2" />
+          </div>
+          <div className="absolute -top-0 left-4 rotate-[-2deg] rounded-xl border border-line bg-background px-4 py-3 shadow-xl sm:left-8">
+            <p className="font-mono text-[10.5px] uppercase tracking-wider text-ink-muted">A sample bill says</p>
+            <p className="tnum font-mono text-[40px] leading-none text-foreground">{BILLED}</p>
+          </div>
+          <div className="absolute -bottom-0 right-4 rotate-[1.5deg] rounded-xl border border-amber/50 bg-background px-4 py-3 shadow-xl sm:right-8">
+            <p className="font-mono text-[10.5px] uppercase tracking-wider text-amber-ink">SAM 3.1 counted</p>
+            <p className="tnum font-mono text-[40px] leading-none text-amber-ink">{overlay.count}</p>
+            <p className="mt-1 text-[12px] text-ink-muted">by eye: {lead.hand_count}. Short by {BILLED - overlay.count}, held for a person</p>
           </div>
         </div>
       </div>
@@ -162,7 +161,7 @@ function Looks() {
 
 /* -------------------------------------------------------- 2. real goods strip */
 function Goods() {
-  const rows = [...real.rows].filter((r) => r.results[0].count > 0).sort((a, b) => Number(b.hand_count !== null) - Number(a.hand_count !== null));
+  const rows = [...real.rows].filter((r) => r.results[0].count > 0 && (r as { show?: boolean }).show !== false).sort((a, b) => Number(b.hand_count !== null) - Number(a.hand_count !== null));
   const at = (t: number) => confidence.real.find((r) => r.threshold === t)!;
   return (
     <section id="goods" className="border-b border-line">
@@ -282,37 +281,6 @@ function RunIt() {
         <p className="mt-4 text-[12.5px] text-ink-muted">
           Glimmer reads a bill in {fmtSeconds(glimmerSummary.min)} to {fmtSeconds(glimmerSummary.max)} on a laptop CPU. See the <Link to="/developers" className="underline underline-offset-4">Developers page</Link> for the policy file and the receipt format.
         </p>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------ 5. vision */
-function Vision() {
-  const beats = [
-    { h: "A count at every door", p: "Each dock gets a camera and a counter. What arrives is counted the moment it arrives, and the bill meets that number before any money moves." },
-    { h: "A receipt for every decision", p: "Every step is signed and chained, so anyone with the public key can check the whole story, offline, years later." },
-    { h: "Open weights, your machine", p: "Muse Glimmer and SAM 3.1 run inside the business, even with the network off. No bill, photo or bank detail leaves the building." },
-  ];
-  return (
-    <section id="vision" className="border-b border-line bg-raised">
-      <div className="mx-auto max-w-[1200px] px-4 py-20 sm:px-6">
-        <p className="kLabel">05 / The vision</p>
-        <h2 className="mt-4 max-w-[22ch] text-balance text-[38px] font-bold leading-[1.04] tracking-[-0.02em] text-foreground sm:text-[52px]">
-          A simple way to end paying for goods that never came.
-        </h2>
-        <p className="mt-5 max-w-[62ch] text-[16px] leading-relaxed text-ink-muted">
-          The cases above ran for years because nobody counted at the door. One camera, one count and one signed receipt per bill is a small idea with a large reach.
-          With persistence and real funding it becomes the standard check between every supplier and every payment.
-        </p>
-        <div className="mt-10 grid gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-3">
-          {beats.map((b) => (
-            <div key={b.h} className="bg-background p-7">
-              <h3 className="text-[18px] font-semibold text-foreground">{b.h}</h3>
-              <p className="mt-3 text-[14px] leading-relaxed text-ink-muted">{b.p}</p>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

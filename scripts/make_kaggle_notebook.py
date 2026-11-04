@@ -159,11 +159,21 @@ for video in videos[:3]:
     tracking.append(row); print(row)
 json.dump(tracking, open('/kaggle/working/gpu/tracking.json', 'w'), indent=1)"""
 
+CONDITION = """# Does Muse Glimmer see damage? It looks at photos of dented cans, torn sacks and crushed boxes, and at clean photos as controls.
+cond_agent = LookAgent(glimmer, None)
+condition_rows = []
+for key, what in [('r22', 'dented cans (damaged)'), ('r23', 'sacks (some damaged)'), ('r19', 'crushed boxes (damaged)'), ('r20', 'crushed boxes (damaged)'),
+                  ('r21', 'taped boxes (damaged)'), ('r05', 'round tins (clean)'), ('r01', 'boxes in a van (clean)'), ('r06', 'sacks close up (clean)')]:
+    seen = cond_agent.condition(pathlib.Path('fixtures/real') / (key + '.jpg'))
+    condition_rows.append({'photo': key, 'what': what, **seen}); print(condition_rows[-1])
+json.dump(condition_rows, open('/kaggle/working/gpu/condition.json', 'w'), indent=1)"""
+
 FINAL = """# Everything in one line each, so the run log carries the result
 print('RESULT_AGENT', json.dumps({'route': ROUTE, 'bill_read_seconds': bill_seconds, 'rows': rows}))
-print('RESULT_REAL', json.dumps(real_rows))"""
+print('RESULT_REAL', json.dumps(real_rows))
+print('RESULT_CONDITION', json.dumps(condition_rows))"""
 
-CELLS = [("markdown", INTRO), ("code", GPU), ("code", INSTALL), ("code", LLAMA), ("code", MODELS), ("code", SERVER), ("code", SETUP), ("code", LOOP), ("code", REALLOOP), ("code", FINAL)]
+CELLS = [("markdown", INTRO), ("code", GPU), ("code", INSTALL), ("code", LLAMA), ("code", MODELS), ("code", SERVER), ("code", SETUP), ("code", LOOP), ("code", REALLOOP), ("code", CONDITION), ("code", FINAL)]
 
 
 def main():

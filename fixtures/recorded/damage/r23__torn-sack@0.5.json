@@ -1,0 +1,21 @@
+{
+ "recorded_at": "2026-11-04 18:14 +0530",
+ "photo_sha256": "9acd018aa33ef2881e5f3242a52867238d201c370f7dc5009cfb5e04d0d44a44",
+ "result": {
+  "count": 0,
+  "prompt": "torn sack",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 19.3,
+  "scores": [],
+  "image_size": [
+   367,
+   552
+  ],
+  "wall_seconds": 19.4,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r23__torn-sack@0.5.jpg",
+  "recorded": false
+ }
+}

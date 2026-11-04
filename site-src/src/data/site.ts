@@ -22,7 +22,7 @@ export const links = {
 };
 
 export const footerNote =
-  "Demo run. The working system runs on the business's own machine, fully offline if needed.";
+  "Runs on the business's own machine, fully offline if needed.";
 
 export const company = { name: "Northgate Components", note: "Shown: a demo run." };
 

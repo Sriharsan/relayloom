@@ -214,7 +214,8 @@
    "hand_count": null,
    "hand_by": null,
    "first_word_error": null,
-   "best_error": null
+   "best_error": null,
+   "show": false
   },
   {
    "key": "r10",
@@ -238,7 +239,8 @@
    "hand_count": null,
    "hand_by": null,
    "first_word_error": null,
-   "best_error": null
+   "best_error": null,
+   "show": false
   },
   {
    "key": "r11",
@@ -262,7 +264,8 @@
    "hand_count": null,
    "hand_by": null,
    "first_word_error": null,
-   "best_error": null
+   "best_error": null,
+   "show": false
   },
   {
    "key": "r12",
@@ -340,7 +343,8 @@
    "hand_count": null,
    "hand_by": null,
    "first_word_error": null,
-   "best_error": null
+   "best_error": null,
+   "show": false
   },
   {
    "key": "r15",
@@ -445,6 +449,127 @@
     }
    ],
    "agree": false,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null,
+   "show": false
+  },
+  {
+   "key": "r19",
+   "pid": "P21",
+   "image": "/img/real/r19.jpg",
+   "results": [
+    {
+     "word": "cardboard box",
+     "count": 4,
+     "seconds": 41.0,
+     "overlay": "r19__cardboard-box.jpg"
+    },
+    {
+     "word": "box",
+     "count": 4,
+     "seconds": 1.9,
+     "overlay": "r19__box.jpg"
+    }
+   ],
+   "agree": true,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r20",
+   "pid": "P22",
+   "image": "/img/real/r20.jpg",
+   "results": [
+    {
+     "word": "cardboard box",
+     "count": 3,
+     "seconds": 18.2,
+     "overlay": "r20__cardboard-box.jpg"
+    },
+    {
+     "word": "box",
+     "count": 4,
+     "seconds": 1.6,
+     "overlay": "r20__box.jpg"
+    }
+   ],
+   "agree": false,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r21",
+   "pid": "P23",
+   "image": "/img/real/r21.jpg",
+   "results": [
+    {
+     "word": "cardboard box",
+     "count": 3,
+     "seconds": 17.4,
+     "overlay": "r21__cardboard-box.jpg"
+    },
+    {
+     "word": "box",
+     "count": 3,
+     "seconds": 1.7,
+     "overlay": "r21__box.jpg"
+    }
+   ],
+   "agree": true,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r22",
+   "pid": "P24",
+   "image": "/img/real/r22.jpg",
+   "results": [
+    {
+     "word": "can",
+     "count": 55,
+     "seconds": 20.7,
+     "overlay": "r22__can.jpg"
+    },
+    {
+     "word": "tin",
+     "count": 55,
+     "seconds": 2.1,
+     "overlay": "r22__tin.jpg"
+    }
+   ],
+   "agree": true,
+   "hand_count": null,
+   "hand_by": null,
+   "first_word_error": null,
+   "best_error": null
+  },
+  {
+   "key": "r23",
+   "pid": "P25",
+   "image": "/img/real/r23.jpg",
+   "results": [
+    {
+     "word": "sack",
+     "count": 11,
+     "seconds": 20.1,
+     "overlay": "r23__sack.jpg"
+    },
+    {
+     "word": "bag",
+     "count": 11,
+     "seconds": 1.8,
+     "overlay": "r23__bag.jpg"
+    }
+   ],
+   "agree": true,
    "hand_count": null,
    "hand_by": null,
    "first_word_error": null,

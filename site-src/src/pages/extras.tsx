@@ -22,7 +22,7 @@ export function Boundary() {
         />
         <div className="rounded-xl border border-line bg-surface p-4 sm:p-8">
           <svg viewBox="0 0 760 300" className="h-auto w-full" role="img" aria-label="Diagram of the company network boundary with an egress gateway on the edge">
-            <rect x="24" y="24" width="640" height="252" rx="16" fill="var(--raised)" stroke="var(--line-strong)" strokeWidth="1.5" />
+            <rect x="24" y="24" width="616" height="252" rx="16" fill="var(--raised)" stroke="var(--line-strong)" strokeWidth="1.5" />
             <text x="52" y="58" fill="var(--ink-muted)" fontSize="11" fontFamily="JetBrains Mono, monospace" letterSpacing="2">INSIDE THE COMPANY NETWORK</text>
             {INSIDE.map((label, i) => {
               const x = 52 + (i % 3) * 196;
@@ -37,7 +37,12 @@ export function Boundary() {
                 </g>
               );
             })}
-            <rect x="648" y="128" width="104" height="44" rx="8" fill="var(--surface)" stroke="var(--amber)" strokeWidth="1.5" />
+            {[118, 210].flatMap((y) => [228, 424].map((x) => (
+              <line key={`${x}-${y}`} x1={x} y1={y} x2={x + 20} y2={y} stroke="var(--green)" strokeWidth="2" className="flow-line" />
+            )))}
+            <circle cx="640" cy="150" r="6" fill="var(--amber)" className="ring-pulse" />
+            <circle cx="640" cy="150" r="3.5" fill="var(--amber)" />
+            <rect x="652" y="128" width="100" height="44" rx="8" fill="var(--surface)" stroke="var(--amber)" strokeWidth="1.5" />
             <text x="700" y="146" textAnchor="middle" fill="var(--amber-ink)" fontSize="10.5" fontFamily="JetBrains Mono, monospace">EGRESS</text>
             <text x="700" y="160" textAnchor="middle" fill="var(--amber-ink)" fontSize="10.5" fontFamily="JetBrains Mono, monospace">GATEWAY</text>
             <text x="700" y="196" textAnchor="middle" fill="var(--ink-muted)" fontSize="10.5" fontFamily="JetBrains Mono, monospace">off by default</text>

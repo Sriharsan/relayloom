@@ -110,5 +110,26 @@ class LookAgentTests(unittest.TestCase):
         self.assertTrue(result["trace"])
 
 
+class ConditionTests(unittest.TestCase):
+    def agent(self, content):
+        class G:
+            def chat(self, system, user, schema=None, max_tokens=0, images=None):
+                return {"content": content, "seconds": 2.0}
+        return LookAgent(G(), None)
+
+    def test_damaged_units_are_capped_at_what_was_counted(self):
+        found = self.agent(json.dumps({"visible_units": 40, "damaged_units": 30, "kind": "dented", "note": "many dents"})).condition(Path("p.jpg"), counted=12)
+        self.assertEqual((found["damaged"], found["kind"]), (12, "dented"))
+
+    def test_no_damage_reads_as_none(self):
+        found = self.agent(json.dumps({"visible_units": 10, "damaged_units": 0, "kind": "dented", "note": "clean"})).condition(Path("p.jpg"), counted=10)
+        self.assertEqual((found["damaged"], found["kind"]), (0, "none"))
+
+    def test_an_empty_answer_never_invents_damage(self):
+        found = self.agent("").condition(Path("p.jpg"), counted=10)
+        self.assertEqual(found["damaged"], 0)
+        self.assertTrue(found["held"])
+
+
 if __name__ == "__main__":
     unittest.main()

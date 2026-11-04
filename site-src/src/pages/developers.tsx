@@ -59,15 +59,19 @@ export function Developers() {
           <SectionHead index="Policy" title="What runs alone, what asks, what never happens" note="One file, read once at start, outside the model's reach. Its hash is on every receipt." />
           <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {operations.map(([name, op]) => (
-              <div key={name} className="flex items-center justify-between gap-3 rounded-lg border border-line bg-surface px-4 py-3">
-                <span className="font-mono text-[12.5px] text-foreground">{name}</span>
-                <Pill tone={LEVEL_TONE[op.level]}>{LEVEL_LABEL[op.level]}</Pill>
+              <div key={name} className="flex min-w-0 flex-wrap items-center justify-between gap-x-3 gap-y-2 rounded-lg border border-line bg-surface px-4 py-3">
+                <span className="min-w-0 break-words text-[14px] text-foreground">{name.replace(/_/g, " ")}</span>
+                <span className="shrink-0"><Pill tone={LEVEL_TONE[op.level]}>{LEVEL_LABEL[op.level]}</Pill></span>
               </div>
             ))}
           </div>
-          <p className="mt-4 font-mono text-[12px] text-ink-muted">
-            limits: {Object.entries(policy.limits).map(([k, v]) => `${k}=${v}`).join("  ")}
-          </p>
+          <ul className="mt-5 flex flex-wrap gap-2">
+            {Object.entries(policy.limits).map(([k, v]) => (
+              <li key={k} className="rounded-full border border-line bg-surface px-3 py-1.5 text-[12.5px] text-ink-muted">
+                {k.replace(/_/g, " ")} <span className="font-mono text-foreground">{String(v)}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

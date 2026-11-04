@@ -1,0 +1,128 @@
+[
+ {
+  "key": "r19",
+  "pid": "P21",
+  "results": [
+   {
+    "word": "cardboard box",
+    "count": 4,
+    "seconds": 41.0,
+    "overlay": "r19__cardboard-box@0.5.jpg"
+   },
+   {
+    "word": "box",
+    "count": 4,
+    "seconds": 1.9,
+    "overlay": "r19__box@0.5.jpg"
+   }
+  ]
+ },
+ {
+  "key": "r20",
+  "pid": "P22",
+  "results": [
+   {
+    "word": "cardboard box",
+    "count": 3,
+    "seconds": 18.2,
+    "overlay": "r20__cardboard-box@0.5.jpg"
+   },
+   {
+    "word": "box",
+    "count": 4,
+    "seconds": 1.6,
+    "overlay": "r20__box@0.5.jpg"
+   }
+  ]
+ },
+ {
+  "key": "r21",
+  "pid": "P23",
+  "results": [
+   {
+    "word": "cardboard box",
+    "count": 3,
+    "seconds": 17.4,
+    "overlay": "r21__cardboard-box@0.5.jpg"
+   },
+   {
+    "word": "box",
+    "count": 3,
+    "seconds": 1.7,
+    "overlay": "r21__box@0.5.jpg"
+   }
+  ]
+ },
+ {
+  "key": "r22",
+  "pid": "P24",
+  "results": [
+   {
+    "word": "can",
+    "count": 55,
+    "seconds": 20.7,
+    "overlay": "r22__can@0.5.jpg"
+   },
+   {
+    "word": "tin",
+    "count": 55,
+    "seconds": 2.1,
+    "overlay": "r22__tin@0.5.jpg"
+   }
+  ]
+ },
+ {
+  "key": "r23",
+  "pid": "P25",
+  "results": [
+   {
+    "word": "sack",
+    "count": 11,
+    "seconds": 20.1,
+    "overlay": "r23__sack@0.5.jpg"
+   },
+   {
+    "word": "bag",
+    "count": 11,
+    "seconds": 1.8,
+    "overlay": "r23__bag@0.5.jpg"
+   }
+  ]
+ },
+ {
+  "key": "r24",
+  "pid": "P26",
+  "results": [
+   {
+    "word": "sack",
+    "count": 16,
+    "seconds": 24.9,
+    "overlay": "r24__sack@0.5.jpg"
+   },
+   {
+    "word": "bag",
+    "count": 13,
+    "seconds": 2.1,
+    "overlay": "r24__bag@0.5.jpg"
+   }
+  ]
+ },
+ {
+  "key": "r25",
+  "pid": "P27",
+  "results": [
+   {
+    "word": "sack",
+    "count": 10,
+    "seconds": 19.8,
+    "overlay": "r25__sack@0.5.jpg"
+   },
+   {
+    "word": "bag",
+    "count": 8,
+    "seconds": 1.8,
+    "overlay": "r25__bag@0.5.jpg"
+   }
+  ]
+ }
+]

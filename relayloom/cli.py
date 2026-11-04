@@ -186,7 +186,7 @@ def check(args) -> int:
         if not isinstance(from_file, dict):
             raise UserError("the counts file must be a JSON object like {\"CODE\": 12}")
         given.update(parse_counts([f"{k}={v}" for k, v in from_file.items()], codes, item["item_code"]))
-    total, rows, counted_held = 0, [], False
+    total, rows, counted_held, cond_rows = 0, [], False, []
     model, route, input_hash = "none", "given by the person", sha256({"counted": given})
     if item["item_code"] not in given:
         if not args.photos:
@@ -202,6 +202,10 @@ def check(args) -> int:
             for photo in photos:
                 say(f"The agent is looking at {photo.name}...", quiet)
                 found = agent.look(photo, item["description"], photo.stem, seed_words=args.words or ())
+                if args.condition:
+                    seen = agent.condition(photo, found["count"])
+                    found["trace"].append({"step": "condition", "tool": "glimmer", "seconds": seen["seconds"], "saw_image": True, "output": seen})
+                    cond_rows.append({"photo": photo.name, "damaged": seen["damaged"], "kind": seen["kind"], "note": seen["note"]})
                 rows.append({"photo": photo.name, "count": found["count"], "held": found["held"], "confirmed_by": found.get("confirmed_by", ""),
                              "trace": found["trace"]})
                 if found["held"]:
@@ -219,6 +223,19 @@ def check(args) -> int:
     else:
         total = given[item["item_code"]]
         rows = [{"photo": "(count given with --counted)", "count": total}]
+    damaged = args.damaged or 0
+    damage_rows = list(cond_rows)
+    damaged += sum(r['damaged'] for r in cond_rows)
+    if args.damage_words and args.photos and item["item_code"] not in (parse_counts(args.counted, codes, item["item_code"]) if args.counted else {}):
+        sam_damage = build_sam(conf=args.confidence)
+        for photo in expand_photos(args.photos):
+            found = max(((w, sam_damage.count(photo, w, photo.stem + "-damage")["count"]) for w in args.damage_words), key=lambda x: x[1])
+            damage_rows.append({"photo": photo.name, "words": found[0], "damaged": found[1]})
+            damaged += found[1]
+        sam_damage.close()
+    received_good = given[item["item_code"]] if item["item_code"] in given else None
+    if damaged and received_good is not None:
+        damaged = min(damaged, received_good)
     missing = [c for c in codes if c not in given]
     if missing:
         raise UserError(f"the purchase order has {len(codes)} lines; give a count for each with --counted CODE=N. Missing: {', '.join(missing)}")
@@ -227,7 +244,16 @@ def check(args) -> int:
     chain.append(case, "Counter", "count", "counted " + ", ".join(f"{c} {n}" for c, n in given.items()), input_hash=input_hash, model=model, route=route,
                  detail={"photos": rows, "counts": given})
 
+    if damaged:
+        arrived = given[item["item_code"]]
+        chain.append(case, "Counter", "condition", f"{damaged} of {arrived} damaged", input_hash=sha256({"damaged": damaged, "photos": damage_rows}), model="SAM 3.1" if damage_rows else "none",
+                     route="this machine" if damage_rows else "given by the person",
+                     detail={"reason": f"{damaged} of {arrived} units arrived damaged, so only {arrived - damaged} count as received.", "photos": damage_rows})
+        given[item["item_code"]] = arrived - damaged
+        say(f"  {damaged} of {arrived} damaged: counted {arrived - damaged} as received", quiet)
     result = match(po, bill, given, {}, policy.limits)
+    if damaged:
+        result["problems"].append(f"{damaged} units arrived damaged and are not counted as received. Ask the supplier for a credit note or a replacement.")
     needs_approval = bool(result.get("over_limit"))  # the policy lets a person, not the agent, approve a bill over the amount limit
     state = "held" if (not result["matched"] or counted_held or needs_approval) else "clear to enter"
     if needs_approval:
@@ -272,6 +298,20 @@ def verify_command(args) -> int:
     for problem in problems:
         print("  -", problem)
     return 0 if ok else 1
+
+
+def receipt_command(args) -> int:
+    from .receipt_pdf import write_receipt_pdf
+    path = Path(args.receipts)
+    if not path.exists():
+        raise UserError(f"receipt file not found: {path}")
+    key_file = Path(args.key_file) if args.key_file else path.with_name("public_key.txt")
+    key = args.key or (key_file.read_text(encoding="utf-8").strip() if key_file.exists() else None)
+    out = Path(args.out) if args.out else path.with_name("receipt.pdf")
+    info = write_receipt_pdf(path, out, args.case, key)
+    state = {True: "verified", False: "NOT verified", None: "not checked (no public key found)"}[info["verified"]]
+    print(f"{out}: {info['steps']} steps, signatures {state}")
+    return 1 if info["verified"] is False else 0
 
 
 def module_ok(name: str) -> bool:
@@ -395,6 +435,9 @@ def parser() -> argparse.ArgumentParser:
     c.add_argument("--counts-file", help="a JSON file of counts, {\"CODE\": N, ...}, for purchase orders with many lines")
     c.add_argument("--counted", nargs="+", metavar="N|CODE=N", help="items already counted instead of photos: N for the line being counted, or CODE=N for each line")
     c.add_argument("--confidence", type=float, default=DEFAULT_CONFIDENCE, help="the lowest SAM mask score kept, 0.3 to 0.9 (default 0.5; lower finds more, higher is stricter)")
+    c.add_argument("--damaged", type=int, help="units already known to be dented, torn or crushed: they do not count as received")
+    c.add_argument("--condition", action="store_true", help="with --agent: Muse Glimmer also looks at each photo for dented, crushed or torn goods")
+    c.add_argument("--damage-words", nargs="*", metavar="WORD", help="words for SAM to find damaged units in the photos, like 'dented can' or 'torn sack'")
     c.add_argument("--item", help="the purchase order line the photos count (default: the first line)")
     c.add_argument("--words", nargs="*", help="words for SAM to look for (the agent proposes them when omitted)")
     c.add_argument("--agent", action="store_true", help="let Muse Glimmer choose the words and look at its own counts")
@@ -407,6 +450,13 @@ def parser() -> argparse.ArgumentParser:
     v.add_argument("--key", help="public key (base64)")
     v.add_argument("--key-file", help="file with the public key; default public_key.txt next to the receipts")
     v.set_defaults(run=verify_command)
+    r = sub.add_parser("receipt", help="write a plain language PDF receipt from a receipt file, offline")
+    r.add_argument("receipts")
+    r.add_argument("--case", help="only the steps of this case")
+    r.add_argument("--out", help="PDF path (default receipt.pdf next to the receipts)")
+    r.add_argument("--key", help="public key (base64)")
+    r.add_argument("--key-file", help="file with the public key; default public_key.txt next to the receipts")
+    r.set_defaults(run=receipt_command)
     d = sub.add_parser("doctor", help="say what is ready on this machine and what is missing")
     d.add_argument("--report", action="store_true", help="print a block to paste into a bug report")
     d.set_defaults(run=doctor)

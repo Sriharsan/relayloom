@@ -1,0 +1,25 @@
+{
+ "recorded_at": "2026-11-04 18:13 +0530",
+ "photo_sha256": "4db8d4ea5857a83e7247be648d26b6ae113d9e7573245ac90daa74474a3ea781",
+ "result": {
+  "count": 3,
+  "prompt": "damaged box",
+  "model": "SAM 3.1",
+  "device": "cpu",
+  "load_seconds": 0.0,
+  "infer_seconds": 34.6,
+  "scores": [
+   0.819,
+   0.791,
+   0.681
+  ],
+  "image_size": [
+   296,
+   397
+  ],
+  "wall_seconds": 39.0,
+  "route": "SAM 3.1 CPU",
+  "overlay": "r19__damaged-box@0.5.jpg",
+  "recorded": false
+ }
+}
