@@ -13,6 +13,7 @@ Deadline: 4 Nov 2026 9:00 PM ET (5 Nov 7:30 AM IST). Make no commits after you s
 | Team | Solo: Sriharsan B S (bssriharsan@gmail.com) |
 | Code repository | https://github.com/Sriharsan/relayloom (public, one author) |
 | Live site | https://relayloom.vercel.app |
+| Try it live | https://relayloom.vercel.app/try (type a bill, get the verdict and a signed receipt in your browser) |
 | Demo video | **YOU**: YouTube Unlisted link, 3 minutes or less |
 | X post | **YOU**: link to your post (text in the last section) |
 | Package | `python -m pip install relayloom` (PyPI only if you publish it, see the checklist) |

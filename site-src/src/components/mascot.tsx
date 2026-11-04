@@ -4,7 +4,7 @@ type Props = {
   /** What Loom says when it arrives. */
   message: string;
   /** The button: it either scrolls to an element id or does something. */
-  cta: { label: string; target?: string; click?: () => void };
+  cta: { label: string; target?: string; href?: string; click?: () => void };
   /** A second line Loom says after a hop, to point the visitor onward. */
   nudges?: string[];
   storageKey: string;
@@ -39,6 +39,7 @@ export function Mascot({ message, cta, nudges = [], storageKey }: Props) {
   const act = () => {
     if (cta.target) document.getElementById(cta.target)?.scrollIntoView({ behavior: "smooth", block: "start" });
     cta.click?.();
+    if (cta.href) { window.history.pushState({}, "", cta.href); window.dispatchEvent(new PopStateEvent("popstate")); close(); }
     if (cta.target) close();
   };
   const line = hop > 0 && nudges.length ? nudges[(hop - 1) % nudges.length] : message;

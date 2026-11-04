@@ -7,12 +7,14 @@ import { Home } from "@/pages/home";
 import { Proof } from "@/pages/proof";
 import { Demo } from "@/pages/demo";
 import { Developers } from "@/pages/developers";
+import { Try } from "@/pages/try";
 
 const TITLES: Record<string, string> = {
   "/": "Relayloom. Accounts payable that checks the goods.",
   "/proof": "Proof. Relayloom, measured on a demo run.",
   "/demo": "Demo. Replay of a Relayloom run.",
   "/developers": "Developers. Install and run Relayloom.",
+  "/try": "Try it. Check a delivery live in your browser.",
 };
 
 function App() {
@@ -29,7 +31,7 @@ function App() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">{page === "/proof" ? <Proof /> : page === "/demo" ? <Demo /> : page === "/developers" ? <Developers /> : <Home />}</main>
+      <main className="flex-1">{page === "/proof" ? <Proof /> : page === "/demo" ? <Demo /> : page === "/developers" ? <Developers /> : page === "/try" ? <Try /> : <Home />}</main>
       <SiteFooter />
     </div>
   );

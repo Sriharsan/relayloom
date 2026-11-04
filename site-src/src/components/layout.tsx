@@ -7,6 +7,7 @@ const NAV = [
   { label: "The agent", to: "/", hash: "#agent" },
   { label: "The goods", to: "/", hash: "#goods" },
   { label: "Run it", to: "/", hash: "#run" },
+  { label: "Try it", to: "/try", hash: "" },
   { label: "Proof", to: "/proof", hash: "" },
   { label: "Demo", to: "/demo", hash: "" },
   { label: "Developers", to: "/developers", hash: "" },

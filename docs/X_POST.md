@@ -13,7 +13,7 @@ Meta's Muse Glimmer reads the bill. SAM 3.1 counts what arrived. An Investigator
 
 All on Meta open weights, on one laptop.
 
-60 second tour: https://relayloom.vercel.app
+Try it with your own bill, live in the browser: https://relayloom.vercel.app/try
 Code: https://github.com/Sriharsan/relayloom
 
 ## First reply (optional)

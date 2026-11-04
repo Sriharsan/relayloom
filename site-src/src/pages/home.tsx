@@ -37,9 +37,10 @@ function Hero() {
             Relayloom counts at the door. Agents read the bill, count the goods in the photo, and hold any payment the goods do not support.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/proof" className={btn}>
-              See the proof <ArrowRight className="h-4 w-4" />
+            <Link to="/try" className={btn}>
+              Try it with your bill <ArrowRight className="h-4 w-4" />
             </Link>
+            <Link to="/proof" className={btnLine}>See the proof</Link>
             <Link to="/developers" className={btnLine}>Run it yourself</Link>
             {links.video && (
               <a href={links.video} target="_blank" rel="noreferrer" className={btnLine}>Watch the film</a>
@@ -304,7 +305,8 @@ function Closing() {
         </p>
         <p className="mt-5 text-[14px] text-ink-muted">Built by Sriharsan B S. One person, one laptop, open weights.</p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link to="/proof" className={btn}>See the proof</Link>
+          <Link to="/try" className={btn}>Try it with your bill</Link>
+          <Link to="/proof" className={btnLine}>See the proof</Link>
           {links.video ? <a href={links.video} target="_blank" rel="noreferrer" className={btnLine}>Watch the film</a> : null}
           <a href={links.repo} target="_blank" rel="noreferrer" className={btnLine}>Read the code</a>
         </div>
@@ -318,8 +320,8 @@ export function Home() {
     <>
       <Mascot
         storageKey="loom-home"
-        message="Come and watch the crew count a delivery."
-        cta={{ label: "Meet the crew", target: "crew" }}
+        message="Type a bill and watch it judged live."
+        cta={{ label: "Try it with your bill", href: "/try" }}
         nudges={["The real cases are just below. Every one is linked to its source.", "The proof page lets you break a receipt chain yourself.", "Open the demo and I will walk you through a short delivery."]}
       />
       <Hero />
